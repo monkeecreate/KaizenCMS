@@ -1,11 +1,5 @@
 <?php
-# Custom URL .htaccess mod_rewrite
-
-# ORDER OF URL OPERATIONS:
-# 1: Url Pattern ($urlPatterns)
-# (dead)2: Url Controls ($aUrl)
-# (dead)3: Home (/)
-# (dead)4: Url Input (/$cmd/$action/)
+# Custom URL using mod_rewrite
 
 ### Url Pattern ###############################
 /*
