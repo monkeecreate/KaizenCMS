@@ -1,0 +1,3 @@
+{* Google Analytics *}
+</body>
+</html>
