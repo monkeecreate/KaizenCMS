@@ -1,13 +1,4 @@
 <?php
-### SEO ######################################
-if(!preg_match("/www./", $_SERVER["HTTP_HOST"]) && !preg_match("/[a-z0-9]+\.[a-z0-9]+\.[a-z0-9]+/i", $_SERVER["HTTP_HOST"]))
-{
-	header("HTTP/1.1 301 Moved Permanently");
-	header("Location: http://www.".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"]);
-	exit;
-}
-##############################################
-
 ### AUTO CONFIG ##############################
 $site_public_root = dirname(__FILE__)."/";
 $site_root = dirname($site_public_root)."/";
@@ -72,7 +63,7 @@ if($_GET["FLUSHCACHE"])
 }
 ##############################################
 
-### Encryption ###############################
+### ENCRYPTION ###############################
 $oEnc = new hash_crypt($aConfig["encryption"]["key"]);
 $oEnc->set_salt($aConfig["encryption"]["salt"]);
 ##############################################
