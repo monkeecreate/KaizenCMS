@@ -116,8 +116,6 @@ class AppController
 	}
 	protected function memcache_set($key, $value, $expire = 0)
 	{
-		echo "<br />".$key;
-		echo "<br />".md5($this->_settings->memcache_salt.$key);
 		return $this->_memcache->set(md5($this->_settings->memcache_salt.$key), $this->encrypt($value), false, $expire);
 	}
 	##################################
