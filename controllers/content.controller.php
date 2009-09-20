@@ -19,29 +19,34 @@ class content extends AppController
 		else
 			$this->error("404");
 		
-		if($this->template_exists("content_".$sPage.".tpl"))
-			$this->_smarty->display("content_".$sPage.".tpl");
-		else
+		if(preg_match("/[a-z0-9_-]+/i", $sPage) > 0)
 		{
-			$rContent = $this->_db->query("SELECT * FROM `content`"
-				." WHERE `tag` = ".$this->_db->quote($sPage, "text")
-				." AND `active` = 1"
-				." LIMIT 1"
-			);
-			
-			if(PEAR::isError($rContent))
-				$this->send_error("content->view->tag", "dberror", $rContent);
-			
-			$aContent = $rContent->fetchRow();
-			
-			if(!empty($aContent))
-			{
-				$this->_smarty->assign("aContent", $aContent);
-				$this->_smarty->display("content.tpl");
-			}
+			if($this->template_exists("content_".$sPage.".tpl"))
+				$this->_smarty->display("content_".$sPage.".tpl");
 			else
-				$this->error("404");
+			{
+				$rContent = $this->_db->query("SELECT * FROM `content`"
+					." WHERE `tag` = ".$this->_db->quote($sPage, "text")
+					." AND `active` = 1"
+					." LIMIT 1"
+				);
+			
+				if(PEAR::isError($rContent))
+					$this->send_error("content->view->tag", "dberror", $rContent);
+			
+				$aContent = $rContent->fetchRow();
+			
+				if(!empty($aContent))
+				{
+					$this->_smarty->assign("aContent", $aContent);
+					$this->_smarty->display("content.tpl");
+				}
+				else
+					$this->error("404");
+			}
 		}
+		else
+			$this->error("404");
 	}
 	##################################
 	
