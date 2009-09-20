@@ -1,5 +1,5 @@
 <?php
-class AppController
+class appController
 {
 	protected $_db;
 	protected $_memcache;
@@ -9,7 +9,7 @@ class AppController
 	protected $_settings;
 	protected $_enc;
 	
-	function AppController()
+	function appController()
 	{
 		global $objDB, $oMemcache, $objMail, $oFirePHP, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl;
 		

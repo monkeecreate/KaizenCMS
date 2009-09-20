@@ -1,5 +1,5 @@
 <?php
-class content extends AppController
+class content extends appController
 {
 	### DISPLAY ######################
 	function index()

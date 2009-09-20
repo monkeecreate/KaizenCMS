@@ -40,8 +40,8 @@ function __autoload($class_name) {
 	
 	if(!class_exists($class_name))
 	{
-		if($class_name == "AppController")
-			require($site_root."AppController.php");
+		if($class_name == "appController")
+			require($site_root."appController.php");
     	elseif(is_file($site_root."controllers/".$class_name.".controller.php"))
 			require($site_root."controllers/".$class_name.".controller.php");
 		elseif(is_file($site_root."helpers/".$class_name.".helper.php"))

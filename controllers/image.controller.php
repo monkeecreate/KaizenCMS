@@ -1,5 +1,5 @@
 <?php
-class image extends AppController
+class image extends appController
 {
 	### DISPLAY ######################
 	function resize()
