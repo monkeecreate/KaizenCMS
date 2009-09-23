@@ -11,7 +11,7 @@ require("../inc_config.php");
 require("../inc_urls.php");
 
 if($options_pear == "folder")
-    ini_set("include_path", ini_get("include_path").":".$site_root."app/.pear");
+    ini_set("include_path", ini_get("include_path").":".$site_root.".pear");
 ##############################################
 
 ### NON-DEBUG ################################
@@ -190,7 +190,7 @@ if(count($urlPatterns[$pattern]) > 0)
 /* Complete failure, throw 404 */
 else
 {
-	$oApp = new AppController;
+	$oApp = new appController;
 	$oApp->error('404');
 }
 ##############################################
