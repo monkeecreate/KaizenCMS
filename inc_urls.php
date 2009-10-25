@@ -20,19 +20,19 @@ $urlPatterns = array(
 		"cmd" => "content",
 		"action" => "siteinfo"
 	),
-	"/listings/search/" => array(
-		"cmd" => "listings",
-		"action" => "search"
+	"/contact/" => array(
+		"cmd" => "content",
+		"action" => "contact"
 	),
-	"/listings/profile/{id:[0-9]+}/" => array(
-		"cmd" => "listings",
-		"action" => "profile"
+	"/sendform/" => array(
+		"cmd" => "content",
+		"action" => "form_submit"
 	),
-	"/image/profile/{id:[0-9]+}/" => array(
+	"/image/resize/" => array(
 		"cmd" => "image",
-		"action" => "profile"
+		"action" => "resize"
 	),
-	"/{page:[a-z0-9]+}/" => array(
+	"/{page:[a-z0-9_-]+}/" => array(
 		"cmd" => "content",
 		"action" => "view"
 	)
