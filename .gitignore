@@ -1,4 +1,4 @@
 .compiled
 .logs
 php_errors.log
-
+inc_config.php
