@@ -55,6 +55,7 @@ p img.right {
 } 
 a:focus, a:hover { 
   color: #000; 
+  outline:none;
 } 
 a { 
   color: #009; 
