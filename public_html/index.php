@@ -195,7 +195,7 @@ if(count($urlPatterns[$pattern]) > 0)
 /* Complete failure, throw 404 */
 else
 {
-	$oApp = new AppController;
+	$oApp = new appController;
 	$oApp->error('404');
 }
 ##############################################
