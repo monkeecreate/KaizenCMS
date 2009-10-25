@@ -27,8 +27,11 @@ if($aConfig["options"]["debug"] == false)
 $sURL = array_shift(explode("?", $_SERVER["REQUEST_URI"]));
 if(substr($sURL, -1) != "/" && substr($sURL,-4,1) != "." && substr($sURL,-3,1) != ".")
 {
+	if(!empty($_SERVER["QUERY_STRING"]))
+		$sQueryString .= "?".$_SERVER["QUERY_STRING"];
+	
 	header("HTTP/1.1 301 Moved Permanently");
-	header("Location: ".$sURL."/");
+	header("Location: ".$sURL."/".$sQueryString);
 	exit;
 }
 $aUrl = explode("/", $sURL);
@@ -56,6 +59,8 @@ $oMemcache->connect($aConfig["memcache"]["server"]) or die("Could not connect to
 if($_GET["FLUSHCACHE"])
 {
 	$oMemcache->flush();
+	
+	// Wait for memcache to finish flushing
 	$time = time()+1; //one second future
 	while(time() < $time) {
 	  //sleep
