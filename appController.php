@@ -163,6 +163,7 @@ class appController
 			$body .= $aMessage[1]."\n";
 			$body .= "Query: ".$this->_db->last_query."\n";
 			$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
+			$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
 			$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
 			$body .= "Time: ".time()."\n";
 			
@@ -171,6 +172,7 @@ class appController
 		{
 			$body .= "Error: ".$error."\n";
 			$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
+			$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
 			$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
 			$body .= "Time: ".time()."\n";
 		}
