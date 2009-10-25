@@ -10,8 +10,8 @@ session_start();
 require("../inc_config.php");
 require("../inc_urls.php");
 
-if($options_pear == "folder")
-    ini_set("include_path", ini_get("include_path").":".$site_root."app/.pear");
+if($aConfig["options"]["pear"] == "folder")
+    ini_set("include_path", ini_get("include_path").":".$site_root.".pear");
 ##############################################
 
 ### NON-DEBUG ################################
