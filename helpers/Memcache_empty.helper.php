@@ -1,5 +1,5 @@
 <?php
-class Memcache_empty()
+class Memcache_empty
 {
 	function get()
 	{
