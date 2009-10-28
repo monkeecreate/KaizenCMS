@@ -2,7 +2,7 @@ RewriteEngine On
 RewriteBase /
 
 RewriteRule ^editor(.*)$ editor$1 [PT]
-RewriteRule ^img(.*)$ img$1 [PT]
+RewriteRule ^images(.*)$ images$1 [PT]
 RewriteRule ^css(.*)$ css$1 [PT]
 RewriteRule ^scripts(.*)$ scripts$1 [PT]
 
