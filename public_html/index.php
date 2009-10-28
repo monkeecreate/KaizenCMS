@@ -1,4 +1,7 @@
 <?php
+ini_set("display_errors", 1);
+ini_set("error_reporting", "E_ALL ~E_NOTICE");
+
 ### AUTO CONFIG ##############################
 $site_public_root = dirname(__FILE__)."/";
 $site_root = dirname($site_public_root)."/";
@@ -56,18 +59,23 @@ function __autoload($class_name) {
 ##############################################
 
 ### MEMCACHE #################################
-$oMemcache = new Memcache;
-$oMemcache->connect($aConfig["memcache"]["server"]) or die("Could not connect to memcache");
-if($_GET["FLUSHCACHE"])
+if($aConfig["software"]["memcache"] == true)
 {
-	$oMemcache->flush();
-	
-	// Wait for memcache to finish flushing
-	$time = time()+1; //one second future
-	while(time() < $time) {
-		//sleep
+	$oMemcache = new Memcache;
+	$oMemcache->connect($aConfig["memcache"]["server"]) or die("Could not connect to memcache");
+	if($_GET["FLUSHCACHE"])
+	{
+		$oMemcache->flush();
+		
+		// Wait for memcache to finish flushing
+		$time = time()+1; //one second future
+		while(time() < $time) {
+			//sleep
+		}
 	}
 }
+else
+	$oMemcache = new Memcache_empty;
 ##############################################
 
 ### ENCRYPTION ###############################
@@ -76,13 +84,13 @@ $oEnc->set_salt($aConfig["encryption"]["salt"]);
 ##############################################
 
 ### FIREPHP ##################################
-if($aConfig["options"]["debug"] == true)
+if($aConfig["options"]["debug"] == true && $aConfig["software"]["firephp"] == true)
 {
 	require("FirePHPCore/FirePHP.class.php");
 	$oFirePHP = FirePHP::getInstance(true);
 }
 else
-	$oFirePHP = (object) array();
+	$oFirephp = new FirePHP_empty;
 ##############################################
 
 ### PAGE CACHED ##############################
@@ -141,10 +149,10 @@ else
 
 ### DB CONNECTION ############################
 require("MDB2.php");
-$objDB = MDB2::factory($aConfig["db"]["dsn"], $aConfig["db"]["options"]);
+$objDB = MDB2::factory($aConfig["database"]["dsn"], $aConfig["database"]["options"]);
 if (PEAR::isError($objDB))
 	die($objDB->getMessage());
-$objDB->setFetchMode($aConfig["db"]["fetch"]);
+$objDB->setFetchMode($aConfig["database"]["fetch"]);
 ##############################################
 
 ### MAIL CONNECTION ##########################

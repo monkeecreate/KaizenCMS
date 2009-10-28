@@ -17,6 +17,11 @@ $aConfig["options"]["urlcache"] = 30; //Time memcache stores patter found for ur
 $aConfig["options"]["debug"] = true;
 ###############################################
 
+### SOFTWARE ##################################
+$aConfig["software"]["memcache"] = true; // Set if you want to use/have Memcache
+$aConfig["software"]["firephp"] = true; // Set if you want to use/have FirePHP
+###############################################
+
 ### MEMCACHE ##################################
 # http://us.php.net/memcache
 $aConfig["memcache"]["server"] = "localhost";
@@ -26,15 +31,15 @@ $aCongig["memcache"]["salt"] = md5("cms"); //Encrypt data sent to memcache serve
 ### PEAR ######################################
 # PEAR MDB2
 # http://pear.php.net/MDB2/
-$aConfig["db"]["type"] = "mysql";
-$aConfig["db"]["host"] = "localhost";
-$aConfig["db"]["username"] = "cranewest";
-$aConfig["db"]["password"] = "cranewest";
-$aConfig["db"]["database"] = "cranewest_cms";
-$aConfig["db"]["fetch"] = MDB2_FETCHMODE_ASSOC;
+$aConfig["database"]["type"] = "mysql";
+$aConfig["database"]["host"] = "localhost";
+$aConfig["database"]["username"] = "";
+$aConfig["database"]["password"] = "";
+$aConfig["database"]["database"] = "";
+$aConfig["database"]["fetch"] = 2; // 1 = Ordered (0=>value,1=>value), 2 = Assoc (col=>value,col=>val), 3 = Object {col->value,col->value}
 
-$aConfig["db"]["dsn"] = $aConfig["db"]["type"]."://".$aConfig["db"]["username"].":".$aConfig["db"]["password"]."@".$aConfig["db"]["host"]."/".$aConfig["db"]["database"];
-$aConfig["db"]["options"] = array(
+$aConfig["database"]["dsn"] = $aConfig["database"]["type"]."://".$aConfig["database"]["username"].":".$aConfig["database"]["password"]."@".$aConfig["database"]["host"]."/".$aConfig["database"]["database"];
+$aConfig["database"]["options"] = array(
 	"quote_identifier" => true
 );
 
