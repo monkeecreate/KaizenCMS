@@ -5,6 +5,7 @@ $aConfig["encryption"]["salt"] = sha1("6%54d68732#@13546f54*65adsf798");
 ###############################################
 
 ### ADMIN INFO ################################
+// Info used to send when an error happens when debug is off
 $aConfig["admin_info"] = array(
 	"name" => "John Hoover",
 	"email" => "defvayne23@gmail.com"
@@ -25,6 +26,7 @@ $aConfig["software"]["firephp"] = true; // Set if you want to use/have FirePHP
 ### MEMCACHE ##################################
 # http://us.php.net/memcache
 $aConfig["memcache"]["server"] = "localhost";
+$aConfig["memcache"]["port"] = "11210";
 $aCongig["memcache"]["salt"] = md5("cms"); //Encrypt data sent to memcache server
 ###############################################
 

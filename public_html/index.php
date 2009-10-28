@@ -10,6 +10,9 @@ $site_root = dirname($site_public_root)."/";
 ##############################################
 session_start();
 
+if(!is_file("../inc_config.php"))
+	die("Please setup your inc_config.php file using inc_config_example.php.");
+
 require("../inc_config.php");
 require("../inc_urls.php");
 
@@ -62,7 +65,7 @@ function __autoload($class_name) {
 if($aConfig["software"]["memcache"] == true)
 {
 	$oMemcache = new Memcache;
-	$oMemcache->connect($aConfig["memcache"]["server"]) or die("Could not connect to memcache");
+	$oMemcache->connect($aConfig["memcache"]["server"], $aConfig["memcache"]["port"]) or die("Could not connect to memcache");
 	if($_GET["FLUSHCACHE"])
 	{
 		$oMemcache->flush();
