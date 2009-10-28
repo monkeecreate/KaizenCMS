@@ -5,6 +5,10 @@ class image extends appController
 	function resize()
 	{
 		$name = $this->_settings->site_root.substr($_GET["file"],1);
+		
+		if(!is_file($name) || empty($_GET["width"]) || empty($_GET["height"]))
+			$this->error('404');
+		
 		$filename = array_pop(explode("/",$file));
 		$new_w = $_GET["width"];
 		$new_h = $_GET["height"];
