@@ -11,7 +11,7 @@ require("../inc_config.php");
 require("../inc_urls.php");
 
 if($aConfig["options"]["pear"] == "folder")
-    ini_set("include_path", ini_get("include_path").":".$site_root.".pear");
+	ini_set("include_path", ini_get("include_path").":".$site_root.".pear");
 ##############################################
 
 ### NON-DEBUG ################################
@@ -35,6 +35,8 @@ if(substr($sURL, -1) != "/" && substr($sURL,-4,1) != "." && substr($sURL,-3,1) !
 	exit;
 }
 $aUrl = explode("/", $sURL);
+array_shift($aUrl);
+array_pop($aUrl);
 ##############################################
 
 ### AUTO CLASS CALL ##########################
@@ -45,7 +47,7 @@ function __autoload($class_name) {
 	{
 		if($class_name == "appController")
 			require($site_root."appController.php");
-    	elseif(is_file($site_root."controllers/".$class_name.".controller.php"))
+		elseif(is_file($site_root."controllers/".$class_name.".controller.php"))
 			require($site_root."controllers/".$class_name.".controller.php");
 		elseif(is_file($site_root."helpers/".$class_name.".helper.php"))
 			require($site_root."helpers/".$class_name.".helper.php");
@@ -63,7 +65,7 @@ if($_GET["FLUSHCACHE"])
 	// Wait for memcache to finish flushing
 	$time = time()+1; //one second future
 	while(time() < $time) {
-	  //sleep
+		//sleep
 	}
 }
 ##############################################
@@ -90,6 +92,9 @@ if($sPage != false)
 ##############################################
 
 ### PREPARE URL PATTERN #######################
+if($aUrl[0] == "admin")
+	$urlPatterns = $urlPatterns_admin;
+
 $sURLid = md5($aConfig["memcache"]["salt"].$sURL."_pattern");
 if(!$oMemcache->get($sURLid) || $aConfig["options"]["urlcache"] == false || $aConfig["options"]["debug"] == true)
 {
@@ -138,7 +143,7 @@ else
 require("MDB2.php");
 $objDB = MDB2::factory($aConfig["db"]["dsn"], $aConfig["db"]["options"]);
 if (PEAR::isError($objDB))
-    die($objDB->getMessage());
+	die($objDB->getMessage());
 $objDB->setFetchMode($aConfig["db"]["fetch"]);
 ##############################################
 
