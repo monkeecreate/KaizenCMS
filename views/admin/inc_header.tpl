@@ -12,7 +12,7 @@
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.accordion.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.slider.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.dialog.js"></script>
-	<script type="text/javascript" src="/scripts/common.js"></script>
+	<script type="text/javascript" src="/scripts/admin_common.js"></script>
 </head>
 <body>
 <div id="site-container">

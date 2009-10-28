@@ -1,4 +1,40 @@
 $(document).ready(function() { 
+
+	// Accordion
+	$(".accordion").accordion({
+		collapsible: true,
+		autoHeight: false,
+		header: ".header"
+	});
+
+	// Tabs
+	//$('.tabs').tabs();
+
+	// Dialog			
+	/*$('#dialog').dialog({
+		autoOpen: false,
+		width: 600,
+		bgiframe: false,
+		modal: false,
+		buttons: {
+			"Ok": function() { 
+				$(this).dialog("close"); 
+			}, 
+			"Cancel": function() { 
+				$(this).dialog("close"); 
+			} 
+		}
+	});*/
+	
+	// Datepicker
+	$('.datepicker').datepicker({
+	});
+	
+	//Sortable
+	// $(".column").sortable({
+	// 		connectWith: '.column'
+	// 	});
+	
 	// Button
 	$(".btn").hover(
 		function(){
@@ -24,4 +60,11 @@ $(document).ready(function() {
 			.addClass("ui-widget-header ui-corner-all")
 			.end()
 		.find(".portlet-content");
+
+	$(".column").disableSelection();
 });
+
+
+/* Set equal heights for sidebar and main content box */
+
+// $(function(){ $('#page-wrapper').equalHeights(); });
