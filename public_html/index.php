@@ -90,7 +90,7 @@ if($aConfig["options"]["debug"] == true && $aConfig["software"]["firephp"] == tr
 	$oFirePHP = FirePHP::getInstance(true);
 }
 else
-	$oFirephp = new FirePHP_empty;
+	$oFirePHP = new FirePHP_empty;
 ##############################################
 
 ### PAGE CACHED ##############################
