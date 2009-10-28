@@ -25,21 +25,22 @@ class content extends appController
 				$this->_smarty->display("content/".$sPage.".tpl");
 			else
 			{
-				$rContent = $this->_db->query("SELECT * FROM `content`"
-					." WHERE `tag` = ".$this->_db->quote($sPage, "text")
-					." AND `active` = 1"
-					." LIMIT 1"
+				$aContent = $this->db_results(
+					"SELECT * FROM `content`"
+						." WHERE `tag` = ".$this->_db->quote($sPage, "text")
+						." LIMIT 1"
+					,"content->view"
+					,"row"
 				);
-			
-				if(PEAR::isError($rContent))
-					$this->send_error("content->view->tag", "dberror", $rContent);
-			
-				$aContent = $rContent->fetchRow();
 			
 				if(!empty($aContent))
 				{
 					$this->_smarty->assign("aContent", $aContent);
-					$this->_smarty->display("content.tpl");
+					
+					if(empty($aContent["template"]))
+						$this->_smarty->display("content.tpl");
+					else
+						$this->_smarty->display($aContent["template"]);
 				}
 				else
 					$this->error("404");
