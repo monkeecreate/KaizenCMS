@@ -59,7 +59,7 @@ class appController
 		
 		phpinfo();
 	}
-	protected function db_results($sSQL, $section, $return)
+	protected function db_results($sSQL, $section, $return = null)
 	{
 		$oResult = $this->_db->query($sSQL);
 		

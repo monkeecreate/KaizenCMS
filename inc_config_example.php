@@ -81,7 +81,7 @@ $aConfig["smarty"]["dir"]["tpl"] = $site_root."views";
 $aConfig["smarty"]["dir"]["tplc"] = $site_root.".compiled";
 $aConfig["smarty"]["dir"]["cache"] = $site_root.".cache";
 $aConfig["smarty"]["dir"]["plugins"] = array(
-	$site_root."app/components"
+	$site_root."components"
 );
 
 /* Caching */
@@ -91,7 +91,7 @@ $aConfig["smarty"]["cache"]["lifetime"] = 30;// -1 = never expire, 0 = always re
 /* Filters */
 $aConfig["smarty"]["filters"] = Array(
 	//[0] = Type (pre,post,output), [1] = name of filter
-	//Array("output", "move_to_head")
+	array("output", "move_to_head")
 );
 
 /* Settings */
