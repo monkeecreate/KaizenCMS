@@ -1,5 +1,5 @@
 {include file="inc_header.tpl" page_title="Content Pages" menu="content"}
-<table>
+<table class="tableData">
 	<thead>
 		<tr>
 			<th>Title</th>

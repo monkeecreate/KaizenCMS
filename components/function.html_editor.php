@@ -1,87 +1,41 @@
 <?php
-function smarty_function_html_editor($params, &$smarty)
+function smarty_function_html_editor($aParams, &$smarty)
 {
-	$content = $params["content"];
-	
 	if(empty($params["width"]))
-		$width = "645";
+		$width = "90%";
 	else
-		$width = $params["width"];
+		$width = $aParams["width"];
 		
 	if(empty($params["height"]))
-		$height = "450";
+		$height = "300";
 	else
-		$height = $params["height"];
+		$height = $aParams["height"];
 	
-	$content = str_replace("SCRIPT", "SCR'+'IPT", 
-		str_replace("script", "scr'+'ipt", 
-			str_replace("\t", "\\t", 
-				str_replace("\n", "\\n", 
-					str_replace("\r", "\\r", 
-						str_replace("'", "\'", 
-							str_replace("</", "<\/", stripslashes($content)
-							)
-						)
-					)
-				)
-			)
-		)
-	);
+	$content = stripslashes($aParams["content"]);
 	
-	switch($params["toolbar"])
-	{
-		case "min":
-			$toolbar = "{toolbar1: 'undo redo fontsize bold italic underline forecolor table insertmedia createlink insertorderedlist insertunorderedlist viewsource save'}";
-			break;
-		case "COPACT":
-			$toolbar = "{toolbar: '-COMPACT-'}";
-			break;
-		case "COMPACT2":
-			$toolbar = "{toolbar: '-COMPACT2-'}";
-			break;
-		case "MINIMAL":
-			$toolbar = "{toolbar: '-MINIMAL-'}";
-			break;
-		case "FULL":
-			$toolbar = "{toolbar: '-FULL-'}";
-			break;
-		case "ALL":
-			$toolbar = "{toolbar: '-ALL-'}";
-			break;
-		default:
-			$toolbar = "{toolbar: '-DEFAULT-'}";
-	}
-	
-	if(empty($params["type"]))
-		$skin = "classic";
-	else
-		$skin = $params["type"];
-	
-	$return = "<script type=\"text/javascript\">WebEditorSkin(".$skin.");</script>\n";
-	$return .= "<table style=\"border: 2px solid rgb(210, 210, 210); width: ".$width."px;\" cellpadding=\"0\" cellspacing=\"0\">\n";
-	$return .= "\t<tbody>\n";
-	$return .= "\t\t<tr>\n";
-	$return .= "\t\t\t<td class=\"webeditor_toolbar\">\n";
-	$return .= "\t\t\t\t<script type=\"text/javascript\">WebEditorToolbar(".$toolbar.");</script>\n";
-	$return .= "\t\t\t</td>\n";
-	$return .= "\t\t</tr>\n";
-	$return .= "\t\t<tr>\n";
-	$return .= "\t\t\t<td id=\"inner\" style=\"height: ".$height."px;\">\n";
-	$return .= "\t\t\t\t<script type=\"text/javascript\">\n";
-	$return .= "\t\t\t\t\t<!--\n";
-	$return .= "\t\t\t\t\tcontent = '".$content."';\n";
-	$return .= "\t\t\t\t\tWebEditor('content', content, {stylesheet: '/css/editor.css', manager: 'manager', format: 'xhtml', language: 'php', baseHref: '/', rootpath: '/editor/'});\n";
-	$return .= "\t\t\t\t\t-->\n";
-	$return .= "\t\t\t\t</script>\n";
-	$return .= "\t\t\t</td>\n";
-	$return .= "\t\t</tr>\n";
-	$return .= "\t\t<tr>\n";
-	$return .= "\t\t\t<td style=\"width: 100%;\">\n";
-	$return .= "\t\t\t\t<script type=\"text/javascript\">WebEditorDOMInspector();</script>\n";
-	$return .= "\t\t\t</td>\n";
-	$return .= "\t\t</tr>\n";
-	$return .= "\t</tbody>\n";
-	$return .= "</table>\n";
+	$return = "<script type='text/javascript' src='/scripts/tiny_mce/tiny_mce.js'></script>\n";
+	$return .= "<script type='text/javascript' src='/scripts/tiny_mce/plugins/tinybrowser/tb_tinymce.js.php'></script>\n";
+	$return .= "<script type='text/javascript'>\n";
+	$return .= "tinyMCE.init({\n";
+	$return .= "\tmode : 'textareas',\n";
+	$return .= "\ttheme : 'advanced',\n";
+	//$return .= "\tskin : 'o2k7',\n";
+	$return .= "\tplugins : 'advimage,advlink,paste,table,preview,fullscreen',\n";
+	$return .= "\teditor_selector : 'wysiwyg',\n";
+	$return .= "\trelative_urls: false,\n";
+	$return .= "\twidth: '".$width."',\n";
+	$return .= "\theight: '".$height."',\n";
+	$return .= "\tcontent_css: '/css/editor.css',\n";
+	$return .= "\ttheme_advanced_buttons1 : 'pastetext,pasteword,|,undo,redo,|,fontsizeselect,forecolor,|,bold,italic,underline,strikethrough,|,numlist,bullist,|,code,fullscreen',\n";
+	$return .= "\ttheme_advanced_buttons2 : 'image,link,unlink,|,justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,sub,sup,|,charmap',\n";
+	$return .= "\ttheme_advanced_buttons3 : '',\n";
+	$return .= "\ttheme_advanced_toolbar_location : 'top',\n";
+	$return .= "\ttheme_advanced_toolbar_align : 'left',\n";
+	$return .= "\ttheme_advanced_statusbar_location : 'bottom',\n";
+	$return .= "\ttheme_advanced_resizing : true\n";
+	$return .= "});\n";
+	$return .= "</script>\n";
+	$return .= "<textarea name='".$aParams["name"]."' class='wysiwyg'>".$content."</textarea><br>";
 	
 	return $return;
 }
