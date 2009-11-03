@@ -8,20 +8,20 @@
 		</tr>
 	</thead>
 	<tbody>
-		{foreach from=$pages item=page}
+		{foreach from=$aPages item=aPage}
 			<tr>
-				<td>{$page.title}</td>
+				<td>{$aPage.title}</td>
 				<td>
-					{if $page.module == 0}
-						<a href="http://{$domain}/{$page.tag}/" target="new">http://{$domain}/{$page.tag}/</a>
+					{if $aPage.module == 0}
+						<a href="http://{$domain}/{$aPage.tag}/" target="new">http://{$domain}/{$aPage.tag}/</a>
 					{/if}
 				</td>
 				<td class="small center">
-					<a href="/admin/content/edit/{$page.id}/">
+					<a href="/admin/content/edit/{$aPage.id}/">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
-					{if $page.perm != 1}
-						<a href="/admin/content/delete/{$page.id}/"
+					{if $aPage.perm != 1}
+						<a href="/admin/content/delete/{$aPage.id}/"
 						 onclick="return alert('Are you sure you would like to delete this page?');">
 							<img src="/images/admin/icons/bin_closed.png">
 						</a>

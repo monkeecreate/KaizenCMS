@@ -14,13 +14,13 @@ class admin_content extends adminController
 			,"all"
 		);
 		
-		$this->_smarty->assign("pages", $aPages);
+		$this->_smarty->assign("aPages", $aPages);
 		$this->_smarty->assign("domain", $_SERVER["SERVER_NAME"]);
 		$this->_smarty->display("content/index.tpl");
 	}
 	function add()
 	{
-		$this->_smarty->assign("page", $_SESSION["admin"]["admin_content"]);
+		$this->_smarty->assign("aPage", $_SESSION["admin"]["admin_content"]);
 		$this->_smarty->display("content/add.tpl");
 	}
 	function add_s()
@@ -35,12 +35,10 @@ class admin_content extends adminController
 		
 		$aRes = $this->db_results(
 			"INSERT INTO `content`"
-				." (`tag`, `header_title`, `header_text`, `title`, `content`)"
+				." (`tag`, `title`, `content`)"
 				." VALUES"
 				." ("
 					.$this->_db->quote($sTag, "text")
-					.", ".$this->_db->quote($_POST["header_title"], "text")
-					.", ".$this->_db->quote($_POST["header_text"], "text")
 					.", ".$this->_db->quote($_POST["title"], "text")
 					.", ".$this->_db->quote($_POST["content"], "text")
 				.")"
@@ -54,7 +52,7 @@ class admin_content extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_content"]))
-			$this->_smarty->assign("page", $_SESSION["admin"]["admin_content"]);
+			$this->_smarty->assign("aPage", $_SESSION["admin"]["admin_content"]);
 		else
 		{
 			$aPage = $this->db_results(
@@ -64,111 +62,26 @@ class admin_content extends adminController
 				,"row"
 			);
 		
-			$this->_smarty->assign("page", $aPage);
+			$this->_smarty->assign("aPage", $aPage);
 		}
 		
 		$this->_smarty->display("content/edit.tpl");
 	}
-	function edit_image_upload()
-	{
-		$aReturn = (object)array(
-			"file" => null,
-			"error" => null
-		);
-		
-		if($_FILES["image"]["error"] == 1)
-			$aReturn->error = "Image size too large!";
-		else
-		{
-			$upload_dir = $this->_settings->root_public."upload/content/";
-			$file_ext = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-			$upload_file = $_POST["id"].".".strtolower($file_ext);
-			$aReturn->file = $upload_file;
-			
-			$sFile = $this->db_results(
-				"SELECT `image` FROM `content`"
-					." WHERE `id` = ".$this->_db->quote($_POST["id"], "integer")
-				,"admin->content->edit_image_upload->remove image"
-				,"one"
-			);
-			@unlink($upload_dir.$sFile);
-			
-			if(move_uploaded_file($_FILES["image"]["tmp_name"], $upload_dir.$upload_file))
-			{
-				$this->db_results(
-					"UPDATE `content` SET"
-						." `image` = ".$this->_db->quote($upload_file, "text")
-						." WHERE `id` = ".$this->_db->quote($_POST["id"], "integer")
-					,"admin->content->edit_image_upload"
-				);
-			}
-			else
-				$aReturn->error = "Failed to upload file!";
-		}
-		
-		header("Content-type: text/html");
-		echo json_encode($aReturn);
-	}
-	function edit_delete_image()
-	{
-		$aReturn = (object)array("error" => null);
-		
-		$upload_dir = $this->_settings->root_public."upload/content/";
-		
-		$sFile = $this->db_results(
-			"SELECT `image` FROM `content`"
-				." WHERE `id` = ".$this->_db->quote($_POST["id"], "integer")
-			,"admin->content->edit_delete_image->remove image"
-			,"one"
-		);
-		@unlink($upload_dir.$sFile);
-		
-		$this->db_results(
-			"UPDATE `content` SET"
-				." `image` = ''"
-				." WHERE `id` = ".$this->_db->quote($_POST["id"], "integer")
-			,"admin->content->edit_delete_image->update page"
-		);
-		
-		header("Content-type: text/html");
-		echo json_encode($aReturn);
-	}
 	function edit_s()
 	{
-		$aPage = $this->db_results(
-			"SELECT * FROM `content`"
+		if(empty($_POST["header_title"]) || empty($_POST["title"]))
+		{
+			$_SESSION["admin"]["admin_content"] = $_POST;
+			$this->forward("/admin/content/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		$aRes = $this->db_results(
+			"UPDATE `content` SET"
+				." `title` = ".$this->_db->quote($_POST["title"], "text")
+				.", `content` = ".$this->_db->quote($_POST["content"], "text")
 				." WHERE `id` = ".$this->_db->quote($_POST["id"], "integer")
 			,"admin->content->edit"
-			,"row"
 		);
-		
-		if($aPage["module"] == 1)
-		{
-			$aRes = $this->db_results(
-				"UPDATE `content` SET"
-					." `content` = ".$this->_db->quote($_POST["content"], "text")
-					." WHERE `id` = ".$this->_db->quote($_POST["id"], "integer")
-				,"admin->content->edit"
-			);
-		}
-		else
-		{
-			if(empty($_POST["header_title"]) || empty($_POST["title"]))
-			{
-				$_SESSION["admin"]["admin_content"] = $_POST;
-				$this->forward("/admin/content/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
-			}
-		
-			$aRes = $this->db_results(
-				"UPDATE `content` SET"
-					." `header_title` = ".$this->_db->quote($_POST["header_title"], "text")
-					.", `header_text` = ".$this->_db->quote(substr($_POST["header_text"],0 ,371), "text")
-					.", `title` = ".$this->_db->quote($_POST["title"], "text")
-					.", `content` = ".$this->_db->quote($_POST["content"], "text")
-					." WHERE `id` = ".$this->_db->quote($_POST["id"], "integer")
-				,"admin->content->edit"
-			);
-		}
 		
 		$_SESSION["admin"]["admin_content"] = null;
 		

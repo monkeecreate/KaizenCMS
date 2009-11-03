@@ -18,14 +18,10 @@
 	</script>
 {/head}
 <form method="post" action="/admin/content/add/s/">
-	<label>*Header Title:</label>
-	<input type="text" name="header_title" maxlength="15" value="{$page.header_title|stripslashes}"><br>
-	<label>Header Text:</label>
-	<textarea name="header_text" cols="45" rows="5">{$page.header_text|stripslashes}</textarea><br>
 	<label>*Page Title:</label>
-	<input type="text" name="title" maxlength="100" value="{$page.title|stripslashes}"><br>
+	<input type="text" name="title" maxlength="100" value="{$aPage.title|stripslashes}"><br>
 	<label>Content:</label>
-	<textarea name="content" class="wysiwyg">{$page.content|stripslashes}</textarea><br>
+	<textarea name="content" class="wysiwyg">{$aPage.content|stripslashes}</textarea><br>
 	<input type="submit" value="Add Page"> <input type="button" value="Cancel" onclick="location.href = '/admin/content/';">
 </form>
 {include file="inc_footer.tpl"}
