@@ -8,6 +8,12 @@ class adminController extends appController
 		$this->_smarty->template_dir = $this->_smarty->template_dir."/admin";
 		$this->_smarty->compile_dir = $this->_smarty->compile_dir."/admin";
 		
+		if(!is_dir($this->_smarty->compile_dir))
+		{
+			if(!mkdir($this->_smarty->compile_dir, 0777))
+				die("Please create `".$this->_smarty->compile_dir."`. Unable to create automatically.");
+		}
+		
 		if(!empty($_GET["error"]))
 			$this->_smarty->assign("page_error", htmlentities(urldecode($_GET["error"])));
 			

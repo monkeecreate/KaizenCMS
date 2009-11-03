@@ -169,6 +169,12 @@ $oSmarty = new Smarty();
 $oSmarty->template_dir = $aConfig["smarty"]["dir"]["tpl"];
 $oSmarty->compile_dir = $aConfig["smarty"]["dir"]["tplc"];
 
+if(!is_dir($oSmarty->compile_dir))
+{
+	if(!mkdir($oSmarty->compile_dir, 0777))
+		die("Please create `".$oSmarty->compile_dir."`. Unable to create automatically.");
+}
+
 /* Plugins */
 foreach($aConfig["smarty"]["dir"]["plugins"] as $plugin)
 	$oSmarty->plugins_dir[] = $plugin;
@@ -176,6 +182,15 @@ foreach($aConfig["smarty"]["dir"]["plugins"] as $plugin)
 /* Caching */
 $oSmarty->cache_dir = $aConfig["smarty"]["dir"]["cache"];
 $oSmarty->caching = $aConfig["smarty"]["cache"]["type"];
+
+if($oSmarty->caching != false)
+{
+	if(!is_dir($oSmarty->cache_dir))
+	{
+		if(!mkdir($oSmarty->cache_dir, 0777))
+			die("Please create `".$oSmarty->cache_dir."`. Unable to create automatically.");
+	}
+}
 
 /* Filters */
 foreach($aConfig["smarty"]["filters"] as $filter)
