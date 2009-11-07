@@ -20,21 +20,85 @@ $urlPatterns = array(
 		"cmd" => "content",
 		"action" => "siteinfo"
 	),
-	"/listings/search/" => array(
-		"cmd" => "listings",
-		"action" => "search"
+	"/contact/" => array(
+		"cmd" => "content",
+		"action" => "contact"
 	),
-	"/listings/profile/{id:[0-9]+}/" => array(
-		"cmd" => "listings",
-		"action" => "profile"
+	"/sendform/" => array(
+		"cmd" => "content",
+		"action" => "form_submit"
 	),
-	"/image/profile/{id:[0-9]+}/" => array(
+	"/image/resize/" => array(
 		"cmd" => "image",
-		"action" => "profile"
+		"action" => "resize"
 	),
-	"/{page:[a-z0-9]+}/" => array(
+	"/{page:[a-z0-9_-]+}/" => array(
 		"cmd" => "content",
 		"action" => "view"
 	)
+);
+
+
+$urlPatterns_admin = array(
+	"/admin/" => array(
+        "cmd" => "adminController",
+        "action" => "index"
+    ),
+	"/admin/login/" => array(
+        "cmd" => "adminController",
+        "action" => "login"
+    ),
+	"/admin/logout/" => array(
+        "cmd" => "adminController",
+        "action" => "logout"
+    ),
+	"/admin/users/" => array(
+        "cmd" => "admin_users",
+        "action" => "index"
+    ),
+	"/admin/users/add/" => array(
+        "cmd" => "admin_users",
+        "action" => "add"
+    ),
+	"/admin/users/add/s/" => array(
+        "cmd" => "admin_users",
+        "action" => "add_s"
+    ),
+	"/admin/users/edit/{id:[0-9]+}/" => array(
+        "cmd" => "admin_users",
+        "action" => "edit"
+    ),
+	"/admin/users/edit/s/" => array(
+        "cmd" => "admin_users",
+        "action" => "edit_s"
+    ),
+	"/admin/users/delete/{id:[0-9]+}/" => array(
+        "cmd" => "admin_users",
+        "action" => "delete"
+    ),
+	"/admin/content/" => array(
+        "cmd" => "admin_content",
+        "action" => "index"
+    ),
+	"/admin/content/add/" => array(
+        "cmd" => "admin_content",
+        "action" => "add"
+    ),
+	"/admin/content/add/s/" => array(
+        "cmd" => "admin_content",
+        "action" => "add_s"
+    ),
+	"/admin/content/edit/{id:[0-9]+}/" => array(
+        "cmd" => "admin_content",
+        "action" => "edit"
+    ),
+	"/admin/content/edit/s/" => array(
+        "cmd" => "admin_content",
+        "action" => "edit_s"
+    ),
+	"/admin/content/delete/{id:[0-9]+}/" => array(
+        "cmd" => "admin_content",
+        "action" => "delete"
+    )
 );
 ###############################################

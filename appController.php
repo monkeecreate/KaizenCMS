@@ -59,33 +59,40 @@ class appController
 		
 		phpinfo();
 	}
-	protected function db_results($sSQL, $section, $return)
+	protected function db_results($sSQL, $section, $return = null)
 	{
-		$oResults = $this->_db->query($sSQL);
+		$oResult = $this->_db->query($sSQL);
 		
-		if(PEAR::isError($oResults))
-			$this->send_error($section, "dberror", $oResults);
+		if(PEAR::isError($oResult))
+			$this->send_error($section, "dberror", $oResult);
 			
 		switch($return)
 		{
 			case "all":
-				return $oResults->fetchAll();
+				$aReturn = $oResult->fetchAll();
 				break;
 			case "row":
-				return $oResults->fetchRow();
+				$aReturn = $oResult->fetchRow();
 				break;
 			case "one":
-				return $oResults->fetchOne();
+				$aReturn = $oResult->fetchOne();
 				break;
 			case "col":
-				return $oResults->fetchCol();
+				$aReturn = $oResult->fetchCol();
 				break;
 			case "rows":
-				return $oResults->numRows();
+				$aReturn = $oResult->numRows();
+				break;
+			case "insert":
+				$aReturn = $this->_db->lastInsertID();
 				break;
 			default:
-				return true;
+				$aReturn = true;
 		}
+		
+		$oResult->free();
+		
+		return $aReturn;
 	}
 	protected function template_exists($template_file)
 	{
@@ -127,15 +134,15 @@ class appController
 		{
 			case "403":
 				header('HTTP/1.1 403 Forbidden');
-				$this->_smarty->display("403.tpl");
+				$this->_smarty->display("error/403.tpl");
 				break;
 			case "404":
 				header("HTTP/1.1 404 Not Found");
-				$this->_smarty->display("404.tpl");
+				$this->_smarty->display("error/404.tpl");
 				break;
 			case "500":
 				header("HTTP/1.1 500 Internal Server Error");
-				$this->_smarty->display("500.tpl");
+				$this->_smarty->display("error/500.tpl");
 				break;
 		}
 		exit;
@@ -156,6 +163,7 @@ class appController
 			$body .= $aMessage[1]."\n";
 			$body .= "Query: ".$this->_db->last_query."\n";
 			$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
+			$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
 			$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
 			$body .= "Time: ".time()."\n";
 			
@@ -164,6 +172,7 @@ class appController
 		{
 			$body .= "Error: ".$error."\n";
 			$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
+			$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
 			$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
 			$body .= "Time: ".time()."\n";
 		}

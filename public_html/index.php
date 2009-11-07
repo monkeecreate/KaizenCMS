@@ -1,4 +1,7 @@
 <?php
+ini_set("display_errors", 1);
+error_reporting(E_ALL ^ E_NOTICE);
+
 ### AUTO CONFIG ##############################
 $site_public_root = dirname(__FILE__)."/";
 $site_root = dirname($site_public_root)."/";
@@ -7,11 +10,14 @@ $site_root = dirname($site_public_root)."/";
 ##############################################
 session_start();
 
+if(!is_file("../inc_config.php"))
+	die("Please setup your inc_config.php file using inc_config_example.php.");
+
 require("../inc_config.php");
 require("../inc_urls.php");
 
-if($options_pear == "folder")
-    ini_set("include_path", ini_get("include_path").":".$site_root.".pear");
+if($aConfig["options"]["pear"] == "folder")
+	ini_set("include_path", ini_get("include_path").":".$site_root.".pear");
 ##############################################
 
 ### NON-DEBUG ################################
@@ -27,11 +33,16 @@ if($aConfig["options"]["debug"] == false)
 $sURL = array_shift(explode("?", $_SERVER["REQUEST_URI"]));
 if(substr($sURL, -1) != "/" && substr($sURL,-4,1) != "." && substr($sURL,-3,1) != ".")
 {
+	if(!empty($_SERVER["QUERY_STRING"]))
+		$sQueryString .= "?".$_SERVER["QUERY_STRING"];
+	
 	header("HTTP/1.1 301 Moved Permanently");
-	header("Location: ".$sURL."/");
+	header("Location: ".$sURL."/".$sQueryString);
 	exit;
 }
 $aUrl = explode("/", $sURL);
+array_shift($aUrl);
+array_pop($aUrl);
 ##############################################
 
 ### AUTO CLASS CALL ##########################
@@ -42,7 +53,7 @@ function __autoload($class_name) {
 	{
 		if($class_name == "appController")
 			require($site_root."appController.php");
-    	elseif(is_file($site_root."controllers/".$class_name.".controller.php"))
+		elseif(is_file($site_root."controllers/".$class_name.".controller.php"))
 			require($site_root."controllers/".$class_name.".controller.php");
 		elseif(is_file($site_root."helpers/".$class_name.".helper.php"))
 			require($site_root."helpers/".$class_name.".helper.php");
@@ -53,16 +64,23 @@ function __autoload($class_name) {
 ##############################################
 
 ### MEMCACHE #################################
-$oMemcache = new Memcache;
-$oMemcache->connect($aConfig["memcache"]["server"]) or die("Could not connect to memcache");
-if($_GET["FLUSHCACHE"])
+if($aConfig["software"]["memcache"] == true)
 {
-	$oMemcache->flush();
-	$time = time()+1; //one second future
-	while(time() < $time) {
-	  //sleep
+	$oMemcache = new Memcache;
+	$oMemcache->connect($aConfig["memcache"]["server"], $aConfig["memcache"]["port"]) or die("Could not connect to memcache");
+	if($_GET["FLUSHCACHE"])
+	{
+		$oMemcache->flush();
+		
+		// Wait for memcache to finish flushing
+		$time = time()+1; //one second future
+		while(time() < $time) {
+			//sleep
+		}
 	}
 }
+else
+	$oMemcache = new Memcache_empty;
 ##############################################
 
 ### ENCRYPTION ###############################
@@ -71,13 +89,13 @@ $oEnc->set_salt($aConfig["encryption"]["salt"]);
 ##############################################
 
 ### FIREPHP ##################################
-if($aConfig["options"]["debug"] == true)
+if($aConfig["options"]["debug"] == true && $aConfig["software"]["firephp"] == true)
 {
 	require("FirePHPCore/FirePHP.class.php");
 	$oFirePHP = FirePHP::getInstance(true);
 }
 else
-	$oFirePHP = (object) array();
+	$oFirePHP = new FirePHP_empty;
 ##############################################
 
 ### PAGE CACHED ##############################
@@ -87,6 +105,9 @@ if($sPage != false)
 ##############################################
 
 ### PREPARE URL PATTERN #######################
+if($aUrl[0] == "admin")
+	$urlPatterns = $urlPatterns_admin;
+
 $sURLid = md5($aConfig["memcache"]["salt"].$sURL."_pattern");
 if(!$oMemcache->get($sURLid) || $aConfig["options"]["urlcache"] == false || $aConfig["options"]["debug"] == true)
 {
@@ -133,10 +154,10 @@ else
 
 ### DB CONNECTION ############################
 require("MDB2.php");
-$objDB = MDB2::factory($aConfig["db"]["dsn"], $aConfig["db"]["options"]);
+$objDB = MDB2::factory($aConfig["database"]["dsn"], $aConfig["database"]["options"]);
 if (PEAR::isError($objDB))
-    die($objDB->getMessage());
-$objDB->setFetchMode($aConfig["db"]["fetch"]);
+	die($objDB->getMessage());
+$objDB->setFetchMode($aConfig["database"]["fetch"]);
 ##############################################
 
 ### MAIL CONNECTION ##########################
@@ -150,6 +171,12 @@ $oSmarty = new Smarty();
 $oSmarty->template_dir = $aConfig["smarty"]["dir"]["tpl"];
 $oSmarty->compile_dir = $aConfig["smarty"]["dir"]["tplc"];
 
+if(!is_dir($oSmarty->compile_dir))
+{
+	if(!mkdir($oSmarty->compile_dir, 0777))
+		die("Please create `".$oSmarty->compile_dir."`. Unable to create automatically.");
+}
+
 /* Plugins */
 foreach($aConfig["smarty"]["dir"]["plugins"] as $plugin)
 	$oSmarty->plugins_dir[] = $plugin;
@@ -157,6 +184,15 @@ foreach($aConfig["smarty"]["dir"]["plugins"] as $plugin)
 /* Caching */
 $oSmarty->cache_dir = $aConfig["smarty"]["dir"]["cache"];
 $oSmarty->caching = $aConfig["smarty"]["cache"]["type"];
+
+if($oSmarty->caching != false)
+{
+	if(!is_dir($oSmarty->cache_dir))
+	{
+		if(!mkdir($oSmarty->cache_dir, 0777))
+			die("Please create `".$oSmarty->cache_dir."`. Unable to create automatically.");
+	}
+}
 
 /* Filters */
 foreach($aConfig["smarty"]["filters"] as $filter)
