@@ -46,6 +46,8 @@ function __autoload($class_name) {
 			require($site_root."controllers/".$class_name.".controller.php");
 		elseif(is_file($site_root."helpers/".$class_name.".helper.php"))
 			require($site_root."helpers/".$class_name.".helper.php");
+		else
+			die("Unable to load class.");
 	}
 }
 ##############################################
