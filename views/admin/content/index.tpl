@@ -1,5 +1,17 @@
 {include file="inc_header.tpl" page_title="Content Pages" menu="content"}
-<table class="tableData">
+{head}
+<script language="JavaScript" type="text/javascript" src="/scripts/jquery/jTPS/jTPS.js"></script>
+<link rel="stylesheet" type="text/css" href="/scripts/jquery/jTPS/jTPS.css">
+<script type="text/javascript">
+	$(function(){ldelim}
+		$('.dataTable').jTPS({ldelim}
+			perPages:[10,15,20],
+			scrollStep: 1
+		{rdelim});
+	{rdelim});
+</script>
+{/head}
+<table class="dataTable">
 	<thead>
 		<tr>
 			<th>Title</th>
@@ -30,5 +42,15 @@
 			</tr>
 		{/foreach}
 	</tbody>
+	<tfoot class="nav">
+		<tr>
+			<td colspan="3">
+				<div class="pagination"></div>
+				<div class="paginationTitle">Page</div>
+				<div class="selectPerPage"></div>
+				<div class="status"></div>
+			</td>
+		</tr>
+	</tfoot>
 </table>
 {include file="inc_footer.tpl"}

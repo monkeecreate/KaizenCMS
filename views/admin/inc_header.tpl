@@ -2,9 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>{if !empty($page_title)}{$page_title} - {/if}Las Palapas</title>
+	<title>{if !empty($page_title)}{$page_title} - {/if}Site Admin</title>
 	<link rel="stylesheet" href="/css/admin/generic.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="/css/admin/style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
 	<link type="text/css" href="/scripts/jquery-ui/themes/crane-west/crane-west.css" rel="stylesheet" />
 	<script type="text/javascript" src="/scripts/jquery/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.core.js"></script>
@@ -44,6 +45,86 @@
 							<li><a href="/admin/content/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Pages</a></li>
 						</ul>
 					</div>
+					<div class="header"><a href="#" tabindex="-1">News Articles</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/news/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add News Article</a></li>
+							<li><a href="/admin/news/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage News Articles</a></li>
+							<li><a href="/admin/news/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/news/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
+						</ul>
+					</div>
+					<div class="header"><a href="#" tabindex="-1">Events</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/events/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Event</a></li>
+							<li><a href="/admin/events/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Events</a></li>
+							<li><a href="/admin/events/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/events/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
+						</ul>
+					</div>
+					<div class="header"><a href="#" tabindex="-1">Calendar</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/calendar/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Calendar Event</a></li>
+							<li><a href="/admin/calendar/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Calendar Events</a></li>
+							<li><a href="/admin/calendar/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/calendar/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
+						</ul>
+					</div>
+					
+					<div class="header"><a href="#" tabindex="-1">FAQ</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/faq/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Question & Answer</a></li>
+							<li><a href="/admin/faq/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Question</a></li>
+							<li><a href="/admin/faq/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/faq/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
+						</ul>
+					</div>
+					<div class="header"><a href="#" tabindex="-1">Links</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/links/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Link</a></li>
+							<li><a href="/admin/links/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Links</a></li>
+							<li><a href="/admin/links/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/links/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
+						</ul>
+					</div>
+					<div class="header"><a href="#" tabindex="-1">Documents</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/documents/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Document</a></li>
+							<li><a href="/admin/documents/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Documents</a></li>
+							<li><a href="/admin/documents/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/documents/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
+						</ul>
+					</div>
+					<div class="header"><a href="#" tabindex="-1">Testimonials</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/testimonials/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Testimonial</a></li>
+							<li><a href="/admin/testimonials/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Testimonials</a></li>
+							<li><a href="/admin/testimonials/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/testimonials/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
+						</ul>
+					</div>
+					<div class="header"><a href="#" tabindex="-1">Photo Galleries</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/galleries/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Gallery</a></li>
+							<li><a href="/admin/galleries/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Galleries</a></li>
+							<li><a href="/admin/galleries/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/galleries/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
+						</ul>
+					</div>
+					<div class="header"><a href="#" tabindex="-1">Promos</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/promos/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Promo</a></li>
+							<li><a href="/admin/promos/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Promos</a></li>
+						</ul>
+					</div>
 				</div>
 				<script type="text/javascript">
 				$(function(){ldelim}
@@ -56,12 +137,32 @@
 							0
 						{elseif $menu == 'content'}
 							1
+						{elseif $menu == 'news'}
+							2
+						{elseif $menu == 'events'}
+							3
+						{elseif $menu == 'calendar'}
+							4
+						{elseif $menu == 'faq'}
+							5
+						{elseif $menu == 'links'}
+							6
+						{elseif $menu == 'documents'}
+							7
+						{elseif $menu == 'testimonials'}
+							8
+						{elseif $menu == 'galleries'}
+							9
+						{elseif $menu == 'promos'}
+							10
 						{else}
 							0
 						{/if}
 					{rdelim});
 				{rdelim});
 				</script>
+			{else}
+				&nbsp;
 			{/if}
 		</div>
 		<div id="body-container">
@@ -77,6 +178,6 @@
 					{$page_notice}
 				</div>
 			{/if}
-			<div id="content" class="portlet"{if $page_login == 1} style="width:400px;"{/if}>
+			<div id="content" class="portlet"{if $page_login == 1} style="width:440px;"{/if}>
 				<div class="portlet-header">{$page_title}</div>
 				<div class="body-content portlet-content">

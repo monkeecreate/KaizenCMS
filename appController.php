@@ -1,13 +1,13 @@
 <?php
 class appController
 {
-	protected $_db;
-	protected $_memcache;
-	protected $_mail;
-	protected $_smarty;
-	protected $_firephp;
-	protected $_settings;
-	protected $_enc;
+	private $_db;
+	private $_memcache;
+	private $_mail;
+	private $_smarty;
+	private $_firephp;
+	public $_settings;
+	public $_enc;
 	
 	function appController()
 	{
@@ -31,7 +31,7 @@ class appController
 	}
 	
 	### Functions ####################
-	protected function forward($url, $type = "")
+	function forward($url, $type = "")
 	{
 		switch($type)
 		{
@@ -49,7 +49,7 @@ class appController
 		header("Location: ".$url);
 		exit;
 	}
-	protected function site_info()
+	function site_info()
 	{
 		echo "<pre>";
 		print_r($this->_settings);
@@ -59,7 +59,10 @@ class appController
 		
 		phpinfo();
 	}
-	protected function db_results($sSQL, $section, $return = null)
+	##################################
+	
+	### Database #####################
+	function db_results($sSQL, $section, $return = null)
 	{
 		$oResult = $this->_db->query($sSQL);
 		
@@ -94,25 +97,58 @@ class appController
 		
 		return $aReturn;
 	}
-	protected function template_exists($template_file)
+	function db_quote($sValue, $sType)
+	{
+		return $this->_db->quote($sValue, $sType);
+	}
+	##################################
+	
+	### Template #####################
+	function template_exists($template_file)
 	{
 		$template_file = $this->_smarty->template_dir."/".$template_file;
 
 		return is_file($template_file);
 	}
-	protected function mail($recipients, $headers, $message)
+	function tpl_assign($sVariable, $sValue)
+	{
+		$this->_smarty->assign($sVariable, $sValue);
+	}
+	function tpl_display($sTemplate)
+	{
+		if($this->template_exists($sTemplate))
+			$this->_smarty->display($sTemplate);
+	}
+	function tpl_variable_get($sVariable)
+	{
+		return $this->_smarty->$sVariable;
+	}
+	function tpl_variable_set($sVariable, $sValue)
+	{
+		$this->_smarty->$sVariable = $sValue;
+	}
+	###################################
+	
+	### Mail ##########################
+	function mail($recipients, $headers, $message)
 	{
 		$mail = $this->_mail->send($recipients, $headers, $message);
 	}
-	protected function encrypt($text)
+	###################################
+	
+	### Encryption ####################
+	function encrypt($text)
 	{
 		return $this->_enc->encrypt($text);
 	}
-	protected function decrypt($text)
+	function decrypt($text)
 	{
 		return $this->_enc->decrypt($text);
 	}
-	protected function memcache_get($key)
+	##################################
+	
+	### Memcache #####################
+	function memcache_get($key)
 	{
 		$value = $this->_memcache->get(md5($this->_settings->memcache_salt.$key));
 		
@@ -121,13 +157,17 @@ class appController
 		else
 			return false;
 	}
-	protected function memcache_set($key, $value, $expire = 0)
+	function memcache_set($key, $value, $expire = 0)
 	{
 		return $this->_memcache->set(md5($this->_settings->memcache_salt.$key), $this->encrypt($value), false, $expire);
 	}
 	##################################
 
 	### Errors #######################
+	function log($log)
+	{
+		$this->_fireftp->log($log);
+	}
 	function error($error = "404")
 	{
 		switch($error)

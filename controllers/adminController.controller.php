@@ -5,20 +5,20 @@ class adminController extends appController
 	{
 		parent::appController();
 		
-		$this->_smarty->template_dir = $this->_smarty->template_dir."/admin";
-		$this->_smarty->compile_dir = $this->_smarty->compile_dir."/admin";
+		$this->tpl_variable_set("template_dir", $this->tpl_variable_get("template_dir")."/admin");
+		$this->tpl_variable_set("compile_dir", $this->tpl_variable_get("compile_dir")."/admin");
 		
-		if(!is_dir($this->_smarty->compile_dir))
+		if(!is_dir($this->tpl_variable_get("template_dir")))
 		{
-			if(!mkdir($this->_smarty->compile_dir, 0777))
-				die("Please create `".$this->_smarty->compile_dir."`. Unable to create automatically.");
+			if(!mkdir($this->tpl_variable_get("template_dir"), 0777))
+				die("Please create `".$this->tpl_variable_get("template_dir")."`. Unable to create automatically.");
 		}
 		
 		if(!empty($_GET["error"]))
-			$this->_smarty->assign("page_error", htmlentities(urldecode($_GET["error"])));
+			$this->tpl_assign("page_error", htmlentities(urldecode($_GET["error"])));
 			
 		if(!empty($_GET["notice"]))
-			$this->_smarty->assign("page_notice", htmlentities(urldecode($_GET["notice"])));
+			$this->tpl_assign("page_notice", htmlentities(urldecode($_GET["notice"])));
 		
 		if(empty($_SESSION["admin"]["userid"]) && $this->_settings->url[1] != "login" && $this->_settings->surl != "/admin/")
 			$this->forward("/admin/", 401);
@@ -26,23 +26,23 @@ class adminController extends appController
 		{
 			$aUser = $this->db_results(
 				"SELECT * FROM `users`"
-					." WHERE `id` = ".$this->_db->quote($_SESSION["admin"]["userid"], "text")
+					." WHERE `id` = ".$this->db_quote($_SESSION["admin"]["userid"], "text")
 					." LIMIT 1"
 				,"admin->user_detail"
 				,"row"
 			);
 			
-			$this->_smarty->assign("loggedin", 1);
-			$this->_smarty->assign("user_details", $aUser);
+			$this->tpl_assign("loggedin", 1);
+			$this->tpl_assign("user_details", $aUser);
 		}
 	}
 	### DISPLAY ######################
 	function index()
 	{
 		if(empty($_SESSION["admin"]["userid"]))
-			$this->_smarty->display("login.tpl");
+			$this->tpl_display("login.tpl");
 		else
-			$this->_smarty->display("index.tpl");
+			$this->tpl_display("index.tpl");
 	}
 	function login()
 	{
@@ -50,8 +50,8 @@ class adminController extends appController
 		{
 			$sUser = $this->db_results(
 				"SELECT `id` FROM `users`"
-					." WHERE `username` = ".$this->_db->quote($_POST["username"], "text")
-					." AND `password` = ".$this->_db->quote(md5($_POST["password"]), "text")
+					." WHERE `username` = ".$this->db_quote($_POST["username"], "text")
+					." AND `password` = ".$this->db_quote(md5($_POST["password"]), "text")
 					." LIMIT 1"
 				,"admin->login"
 				,"one"

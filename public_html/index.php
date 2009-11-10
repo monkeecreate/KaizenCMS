@@ -14,7 +14,6 @@ if(!is_file("../inc_config.php"))
 	die("Please setup your inc_config.php file using inc_config_example.php.");
 
 require("../inc_config.php");
-require("../inc_urls.php");
 
 if($aConfig["options"]["pear"] == "folder")
 	ini_set("include_path", ini_get("include_path").":".$site_root.".pear");
@@ -106,12 +105,14 @@ if($sPage != false)
 
 ### PREPARE URL PATTERN #######################
 if($aUrl[0] == "admin")
-	$urlPatterns = $urlPatterns_admin;
+	require("../inc_urls_admin.php");
+else
+	require("../inc_urls.php");
 
 $sURLid = md5($aConfig["memcache"]["salt"].$sURL."_pattern");
 if(!$oMemcache->get($sURLid) || $aConfig["options"]["urlcache"] == false || $aConfig["options"]["debug"] == true)
 {
-	$patterns = array_chunk($urlPatterns, 80, TRUE);
+	$patterns = array_chunk($aUrlPatterns, 80, TRUE);
 	foreach($patterns as $urlPattern)
 	{
 		$aPatterns = Array();
@@ -210,7 +211,7 @@ $oSmarty->register_object("memcache", $oMemcache);
 
 ### INCLUDE CLASS WITH CMD NAME ###############
 /* Check Url Pattern for usable pattern */
-if(count($urlPatterns[$pattern]) > 0)
+if(count($aUrlPatterns[$pattern]) > 0)
 {
 	$pattern_tmp = preg_replace("/\{([a-z]+):([^}]+)\}/i", "(?P<$1>$2)", $pattern);
 	preg_match("/".str_replace("/","\/",$pattern_tmp)."/i", $sURL, $matches);
@@ -222,8 +223,8 @@ if(count($urlPatterns[$pattern]) > 0)
 			$urlParams[$key] = $value;
 	}
 	
-	$oClass = new $urlPatterns[$pattern]["cmd"];
-	$oClass->$urlPatterns[$pattern]["action"]($urlParams, $urlPatterns[$pattern]["params"]);
+	$oClass = new $aUrlPatterns[$pattern]["cmd"];
+	$oClass->$aUrlPatterns[$pattern]["action"]($urlParams, $aUrlPatterns[$pattern]["params"]);
 }
 /* Complete failure, throw 404 */
 else

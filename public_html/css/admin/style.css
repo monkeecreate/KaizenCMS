@@ -24,6 +24,8 @@ h2 {
 	border-bottom:1px solid #CFCFCF;
 }
 
+/* @group Regular Table */
+
 table.tableData {
 	border-width: 0 0 1px 1px;
 	border-style: solid;
@@ -31,7 +33,7 @@ table.tableData {
 	border-spacing: 0;
 	border-collapse: collapse;
 }
-table.tableData thead tr th, table tbody tr td {
+table.tableData thead tr th, table.tableData tbody tr td {
 	border-width: 1px 1px 0 0;
 	border-style: solid;
 	border-color: #CFCFCF;
@@ -54,6 +56,73 @@ table.tableData tbody tr td.small {
 }
 table.tableData tbody tr td.center {
 	text-align:center;
+}
+table.tableData tbody tr td.border-end {
+	border-right: 1px solid #CFCFCF;
+}
+
+/* @group End */
+
+/* @group Javascript Table */
+
+table.dataTable {
+	border: 1px solid #8F8F8F;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+table.dataTable thead tr th, table.dataTable tfoot tr td {
+	border: 1px solid #8F8F8F;
+	margin:0;
+	padding:5px;
+}
+table.dataTable tbody tr td {
+	margin:0;
+	padding:5px;
+}
+table.dataTable thead tr th {
+	background-color: #E6E6E6;
+}
+table.dataTable tbody tr:nth-child(even) {
+	background-color: #F5F5F5;
+}
+table.dataTable tbody tr:hover {
+	background-color: #FFFFCF;
+}
+table.dataTable tbody tr td.small {
+	width:70px;
+}
+table.dataTable tbody tr td.center {
+	text-align:center;
+}
+table.dataTable tbody tr td.border-end {
+	border-right: 1px solid #8F8F8F;
+}
+.jTPS tfoot tr td {
+	border-top: 1px solid #8F8F8F;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Fieldset */
+
+fieldset {
+	margin-bottom:10px;
+}
+fieldset ul {
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+fieldset ul li {
+	width:200px;
+	float:left;
+	margin: 0 0 10px 20px;
+}
+fieldset ul li ul li {
+	float:none;
+	margin: 0 0 3px 10px;
 }
 
 /* @end */
@@ -117,8 +186,14 @@ table.tableData tbody tr td.center {
 .minwidth {
 	width:auto;
 }
+.float-left {
+	float:left;
+}
 .float-right {
 	float:right;
+}
+.left-margin {
+	margin-left: 15px;
 }
 
 /* @end */
@@ -133,7 +208,9 @@ table.tableData tbody tr td.center {
 	margin-top:50px;
 }
 #body-container {
-	margin-left:275px;
+	margin-left:20px;
+	width:730px;
+	float:left;
 }
 
 /* @end */
@@ -202,6 +279,63 @@ table.tableData tbody tr td.center {
 
 /* @end */
 
+/* @group: Photos */
+
+.photo {
+	position: relative;
+	float: left;
+	border: 1px solid #9F9F9F;
+	margin:10px;
+}
+.photo .move {
+	background: rgba(0, 0, 0, .7) ;
+	position:absolute;
+	padding:1px 1px 0;
+	top: 2px;
+	left: 2px;
+}
+.photo .move img {
+	cursor:pointer;
+	cursor:hand;
+}
+.photo .image {
+	display:block;
+	width:150px;
+	height:112px;
+}
+.photo .default {
+	background: rgba(0, 0, 0, .6);
+	position:absolute;
+	padding:1px 3px 3px 1px;
+	bottom:2px;
+	left:2px;
+}
+.photo .default input {
+	cursor:pointer;
+	cursor:hand;
+}
+.photo .delete {
+	background: rgba(0, 0, 0, .6) ;
+	position:absolute;
+	padding:2px;
+	bottom:2px;
+	right:2px;
+	cursor:pointer;
+	cursor:hand;
+}
+#photos .ui-state-highlight {
+	float:left;
+	width:150px;
+	height:112px;
+	line-height: 1.2em;
+	margin:10px;
+}
+.photo_sort {
+	display:none;
+	float:right;
+}
+
+
 /* @group: Form */
 
 label {
@@ -213,8 +347,20 @@ input.text {
 	display:block;
 	margin-bottom:10px;
 	padding:3px;
-	width:300px;
+	width:400px;
 	font-size:12pt;
+}
+input.medium {
+	width: 300px;
+}
+input.small {
+	width:200px;
+}
+input.xsmall {
+	width:100px;
+}
+#sidebar input.text {
+	width:180px;
 }
 input.checkbox {
 	
@@ -234,18 +380,22 @@ div.radio {
 div.section {
 	margin-bottom:10px;
 }
+div.select_group select {
+	width: auto;
+}
 textarea.textarea {
 	display:block;
 	margin-bottom:10px;
 	padding:3px;
-	width:300px;
+	width:400px;
+	height:150px;
 }
 textarea.wysiwyg {
 	height:300px;
 }
 select.select {
 	margin-bottom:10px;
-	padding:5px;
+	padding:2px;
 	width:200px;
 }
 

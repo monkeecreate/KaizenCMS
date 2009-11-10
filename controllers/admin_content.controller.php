@@ -14,14 +14,14 @@ class admin_content extends adminController
 			,"all"
 		);
 		
-		$this->_smarty->assign("aPages", $aPages);
-		$this->_smarty->assign("domain", $_SERVER["SERVER_NAME"]);
-		$this->_smarty->display("content/index.tpl");
+		$this->tpl_assign("aPages", $aPages);
+		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
+		$this->tpl_display("content/index.tpl");
 	}
 	function add()
 	{
-		$this->_smarty->assign("aPage", $_SESSION["admin"]["admin_content"]);
-		$this->_smarty->display("content/add.tpl");
+		$this->tpl_assign("aPage", $_SESSION["admin"]["admin_content"]);
+		$this->tpl_display("content/add.tpl");
 	}
 	function add_s()
 	{
@@ -38,9 +38,9 @@ class admin_content extends adminController
 				." (`tag`, `title`, `content`)"
 				." VALUES"
 				." ("
-					.$this->_db->quote($sTag, "text")
-					.", ".$this->_db->quote($_POST["title"], "text")
-					.", ".$this->_db->quote($_POST["content"], "text")
+					.$this->db_quote($sTag, "text")
+					.", ".$this->db_quote($_POST["title"], "text")
+					.", ".$this->db_quote($_POST["content"], "text")
 				.")"
 			,"admin->content->add"
 		);
@@ -52,20 +52,20 @@ class admin_content extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_content"]))
-			$this->_smarty->assign("aPage", $_SESSION["admin"]["admin_content"]);
+			$this->tpl_assign("aPage", $_SESSION["admin"]["admin_content"]);
 		else
 		{
 			$aPage = $this->db_results(
 				"SELECT * FROM `content`"
-					." WHERE `id` = ".$this->_db->quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->content->edit"
 				,"row"
 			);
 		
-			$this->_smarty->assign("aPage", $aPage);
+			$this->tpl_assign("aPage", $aPage);
 		}
 		
-		$this->_smarty->display("content/edit.tpl");
+		$this->tpl_display("content/edit.tpl");
 	}
 	function edit_s()
 	{
@@ -77,9 +77,9 @@ class admin_content extends adminController
 		
 		$aRes = $this->db_results(
 			"UPDATE `content` SET"
-				." `title` = ".$this->_db->quote($_POST["title"], "text")
-				.", `content` = ".$this->_db->quote($_POST["content"], "text")
-				." WHERE `id` = ".$this->_db->quote($_POST["id"], "integer")
+				." `title` = ".$this->db_quote($_POST["title"], "text")
+				.", `content` = ".$this->db_quote($_POST["content"], "text")
+				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->content->edit"
 		);
 		
@@ -91,7 +91,7 @@ class admin_content extends adminController
 	{
 		$aRes = $this->db_results(
 			"DELETE FROM `content`"
-				." WHERE `id` = ".$this->_db->quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->content->delete"
 		);
 		

@@ -3,79 +3,49 @@ function smarty_function_image_crop($aParams, &$oSmarty)
 {
 	if($aParams["load"] == "cropper")
 	{
-		$html = "<link href=\"/css/cropper.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n";
-		$html = "<script type=\"text/javascript\" src=\"/scripts/prototype.js\"></script>\n";
-		$html .= "<script type=\"text/javascript\" src=\"/scripts/scriptaculous.js?load=builder,dragdrop\"></script>\n";
-		//$html .= "<script type=\"text/javascript\" src=\"/scripts/cropper.js\"></script>\n";
-		$html .= "<script src=\"http://www.defusion.org.uk/demos/060519/lib/cropper.js\" type=\"text/javascript\"></script>";
-		if($aParams["preview"] == "true")
-		{
-			$html .= "<script type=\"text/javascript\">\n";
-			$html .= "function onEndCrop( coords, dimensions ) {\n";
-			$html .= "\t$( 'x1' ).value = coords.x1;\n";
-			$html .= "\t$( 'y1' ).value = coords.y1;\n";
-			$html .= "\t$( 'x2' ).value = coords.x2;\n";
-			$html .= "\t$( 'y2' ).value = coords.y2;\n";
-			$html .= "\t$( 'width' ).value = dimensions.width;\n";
-			$html .= "\t$( 'height' ).value = dimensions.height;\n";
-			$html .= "}\n";
-			$html .= "Event.observe(\n";
-			$html .= "\twindow, 'load', function()\n";
-			$html .= "\t{\n";
-			$html .= "\t\tmycropper = new Cropper.ImgWithPreview(\n";
-			$html .= "\t\t\t'".$aParams["img"]."',\n";
-			$html .= "\t\t\t{\n";
-			$html .= "\t\t\t\tpreviewWrap: 'croppreview',\n";
-			$html .= "\t\t\t\tminWidth: ".$aParams["minw"].",\n";
-			$html .= "\t\t\t\tminHeight: ".$aParams["minh"].",\n";
-			$html .= "\t\t\t\tratioDim:{\n";
-			$html .= "\t\t\t\t\tx: ".$aParams["rx"].",\n";
-			$html .= "\t\t\t\t\ty: ".$aParams["ry"]."\n";
-			$html .= "\t\t\t\t},\n";
-			$html .= "\t\t\t\tonEndCrop: onEndCrop\n";
-			$html .= "\t\t\t}\n";
-			$html .= "\t\t);\n";
-			if(!empty($aParams["values"]) && $aParams["values"]["x2"] > 0)
-			{
-				$html .= "mycropper.setAreaCoords( { x1: ".$aParams["values"]["x1"].", y1: ".$aParams["values"]["y1"].", x2: ".$aParams["values"]["x2"].", y2: ".$aParams["values"]["y2"]." } );\n";
-				$html .= "mycropper.drawArea();\n";
-			}
-			$html .= "\t}\n";
-			$html .= ");\n";
-			$html .= "</script>\n";
-		}
-		else
-		{
-			$html .= "<script type=\"text/javascript\">\n";
-			$html .= "function onEndCrop( coords, dimensions ) {\n";
-			$html .= "\t$( 'x1' ).value = coords.x1;\n";
-			$html .= "\t$( 'y1' ).value = coords.y1;\n";
-			$html .= "\t$( 'x2' ).value = coords.x2;\n";
-			$html .= "\t$( 'y2' ).value = coords.y2;\n";
-			$html .= "\t$( 'width' ).value = dimensions.width;\n";
-			$html .= "\t$( 'height' ).value = dimensions.height;\n";
-			$html .= "}\n";
-			$html .= "Event.observe( window, 'load', function() {\n";
-			$html .= "Event.observe( window, 'load', function() {\n";
-			$html .= "\tmycropper = new Cropper.Img(\n";
-			$html .= "\t\t'".$aParams["img"]."',\n";
-			$html .= "\t\t{\n";
-			$html .= "\t\t\tminWidth: ".$aParams["minw"].",\n";
-			$html .= "\t\t\tminHeight: ".$aParams["minh"].",\n";
-			$html .= "\t\t\tratioDim:{\n";
-			$html .= "\t\t\t\tx: ".$aParams["rx"].",\n";
-			$html .= "\t\t\t\ty: ".$aParams["ry"]."\n";
-			$html .= "\t\t\t},\n";
-			$html .= "\t\t\tonEndCrop: onEndCrop } );\n";
-			if(!empty($aParams["values"]))
-			{
-				$html .= "mycropper.setAreaCoords( { x1: ".$aParams["values"]["x1"].", y1: ".$aParams["values"]["y1"].", x2: ".$aParams["values"]["x2"].", y2: ".$aParams["values"]["y2"]." } );\n";
-				$html .= "mycropper.drawArea();\n";
-			}
-			$html .= "\t\t}\n";
-			$html .= "\t);\n";
-			$html .= "</script>\n";
-		}
+		$html = "<script src=\"/scripts/jquery/jcrop/jquery.Jcrop.min.js\"></script>\n";
+		$html .= "<link rel=\"stylesheet\" href=\"/scripts/jquery/jcrop/jquery.Jcrop.css\" type=\"text/css\" />\n";
+		$html .= "<script language=\"Javascript\">\n";
+		$html .= "// Remember to invoke within jQuery(window).load(...)\n";
+		$html .= "// If you don't, Jcrop may not initialize properly\n";
+		$html .= "$(document).ready(function(){\n";
+		$html .= "	$('#".$aParams["img"]."').Jcrop({\n";
+		$html .= "		onChange: showCoords,\n";
+		$html .= "		onSelect: showCoords,\n";
+		$html .= "		minSize: [ ".$aParams["rx"].", ".$aParams["ry"]." ],\n";
+		$html .= "		aspectRatio: ".$aParams["rx"]."/".$aParams["ry"]."\n";
+		$html .= "		,setSelect: [".$aParams["values"]["photo_x1"]
+			.", ".$aParams["values"]["photo_y1"]
+			.", ".$aParams["values"]["photo_x2"]
+			.", ".$aParams["values"]["photo_y2"]
+			." ]\n";
+		$html .= "	});\n";
+		$html .= "});\n";
+		$html .= "// Our simple event handler, called from onChange and onSelect\n";
+		$html .= "// event handlers, as per the Jcrop invocation above\n";
+		$html .= "function showCoords(c)\n";
+		$html .= "{\n";
+		$html .= "	$('#x1').val(c.x);\n";
+		$html .= "	$('#y1').val(c.y);\n";
+		$html .= "	$('#x2').val(c.x2);\n";
+		$html .= "	$('#y2').val(c.y2);\n";
+		$html .= "	$('#width').val(c.w);\n";
+		$html .= "	$('#height').val(c.h);\n";
+		$html .= "	if (parseInt(c.w) > 0)\n";
+		$html .= "	{\n";
+		$html .= "		var rx = ".$aParams["minw"]." / c.w;\n";
+		$html .= "		var ry = ".$aParams["minh"]." / c.h;\n";
+		$html .= "		var width = $('#".$aParams["img"]."').width();\n";
+		$html .= "		var height = $('#".$aParams["img"]."').height();\n";
+		$html .= "		$('#preview').css({\n";
+		$html .= "			width: Math.round(rx * width) + 'px',\n";
+		$html .= "			height: Math.round(ry * height) + 'px',\n";
+		$html .= "			marginLeft: '-' + Math.round(rx * c.x) + 'px',\n";
+		$html .= "			marginTop: '-' + Math.round(ry * c.y) + 'px'\n";
+		$html .= "		});\n";
+		$html .= "	}\n";
+		$html .= "};\n";
+		$html .= "</script>\n";
 	}
 	elseif($aParams["load"] == "form")
 	{

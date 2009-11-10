@@ -1,12 +1,22 @@
 <?php
 function smarty_function_getContent($aParams, &$oSmarty)
 {
-	$objDB = $oSmarty->get_registered_object("objDB");
+	$oApp = $oSmarty->get_registered_object("appController");
 	
 	if(!empty($aParams["tag"]))
-		$aContent = $objDB->query("SELECT * FROM `content` WHERE `tag` = ".$objDB->quote($aParams["tag"], "text"))->fetchRow();
+		$aContent = $oApp->db_results(
+			"SELECT * FROM `content`"
+				." WHERE `tag` = ".$oApp->db_quote($aParams["tag"], "text")
+			,"smarty->getContent->tag"
+			,"row"
+		);
 	elseif(!empty($aParams["id"]))
-		$aContent = $objDB->query("SELECT * FROM `content` WHERE `id` = ".$objDB->quote($aParams["id"], "integer"))->fetchRow();
+		$aContent = $oApp->db_results(
+			"SELECT * FROM `content`"
+				." WHERE `id` = ".$oApp->db_quote($aParams["id"], "text")
+			,"smarty->getContent->id"
+			,"row"
+		);
 	
 	if(empty($aParams["var"]))
 		return stripslashes($aContent["content"]);

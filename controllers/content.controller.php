@@ -4,7 +4,7 @@ class content extends appController
 	### DISPLAY ######################
 	function index()
 	{
-		$this->_smarty->display("index.tpl");
+		$this->tpl_display("index.tpl");
 	}
 	function siteinfo()
 	{
@@ -22,12 +22,12 @@ class content extends appController
 		if(preg_match("/[a-z0-9_-]+/i", $sPage) > 0)
 		{
 			if($this->template_exists("content/".$sPage.".tpl"))
-				$this->_smarty->display("content/".$sPage.".tpl");
+				$this->tpl_display("content/".$sPage.".tpl");
 			else
 			{
 				$aContent = $this->db_results(
 					"SELECT * FROM `content`"
-						." WHERE `tag` = ".$this->_db->quote($sPage, "text")
+						." WHERE `tag` = ".$this->db_quote($sPage, "text")
 						." LIMIT 1"
 					,"content->view"
 					,"row"
@@ -35,12 +35,12 @@ class content extends appController
 			
 				if(!empty($aContent))
 				{
-					$this->_smarty->assign("aContent", $aContent);
+					$this->tpl_assign("aContent", $aContent);
 					
 					if(empty($aContent["template"]))
-						$this->_smarty->display("content.tpl");
+						$this->tpl_display("content.tpl");
 					else
-						$this->_smarty->display($aContent["template"]);
+						$this->tpl_display("content/".$aContent["template"]);
 				}
 				else
 					$this->error("404");
@@ -56,8 +56,8 @@ class content extends appController
 		$aForm["subject"] = $this->encrypt("Test email!");
 		$aForm["forward"] = $this->encrypt("/");
 		
-		$this->_smarty->assign("aForm", $aForm);
-		$this->_smarty->display("contact.tpl");
+		$this->tpl_assign("aForm", $aForm);
+		$this->tpl_display("contact.tpl");
 	}
 	function form_submit()
 	{

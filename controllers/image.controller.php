@@ -4,9 +4,10 @@ class image extends appController
 	### DISPLAY ######################
 	function resize()
 	{
-		$name = $this->_settings->site_root.substr($_GET["file"],1);
+		ini_set("memory_limit", "60m");
+		$name = $this->_settings->root_public.substr($_GET["file"], 1);
 		
-		if(!is_file($name) || empty($_GET["width"]) || empty($_GET["height"]))
+		if(filesize($name) == 0 || empty($_GET["width"]) || empty($_GET["height"]))
 			$this->error('404');
 		
 		$filename = array_pop(explode("/",$file));
@@ -78,31 +79,35 @@ class image extends appController
 	##################################
 	
 	### Functions ####################
-	protected function cropimage($filename, $source, $end_width, $end_height, $photo_width, $photo_height, $photo_x1, $photo_y1)
+	protected function cropimage($oSource, $endWidth, $endHeight, $photoWidth, $photoHeight, $photo_x1, $photo_y1)
 	{
 		// Get new sizes
-		list($width, $height) = getimagesize($filename);
+		$sImageWidth = imagesx($oSource);
+		$sImageHeight = imagesy($oSource);
 
 		// Load
-		$thumb = imagecreatetruecolor($photo_width, $photo_height);
+		$thumb = imagecreatetruecolor($photoWidth, $photoHeight);
 		imagefill($thumb, 0, 0, imagecolorallocate($thumb, 255, 255, 255));
 
 		// Resize
-		imagecopyresized($thumb, $source, 0, 0, $photo_x1, $photo_y1, $width, $height, $width, $height);
-
-		$thumb2 = imagecreatetruecolor($end_width, $end_height);
-		imagecopyresized($thumb2, $thumb, 0, 0, 0, 0, $end_width, $end_height, $photo_width, $photo_height);
+		imagecopyresized($thumb, $oSource, 0, 0, $photo_x1, $photo_y1, $sImageWidth, $sImageHeight, $sImageWidth, $sImageHeight);
+		
+		$thumb2 = imagecreatetruecolor($endWidth, $endHeight);
+		imagecopyresized($thumb2, $thumb, 0, 0, 0, 0, $endWidth, $endHeight, $photoWidth, $photoHeight);
 		
 		return $thumb2;
 	}
 	protected function resizeimage($image)
 	{
-		$newwidth=$_GET["width"];
-		$newheight=($this->height/$this->width)*$newwidth;
-		$tmp=imagecreatetruecolor($newwidth,$newheight);
+		$sOldWidth = imagesx($image);
+		$sOldHeight = imagesy($image);
+		
+		$sNewWidth = $_GET["width"];
+		$sNewHeight = ($sOldHeight/$sOldWidth)*$sNewWidth;
+		$tmp = imagecreatetruecolor($sNewWidth,$sNewHeight);
 		imagefill($tmp, 0, 0, imagecolorallocate($tmp, 255, 255, 255));
 		
-		imagecopyresampled($tmp,$image,0,0,0,0,$newwidth,$newheight,$this->width,$this->height);
+		imagecopyresampled($tmp,$image,0,0,0,0,$sNewWidth,$sNewHeight,$sOldWidth,$sOldHeight);
 		
 		return $tmp;
 	}
