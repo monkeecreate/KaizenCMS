@@ -20,7 +20,7 @@ class links extends appController
 		
 		$sWhere = " WHERE `links`.`active` = 1";
 		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->_db->quote($_GET["category"], "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
 		
 		// Get all links for paging
 		$aLinks = $this->db_results(
@@ -64,10 +64,10 @@ class links extends appController
 			/*# Categories #*/
 		}
 
-		$this->_smarty->assign("aCategories", $aCategories);
-		$this->_smarty->assign("aLinks", $aLinks);
-		$this->_smarty->assign("aPaging", $oPage->build_array());
+		$this->tpl_assign("aCategories", $aCategories);
+		$this->tpl_assign("aLinks", $aLinks);
+		$this->tpl_assign("aPaging", $oPage->build_array());
 		
-		$this->_smarty->display("links.tpl");
+		$this->tpl_display("links.tpl");
 	}
 }

@@ -20,7 +20,7 @@ class documents extends appController
 		
 		$sWhere = " WHERE `documents`.`active` = 1";
 		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->_db->quote($_GET["category"], "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
 		
 		// Get all documents for paging
 		$aDocuments = $this->db_results(
@@ -64,10 +64,10 @@ class documents extends appController
 			/*# Categories #*/
 		}
 
-		$this->_smarty->assign("aCategories", $aCategories);
-		$this->_smarty->assign("aDocuments", $aDocuments);
-		$this->_smarty->assign("aPaging", $oPage->build_array());
+		$this->tpl_assign("aCategories", $aCategories);
+		$this->tpl_assign("aDocuments", $aDocuments);
+		$this->tpl_assign("aPaging", $oPage->build_array());
 		
-		$this->_smarty->display("documents.tpl");
+		$this->tpl_display("documents.tpl");
 	}
 }

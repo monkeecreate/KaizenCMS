@@ -22,7 +22,7 @@ class events extends appController
 		$sWhere .= " AND `events`.`datetime_end` > ".time();
 		$sWhere .= " AND `events`.`active` = 1";
 		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->_db->quote($_GET["category"], "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
 		
 		// Get all events for paging
 		$aEvents = $this->db_results(
@@ -71,17 +71,17 @@ class events extends appController
 			/*# Image #*/
 		}
 
-		$this->_smarty->assign("aCategories", $aCategories);
-		$this->_smarty->assign("aEvents", $aEvents);
-		$this->_smarty->assign("aPaging", $oPage->build_array());
+		$this->tpl_assign("aCategories", $aCategories);
+		$this->tpl_assign("aEvents", $aEvents);
+		$this->tpl_assign("aPaging", $oPage->build_array());
 		
-		$this->_smarty->display("events/index.tpl");
+		$this->tpl_display("events/index.tpl");
 	}
 	function event($aParams)
 	{
 		$aEvent = $this->db_results(
 			"SELECT `events`.* FROM `events` AS `events`"
-				." WHERE `events`.`id` = ".$this->_db->quote($aParams["id"], "integer")
+				." WHERE `events`.`id` = ".$this->db_quote($aParams["id"], "integer")
 				." AND `events`.`active` = 1"
 				." AND `events`.`datetime_show` < ".time()
 				." AND (`events`.`use_kill` = 0 OR `events`.`datetime_kill` > ".time().")"
@@ -107,11 +107,11 @@ class events extends appController
 			$aEvent["image"] = 1;
 		/*# Image #*/
 
-		$this->_smarty->assign("aEvent", $aEvent);
+		$this->tpl_assign("aEvent", $aEvent);
 		
 		if(!empty($aEvent["template"]))
-			$this->_smarty->display("events/tpl/".$aEvent["template"]);
+			$this->tpl_display("events/tpl/".$aEvent["template"]);
 		else
-			$this->_smarty->display("events/event.tpl");
+			$this->tpl_display("events/event.tpl");
 	}
 }

@@ -20,7 +20,7 @@ class galleries extends appController
 		
 		$sWhere = " WHERE `galleries`.`id` > 0";
 		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->_db->quote($_GET["category"], "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
 		
 		// Get all gallerys for paging
 		$aGalleries = $this->db_results(
@@ -77,11 +77,11 @@ class galleries extends appController
 			/*# Image #*/
 		}
 
-		$this->_smarty->assign("aCategories", $aCategories);
-		$this->_smarty->assign("aGalleries", $aGalleries);
-		$this->_smarty->assign("aPaging", $oPage->build_array());
+		$this->tpl_assign("aCategories", $aCategories);
+		$this->tpl_assign("aGalleries", $aGalleries);
+		$this->tpl_assign("aPaging", $oPage->build_array());
 		
-		$this->_smarty->display("galleries/index.tpl");
+		$this->tpl_display("galleries/index.tpl");
 	}
 	function gallery($aParams)
 	{
@@ -112,7 +112,7 @@ class galleries extends appController
 			,"all"
 		);
 		
-		$this->_smarty->assign("aGallery", $aGallery);
-		$this->_smarty->display("galleries/gallery.tpl");
+		$this->tpl_assign("aGallery", $aGallery);
+		$this->tpl_display("galleries/gallery.tpl");
 	}
 }

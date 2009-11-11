@@ -14,7 +14,7 @@ class testimonials extends appController
 		);
 		
 		if(empty($aParams["id"]))
-			$this->_smarty->assign("aCurTestimonial", $aTestimonials[0]);
+			$this->tpl_assign("aCurTestimonial", $aTestimonials[0]);
 		else
 		{
 			$aTestimonial = $this->db_results(
@@ -23,10 +23,10 @@ class testimonials extends appController
 				,"testimonials->testimonial"
 				,"row"
 			);
-			$this->_smarty->assign("aCurTestimonial", $aTestimonial);
+			$this->tpl_assign("aCurTestimonial", $aTestimonial);
 		}
 		
-		$this->_smarty->assign("aTestimonials", $aTestimonials);
-		$this->_smarty->display("testimonials.tpl");
+		$this->tpl_assign("aTestimonials", $aTestimonials);
+		$this->tpl_display("testimonials.tpl");
 	}
 }

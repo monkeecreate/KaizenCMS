@@ -21,7 +21,7 @@ class news extends appController
 		$sWhere = " WHERE `news`.`datetime_show` < ".time()." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
 		$sWhere .= " AND `news`.`active` = 1";
 		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->_db->quote($_GET["category"], "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
 		
 		// Get all articles for paging
 		$aArticles = $this->db_results(
@@ -70,17 +70,17 @@ class news extends appController
 			/*# Image #*/
 		}
 
-		$this->_smarty->assign("aCategories", $aCategories);
-		$this->_smarty->assign("aArticles", $aArticles);
-		$this->_smarty->assign("aPaging", $oPage->build_array());
+		$this->tpl_assign("aCategories", $aCategories);
+		$this->tpl_assign("aArticles", $aArticles);
+		$this->tpl_assign("aPaging", $oPage->build_array());
 		
-		$this->_smarty->display("news/index.tpl");
+		$this->tpl_display("news/index.tpl");
 	}
 	function article($aParams)
 	{
 		$aArticle = $this->db_results(
 			"SELECT `news`.* FROM `news` AS `news`"
-				." WHERE `news`.`id` = ".$this->_db->quote($aParams["id"], "integer")
+				." WHERE `news`.`id` = ".$this->db_quote($aParams["id"], "integer")
 				." AND `news`.`active` = 1"
 				." AND `news`.`datetime_show` < ".time()
 				." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")"
@@ -106,8 +106,8 @@ class news extends appController
 			$aArticle["image"] = 1;
 		/*# Image #*/
 
-		$this->_smarty->assign("aArticle", $aArticle);
+		$this->tpl_assign("aArticle", $aArticle);
 		
-		$this->_smarty->display("news/article.tpl");
+		$this->tpl_display("news/article.tpl");
 	}
 }

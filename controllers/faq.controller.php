@@ -20,7 +20,7 @@ class faq extends appController
 		
 		$sWhere = " WHERE `faq`.`active` = 1";
 		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->_db->quote($_GET["category"], "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
 		
 		// Get all faq for paging
 		$aQuestions = $this->db_results(
@@ -64,10 +64,10 @@ class faq extends appController
 			/*# Categories #*/
 		}
 
-		$this->_smarty->assign("aCategories", $aCategories);
-		$this->_smarty->assign("aQuestions", $aQuestions);
-		$this->_smarty->assign("aPaging", $oPage->build_array());
+		$this->tpl_assign("aCategories", $aCategories);
+		$this->tpl_assign("aQuestions", $aQuestions);
+		$this->tpl_assign("aPaging", $oPage->build_array());
 		
-		$this->_smarty->display("faq.tpl");
+		$this->tpl_display("faq.tpl");
 	}
 }

@@ -22,7 +22,7 @@ class calendar extends apController
 		$sWhere .= " AND `calendar`.`datetime_end` > ".time();
 		$sWhere .= " AND `calendar`.`active` = 1";
 		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->_db->quote($_GET["category"], "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
 		
 		// Get all events for paging
 		$aEvents = $this->db_results(
@@ -71,17 +71,17 @@ class calendar extends apController
 			/*# Image #*/
 		}
 
-		$this->_smarty->assign("aCategories", $aCategories);
-		$this->_smarty->assign("aEvents", $aEvents);
-		$this->_smarty->assign("aPaging", $oPage->build_array());
+		$this->tpl_assign("aCategories", $aCategories);
+		$this->tpl_assign("aEvents", $aEvents);
+		$this->tpl_assign("aPaging", $oPage->build_array());
 		
-		$this->_smarty->display("calendar/index.tpl");
+		$this->tpl_display("calendar/index.tpl");
 	}
 	function event($aParams)
 	{
 		$aEvent = $this->db_results(
 			"SELECT `calendar`.* FROM `calendar` AS `calendar`"
-				." WHERE `calendar`.`id` = ".$this->_db->quote($aParams["id"], "integer")
+				." WHERE `calendar`.`id` = ".$this->db_quote($aParams["id"], "integer")
 				." AND `calendar`.`active` = 1"
 				." AND `calendar`.`datetime_show` < ".time()
 				." AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")"
@@ -107,8 +107,8 @@ class calendar extends apController
 			$aEvent["image"] = 1;
 		/*# Image #*/
 
-		$this->_smarty->assign("aEvent", $aEvent);
+		$this->tpl_assign("aEvent", $aEvent);
 		
-		$this->_smarty->display("calendar/event.tpl");
+		$this->tpl_display("calendar/event.tpl");
 	}
 }
