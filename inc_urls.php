@@ -28,9 +28,73 @@ $aUrlPatterns = array(
 		"cmd" => "content",
 		"action" => "form_submit"
 	),
+	"/news/" => array(
+		"cmd" => "news",
+		"action" => "index"
+	),
+	"/news/{id:[0-9]+}/{title:[^/]+}/" => array(
+		"cmd" => "news",
+		"action" => "article"
+	),
+	"/events/" => array(
+		"cmd" => "events",
+		"action" => "index"
+	),
+	"/events/{id:[0-9]+}/{title:[^/]+}/" => array(
+		"cmd" => "events",
+		"action" => "event"
+	),
+	"/calendar/" => array(
+		"cmd" => "calendar",
+		"action" => "index"
+	),
+	"/calendar/{id:[0-9]+}/{title:[^/]+}/" => array(
+		"cmd" => "calendar",
+		"action" => "event"
+	),
+	"/faq/" => array(
+		"cmd" => "faq",
+		"action" => "index"
+	),
+	"/testimonials/" => array(
+		"cmd" => "testimonials",
+		"action" => "index"
+	),
+	"/testimonials/{id:[0-9]+}/" => array(
+		"cmd" => "testimonials",
+		"action" => "index"
+	),
+	"/documents/" => array(
+		"cmd" => "documents",
+		"action" => "index"
+	),
+	"/links/" => array(
+		"cmd" => "links",
+		"action" => "index"
+	),
+	"/galleries/" => array(
+		"cmd" => "galleries",
+		"action" => "index"
+	),
+	"/galleries/{gallery:[0-9]+}/" => array(
+		"cmd" => "galleries",
+		"action" => "gallery"
+	),
 	"/image/resize/" => array(
 		"cmd" => "image",
 		"action" => "resize"
+	),
+	"/image/news/{id:[0-9]+}/" => array(
+		"cmd" => "image",
+		"action" => "image_news"
+	),
+	"/image/events/{id:[0-9]+}/" => array(
+		"cmd" => "image",
+		"action" => "image_events"
+	),
+	"/image/calendar/{id:[0-9]+}/" => array(
+		"cmd" => "image",
+		"action" => "image_calendar"
 	),
 	"/{page:[a-z0-9_-]+}/" => array(
 		"cmd" => "content",
