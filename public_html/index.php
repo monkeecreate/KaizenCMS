@@ -205,8 +205,8 @@ $oSmarty->debugging = $aConfig["smarty"]["debug"];
 $oSmarty->debugging_ctrl = $aConfig["smarty"]["debug_ctrl"];
 
 /* Smarty Access to Database */
-$oSmarty->register_object("objDB", $objDB);
-$oSmarty->register_object("memcache", $oMemcache);
+$oApp = new appController;
+$oSmarty->register_object("appController", $oApp);
 ##############################################
 
 ### INCLUDE CLASS WITH CMD NAME ###############
