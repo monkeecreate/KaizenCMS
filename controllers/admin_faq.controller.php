@@ -156,14 +156,6 @@ class admin_faq extends adminController
 	}
 	function delete($aParams)
 	{
-		$aQuestion = $this->db_results(
-			"SELECT * FROM `faq`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
-			,"admin->faq->edit"
-			,"row"
-		);
-		@unfaq($this->_settings->root_public."uploads/faq/".$aQuestion["faq"]);
-		
 		$this->db_results(
 			"DELETE FROM `faq`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
