@@ -9,7 +9,7 @@
 		</div>
 	</div>
 	<label>*Question:</label>
-	<input type="text" name="question" maxlength="100" value="{$aQuestion.question|htmlspecialchars|stripslashes}"><br>
+	<textarea name="question" class="elastic">{$aQuestion.question|htmlspecialchars|stripslashes}</textarea><br>
 	<label>Answer:</label>
 	<textarea name="answer" class="elastic">{$aQuestion.answer|htmlspecialchars|stripslashes}</textarea><br>
 	<div class="clear"></div>

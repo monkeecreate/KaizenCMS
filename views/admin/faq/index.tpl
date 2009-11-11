@@ -38,7 +38,7 @@
 	<tbody>
 		{foreach from=$aQuestions item=aQuestion}
 			<tr>
-				<td>{$aQuestion.question}</td>
+				<td>{$aQuestion.question|substr:0:80}{if strlen($aQuestion.question) > 80}...{/if}</td>
 				<td class="small center">
 					{if $aQuestion.active == 1}
 						<img src="/images/admin/icons/accept.png">
