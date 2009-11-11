@@ -1,6 +1,6 @@
 {include file="inc_header.tpl" page_title="FAQ"}
 
-<form name="category" method="get" action="/{$aSection.tag}/faq/" class="sortCat">
+<form name="category" method="get" action="/faq/" class="sortCat">
 	Category: 
 	<select name="category">
 		<option value="">- All Categories -</option>
@@ -45,10 +45,5 @@
 		</div>
 	{/if}
 </div>
-
-{include file="inc_section_footer.tpl"}{include file="inc_section_header.tpl" page_title="Links"}
-
-<h2>Links</h2>
-
 
 {include file="inc_footer.tpl"}

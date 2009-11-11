@@ -54,13 +54,13 @@
 	{foreach from=$aTestimonials item=aTestimonial}
 		{if !empty($aTestimonial.video)}
 			<div class="{if $aTestimonial.id == $aCurTestimonial.id}selected{/if} tours">
-				<a href="/{$aSection.tag}/testimonials/{$aTestimonial.id}/">
+				<a href="/testimonials/{$aTestimonial.id}/">
 					<img src="/image/resize/?file=/uploads/testimonials/posters/{$aTestimonial.poster}&width=200&height=200">
 				</a>
 			</div>
 		{else}
 			<div class="{if $aTestimonial.id == $aCurTestimonial.id}selected{/if} tours textTest">
-				<a href="/{$aSection.tag}/testimonials/{$aTestimonial.id}/">
+				<a href="/testimonials/{$aTestimonial.id}/">
 					{$aTestimonial.name}
 				</a>
 			</div>

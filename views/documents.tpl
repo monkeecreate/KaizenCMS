@@ -1,6 +1,6 @@
 {include file="inc_header.tpl" page_title="Downloads"}
 
-<form name="category" method="get" action="/{$aSection.tag}/documents/" class="sortCat">
+<form name="category" method="get" action="/documents/" class="sortCat">
 	Category: 
 	<select name="category">
 		<option value="">- All Categories -</option>

@@ -1,6 +1,6 @@
 {include file="inc_header.tpl" page_title="Calendar"}
 
-<form name="category" method="get" action="/{$aSection.tag}/calendar/" class="sortCat">
+<form name="category" method="get" action="/calendar/" class="sortCat">
 	Category: 
 	<select name="category">
 		<option value="">- All Categories -</option>
@@ -26,14 +26,14 @@
 			<img src="/image/calendar/{$aEvent.id}/?width=140">
 		{/if}
 		<h3>
-			<a href="/{$aSection.tag}/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/">
+			<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/">
 				{$aEvent.title|htmlspecialchars|stripslashes}
 			</a>
 		</h3>
 		<small><time>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</time> | Categories: {$aEvent.categories}</small>
 		<p>
 			{$aEvent.short_content|stripslashes}<br />
-			<a href="/{$aSection.tag}/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/">More Info&raquo;</a>
+			<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/">More Info&raquo;</a>
 		</p>
 	</div>
 {foreachelse}

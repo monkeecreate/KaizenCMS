@@ -1,6 +1,6 @@
 {include file="inc_header.tpl" page_title="Links" menu="links"}
 
-<form name="category" method="get" action="/{$aSection.tag}/links/" class="sortCat">
+<form name="category" method="get" action="/links/" class="sortCat">
 	Category: 
 	<select name="category">
 		<option value="">- All Categories -</option>

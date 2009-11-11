@@ -1,6 +1,6 @@
 {include file="inc_header.tpl" page_title="Photo Gallery"}
 
-<form name="category" method="get" action="/{$aSection.tag}/galleries/" class="sortCat">
+<form name="category" method="get" action="/galleries/" class="sortCat">
 	Category: 
 	<select name="category">
 		<option value="">- All Categories -</option>
@@ -26,7 +26,7 @@
 			<div class="galleryPics"><img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aGallery.photo}&width=140&height=140"></div>
 		{/if}
 		<h3>
-			<a href="/{$aSection.tag}/galleries/{$aGallery.id}/">
+			<a href="/galleries/{$aGallery.id}/">
 				{$aGallery.name|htmlspecialchars|stripslashes}
 			</a>
 		</h3>

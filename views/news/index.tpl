@@ -1,6 +1,6 @@
 {include file="inc_header.tpl" page_title="News"}
 
-<form name="category" method="get" action="/{$aSection.tag}/news/" class="sortCat">
+<form name="category" method="get" action="/news/" class="sortCat">
 	Category: 
 	<select name="category">
 		<option value="">- All Categories -</option>
@@ -26,14 +26,14 @@
 			<img src="/image/news/{$aArticle.id}/?width=140">
 		{/if}
 		<h3>
-			<a href="/{$aSection.tag}/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
+			<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
 				{$aArticle.title|htmlspecialchars|stripslashes}
 			</a>
 		</h3>
 		<small><time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time> | Categories: {$aArticle.categories}</small>
 		<p>
 			{$aArticle.short_content|stripslashes}<br />
-			<a href="/{$aSection.tag}/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">More Info&raquo;</a>
+			<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">More Info&raquo;</a>
 		</p>
 	</div>
 {foreachelse}
