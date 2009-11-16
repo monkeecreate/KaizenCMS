@@ -52,7 +52,7 @@
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<a href="/admin/testimonials/delete/{$aTestimonial.id}/"
-						onclick="return alert('Are you sure you would like to delete this testimonial?');">
+						onclick="return confirm_('Are you sure you would like to delete this testimonial?');">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>

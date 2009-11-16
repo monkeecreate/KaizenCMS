@@ -28,7 +28,7 @@
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<a href="/admin/news/categories/delete/{$aCategory.id}/"
-					 onclick="return alert('Are you sure you would like to delete this category?');">
+					 onclick="return confirm_('Are you sure you would like to delete this category?');">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>

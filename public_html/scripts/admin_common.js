@@ -64,7 +64,18 @@ $(document).ready(function() {
 	$(".column").disableSelection();
 });
 
-
-/* Set equal heights for sidebar and main content box */
-
-// $(function(){ $('#page-wrapper').equalHeights(); });
+function check_fieldset(fieldset)
+{
+	var checked = 0;
+	
+	checked = $(fieldset).find('input::checkbox[checked]').length;
+	
+	if(checked > 0)
+		return true;
+	else
+		return false;
+}
+function confirm_(message)
+{
+	return confirm(message);
+}

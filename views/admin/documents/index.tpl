@@ -51,7 +51,7 @@
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<a href="/admin/documents/delete/{$aDocument.id}/"
-					 onclick="return alert('Are you sure you would like to delete this document?');">
+					 onclick="return confirm_('Are you sure you would like to delete this document?');">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>

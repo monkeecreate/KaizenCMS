@@ -248,7 +248,7 @@ class admin_events extends adminController
 		
 		$_SESSION["admin"]["admin_events"] = null;
 		
-		$this->forward("/admin/events/");
+		$this->forward("/admin/events/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete($aParams)
 	{
@@ -263,9 +263,8 @@ class admin_events extends adminController
 			,"admin->content->categories_assign_delete"
 		);
 		
-		$this->forward("/admin/events/");
+		$this->forward("/admin/events/?notice=".urlencode("Event removed successfully!"));
 	}
-	
 	function image_upload($aParams)
 	{
 		$aEvent = $this->db_results(
@@ -348,7 +347,7 @@ class admin_events extends adminController
 			,"admin->events->image->edit_s"
 		);
 
-		$this->forward("/admin/events/");
+		$this->forward("/admin/events/?notice=".urlencode("Image cropped successfully!"));
 	}
 	function image_delete($aParams)
 	{
@@ -366,7 +365,7 @@ class admin_events extends adminController
 		
 		@unlink($this->_settings->root_public."upload/events/".$id.".jpg");
 
-		$this->forward("/admin/events/");
+		$this->forward("/admin/events/?notice=".urlencode("Image removed successfully!"));
 	}
 	function categories_index()
 	{
@@ -408,7 +407,7 @@ class admin_events extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/events/categories/");
+		$this->forward("/admin/events/categories/?notice=".urlencode("Category added successfully!"));
 	}
 	function categories_edit($aParams)
 	{
@@ -443,7 +442,7 @@ class admin_events extends adminController
 			,"admin->events->categories->edit"
 		);
 
-		$this->forward("/admin/events/categories/");
+		$this->forward("/admin/events/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete($aParams)
 	{
@@ -458,7 +457,7 @@ class admin_events extends adminController
 			,"admin->events->category->delete_assign"
 		);
 
-		$this->forward("/admin/events/categories/");
+		$this->forward("/admin/events/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
 	

@@ -42,7 +42,7 @@
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<a href="/admin/promos/delete/{$aPromo.id}/"
-					 onclick="return alert('Are you sure you would like to delete this promo?');">
+					 onclick="return confirm_('Are you sure you would like to delete this promo?');">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>

@@ -51,7 +51,7 @@
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<a href="/admin/faq/delete/{$aQuestion.id}/"
-					 onclick="return alert('Are you sure you would like to delete this question?');">
+					 onclick="return confirm_('Are you sure you would like to delete this question?');">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>

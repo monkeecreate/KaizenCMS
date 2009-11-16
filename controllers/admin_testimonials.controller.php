@@ -350,7 +350,7 @@ class admin_testimonials extends adminController
 		
 		$_SESSION["admin"]["admin_testimonials"] = null;
 		
-		$this->forward("/admin/testimonials/");
+		$this->forward("/admin/testimonials/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete($aParams)
 	{
@@ -365,7 +365,7 @@ class admin_testimonials extends adminController
 			,"admin->testimonials->categories_assign_delete"
 		);
 		
-		$this->forward("/admin/testimonials/");
+		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial removed successfully!"));
 	}
 	function categories_index()
 	{
@@ -407,7 +407,7 @@ class admin_testimonials extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/testimonials/categories/");
+		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Category added successfully!"));
 	}
 	function categories_edit($aParams)
 	{
@@ -442,7 +442,7 @@ class admin_testimonials extends adminController
 			,"admin->testimonials->categories->edit"
 		);
 
-		$this->forward("/admin/testimonials/categories/");
+		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete($aParams)
 	{
@@ -457,7 +457,7 @@ class admin_testimonials extends adminController
 			,"admin->testimonials->category->delete_assign"
 		);
 
-		$this->forward("/admin/testimonials/categories/");
+		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
 	

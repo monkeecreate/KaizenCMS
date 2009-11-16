@@ -248,7 +248,7 @@ class admin_calendar extends adminController
 		
 		$_SESSION["admin"]["admin_calendar"] = null;
 		
-		$this->forward("/admin/calendar/");
+		$this->forward("/admin/calendar/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete($aParams)
 	{
@@ -263,7 +263,7 @@ class admin_calendar extends adminController
 			,"admin->content->categories_assign_delete"
 		);
 		
-		$this->forward("/admin/calendar/");
+		$this->forward("/admin/calendar/?notice=".urlencode("Event removed successfully!"));
 	}
 	
 	function image_upload($aParams)
@@ -348,7 +348,7 @@ class admin_calendar extends adminController
 			,"admin->calendar->image->edit_s"
 		);
 
-		$this->forward("/admin/calendar/");
+		$this->forward("/admin/calendar/?notice=".urlencode("Image cropped successfully!"));
 	}
 	function image_delete($aParams)
 	{
@@ -366,7 +366,7 @@ class admin_calendar extends adminController
 		
 		@unlink($this->_settings->root_public."upload/calendar/".$id.".jpg");
 
-		$this->forward("/admin/calendar/");
+		$this->forward("/admin/calendar/?notice=".urlencode("Image removed successfully!"));
 	}
 	function categories_index()
 	{
@@ -408,7 +408,7 @@ class admin_calendar extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/calendar/categories/");
+		$this->forward("/admin/calendar/categories/?notice=".urlencode("Category created successfully!"));
 	}
 	function categories_edit($aParams)
 	{
@@ -443,7 +443,7 @@ class admin_calendar extends adminController
 			,"admin->calendar->categories->edit"
 		);
 
-		$this->forward("/admin/calendar/categories/");
+		$this->forward("/admin/calendar/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete($aParams)
 	{
@@ -458,7 +458,7 @@ class admin_calendar extends adminController
 			,"admin->calendar->category->delete_assign"
 		);
 
-		$this->forward("/admin/calendar/categories/");
+		$this->forward("/admin/calendar/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
 	

@@ -1,5 +1,5 @@
 {include file="inc_header.tpl" page_title="Galleries :: Edit Gallery" menu="galleries"}
-<form method="post" action="/admin/galleries/add/s/">
+<form method="post" action="/admin/galleries/edit/s/">
 	<label>*Name:</label>
 	<input type="text" name="name" maxlength="100" value="{$aGallery.name|htmlspecialchars|stripslashes}"><br>
 	<label>Description:</label>

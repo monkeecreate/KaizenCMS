@@ -7,7 +7,7 @@
 	<span>{$aArticle.datetime_show|date_format}</span>
 </p><br />
 <form name="crop" action="/admin/news/image/edit/s/" method="post">
-	<input type="submit" value="Save Changes"> - <input type="button" value="Upload new photo" onclick="location.href = '/admin/member/news/photo/upload/{$photo.id}/';" /> - <input type="button" value="Remove Photo" onclick="location.href = '/admin/member/news/photo/delete/{$photo.id}/';" />
+	<input type="submit" value="Save Changes"> - <input type="button" value="Upload new photo" onclick="location.href = '/admin/news/image/{$aArticle.id}/upload/';" /> - <input type="button" value="Remove Photo" onclick="location.href = '/admin/news/image/{$aArticle.id}/delete/';" />
 	<table border="0">
 		<tr>
 			<td>

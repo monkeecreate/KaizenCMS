@@ -50,7 +50,7 @@
 					</a>
 					{if $aPage.perminate != 1}
 						<a href="/admin/news/delete/{$aArticle.id}/"
-						 onclick="return alert('Are you sure you would like to delete this news article?');">
+						 onclick="return confirm_('Are you sure you would like to delete this news article?');">
 							<img src="/images/admin/icons/bin_closed.png">
 						</a>
 					{/if}

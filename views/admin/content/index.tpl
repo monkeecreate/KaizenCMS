@@ -34,7 +34,7 @@
 					</a>
 					{if $aPage.perm != 1}
 						<a href="/admin/content/delete/{$aPage.id}/"
-						 onclick="return alert('Are you sure you would like to delete this page?');">
+						 onclick="return confirm_('Are you sure you would like to delete this page?');">
 							<img src="/images/admin/icons/bin_closed.png">
 						</a>
 					{/if}

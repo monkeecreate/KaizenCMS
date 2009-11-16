@@ -7,7 +7,7 @@
 	<span>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</span>
 </p><br />
 <form name="crop" action="/admin/events/image/edit/s/" method="post">
-	<input type="submit" value="Save Changes"> - <input type="button" value="Upload new photo" onclick="location.href = '/admin/member/events/photo/upload/{$photo.id}/';" /> - <input type="button" value="Remove Photo" onclick="location.href = '/admin/member/events/photo/delete/{$photo.id}/';" />
+	<input type="submit" value="Save Changes"> - <input type="button" value="Upload new photo" onclick="location.href = '/admin/events/image/{$aEvent.id}/upload/';" /> - <input type="button" value="Remove Photo" onclick="location.href = '/admin/events/image/{$aEvent.id}/delete/';" />
 	<table border="0">
 		<tr>
 			<td>

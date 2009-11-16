@@ -61,7 +61,7 @@
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<a href="/admin/galleries/delete/{$aGallery.id}/"
-						onclick="return alert('Are you sure you would like to delete this gallery?');">
+						onclick="return confirm_('Are you sure you would like to delete this gallery?');">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>

@@ -155,7 +155,7 @@ class admin_links extends adminController
 		
 		$_SESSION["admin"]["admin_links"] = null;
 		
-		$this->forward("/admin/links/");
+		$this->forward("/admin/links/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete($aParams)
 	{
@@ -178,7 +178,7 @@ class admin_links extends adminController
 			,"admin->links->categories_assign_delete"
 		);
 		
-		$this->forward("/admin/links/");
+		$this->forward("/admin/links/?notice=".urlencode("Link removed successfully!"));
 	}
 	function categories_index()
 	{
@@ -220,7 +220,7 @@ class admin_links extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/links/categories/");
+		$this->forward("/admin/links/categories/?notice=".urlencode("Category added successfully!"));
 	}
 	function categories_edit($aParams)
 	{
@@ -255,7 +255,7 @@ class admin_links extends adminController
 			,"admin->links->categories->edit"
 		);
 
-		$this->forward("/admin/links/categories/");
+		$this->forward("/admin/links/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete($aParams)
 	{
@@ -270,7 +270,7 @@ class admin_links extends adminController
 			,"admin->links->category->delete_assign"
 		);
 
-		$this->forward("/admin/links/categories/");
+		$this->forward("/admin/links/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
 	

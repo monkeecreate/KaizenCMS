@@ -245,7 +245,7 @@ class admin_documents extends adminController
 		
 		$_SESSION["admin"]["admin_documents"] = null;
 		
-		$this->forward("/admin/documents/");
+		$this->forward("/admin/documents/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete($aParams)
 	{
@@ -268,7 +268,7 @@ class admin_documents extends adminController
 			,"admin->documents->categories_assign_delete"
 		);
 		
-		$this->forward("/admin/documents/");
+		$this->forward("/admin/documents/?notice=".urlencode("Document removed successfully!"));
 	}
 	function categories_index()
 	{
@@ -310,7 +310,7 @@ class admin_documents extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/documents/categories/");
+		$this->forward("/admin/documents/categories/?notice=".urlencode("Category added successfully!"));
 	}
 	function categories_edit($aParams)
 	{
@@ -345,7 +345,7 @@ class admin_documents extends adminController
 			,"admin->documents->categories->edit"
 		);
 
-		$this->forward("/admin/documents/categories/");
+		$this->forward("/admin/documents/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete($aParams)
 	{
@@ -360,7 +360,7 @@ class admin_documents extends adminController
 			,"admin->documents->category->delete_assign"
 		);
 
-		$this->forward("/admin/documents/categories/");
+		$this->forward("/admin/documents/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
 	

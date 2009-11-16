@@ -152,7 +152,7 @@ class admin_faq extends adminController
 		
 		$_SESSION["admin"]["admin_faq"] = null;
 		
-		$this->forward("/admin/faq/");
+		$this->forward("/admin/faq/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete($aParams)
 	{
@@ -167,7 +167,7 @@ class admin_faq extends adminController
 			,"admin->faq->categories_assign_delete"
 		);
 		
-		$this->forward("/admin/faq/");
+		$this->forward("/admin/faq/?notice=".urlencode("Question removed successfully!"));
 	}
 	function categories_index()
 	{
@@ -209,7 +209,7 @@ class admin_faq extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/faq/categories/");
+		$this->forward("/admin/faq/categories/?notice=".urlencode("Category added successfully!"));
 	}
 	function categories_edit($aParams)
 	{
@@ -244,7 +244,7 @@ class admin_faq extends adminController
 			,"admin->faq->categories->edit"
 		);
 
-		$this->forward("/admin/faq/categories/");
+		$this->forward("/admin/faq/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete($aParams)
 	{
@@ -259,7 +259,7 @@ class admin_faq extends adminController
 			,"admin->faq->category->delete_assign"
 		);
 
-		$this->forward("/admin/faq/categories/");
+		$this->forward("/admin/faq/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
 	

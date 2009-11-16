@@ -137,7 +137,7 @@ class admin_promos extends adminController
 		
 		$_SESSION["admin"]["admin_promos"] = null;
 		
-		$this->forward("/admin/promos/?notice=".urlencode("Article created successfully!"));
+		$this->forward("/admin/promos/?notice=".urlencode("Promo created successfully!"));
 	}
 	function edit($aParams)
 	{
@@ -280,7 +280,7 @@ class admin_promos extends adminController
 		
 		$_SESSION["admin"]["admin_promos"] = null;
 		
-		$this->forward("/admin/promos/");
+		$this->forward("/admin/promos/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete($aParams)
 	{
@@ -295,7 +295,7 @@ class admin_promos extends adminController
 			,"admin->promos->positions_assign_delete"
 		);
 		
-		$this->forward("/admin/promos/");
+		$this->forward("/admin/promos/?notice=".urlencode("Promo removed successfully!"));
 	}
 	##################################
 	

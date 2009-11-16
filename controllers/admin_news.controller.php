@@ -218,7 +218,7 @@ class admin_news extends adminController
 		
 		$_SESSION["admin"]["admin_news"] = null;
 		
-		$this->forward("/admin/news/");
+		$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete($aParams)
 	{
@@ -233,7 +233,7 @@ class admin_news extends adminController
 			,"admin->news->categories_assign_delete"
 		);
 		
-		$this->forward("/admin/news/");
+		$this->forward("/admin/news/?notice=".urlencode("Article removed successfully!"));
 	}
 	
 	function image_upload($aParams)
@@ -318,7 +318,7 @@ class admin_news extends adminController
 			,"admin->news->image->edit_s"
 		);
 
-		$this->forward("/admin/news/");
+		$this->forward("/admin/news/?notice=".urlencode("Image cropped successfully!"));
 	}
 	function image_delete($aParams)
 	{
@@ -336,7 +336,7 @@ class admin_news extends adminController
 		
 		@unlink($this->_settings->root_public."upload/news/".$id.".jpg");
 
-		$this->forward("/admin/news/");
+		$this->forward("/admin/news/?notice=".urlencode("Image removed successfully!"));
 	}
 	function categories_index()
 	{
@@ -378,7 +378,7 @@ class admin_news extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/news/categories/");
+		$this->forward("/admin/news/categories/?notice=".urlencode("Category added successfully!"));
 	}
 	function categories_edit($aParams)
 	{
@@ -413,7 +413,7 @@ class admin_news extends adminController
 			,"admin->news->categories->edit"
 		);
 
-		$this->forward("/admin/news/categories/");
+		$this->forward("/admin/news/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete($aParams)
 	{
@@ -428,7 +428,7 @@ class admin_news extends adminController
 			,"admin->news->category->delete_assign"
 		);
 
-		$this->forward("/admin/news/categories/");
+		$this->forward("/admin/news/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
 	

@@ -104,7 +104,7 @@ class admin_galleries extends adminController
 		
 		$_SESSION["admin"]["admin_galleries"] = null;
 		
-		$this->forward("/admin/galleries/?notice=".urlencode("Testimonial created successfully!"));
+		$this->forward("/admin/galleries/?notice=".urlencode("Gallery created successfully!"));
 	}
 	function sort($aParams)
 	{
@@ -164,7 +164,7 @@ class admin_galleries extends adminController
 			);
 		}
 		
-		$this->forward("/admin/galleries/");
+		$this->forward("/admin/galleries/?notice=".urlencode("Sort order saved successfully!"));
 	}
 	function edit($aParams)
 	{
@@ -229,7 +229,7 @@ class admin_galleries extends adminController
 		
 		$_SESSION["admin"]["admin_galleries"] = null;
 		
-		$this->forward("/admin/galleries/");
+		$this->forward("/admin/galleries/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete($aParams)
 	{
@@ -259,7 +259,7 @@ class admin_galleries extends adminController
 		
 		@unlink($this->_settings->root_public."uploads/galleries/".$aParams["id"]."/");
 		
-		$this->forward("/admin/galleries/");
+		$this->forward("/admin/galleries/?notice=".urlencode("Gallery removed successfully!"));
 	}
 	function categories_index()
 	{
@@ -301,7 +301,7 @@ class admin_galleries extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/galleries/categories/");
+		$this->forward("/admin/galleries/categories/?notice=".urlencode("Category added successfully!"));
 	}
 	function categories_edit($aParams)
 	{
@@ -336,7 +336,7 @@ class admin_galleries extends adminController
 			,"admin->galleries->categories->edit"
 		);
 
-		$this->forward("/admin/galleries/categories/");
+		$this->forward("/admin/galleries/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete($aParams)
 	{
@@ -351,7 +351,7 @@ class admin_galleries extends adminController
 			,"admin->galleries->category->delete_assign"
 		);
 
-		$this->forward("/admin/galleries/categories/");
+		$this->forward("/admin/galleries/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	function photos_index($aParams)
 	{
@@ -445,7 +445,7 @@ class admin_galleries extends adminController
 			}
 		}
 		
-		$this->forward("/admin/galleries/".$aParams["gallery"]."/photos/");
+		$this->forward("/admin/galleries/".$aParams["gallery"]."/photos/?notice=".urlencode("Photo added successfully!"));
 	}
 	function photos_sort($aParams)
 	{
@@ -461,7 +461,7 @@ class admin_galleries extends adminController
 			);
 		}
 		
-		$this->forward("/admin/galleries/".$aParams["gallery"]."/photos/");
+		$this->forward("/admin/galleries/".$aParams["gallery"]."/photos/?notice=".urlencode("Sort order saved successfully!"));
 	}
 	function photos_default($aParams)
 	{
@@ -479,7 +479,7 @@ class admin_galleries extends adminController
 			,"admin->galleries->photo->default->set"
 		);
 		
-		$this->forward("/admin/galleries/".$aParams["gallery"]."/photos/");
+		$this->forward("/admin/galleries/".$aParams["gallery"]."/photos/?notice=".urlencode("Default image has been changed!"));
 	}
 	function photos_edit($aParams)
 	{
@@ -511,7 +511,7 @@ class admin_galleries extends adminController
 			,"admin->galleries->photos->edit"
 		);
 		
-		$this->forward("/admin/galleries/".$aParams["gallery"]."/photos/");
+		$this->forward("/admin/galleries/".$aParams["gallery"]."/photos/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function photos_delete($aParams)
 	{
@@ -530,7 +530,7 @@ class admin_galleries extends adminController
 			,"admin->galleries->photo->delete"
 		);
 		
-		$this->forward("/admin/galleries/".$aParams["gallery"]."/photos/");
+		$this->forward("/admin/galleries/".$aParams["gallery"]."/photos/?notice=".urlencode("Photo removed successfully!"));
 	}
 	##################################
 	

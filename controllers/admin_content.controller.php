@@ -85,7 +85,7 @@ class admin_content extends adminController
 		
 		$_SESSION["admin"]["admin_content"] = null;
 		
-		$this->forward("/admin/content/");
+		$this->forward("/admin/content/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete($aParams)
 	{
@@ -95,7 +95,7 @@ class admin_content extends adminController
 			,"admin->content->delete"
 		);
 		
-		$this->forward("/admin/content/");
+		$this->forward("/admin/content/?notice=".urlencode("Page removed successfully!"));
 	}
 	##################################
 	

@@ -62,7 +62,9 @@ $(function() {ldelim}
 			</div>
 			<div class="delete">
 				<a href="/admin/galleries/{$aGallery.id}/photos/edit/{$aPhoto.id}/"><img src="/images/admin/icons/pencil.png"></a>
-				<a href="/admin/galleries/{$aGallery.id}/photos/delete/{$aPhoto.id}/"><img src="/images/admin/icons/bin_closed.png"></a>
+				<a href="/admin/galleries/{$aGallery.id}/photos/delete/{$aPhoto.id}/"
+					onclick="return confirm_('Are you sure you would like to remove this photo?');">
+					<img src="/images/admin/icons/bin_closed.png"></a>
 			</div>
 		</div>
 	{foreachelse}

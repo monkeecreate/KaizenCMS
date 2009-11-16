@@ -98,7 +98,7 @@ class admin_users extends adminController
 		
 		$_SESSION["admin"]["admin_users"] = null;
 		
-		$this->forward("/admin/users/");
+		$this->forward("/admin/users/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete($aParams)
 	{
@@ -108,7 +108,7 @@ class admin_users extends adminController
 			,"admin->users->delete"
 		);
 		
-		$this->forward("/admin/users/");
+		$this->forward("/admin/users/?notice=".urlencode("User removed successfully!"));
 	}
 	##################################
 	
