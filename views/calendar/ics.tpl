@@ -1,0 +1,24 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+PRODID:-//{$domain}//calendar
+X-LOTUS-CHARSET:UTF-8
+X-WR-CALNAME:Calendar
+X-WR-CALDESC:Calendar
+X-WR-TIMEZONE:US/Central
+METHOD:PUBLISH
+
+{foreach from=$aEvents item=aEvent}
+BEGIN:VEVENT
+DTSTAMP:20091117T000000Z
+CLASS:PUBLIC
+SUMMARY:{$aEvent.title|htmlspecialchar|stripslashes}
+URL:http://{$domain}/Inauguration-President-US/
+DTSTART:20091117
+DURATION:P1D
+TRANSP:TRANSPARENT
+UID:{$aEvent.id}
+END:VEVENT
+{/foreach}
+
+END:VCALENDAR

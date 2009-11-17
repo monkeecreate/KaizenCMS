@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="Calendar"}
+{include file="inc_header.tpl" page_title="Calendar" menu="calendar"}
 
 <form name="category" method="get" action="/calendar/" class="sortCat">
 	Category: 
@@ -50,6 +50,11 @@
 			<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
 		</div>
 	{/if}
+</div>
+<div style="text-align:center;margin-top:10px">
+	<a href="/news/rss/">
+		<img src="/images/admin/icons/calendar.png"> Subscribe to Calendar
+	</a>
 </div>
 
 {include file="inc_footer.tpl"}

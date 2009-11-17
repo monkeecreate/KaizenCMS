@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="Downloads"}
+{include file="inc_header.tpl" page_title="Documents" menu="documents"}
 
 <form name="category" method="get" action="/documents/" class="sortCat">
 	Category: 
@@ -17,7 +17,7 @@
 	</script>
 </form>
 
-<h2>Downloads</h2>
+<h2>Documents</h2>
 
 <div class="clear"></div>
 {foreach from=$aDocuments item=aDocument}

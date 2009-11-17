@@ -1,4 +1,4 @@
-{include file="inc_header.tpl"}
+{include file="inc_header.tpl" menu="home"}
 <h1>HTML Ipsum Presents</h1>
 	       
 <p>

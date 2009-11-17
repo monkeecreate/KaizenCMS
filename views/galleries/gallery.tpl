@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="Photo Gallery"}
+{include file="inc_header.tpl" page_title="Photo Gallery" menu="galleries"}
 
 {head}
 <link rel="stylesheet" href="/scripts/jquery/prettyphoto/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />

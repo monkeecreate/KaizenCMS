@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="Testimonials"}
+{include file="inc_header.tpl" page_title="Testimonials" menu="testimonials"}
 
 {getContent tag="testimonials" var="aContent"}
 <h2>{$aContent.title|stripslashes}</h2>

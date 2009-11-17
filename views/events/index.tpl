@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="Events"}
+{include file="inc_header.tpl" page_title="Events" menu="events"}
 
 <form name="category" method="get" action="/events/" class="sortCat">
 	Category: 

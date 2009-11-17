@@ -1,4 +1,4 @@
-{include file="inc_header.tpl"}
+{include file="inc_header.tpl" page_title="Contact" menu="contact"}
 <form name="contact" method="post" action="/sendform/">
 	<input type="hidden" name="to" value="{$aForm.to}">
 	<input type="hidden" name="from" value="{$aForm.from}">

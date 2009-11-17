@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="News"}
+{include file="inc_header.tpl" page_title="News" menu="news"}
 {head}
 <link rel="alternate" type="application/rss+xml" title="News RSS" href="/news/rss/">
 {/head}
@@ -52,6 +52,11 @@
 			<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
 		</div>
 	{/if}
+</div>
+<div style="text-align:center;margin-top:10px">
+	<a href="/news/rss/">
+		<img src="/images/admin/icons/feed.png"> RSS Feed
+	</a>
 </div>
 
 {include file="inc_footer.tpl"}

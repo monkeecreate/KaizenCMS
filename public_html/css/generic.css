@@ -59,8 +59,8 @@ a:focus, a:hover {
 } 
 a { 
   color: #009; 
-  text-decoration: 
-  underline; 
+  text-decoration: underline;
+  outline: none;
 } 
 blockquote { 
   margin: 1.5em; 
@@ -96,7 +96,10 @@ pre {
 pre,code,tt { 
   font: 1em 'andale mono', 'lucida console', monospace; 
   line-height: 1.5; 
-} 
+}
+input {
+	outline: none;
+}
 /* Lists -------------------------------------------------------------- */ 
 li ul, li ol { 
   margin:0 1.5em; 
@@ -141,6 +144,13 @@ tfoot {
 } 
 caption { 
   background: #eee; 
+}
+/* Misc Items -------------------------------------------------------------- */ 
+img {
+	border: 0;
+}
+a img {
+	vertical-align: middle;
 }
 /* Misc classes -------------------------------------------------------------- */ 
 .small { 
@@ -187,4 +197,7 @@ caption {
 .bottom { 
   margin-bottom:0; 
   padding-bottom:0; 
+}
+.clear {
+	clear:both;
 }

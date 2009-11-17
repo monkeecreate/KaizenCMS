@@ -1,2 +1,81 @@
 body{
+	color: #363636;
+	background: #5c6949;
 }
+
+/* @group Headers */
+
+h2 {
+	font-size: 24px;
+	line-height: 24px;
+	border-bottom: 1px solid #B0B0B0;
+	margin: 24px 0;
+	padding: 0 0 2px;
+}
+h3 {
+	font-size:18px;
+	line-height:18px;
+	margin:24px 0 12px;
+	padding:0 0 6px;
+}
+
+/* @end Headers */
+
+/* @group Reset */
+
+a, a:visited {
+	color: #5B6599;
+}
+
+/* @end Reset */
+
+#wrapper {
+	width: 1000px;
+	margin: 0 auto;
+	background: #FFF;
+	padding: 20px;
+}
+#header {
+	background: #DFDFDF;
+	padding: 10px;
+	margin-bottom:20px;
+}
+#header ul#menu {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	clear: left;
+}
+#header ul#menu li {
+	float: left;
+	margin: 0;
+	padding: 0px;
+	border-right: 1px solid #AFAFAF;
+}
+#header ul#menu li a {
+	display: block;
+	padding: 5px 10px;
+	text-decoration: none;
+}
+#header ul#menu li a.selected {
+	color: #000;
+}
+#header ul#menu li:last-child {
+	border: 0;
+}
+
+/* @group Classes */
+
+form.sortCat {
+	float: right;
+	margin: 0 0 2px;
+}
+.contentList {
+	border-bottom: 1px solid #D2D2D2;
+	padding: 0 0 12px;
+}
+.contentList img {
+	float: left;
+	margin: 0 24px 12px 0;
+}
+/* @end Classes */
