@@ -1,5 +1,7 @@
 {include file="inc_header.tpl" page_title="News"}
-
+{head}
+<link rel="alternate" type="application/rss+xml" title="News RSS" href="/news/rss/">
+{/head}
 <form name="category" method="get" action="/news/" class="sortCat">
 	Category: 
 	<select name="category">

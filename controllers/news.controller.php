@@ -76,6 +76,55 @@ class news extends appController
 		
 		$this->tpl_display("news/index.tpl");
 	}
+	function rss()
+	{
+		## GET CURRENT PAGE NEWS
+		$sCurrentPage = $_GET["page"];
+		if(empty($sCurrentPage))
+			$sCurrentPage = 1;
+		
+		$sWhere = " WHERE `news`.`datetime_show` < ".time()." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
+		$sWhere .= " AND `news`.`active` = 1";
+		if(!empty($_GET["category"]))
+			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
+		
+		$aArticles = $this->db_results(
+			"SELECT `news`.* FROM `news` AS `news`"
+				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
+				." INNER JOIN `news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
+				.$sWhere
+				." GROUP BY `news`.`id`"
+				." ORDER BY `news`.`sticky` DESC, `news`.`datetime_show` DESC"
+				." LIMIT 0,15"
+			,"news->current_page"
+			,"all"
+		);
+	
+		foreach($aArticles as $x => $aArticle)
+		{
+			/*# Categories #*/
+			$aArticleCategories = $this->db_results(
+				"SELECT `name` FROM `news_categories` AS `categories`"
+					." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
+					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
+				,"new->article_categories"
+				,"col"
+			);
+		
+			$aArticles[$x]["categories"] = implode(", ", $aArticleCategories);
+			/*# Categories #*/
+		
+			/*# Image #*/
+			if(file_exists($this->_settings->root_public."upload/news/".$aArticle["id"].".jpg"))
+				$aArticles[$x]["image"] = 1;
+			/*# Image #*/
+		}
+
+		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
+		$this->tpl_assign("aArticles", $aArticles);
+		
+		$this->tpl_display("news/rss.tpl");
+	}
 	function article($aParams)
 	{
 		$aArticle = $this->db_results(

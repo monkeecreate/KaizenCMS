@@ -32,6 +32,10 @@ $aUrlPatterns = array(
 		"cmd" => "news",
 		"action" => "index"
 	),
+	"/news/rss/" => array(
+		"cmd" => "news",
+		"action" => "rss"
+	),
 	"/news/{id:[0-9]+}/{title:[^/]+}/" => array(
 		"cmd" => "news",
 		"action" => "article"

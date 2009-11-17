@@ -40,8 +40,8 @@ class admin_news extends adminController
 		else
 			$this->tpl_assign("aArticle",
 				array(
-					"datetime_show_date" => date("m/d/Y")
-					,"datetime_kill_date" => date("m/d/Y")
+					"datetime_show_date" => date("m/j/Y")
+					,"datetime_kill_date" => date("m/j/Y")
 					,"active" => 1
 					,"categories" => array()
 				)
