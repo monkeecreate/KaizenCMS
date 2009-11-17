@@ -1,5 +1,5 @@
 <?php
-class calendar extends apController
+class calendar extends appController
 {
 	function index()
 	{
@@ -77,6 +77,31 @@ class calendar extends apController
 		
 		$this->tpl_display("calendar/index.tpl");
 	}
+	function ics()
+	{
+		$sWhere = " WHERE `calendar`.`datetime_show` < ".time()." AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
+		$sWhere .= " AND `calendar`.`datetime_end` > ".time();
+		$sWhere .= " AND `calendar`.`active` = 1";
+		if(!empty($_GET["category"]))
+			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
+		
+		$aEvents = $this->db_results(
+			"SELECT `calendar`.* FROM `calendar` AS `calendar`"
+				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar`.`id` = `calendar_assign`.`eventid`"
+				." INNER JOIN `calendar_categories` AS `categories` ON `calendar_assign`.`categoryid` = `categories`.`id`"
+				.$sWhere
+				." GROUP BY `calendar`.`id`"
+				." ORDER BY `calendar`.`datetime_start` ASC"
+				." LIMIT 0,15"
+			,"calendar->ics"
+			,"all"
+		);
+
+		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
+		$this->tpl_assign("aEvents", $aEvents);
+		
+		$this->tpl_display("calendar/ics.tpl");
+	}
 	function event($aParams)
 	{
 		$aEvent = $this->db_results(
@@ -110,5 +135,25 @@ class calendar extends apController
 		$this->tpl_assign("aEvent", $aEvent);
 		
 		$this->tpl_display("calendar/event.tpl");
+	}
+	function event_ics($aParams)
+	{
+		$aEvent = $this->db_results(
+			"SELECT `calendar`.* FROM `calendar` AS `calendar`"
+				." WHERE `calendar`.`id` = ".$this->db_quote($aParams["id"], "integer")
+				." AND `calendar`.`active` = 1"
+				." AND `calendar`.`datetime_show` < ".time()
+				." AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")"
+			,"calendar->event"
+			,"row"
+		);
+		
+		if(empty($aEvent))
+			$this->error('404');
+
+		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
+		$this->tpl_assign("aEvent", $aEvent);
+		
+		$this->tpl_display("calendar/event_ics.tpl");
 	}
 }

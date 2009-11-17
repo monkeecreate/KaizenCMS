@@ -52,9 +52,17 @@ $aUrlPatterns = array(
 		"cmd" => "calendar",
 		"action" => "index"
 	),
+	"/calendar/ics/" => array(
+		"cmd" => "calendar",
+		"action" => "ics"
+	),
 	"/calendar/{id:[0-9]+}/{title:[^/]+}/" => array(
 		"cmd" => "calendar",
 		"action" => "event"
+	),
+	"/calendar/{id:[0-9]+}/{title:[^/]+}/ics/" => array(
+		"cmd" => "calendar",
+		"action" => "event_ics"
 	),
 	"/faq/" => array(
 		"cmd" => "faq",

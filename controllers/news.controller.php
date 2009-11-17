@@ -78,11 +78,6 @@ class news extends appController
 	}
 	function rss()
 	{
-		## GET CURRENT PAGE NEWS
-		$sCurrentPage = $_GET["page"];
-		if(empty($sCurrentPage))
-			$sCurrentPage = 1;
-		
 		$sWhere = " WHERE `news`.`datetime_show` < ".time()." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
 		$sWhere .= " AND `news`.`active` = 1";
 		if(!empty($_GET["category"]))
@@ -96,29 +91,9 @@ class news extends appController
 				." GROUP BY `news`.`id`"
 				." ORDER BY `news`.`sticky` DESC, `news`.`datetime_show` DESC"
 				." LIMIT 0,15"
-			,"news->current_page"
+			,"news->rss"
 			,"all"
 		);
-	
-		foreach($aArticles as $x => $aArticle)
-		{
-			/*# Categories #*/
-			$aArticleCategories = $this->db_results(
-				"SELECT `name` FROM `news_categories` AS `categories`"
-					." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
-					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-				,"new->article_categories"
-				,"col"
-			);
-		
-			$aArticles[$x]["categories"] = implode(", ", $aArticleCategories);
-			/*# Categories #*/
-		
-			/*# Image #*/
-			if(file_exists($this->_settings->root_public."upload/news/".$aArticle["id"].".jpg"))
-				$aArticles[$x]["image"] = 1;
-			/*# Image #*/
-		}
 
 		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
 		$this->tpl_assign("aArticles", $aArticles);
@@ -151,7 +126,7 @@ class news extends appController
 		$aArticle["categories"] = implode(", ", $aCategories);
 		
 		/*# Image #*/
-		if(file_exists($this->_settings->root_public."upload/news/".$aArticle["id"].".jpg"))
+		if(file_exists($this->_settings->root_public."uploads/news/".$aArticle["id"].".jpg"))
 			$aArticle["image"] = 1;
 		/*# Image #*/
 
