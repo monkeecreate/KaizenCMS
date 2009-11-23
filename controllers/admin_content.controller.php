@@ -25,7 +25,7 @@ class admin_content extends adminController
 	}
 	function add_s()
 	{
-		if(empty($_POST["header_title"]) || empty($_POST["title"]))
+		if(empty($_POST["title"]))
 		{
 			$_SESSION["admin"]["admin_content"] = $_POST;
 			$this->forward("/admin/content/add/?error=".urlencode("Please fill in all required fields!"));
@@ -69,7 +69,7 @@ class admin_content extends adminController
 	}
 	function edit_s()
 	{
-		if(empty($_POST["header_title"]) || empty($_POST["title"]))
+		if(empty($_POST["title"]))
 		{
 			$_SESSION["admin"]["admin_content"] = $_POST;
 			$this->forward("/admin/content/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));

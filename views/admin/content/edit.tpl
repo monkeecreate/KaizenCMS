@@ -11,4 +11,21 @@
 	<input type="submit" value="Save Changes"> <input type="button" value="Cancel" onclick="location.href = '/admin/content/';">
 	<input type="hidden" name="id" value="{$aPage.id}">
 </form>
+<script type="text/javascript">
+{literal}
+$(function(){
+	$('form').submit(function(){
+		error = 0;
+		
+		if($(this).find('input[name=title]').val() == '')
+		{
+			alert("Please fill in a page title.");
+			return false;
+		}
+		
+		return true;
+	});
+});
+{/literal}
+</script>
 {include file="inc_footer.tpl"}

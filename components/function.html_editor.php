@@ -21,7 +21,7 @@ function smarty_function_html_editor($aParams, &$smarty)
 	$return .= "\ttheme : 'advanced',\n";
 	//$return .= "\tskin : 'o2k7',\n";
 	$return .= "\tplugins : 'imagemanager,filemanager,advimage,advlink,paste,table,preview,fullscreen',\n";
-	$return .= "\teditor_selector : 'wysiwyg',\n";
+	$return .= "\teditor_selector : '".$aParams["name"]."_editor',\n";
 	$return .= "\trelative_urls: false,\n";
 	$return .= "\twidth: '".$width."',\n";
 	$return .= "\theight: '".$height."',\n";
@@ -36,7 +36,7 @@ function smarty_function_html_editor($aParams, &$smarty)
 	$return .= "\ttheme_advanced_blockformats : 'p,h2,h3'\n";
 	$return .= "});\n";
 	$return .= "</script>\n";
-	$return .= "<textarea name='".$aParams["name"]."' class='wysiwyg'>".$content."</textarea><br>";
+	$return .= "<textarea name='".$aParams["name"]."' class='".$aParams["name"]."_editor'>".$content."</textarea><br>";
 	
 	return $return;
 }

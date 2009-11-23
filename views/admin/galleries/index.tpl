@@ -43,12 +43,12 @@
 				<td class="small center">{$aGallery.photos}</td>
 				<td class="small center">
 					{if $aGallery.sort_order != 1}
-						<a href="/admin/galleries/sort/{$aTour.id}/up/"><img src="/images/admin/icons/bullet_arrow_up.png"></a>
+						<a href="/admin/galleries/sort/{$aGallery.id}/up/"><img src="/images/admin/icons/bullet_arrow_up.png"></a>
 					{else}
 						<img src="/images/blank.gif" style="width:16px;height:16px;">
 					{/if}
 					{if $aGallery.sort_order != $maxsort}
-						<a href="/admin/galleries/sort/{$aTour.id}/down/"><img src="/images/admin/icons/bullet_arrow_down.png"></a>
+						<a href="/admin/galleries/sort/{$aGallery.id}/down/"><img src="/images/admin/icons/bullet_arrow_down.png"></a>
 					{else}
 						<img src="/images/blank.gif" style="width:16px;height:16px;">
 					{/if}

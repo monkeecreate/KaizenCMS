@@ -12,6 +12,10 @@ $aUrlPatterns_import = array(
         "cmd" => "admin_faq",
         "action" => "add_s"
     ),
+	"/admin/faq/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+        "cmd" => "admin_faq",
+        "action" => "sort"
+    ),
 	"/admin/faq/edit/{id:[0-9]+}/" => array(
         "cmd" => "admin_faq",
         "action" => "edit"

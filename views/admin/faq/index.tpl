@@ -31,6 +31,9 @@
 	<thead>
 		<tr>
 			<th sort="title">Question</th>
+			{if empty($sCategory)}
+				<th>Order</td>
+			{/if}
 			<th sort="active">Active</th>
 			<th></th>
 		</tr>
@@ -39,6 +42,20 @@
 		{foreach from=$aQuestions item=aQuestion}
 			<tr>
 				<td>{$aQuestion.question|substr:0:80}{if strlen($aQuestion.question) > 80}...{/if}</td>
+				{if empty($sCategory)}
+					<td class="small center">
+						{if $aQuestion.sort_order != 1}
+							<a href="/admin/faq/sort/{$aQuestion.id}/up/"><img src="/images/admin/icons/bullet_arrow_up.png"></a>
+						{else}
+							<img src="/images/blank.gif" style="width:16px;height:16px;">
+						{/if}
+						{if $aQuestion.sort_order != $maxsort && count($aQuestions) > 1}
+							<a href="/admin/faq/sort/{$aQuestion.id}/down/"><img src="/images/admin/icons/bullet_arrow_down.png"></a>
+						{else}
+							<img src="/images/blank.gif" style="width:16px;height:16px;">
+						{/if}
+					</td>
+				{/if}
 				<td class="small center">
 					{if $aQuestion.active == 1}
 						<img src="/images/admin/icons/accept.png">
