@@ -11,7 +11,7 @@
 	<label>*Question:</label>
 	<textarea name="question" class="elastic">{$aQuestion.question|htmlspecialchars|stripslashes}</textarea><br>
 	<label>Answer:</label>
-	<textarea name="answer" class="elastic">{$aQuestion.answer|htmlspecialchars|stripslashes}</textarea><br>
+	{html_editor content=$aQuestion.answer name="answer"}
 	<div class="clear"></div>
 	<fieldset id="fieldset_categories">
 		<legend>Assign question to category:</legend>
