@@ -1,33 +1,36 @@
 <?php
 class Paginate
 {
-	public $per_page;
+	public $perPage;
 	public $items;
-	public $cur_page;
+	public $sCurrentPage;
 	public $page_link;
 	private $pages;
 	
-	function paginate($per_page, $items, $cur_page, $page_link = "")
+	function paginate($perPage, $items, $sCurrentPage, $page_link = "")
 	{
-		$this->per_page = $per_page;
+		$this->perPage = $perPage;
 		$this->items = $items;
-		$this->cur_page = (int)$cur_page;
+		$this->sCurrentPage = (int)$sCurrentPage;
 		$this->page_link = $page_link;
 		
-		if(empty($this->cur_page))
-			$this->cur_page = 1;
+		if(empty($this->sCurrentPage))
+			$this->sCurrentPage = 1;
 		
-		$this->pages = ceil($this->items / $this->per_page);
+		if($this->items > 0)
+			$this->pages = ceil($this->items / $this->perPage);
+		else
+			$this->pages = 0;
 		
-		if($this->cur_page > $this->pages)
-			$this->cur_page = $this->pages;
+		if($this->sCurrentPage > $this->pages)
+			$this->sCurrentPage = $this->pages;
 	}
 	
 	## GET #########
 	function get_start()
 	{
-		if($this->cpage > 1)
-			$start = ($this->cpage * $this->ppage) - $this->ppage;
+		if($this->sCurrentPage > 1)
+			$start = ($this->sCurrentPage * $this->perPage) - $this->perPage;
 		else
 			$start = 0;
 		
@@ -40,14 +43,35 @@ class Paginate
 	################
 	
 	## BUILD #######
-	function build_array($around = 0, $text_back = "Back", $text_next = "Next")
+	function build_array()
+	{
+		$aPaging = array(
+			"back" => array(
+				"page" => $this->sCurrentPage - 1,
+				"use" => true
+			),
+			"next" => array(
+				"page" => $this->sCurrentPage + 1,
+				"use" => true
+			)
+		);
+		
+		if(($this->sCurrentPage - 1) < 1 || $this->sCurrentPage == 1)
+			$aPaging["back"]["use"] = false;
+		
+		if($this->sCurrentPage == $this->pages)
+			$aPaging["next"]["use"] = false;
+		
+		return $aPaging;
+	}
+	function build_array_arround($around = 0, $text_back = "Back", $text_next = "Next")
 	{
 		$aPaging = array();
 		
 		## BACK ##
-		if(($this->cur_page - $around) > 1)
+		if(($this->sCurrentPage - $around) > 1)
 			$aPaging[] = array(
-				"page" => $this->cur_page - 1
+				"page" => $this->sCurrentPage - 1
 				,"text" => $text_back
 				,"type" => "move"
 			);
@@ -56,27 +80,28 @@ class Paginate
 		$around_tmp = $around;
 		while($around_tmp > 0)
 		{
-			$page = $this->cur_page - $around_tmp;
-			$aPaging[] = array(
-				"page" => $page
-				,"text" => $page
-				,"type" => "around"
-			);
+			$page = $this->sCurrentPage - $around_tmp;
+			if($page > 0)
+				$aPaging[] = array(
+					"page" => $page
+					,"text" => $page
+					,"type" => "around"
+				);
 			
 			$around_tmp--;
 		}
 		
 		## Current Page ##
 		$aPaging[] = array(
-			"page" => $this->cur_page
-			,"text" => $this->cur_page
+			"page" => $this->sCurrentPage
+			,"text" => $this->sCurrentPage
 			,"type" => "cur"
 		);
 		
 		$around_tmp = 1;
-		while($around_tmp <= $around && ($this->cur_page + $around_tmp) <= $this->pages)
+		while($around_tmp <= $around && ($this->sCurrentPage + $around_tmp) <= $this->pages)
 		{
-			$page = $this->cur_page + $around_tmp;
+			$page = $this->sCurrentPage + $around_tmp;
 			$aPaging[] = array(
 				"page" => $page
 				,"text" => $page
@@ -86,9 +111,9 @@ class Paginate
 			$around_tmp++;
 		}
 		
-		if(($this->cur_page + $around) < $this->pages)
+		if(($this->sCurrentPage + $around) < $this->pages)
 			$aPaging[] = array(
-				"page" => $this->cur_page + 1
+				"page" => $this->sCurrentPage + 1
 				,"text" => $text_next
 				,"type" => "move"
 			);
