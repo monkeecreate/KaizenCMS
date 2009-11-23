@@ -43,7 +43,7 @@ class faq extends appController
 				." INNER JOIN `faq_categories` AS `categories` ON `faq_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `faq`.`id`"
-				." ORDER BY `faq`.`question`"
+				." ORDER BY `faq`.`sort_order`"
 				." LIMIT ".$start.",".$sPerPage
 			,"faq->current_page"
 			,"all"

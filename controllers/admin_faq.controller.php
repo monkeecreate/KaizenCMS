@@ -17,14 +17,21 @@ class admin_faq extends adminController
 			"SELECT `faq`.* FROM `faq`"
 				.$sSQLCategory
 				." GROUP BY `faq`.`id`"
-				." ORDER BY `faq`.`question` DESC"
+				." ORDER BY `faq`.`sort_order`"
 			,"admin->faq->index"
 			,"all"
+		);
+		
+		$sMaxSort = $this->db_results(
+			"SELECT MAX(`sort_order`) FROM `faq`"
+			,"admin->faq->maxsort"
+			,"one"
 		);
 		
 		$this->tpl_assign("aCategories", $this->get_categories());
 		$this->tpl_assign("sCategory", $_GET["category"]);
 		$this->tpl_assign("aQuestions", $aQuestions);
+		$this->tpl_assign("maxsort", $sMaxSort);
 		$this->tpl_display("faq/index.tpl");
 	}
 	function add()
@@ -50,6 +57,15 @@ class admin_faq extends adminController
 			$this->forward("/admin/faq/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sOrder = $this->db_results(
+			"SELECT MAX(`sort_order`) + 1 FROM `faq`"
+			,"admin->faq->add->max_order"
+			,"one"
+		);
+		
+		if(empty($sOrder))
+			$sOrder = 1;
+		
 		if(!empty($_POST["active"]))
 			$active = 1;
 		else
@@ -57,11 +73,12 @@ class admin_faq extends adminController
 		
 		$sID = $this->db_results(
 			"INSERT INTO `faq`"
-				." (`question`, `answer`, `active`)"
+				." (`question`, `answer`, `sort_order`, `active`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["question"], "text")
 					.", ".$this->db_quote($_POST["answer"], "text")
+					.", ".$this->db_quote($sOrder, "integer")
 					.", ".$this->db_quote($active, "integer")
 				.")"
 			,"admin->faq->add"
@@ -82,6 +99,66 @@ class admin_faq extends adminController
 		$_SESSION["admin"]["admin_faq"] = null;
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Question created successfully!"));
+	}
+	function sort($aParams)
+	{
+		$aGallery = $this->db_results(
+			"SELECT * FROM `faq`"
+				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+			,"admin->faq->sort"
+			,"row"
+		);
+		
+		if($aParams["sort"] == "up")
+		{
+			$aOld = $this->db_results(
+				"SELECT * FROM `faq`"
+					." WHERE `sort_order` < ".$aGallery["sort_order"]
+					." ORDER BY `sort_order` DESC"
+				,"admin->faq->sort->up->new_pos"
+				,"row"
+			);
+			
+			$this->db_results(
+				"UPDATE `faq` SET"
+					." `sort_order` = ".$this->db_quote($aOld["sort_order"], "text")
+					." WHERE `id` = ".$this->db_quote($aGallery["id"], "integer")
+				,"admin->faq->sort->up->update_pos1"
+			);
+			
+			$this->db_results(
+				"UPDATE `faq` SET"
+					." `sort_order` = ".$this->db_quote($aGallery["sort_order"], "text")
+					." WHERE `id` = ".$this->db_quote($aOld["id"], "integer")
+				,"admin->faq->sort->up->update_pos2"
+			);
+		}
+		elseif($aParams["sort"] == "down")
+		{
+			$aOld = $this->db_results(
+				"SELECT * FROM `faq`"
+					." WHERE `sort_order` > ".$aGallery["sort_order"]
+					." ORDER BY `sort_order` ASC"
+				,"admin->faq->sort->down->new_pos"
+				,"row"
+			);
+			
+			$this->db_results(
+				"UPDATE `faq` SET"
+					." `sort_order` = ".$this->db_quote($aOld["sort_order"], "text")
+					." WHERE `id` = ".$this->db_quote($aGallery["id"], "integer")
+				,"admin->faq->sort->down->update_pos1"
+			);
+			
+			$this->db_results(
+				"UPDATE `faq` SET"
+					." `sort_order` = ".$this->db_quote($aGallery["sort_order"], "text")
+					." WHERE `id` = ".$this->db_quote($aOld["id"], "integer")
+				,"admin->faq->sort->down->update_pos2"
+			);
+		}
+		
+		$this->forward("/admin/faq/?notice=".urlencode("Sort order saved successfully!"));
 	}
 	function edit($aParams)
 	{
