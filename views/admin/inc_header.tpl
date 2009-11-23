@@ -13,6 +13,8 @@
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.accordion.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.slider.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.dialog.js"></script>
+	<script type="text/javascript" src="/scripts/jquery-ui/effects.core.js"></script>	
+	<script type="text/javascript" src="/scripts/jquery-ui/effects.shake.js"></script>
 	<script type="text/javascript" src="/scripts/admin_common.js"></script>
 </head>
 <body>
@@ -165,7 +167,7 @@
 				&nbsp;
 			{/if}
 		</div>
-		<div id="body-container"{if $loggedin != 1} style="width:445px;"{/if}>
+		<div id="body-container"{if $loggedin != 1} style="width:448px;"{/if}>
 			{if !empty($page_error)}
 				<div class="ui-state-error ui-corner-all notice">
 					<div class="icon ui-icon ui-icon-alert"></div>
