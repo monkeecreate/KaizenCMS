@@ -79,3 +79,9 @@ function confirm_(message)
 {
 	return confirm(message);
 }
+
+// To Add Categories, etc.
+function addItem(showElement, hideElement) {
+	$(hideElement).hide();
+	$(showElement).fadeIn("slow");		
+}
