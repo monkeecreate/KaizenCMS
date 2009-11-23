@@ -133,27 +133,27 @@
 						autoHeight: false,
 						header: ".header",
 						active: 
-						{if $menu == 'users'}
+						{if $menu == 'content'}
 							0
-						{elseif $menu == 'content'}
-							1
 						{elseif $menu == 'news'}
-							2
+							1
 						{elseif $menu == 'events'}
-							3
+							2
 						{elseif $menu == 'calendar'}
-							4
+							3
 						{elseif $menu == 'faq'}
-							5
+							4
 						{elseif $menu == 'links'}
-							6
+							5
 						{elseif $menu == 'documents'}
-							7
+							6
 						{elseif $menu == 'testimonials'}
-							8
+							7
 						{elseif $menu == 'galleries'}
-							9
+							8
 						{elseif $menu == 'promos'}
+							9
+						{elseif $menu == 'users'}
 							10
 						{else}
 							0
