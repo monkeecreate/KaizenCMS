@@ -11,7 +11,36 @@
 	{rdelim});
 </script>
 {/head}
-<div class="clear"></div>
+<div id="add-category" style="display:none;">
+	<form method="post" action="/admin/calendar/categories/add/s/">
+		<label>*Name:</label>
+		<input type="text" name="name" maxlength="100" value="{$aCategory.name|stripslashes}"><br>
+		<input type="submit" value="Add Category"> <input type="button" value="Cancel" onclick="location.href = '/admin/calendar/categories/';">
+	</form>
+	<script type="text/javascript">
+	{literal}
+	$(function(){
+		$('form').submit(function(){
+			error = 0;
+
+			if($(this).find('input[name=name]').val() == '')
+			{
+				alert("Please fill in category name.");
+				return false;
+			}
+
+			return true;
+		});
+	});
+	{/literal}
+	</script>
+</div>
+<div id="add-category-btn" class="float-right" style="margin-bottom:10px;">
+	<a href="#" id="dialogbtn" onClick="addItem('#add-category', '#add-category-btn');" class="btn ui-button ui-corner-all ui-state-default">
+		<span class="icon ui-icon ui-icon-circle-plus"></span> Add Category
+	</a>
+</div>
+<div class="clear-right">&nbsp;</div>
 <table class="dataTable">
 	<thead>
 		<tr>
