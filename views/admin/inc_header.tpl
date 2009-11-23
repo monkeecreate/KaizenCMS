@@ -31,13 +31,6 @@
 		<div id="menu">
 			{if $loggedin == 1}
 				<div class="menu">
-					<div class="header"><a href="#" tabindex="-1">Users</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/users/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add User</a></li>
-							<li><a href="/admin/users/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Users</a></li>
-						</ul>
-					</div>
 					<div class="header"><a href="#" tabindex="-1">Content Pages</a></div>
 					<div class="info">
 						<ul>
@@ -125,6 +118,13 @@
 							<li><a href="/admin/promos/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Promos</a></li>
 						</ul>
 					</div>
+					<div class="header"><a href="#" tabindex="-1">Users</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/users/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add User</a></li>
+							<li><a href="/admin/users/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Users</a></li>
+						</ul>
+					</div>
 				</div>
 				<script type="text/javascript">
 				$(function(){ldelim}
@@ -133,27 +133,27 @@
 						autoHeight: false,
 						header: ".header",
 						active: 
-						{if $menu == 'users'}
+						{if $menu == 'content'}
 							0
-						{elseif $menu == 'content'}
-							1
 						{elseif $menu == 'news'}
-							2
+							1
 						{elseif $menu == 'events'}
-							3
+							2
 						{elseif $menu == 'calendar'}
-							4
+							3
 						{elseif $menu == 'faq'}
-							5
+							4
 						{elseif $menu == 'links'}
-							6
+							5
 						{elseif $menu == 'documents'}
-							7
+							6
 						{elseif $menu == 'testimonials'}
-							8
+							7
 						{elseif $menu == 'galleries'}
-							9
+							8
 						{elseif $menu == 'promos'}
+							9
+						{elseif $menu == 'users'}
 							10
 						{else}
 							0
