@@ -145,6 +145,7 @@ class admin_news extends adminController
 			
 			$aArticle["datetime_show_date"] = date("m/d/Y", $aArticle["datetime_show"]);
 			$aArticle["datetime_kill_date"] = date("m/d/Y", $aArticle["datetime_kill"]);
+			$aArticle["updated_at"] = date("Y-m-d h:i:s", strtotime($aArticle["updated_at"]));
 			
 			$this->tpl_assign("aArticle", $aArticle);
 		}
