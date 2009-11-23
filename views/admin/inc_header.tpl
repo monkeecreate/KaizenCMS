@@ -31,13 +31,6 @@
 		<div id="menu">
 			{if $loggedin == 1}
 				<div class="menu">
-					<div class="header"><a href="#" tabindex="-1">Users</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/users/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add User</a></li>
-							<li><a href="/admin/users/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Users</a></li>
-						</ul>
-					</div>
 					<div class="header"><a href="#" tabindex="-1">Content Pages</a></div>
 					<div class="info">
 						<ul>
@@ -123,6 +116,13 @@
 						<ul>
 							<li><a href="/admin/promos/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Promo</a></li>
 							<li><a href="/admin/promos/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Promos</a></li>
+						</ul>
+					</div>
+					<div class="header"><a href="#" tabindex="-1">Users</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/users/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add User</a></li>
+							<li><a href="/admin/users/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Users</a></li>
 						</ul>
 					</div>
 				</div>
