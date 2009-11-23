@@ -267,7 +267,7 @@ class admin_galleries extends adminController
 		
 		$aCategories = $this->db_results(
 			"SELECT * FROM `galleries_categories`"
-				." ORDER BY `categories`.`name`"
+				." ORDER BY `name`"
 			,"admin->galleries->categories"
 			,"all"
 		);

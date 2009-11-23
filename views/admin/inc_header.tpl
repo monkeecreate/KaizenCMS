@@ -165,7 +165,7 @@
 				&nbsp;
 			{/if}
 		</div>
-		<div id="body-container">
+		<div id="body-container"{if $loggedin != 1} style="width:445px;"{/if}>
 			{if !empty($page_error)}
 				<div class="ui-state-error ui-corner-all notice">
 					<div class="icon ui-icon ui-icon-alert"></div>
