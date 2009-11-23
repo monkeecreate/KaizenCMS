@@ -52,7 +52,7 @@
 	{/if}
 </div>
 <div style="text-align:center;margin-top:10px">
-	<a href="/news/rss/">
+	<a href="/calendar/rss/">
 		<img src="/images/admin/icons/calendar.png"> Subscribe to Calendar
 	</a>
 </div>

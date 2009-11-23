@@ -154,6 +154,11 @@ class calendar extends appController
 		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
 		$this->tpl_assign("aEvent", $aEvent);
 		
+		header("Content-type: text/calendar");
+		header("Content-Transfer-Encoding: Binary");
+		header("Content-length: ".strlen($sFile));
+		header("Content-disposition: attachment; filename=\"event.ics\"");
+
 		$this->tpl_display("calendar/event_ics.tpl");
 	}
 }
