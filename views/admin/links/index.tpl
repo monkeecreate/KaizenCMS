@@ -35,7 +35,7 @@
 					<a href="/admin/links/edit/{$aLink.id}/">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
-					<a href="/admin/links/delete/{$aDocument.id}/"
+					<a href="/admin/links/delete/{$aLink.id}/"
 					 onclick="return confirm_('Are you aLink you would like to delete this link?');">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
