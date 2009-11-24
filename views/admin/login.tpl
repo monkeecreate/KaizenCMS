@@ -1,13 +1,11 @@
 {include file="inc_header.tpl" page_title="Login" page_login=1}
-{php}if ($_GET['error']) {{/php}
-	{literal}
+{if $smarty.get.error}
 	<script type="text/javascript">
-	$(document).ready(function(){
-		$("#content").effect("shake", { times:1 }, 100);
-	});
+	$(document).ready(function(){ldelim}
+		$("#content").effect("shake", {ldelim} times:1 {rdelim}, 100);
+	{rdelim});
 	</script>
-	{/literal}
-{php}}{/php}
+{/if}
 <form name="login" method="post" action="/admin/login/">
 	<label>Username:</label>
 	<input type="text" class="text" name="username" maxlength="100"><br>
