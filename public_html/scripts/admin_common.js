@@ -100,7 +100,7 @@ function addCategory()
 					return false;
 				} else {
 					$.post("/admin/news/categories/add/s/", $("#addCategory-form").serialize());
-					$(this).dialog('close');
+					window.location.replace("/admin/news/categories/?notice=Category%20added%20successfully!");
 				}
 			},
 			Cancel: function() {

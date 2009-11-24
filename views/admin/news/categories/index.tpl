@@ -23,7 +23,7 @@
 	</a>
 </div>
 <div class="clear-right">&nbsp;</div>
-<table class="dataTable">
+<table id="categoryList" class="dataTable">
 	<thead>
 		<tr>
 			<th sort="name">Name</th>
