@@ -1,5 +1,5 @@
 $(document).ready(function() { 
-
+	
 	// Accordion
 	$(".accordion").accordion({
 		collapsible: true,
@@ -81,7 +81,31 @@ function confirm_(message)
 }
 
 // To Add Categories, etc.
-function addItem(showElement, hideElement) {
+function addItem(showElement, hideElement)
+{
 	$(hideElement).hide();
 	$(showElement).fadeIn("slow");		
+}
+
+// Add category dialog
+function addCategory() 
+{			
+	$("#add-category").dialog({
+		bgiframe: true,
+		modal: true,
+		buttons: {
+			'Create Category': function() {				
+				if($(this).find('input[name=name]').val() == '') {
+					alert("Please fill in category name.");
+					return false;
+				} else {
+					$.post("/admin/news/categories/add/s/", $("#addCategory-form").serialize());
+					$(this).dialog('close');
+				}
+			},
+			Cancel: function() {
+				$(this).dialog('close');
+			}
+		}
+	});
 }

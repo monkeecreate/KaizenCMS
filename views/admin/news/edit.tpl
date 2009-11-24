@@ -3,6 +3,10 @@
 	<div id="sidebar" class="portlet">
 		<div class="portlet-content">
 			<div class="section">
+				<label>Last Updated:</label>
+				{$aArticle.updated_at}
+			</div>
+			<div class="section">
 				<label>Use Unpublish:</label>
 				<input type="checkbox" name="use_kill" value="1"{if $aArticle.use_kill == 1} checked="checked"{/if}> Yes<br />
 				<span class="input_caption">Controls whether the Unpublish date/time is used.</span>
