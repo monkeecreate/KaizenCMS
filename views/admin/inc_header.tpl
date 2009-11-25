@@ -23,7 +23,7 @@
 	<div id="header">
 		<div id="header-userinfo">
 			{if !empty($user_details)}
-				Logged in as <b>{$user_details.fname} {$user_details.lname}</b> <span class="divider">|</span> <a href="/admin/logout/">Logout</a>
+				Logged in as <b>{$user_details.fname} {$user_details.lname}</b> <span class="divider">|</span> <a href="/admin/logout/" title="Logout">Logout</a>
 			{else}
 				&nbsp;
 			{/if}
@@ -72,7 +72,7 @@
 					<div class="header"><a href="#" tabindex="-1">FAQ</a></div>
 					<div class="info">
 						<ul>
-							<li><a href="/admin/faq/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Question & Answer</a></li>
+							<li><a href="/admin/faq/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Question &amp; Answer</a></li>
 							<li><a href="/admin/faq/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Question</a></li>
 							<li><a href="/admin/faq/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
 							<li><a href="/admin/faq/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>

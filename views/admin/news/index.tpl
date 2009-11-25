@@ -29,16 +29,16 @@
 				<td class="center">{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</td>
 				<td class="small center">
 					{if $aArticle.datetime_show < $smarty.now && ($aArticle.use_kill == 0 || $aArticle.datetime_kill > $smarty.now)}
-						<img src="/images/admin/icons/accept.png">
+						<img src="/images/admin/icons/accept.png" alt="Is Published">
 					{else}
-						<img src="/images/admin/icons/cancel.png">
+						<img src="/images/admin/icons/cancel.png" alt="Not Published">
 					{/if}
 				</td>
 				<td class="small center">
 					{if $aArticle.active == 1}
-						<img src="/images/admin/icons/accept.png">
+						<img src="/images/admin/icons/accept.png" alt="Is Active">
 					{else}
-						<img src="/images/admin/icons/cancel.png">
+						<img src="/images/admin/icons/cancel.png" alt="Not Active">
 					{/if}
 				</td>
 				<td class="small center border-end">
