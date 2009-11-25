@@ -1,7 +1,24 @@
 $(document).ready(function() { 
 	
+	// to create a custom tooltip theme
+	// more options can be found here: http://craigsworks.com/projects/qtip/docs/reference/#style
+	$.fn.qtip.styles.defaultCMS = { // Last part is the name of the style
+	   width: { max: 200 },
+	   background: '#f4f4f4',
+	   color: '#333',
+	   textAlign: 'center',
+	   border: {
+	      width: 2,
+	      radius: 3,
+	      color: '#c1c1c1'
+	   },
+	   tip: 'bottomLeft',
+	   name: 'light' // Inherit the rest of the attributes from the preset dark style
+	}
+	
 	// Tooltips for all anchor title's
-	$('a[title]').qtip({ style: { name: 'light', tip: true } })
+	// included themes include cream, dark, green, light, red, blue
+	$('a[title]').qtip({ style: { name: 'defaultCMS', tip: true } })
 	
 	// Accordion
 	$(".accordion").accordion({
