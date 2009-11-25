@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.dialog.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/effects.core.js"></script>	
 	<script type="text/javascript" src="/scripts/jquery-ui/effects.shake.js"></script>
+	<script type="text/javascript" src="/scripts/jquery/qtip/jquery.qtip-1.0.0-rc3.js"></script>
 	<script type="text/javascript" src="/scripts/admin_common.js"></script>
 </head>
 <body>

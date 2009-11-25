@@ -1,5 +1,8 @@
 $(document).ready(function() { 
 	
+	// Tooltips for all anchor title's
+	$('a[title]').qtip({ style: { name: 'light', tip: true } })
+	
 	// Accordion
 	$(".accordion").accordion({
 		collapsible: true,

@@ -42,15 +42,15 @@
 					{/if}
 				</td>
 				<td class="small center border-end">
-					<a href="/admin/news/image/{$aArticle.id}/edit/">
+					<a href="/admin/news/image/{$aArticle.id}/edit/" title="Edit Photos for {$aArticle.title}">
 						<img src="/images/admin/icons/picture.png">
 					</a>
-					<a href="/admin/news/edit/{$aArticle.id}/">
+					<a href="/admin/news/edit/{$aArticle.id}/" title="Edit {$aArticle.title}">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					{if $aPage.perminate != 1}
 						<a href="/admin/news/delete/{$aArticle.id}/"
-						 onclick="return confirm_('Are you sure you would like to delete this news article?');">
+						 onclick="return confirm_('Are you sure you would like to delete this news article?');" title="Delete {$aArticle.title}">
 							<img src="/images/admin/icons/bin_closed.png">
 						</a>
 					{/if}
