@@ -12,7 +12,7 @@
 </script>
 {/head}
 <div id="add-category" style="display:none;" title="Add Category">
-	<form method="post" id="addCategory-form" action="">
+	<form method="post" id="addCategory-form" action="/admin/news/categories/add/s/">
 		<label>*Name:</label>
 		<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|stripslashes}"><br>
 	</form>

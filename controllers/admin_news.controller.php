@@ -368,7 +368,7 @@ class admin_news extends adminController
 			$this->forward("/admin/news/categories/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$this->db_results(
+		$debug_this = $this->db_results(
 			"INSERT INTO `news_categories`"
 				." (`name`)"
 				." VALUES"
@@ -378,6 +378,7 @@ class admin_news extends adminController
 			,"admin->news->category->add_s"
 			,"insert"
 		);
+		
 
 		$this->forward("/admin/news/categories/?notice=".urlencode("Category added successfully!"));
 	}
