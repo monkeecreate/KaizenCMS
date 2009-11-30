@@ -3,14 +3,16 @@
 	<div id="sidebar" class="portlet">
 		<div class="portlet-content">
 			<div class="section">
-				<label>Use Unpublish:</label>
+				<label>Last Updated:</label>
+				{$aArticle.updated_at}
+			</div>
+			<div class="section">
+				<label class="helpTip" title="Controls whether the Unpublish date/time is used.">Use Unpublish:</label>
 				<input type="checkbox" name="use_kill" value="1"{if $aArticle.use_kill == 1} checked="checked"{/if}> Yes<br />
-				<span class="input_caption">Controls whether the Unpublish date/time is used.</span>
 			</div><br>
 			<div class="section">
-				<label>Sticky:</label>
+				<label class="helpTip" title="If used, the article will show at the top.">Sticky:</a></label>
 				<input type="checkbox" name="sticky" value="1"{if $aArticle.sticky == 1} checked="checked"{/if}> Yes<br />
-				<span class="input_caption">If used, the article will show at the top.</span>
 			</div><br>
 			<div class="section">
 				<label>Active:</label>
