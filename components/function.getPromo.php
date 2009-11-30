@@ -1,5 +1,5 @@
 <?php
-function smarty_function_getPromos($aParams, &$oSmarty)
+function smarty_function_getPromo($aParams, &$oSmarty)
 {
 	$oApp = $oSmarty->get_registered_object("appController");
 	
@@ -25,6 +25,12 @@ function smarty_function_getPromos($aParams, &$oSmarty)
 			,"smarty->getPromos->promo->impressions"
 		);
 		
-		echo "<a href=\"/promos/".$aPromo["id"]."/\"><img src=\"/uploads/promos/".$aPromo["promo"]."\" /></a>";
+		if(!empty($aPromo["link"]))
+			echo "<a href=\"/promos/".$aPromo["id"]."/\">";
+		
+		echo "<img src=\"/uploads/promos/".$aPromo["promo"]."\" />";
+		
+		if(!empty($aPromo["link"]))
+			echo "</a>";
 	}
 }
