@@ -47,8 +47,7 @@ $(document).ready(function() {
 						alert("Please fill in category name.");
 						return false;
 					} else {
-						$.post("/admin/news/categories/add/s/", $("#addCategory-form").serialize());
-						window.location.replace("/admin/news/categories/?notice=Category%20added%20successfully!");
+						$.post("/admin/news/categories/add/s/", $("#addCategory-form").serialize(), function(){window.location.replace("/admin/news/categories/?notice=Category%20added%20successfully!");});
 					}
 				},
 				Cancel: function() {
