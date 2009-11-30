@@ -16,6 +16,7 @@
 	<thead>
 		<tr>
 			<th sort="title">Name</th>
+			<th>Link</th>
 			<th sort="active">Active</th>
 			<th></th>
 		</tr>
@@ -24,19 +25,21 @@
 		{foreach from=$aLinks item=aLink}
 			<tr>
 				<td>{$aLink.name}</td>
+				<td class="small center"><a href="{$aLink.link}" title="{$aLink.link}" target="_blank"><img src="/images/admin/icons/link.png"></a></td>
 				<td class="small center">
 					{if $aLink.active == 1}
-						<img src="/images/admin/icons/accept.png">
+						<span class="helpTip" title="Active"><img src="/images/admin/icons/accept.png"></span>
 					{else}
-						<img src="/images/admin/icons/cancel.png">
+						<span class="helpTip" title="In-Active"><img src="/images/admin/icons/cancel.png"></span>
 					{/if}
 				</td>
 				<td class="small center border-end">
-					<a href="/admin/links/edit/{$aLink.id}/">
+					<a href="/admin/links/edit/{$aLink.id}/" title="Edit Link">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<a href="/admin/links/delete/{$aLink.id}/"
-					 onclick="return confirm_('Are you aLink you would like to delete this link?');">
+					 onclick="return confirm_('Are you aLink you would like to delete this link?');"
+					 title="Delete Link">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>
