@@ -53,11 +53,11 @@
 			<tr>
 				<td>{$aCategory.name}</td>
 				<td class="small center border-end">
-					<a href="/admin/links/categories/edit/{$aCategory.id}/">
+					<a href="/admin/links/categories/edit/{$aCategory.id}/" title="Edit Category">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<a href="/admin/links/categories/delete/{$aCategory.id}/"
-					 onclick="return confirm_('Are you sure you would like to delete this category?');">
+					 onclick="return confirm_('Are you sure you would like to delete this category?');" title="Delete Category">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>
