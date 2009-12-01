@@ -380,7 +380,7 @@ class admin_news extends adminController
 		);
 		
 
-		$this->forward("/admin/news/categories/?notice=".urlencode("Category added successfully!"));
+		echo "/admin/news/categories/?notice=".urlencode("Category added successfully!");
 	}
 	function categories_edit($aParams)
 	{

@@ -33,6 +33,7 @@ $(document).ready(function() {
 		});
 	});
 	
+	/*### Add Category Dialog ###*/
 	// workaround for allowing the dialog to open again
 	var $addCategoryDialog = $('#add-category')
 		.dialog({
@@ -45,7 +46,13 @@ $(document).ready(function() {
 						alert("Please fill in category name.");
 						return false;
 					} else {
-						$.post("/admin/news/categories/add/s/", $("#addCategory-form").serialize(), function(){window.location.replace("/admin/news/categories/?notice=Category%20added%20successfully!");});
+						$.post(
+							$("#add-category form").attr("action"),
+							$("#add-category form").serialize(),
+							function(data){
+								window.location.replace(data);
+							}
+						);
 					}
 				},
 				Cancel: function() {
@@ -57,6 +64,7 @@ $(document).ready(function() {
 	$('#add-category-btn').click(function() {
 		$addCategoryDialog.dialog('open');
 	});
+	/*### END ###*/
 	
 	// Accordion
 	$(".accordion").accordion({
