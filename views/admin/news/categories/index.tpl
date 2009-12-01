@@ -12,13 +12,13 @@
 </script>
 {/head}
 <div id="add-category" style="display:none;" title="Add Category">
-	<form method="post" id="addCategory-form" action="">
+	<form method="post" id="addCategory-form" action="/admin/news/categories/add/s/">
 		<label>*Name:</label>
 		<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|stripslashes}"><br>
 	</form>
 </div>
 <div id="add-category-btn" class="float-right" style="margin-bottom:10px;">
-	<a href="#" id="dialogbtn" onClick="addCategory();" class="btn ui-button ui-corner-all ui-state-default">
+	<a href="#" id="dialogbtn" class="btn ui-button ui-corner-all ui-state-default">
 		<span class="icon ui-icon ui-icon-circle-plus"></span> Add Category
 	</a>
 </div>

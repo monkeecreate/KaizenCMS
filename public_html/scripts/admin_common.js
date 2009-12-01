@@ -35,6 +35,31 @@ $(document).ready(function() {
 	   	hide: 'mouseout'
 	});
 	
+	// workaround for allowing the dialog to open again
+	var $addCategoryDialog = $('#add-category')
+		.dialog({
+			autoOpen: false,
+			bgiframe: true,
+			modal: true,
+			buttons: {
+				'Create Category': function() {				
+					if($(this).find('input[name=name]').val() == '') {
+						alert("Please fill in category name.");
+						return false;
+					} else {
+						$.post("/admin/news/categories/add/s/", $("#addCategory-form").serialize(), function(){window.location.replace("/admin/news/categories/?notice=Category%20added%20successfully!");});
+					}
+				},
+				Cancel: function() {
+					$(this).dialog('close');
+				}
+			}
+		});
+			
+	$('#add-category-btn').click(function() {
+		$addCategoryDialog.dialog('open');
+	});
+	
 	// Accordion
 	$(".accordion").accordion({
 		collapsible: true,
@@ -122,25 +147,25 @@ function addItem(showElement, hideElement)
 	$(showElement).fadeIn("slow");		
 }
 
-// Add category dialog
-function addCategory() 
-{			
-	$("#add-category").dialog({
-		bgiframe: true,
-		modal: true,
-		buttons: {
-			'Create Category': function() {				
-				if($(this).find('input[name=name]').val() == '') {
-					alert("Please fill in category name.");
-					return false;
-				} else {
-					$.post("/admin/news/categories/add/s/", $("#addCategory-form").serialize());
-					window.location.replace("/admin/news/categories/?notice=Category%20added%20successfully!");
-				}
-			},
-			Cancel: function() {
-				$(this).dialog('close');
-			}
-		}
-	});
-}
+//Add category dialog
+// function addCategory() 
+// {			
+// 	$("#add-category").dialog({
+// 			bgiframe: true,
+// 			modal: true,
+// 			buttons: {
+// 				'Create Category': function() {				
+// 					if($(this).find('input[name=name]').val() == '') {
+// 						alert("Please fill in category name.");
+// 						return false;
+// 					} else {
+// 						$.post("/admin/news/categories/add/s/", $("#addCategory-form").serialize());
+// 						window.location.replace("/admin/news/categories/?notice=Category%20added%20successfully!");
+// 					}
+// 				},
+// 				Cancel: function() {
+// 					$(this).dialog('close');
+// 				}
+// 			}
+// 		});
+// }
