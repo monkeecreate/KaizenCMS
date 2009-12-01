@@ -105,7 +105,7 @@ class admin_promos extends adminController
 				,"admin->promos->failed_promo_upload"
 			);
 			
-			$this->forward("/admin/promos/?notice=".urlencode("Promo file size was too large!"));
+			$this->forward("/admin/promos/?error=".urlencode("Promo file size was too large!"));
 		}
 		else
 		{
