@@ -4,6 +4,7 @@ $(document).ready(function() {
 	// included themes include cream, dark, green, light, red, blue
 	$('a[title],.helpTip').each(function(){
 		title = $(this).attr("title");
+		$(this).attr("title", "");
 		
 		$(this).qtip({
 			style: {
