@@ -9,10 +9,12 @@
 	<link type="text/css" href="/scripts/jquery-ui/themes/crane-west/crane-west.css" rel="stylesheet" />
 	<script type="text/javascript" src="/scripts/jquery/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.core.js"></script>
-	<script type="text/javascript" src="/scripts/jquery-ui/ui.datepicker.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.accordion.js"></script>
-	<script type="text/javascript" src="/scripts/jquery-ui/ui.slider.js"></script>
+	<script type="text/javascript" src="/scripts/jquery-ui/ui.datepicker.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.dialog.js"></script>
+	<script type="text/javascript" src="/scripts/jquery-ui/ui.draggable.js"></script>
+	<script type="text/javascript" src="/scripts/jquery-ui/ui.resizable.js"></script>
+	<script type="text/javascript" src="/scripts/jquery-ui/ui.slider.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/effects.core.js"></script>	
 	<script type="text/javascript" src="/scripts/jquery-ui/effects.shake.js"></script>
 	<script type="text/javascript" src="/scripts/jquery/qtip/jquery.qtip-1.0.0-rc3.js"></script>
