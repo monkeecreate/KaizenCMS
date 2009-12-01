@@ -25,14 +25,18 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('.helpTip').qtip({
-		style: { name: 'defaultCMS', tip: true },
-	   	content: $('.helpTip').attr("title"),
-		position: {
-			corner: { target: 'bottomLeft', tooltip: 'topLeft' }
-		},
-	   	show: 'mouseover',
-	   	hide: 'mouseout'
+	$('.helpTip').each(function(){
+		title = $(this).attr("title");
+		
+		$(this).qtip({
+			style: { name: 'defaultCMS', tip: true },
+	   		content: title,
+			position: {
+				corner: { target: 'bottomLeft', tooltip: 'topLeft' }
+			},
+	   		show: 'mouseover',
+	   		hide: 'mouseout'
+		});
 	});
 	
 	// workaround for allowing the dialog to open again
