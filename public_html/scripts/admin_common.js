@@ -16,17 +16,14 @@ $(document).ready(function() {
 	   	name: 'light' // Inherit the rest of the attributes from the preset dark style
 	}
 	
+	function enable_tip(item, tip)
+	{
+		
+	}
+	
 	// Tooltips for all anchor title's
 	// included themes include cream, dark, green, light, red, blue
-	$('a[title]').qtip({ 
-		style: { name: 'defaultCMS', tip: true },
-		position: {
-			corner: { target: 'bottomMiddle', tooltip: 'topMiddle' },
-			adjust: { screen: true }
-		}
-	});
-	
-	$('.helpTip').each(function(){
+	$('a[title],.helpTip').each(function(){
 		title = $(this).attr("title");
 		
 		$(this).qtip({
