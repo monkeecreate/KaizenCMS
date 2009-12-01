@@ -66,6 +66,46 @@ $(document).ready(function() {
 	});
 	/*### END ###*/
 	
+	/*### Edit Category Dialog ###*/
+	var editCategoryDialog = new Array();
+	$("a[id^='dialog_edit_']").each(function(){
+		id = $(this).attr('id');
+		
+		editCategoryDialog[id] = $('#'+id+'_form')
+			.dialog({
+				autoOpen: false,
+				bgiframe: true,
+				modal: true,
+				buttons: {
+					'Save Changes': function() {				
+						if($(this).find('input[name=name]').val() == '') {
+							alert("Please fill in category name.");
+							return false;
+						} else {
+							$.post(
+								$(this).find('form').attr("action"),
+								$(this).find('form').serialize(),
+								function(data){
+									window.location.replace(data);
+								}
+							);
+						}
+					},
+					Cancel: function() {
+						$(this).dialog('close');
+					}
+				}
+			});
+		
+		$(this).click(function(){
+			id = $(this).attr('id');
+			editCategoryDialog[id].dialog('open');
+			
+			return false;
+		});
+	});
+	/*### END ###*/
+	
 	// Accordion
 	$(".accordion").accordion({
 		collapsible: true,

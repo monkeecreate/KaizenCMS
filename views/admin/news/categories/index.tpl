@@ -35,7 +35,7 @@
 			<tr>
 				<td>{$aCategory.name}</td>
 				<td class="small center border-end">
-					<a href="/admin/news/categories/edit/{$aCategory.id}/" title="Edit Category">
+					<a href="/admin/news/categories/edit/{$aCategory.id}/" id="dialog_edit_{$aCategory.id}" title="Edit Category">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<a href="/admin/news/categories/delete/{$aCategory.id}/"
@@ -57,4 +57,13 @@
 		</tr>
 	</tfoot>
 </table>
+{foreach from=$aCategories item=aCategory}
+<div id="dialog_edit_{$aCategory.id}_form" style="display:none;" title="Edit Category">
+	<form method="post" action="/admin/news/categories/edit/s/">
+		<label>*Name:</label>
+		<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|stripslashes}"><br>
+		<input type="hidden" name="id" value="{$aCategory.id}">
+	</form>
+</div>
+{/foreach}
 {include file="inc_footer.tpl"}

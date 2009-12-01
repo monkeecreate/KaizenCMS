@@ -415,7 +415,7 @@ class admin_news extends adminController
 			,"admin->news->categories->edit"
 		);
 
-		$this->forward("/admin/news/categories/?notice=".urlencode("Changes saved successfully!"));
+		echo "/admin/news/categories/?notice=".urlencode("Changes saved successfully!");
 	}
 	function categories_delete($aParams)
 	{
