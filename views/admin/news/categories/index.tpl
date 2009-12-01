@@ -38,6 +38,13 @@
 					<a href="/admin/news/categories/edit/{$aCategory.id}/" id="dialog_edit_{$aCategory.id}" title="Edit Category">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
+					<div id="dialog_edit_{$aCategory.id}_form" style="display:none;" title="Edit Category">
+						<form method="post" action="/admin/news/categories/edit/s/">
+							<label>*Name:</label>
+							<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|stripslashes}"><br>
+							<input type="hidden" name="id" value="{$aCategory.id}">
+						</form>
+					</div>
 					<a href="/admin/news/categories/delete/{$aCategory.id}/"
 					 onclick="return confirm_('Are you sure you would like to delete this category?');" title="Delete Category">
 						<img src="/images/admin/icons/bin_closed.png">
@@ -57,13 +64,4 @@
 		</tr>
 	</tfoot>
 </table>
-{foreach from=$aCategories item=aCategory}
-<div id="dialog_edit_{$aCategory.id}_form" style="display:none;" title="Edit Category">
-	<form method="post" action="/admin/news/categories/edit/s/">
-		<label>*Name:</label>
-		<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|stripslashes}"><br>
-		<input type="hidden" name="id" value="{$aCategory.id}">
-	</form>
-</div>
-{/foreach}
 {include file="inc_footer.tpl"}
