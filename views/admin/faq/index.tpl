@@ -45,12 +45,12 @@
 				{if empty($sCategory)}
 					<td class="small center">
 						{if $aQuestion.sort_order != 1}
-							<a href="/admin/faq/sort/{$aQuestion.id}/up/"><img src="/images/admin/icons/bullet_arrow_up.png"></a>
+							<a href="/admin/faq/sort/{$aQuestion.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png"></a>
 						{else}
 							<img src="/images/blank.gif" style="width:16px;height:16px;">
 						{/if}
 						{if $aQuestion.sort_order != $maxsort && count($aQuestions) > 1}
-							<a href="/admin/faq/sort/{$aQuestion.id}/down/"><img src="/images/admin/icons/bullet_arrow_down.png"></a>
+							<a href="/admin/faq/sort/{$aQuestion.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png"></a>
 						{else}
 							<img src="/images/blank.gif" style="width:16px;height:16px;">
 						{/if}
@@ -58,17 +58,18 @@
 				{/if}
 				<td class="small center">
 					{if $aQuestion.active == 1}
-						<img src="/images/admin/icons/accept.png">
+						<img src="/images/admin/icons/accept.png" class="helpTip" title="Active">
 					{else}
-						<img src="/images/admin/icons/cancel.png">
+						<img src="/images/admin/icons/cancel.png" class="helpTip" title="Inactive">
 					{/if}
 				</td>
 				<td class="small center border-end">
-					<a href="/admin/faq/edit/{$aQuestion.id}/">
+					<a href="/admin/faq/edit/{$aQuestion.id}/" title="Edit Question">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<a href="/admin/faq/delete/{$aQuestion.id}/"
-					 onclick="return confirm_('Are you sure you would like to delete this question?');">
+					 onclick="return confirm_('Are you sure you would like to delete this question?');"
+					 title="Delete Question">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>

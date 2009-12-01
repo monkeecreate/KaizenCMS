@@ -44,28 +44,29 @@
 				<td class="center">{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</td>
 				<td class="small center">
 					{if $aEvent.datetime_show < $smarty.now && ($aEvent.use_kill == 0 || $aEvent.datetime_kill > $smarty.now)}
-						<img src="/images/admin/icons/accept.png">
+						<img src="/images/admin/icons/accept.png" class="helpTip" title="Published">
 					{else}
-						<img src="/images/admin/icons/cancel.png">
+						<img src="/images/admin/icons/cancel.png" class="helpTip" title="Unpublished">
 					{/if}
 				</td>
 				<td class="small center">
 					{if $aEvent.active == 1}
-						<img src="/images/admin/icons/accept.png">
+						<img src="/images/admin/icons/accept.png" class="helpTip" title="Active">
 					{else}
-						<img src="/images/admin/icons/cancel.png">
+						<img src="/images/admin/icons/cancel.png" class="helpTip" title="Inactive">
 					{/if}
 				</td>
 				<td class="small center border-end">
-					<a href="/admin/events/image/{$aEvent.id}/edit/">
+					<a href="/admin/events/image/{$aEvent.id}/edit/" title="Edit Event Photo">
 						<img src="/images/admin/icons/picture.png">
 					</a>
-					<a href="/admin/events/edit/{$aEvent.id}/">
+					<a href="/admin/events/edit/{$aEvent.id}/" title="Edit Event">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					{if $aPage.perminate != 1}
 						<a href="/admin/events/delete/{$aEvent.id}/"
-						 onclick="return confirm_('Are you sure you would like to delete this event?');">
+						 onclick="return confirm_('Are you sure you would like to delete this event?');"
+						 title="Delete Event">
 							<img src="/images/admin/icons/bin_closed.png">
 						</a>
 					{/if}

@@ -29,28 +29,28 @@
 				<td class="center">{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</td>
 				<td class="small center">
 					{if $aArticle.datetime_show < $smarty.now && ($aArticle.use_kill == 0 || $aArticle.datetime_kill > $smarty.now)}
-						<img src="/images/admin/icons/accept.png" alt="Is Published">
+						<img src="/images/admin/icons/accept.png" class="helpTip" title="Published">
 					{else}
-						<img src="/images/admin/icons/cancel.png" alt="Not Published">
+						<img src="/images/admin/icons/cancel.png" class="helpTip" title="Unpublished">
 					{/if}
 				</td>
 				<td class="small center">
 					{if $aArticle.active == 1}
-						<img src="/images/admin/icons/accept.png" alt="Is Active">
+						<img src="/images/admin/icons/accept.png" class="helpTip" title="Active">
 					{else}
-						<img src="/images/admin/icons/cancel.png" alt="Not Active">
+						<img src="/images/admin/icons/cancel.png" class="helpTip" title="Inactive">
 					{/if}
 				</td>
 				<td class="small center border-end">
-					<a href="/admin/news/image/{$aArticle.id}/edit/" title="Edit Photos for {$aArticle.title}">
+					<a href="/admin/news/image/{$aArticle.id}/edit/" title="Edit Article Photo">
 						<img src="/images/admin/icons/picture.png">
 					</a>
-					<a href="/admin/news/edit/{$aArticle.id}/" title="Edit {$aArticle.title}">
+					<a href="/admin/news/edit/{$aArticle.id}/" title="Edit Article">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					{if $aPage.perminate != 1}
 						<a href="/admin/news/delete/{$aArticle.id}/"
-						 onclick="return confirm_('Are you sure you would like to delete this news article?');" title="Delete {$aArticle.title}">
+						 onclick="return confirm_('Are you sure you would like to delete this news article?');" title="Delete Article">
 							<img src="/images/admin/icons/bin_closed.png">
 						</a>
 					{/if}

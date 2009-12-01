@@ -1,33 +1,27 @@
 $(document).ready(function() { 
 	
-	// to create a custom tooltip theme
-	// more options can be found here: http://craigsworks.com/projects/qtip/docs/reference/#style
-	$.fn.qtip.styles.defaultCMS = { // Last part is the name of the style
-		width: { max: 200 },
-	   	background: '#f4f4f4',
-	   	color: '#333',
-	   	textAlign: 'center',
-	   	border: {
-	    	width: 2,
-	      	radius: 3,
-	      	color: '#c1c1c1'
-	   	},
-	   	tip: 'bottomLeft',
-	   	name: 'light' // Inherit the rest of the attributes from the preset dark style
-	}
-	
-	function enable_tip(item, tip)
-	{
-		
-	}
-	
 	// Tooltips for all anchor title's
 	// included themes include cream, dark, green, light, red, blue
 	$('a[title],.helpTip').each(function(){
 		title = $(this).attr("title");
 		
 		$(this).qtip({
-			style: { name: 'defaultCMS', tip: true },
+			style: {
+				width: {
+					min: 120,
+					max: 800
+				},
+	   			background: '#f4f4f4',
+			   	color: '#333',
+			   	textAlign: 'center',
+			   	border: {
+			    	width: 2,
+			      	radius: 3,
+			      	color: '#c1c1c1'
+			   	},
+			   	tip: 'bottomLeft',
+			   	name: 'light'
+			},
 	   		content: title,
 			position: {
 				corner: { target: 'bottomMiddle', tooltip: 'topMiddle' },

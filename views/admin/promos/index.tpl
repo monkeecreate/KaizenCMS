@@ -32,17 +32,18 @@
 				<td class="small center">{$aPromo.clicks}</td>
 				<td class="small center">
 					{if $aPromo.active == 1}
-						<img src="/images/admin/icons/accept.png">
+						<img src="/images/admin/icons/accept.png" class="helpTip" title="Active">
 					{else}
-						<img src="/images/admin/icons/cancel.png">
+						<img src="/images/admin/icons/cancel.png" class="helpTip" title="Inactive">
 					{/if}
 				</td>
 				<td class="small center border-end">
-					<a href="/admin/promos/edit/{$aPromo.id}/">
+					<a href="/admin/promos/edit/{$aPromo.id}/" title="Edit Promo">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<a href="/admin/promos/delete/{$aPromo.id}/"
-					 onclick="return confirm_('Are you sure you would like to delete this promo?');">
+					 onclick="return confirm_('Are you sure you would like to delete this promo?');"
+					 title="Delete Promo">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>
