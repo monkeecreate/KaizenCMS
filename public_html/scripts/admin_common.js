@@ -21,7 +21,8 @@ $(document).ready(function() {
 	$('a[title]').qtip({ 
 		style: { name: 'defaultCMS', tip: true },
 		position: {
-			corner: { target: 'bottomLeft', tooltip: 'topLeft' }
+			corner: { target: 'bottomMiddle', tooltip: 'topMiddle' },
+			adjust: { screen: true }
 		}
 	});
 	
@@ -32,7 +33,8 @@ $(document).ready(function() {
 			style: { name: 'defaultCMS', tip: true },
 	   		content: title,
 			position: {
-				corner: { target: 'bottomLeft', tooltip: 'topLeft' }
+				corner: { target: 'bottomMiddle', tooltip: 'topMiddle' },
+				adjust: { screen: true }
 			},
 	   		show: 'mouseover',
 	   		hide: 'mouseout'
