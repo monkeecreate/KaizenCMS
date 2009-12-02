@@ -192,23 +192,10 @@ class admin_links extends adminController
 		);
 		
 		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("links/categories/index.tpl");
-	}
-	function categories_add()
-	{
-		if(!empty($_SESSION["admin"]["admin_links_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_links_categories"]);
-		
-		$this->tpl_display("links/categories/add.tpl");
+		$this->tpl_display("links/categories.tpl");
 	}
 	function categories_add_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_links"] = $_POST;
-			$this->forward("/admin/links/categories/add/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"INSERT INTO `links_categories`"
 				." (`name`)"
@@ -220,34 +207,10 @@ class admin_links extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/links/categories/?notice=".urlencode("Category added successfully!"));
-	}
-	function categories_edit($aParams)
-	{
-		if(!empty($_SESSION["admin"]["admin_links_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_links_categories"]);
-		else
-		{
-			$aCategory = $this->db_results(
-				"SELECT * FROM `links_categories`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
-				,"admin->links->category_edit"
-				,"row"
-			);
-			
-			$this->tpl_assign("aCategory", $aCategory);
-		}
-		
-		$this->tpl_display("links/categories/edit.tpl");
+		echo "/admin/links/categories/?notice=".urlencode("Category added successfully!");
 	}
 	function categories_edit_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_links_categories"] = $_POST;
-			$this->forward("/admin/links/categories/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"UPDATE `links_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
@@ -255,7 +218,7 @@ class admin_links extends adminController
 			,"admin->links->categories->edit"
 		);
 
-		$this->forward("/admin/links/categories/?notice=".urlencode("Changes saved successfully!"));
+		echo "/admin/links/categories/?notice=".urlencode("Changes saved successfully!");
 	}
 	function categories_delete($aParams)
 	{

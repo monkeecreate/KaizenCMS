@@ -48,17 +48,9 @@ $aUrlPatterns_import = array(
         "cmd" => "admin_calendar",
         "action" => "categories_index"
     ),
-	"/admin/calendar/categories/add/" => array(
-        "cmd" => "admin_calendar",
-        "action" => "categories_add"
-    ),
 	"/admin/calendar/categories/add/s/" => array(
         "cmd" => "admin_calendar",
         "action" => "categories_add_s"
-    ),
-	"/admin/calendar/categories/edit/{id:[0-9]+}/" => array(
-        "cmd" => "admin_calendar",
-        "action" => "categories_edit"
     ),
 	"/admin/calendar/categories/edit/s/" => array(
         "cmd" => "admin_calendar",

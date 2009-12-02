@@ -28,17 +28,9 @@ $aUrlPatterns_import = array(
         "cmd" => "admin_testimonials",
         "action" => "categories_index"
     ),
-	"/admin/testimonials/categories/add/" => array(
-        "cmd" => "admin_testimonials",
-        "action" => "categories_add"
-    ),
 	"/admin/testimonials/categories/add/s/" => array(
         "cmd" => "admin_testimonials",
         "action" => "categories_add_s"
-    ),
-	"/admin/testimonials/categories/edit/{id:[0-9]+}/" => array(
-        "cmd" => "admin_testimonials",
-        "action" => "categories_edit"
     ),
 	"/admin/testimonials/categories/edit/s/" => array(
         "cmd" => "admin_testimonials",

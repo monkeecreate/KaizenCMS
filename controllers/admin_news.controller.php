@@ -351,24 +351,11 @@ class admin_news extends adminController
 		);
 		
 		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("news/categories/index.tpl");
-	}
-	function categories_add()
-	{
-		if(!empty($_SESSION["admin"]["admin_news_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_news_categories"]);
-		
-		$this->tpl_display("news/categories/add.tpl");
+		$this->tpl_display("news/categories.tpl");
 	}
 	function categories_add_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_news"] = $_POST;
-			$this->forward("/admin/news/categories/add/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
-		$debug_this = $this->db_results(
+		$this->db_results(
 			"INSERT INTO `news_categories`"
 				." (`name`)"
 				." VALUES"
@@ -382,32 +369,8 @@ class admin_news extends adminController
 
 		echo "/admin/news/categories/?notice=".urlencode("Category added successfully!");
 	}
-	function categories_edit($aParams)
-	{
-		if(!empty($_SESSION["admin"]["admin_news_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_news_categories"]);
-		else
-		{
-			$aCategory = $this->db_results(
-				"SELECT * FROM `news_categories`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
-				,"admin->news->category_edit"
-				,"row"
-			);
-			
-			$this->tpl_assign("aCategory", $aCategory);
-		}
-		
-		$this->tpl_display("news/categories/edit.tpl");
-	}
 	function categories_edit_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_news_categories"] = $_POST;
-			$this->forward("/admin/news/categories/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"UPDATE `news_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")

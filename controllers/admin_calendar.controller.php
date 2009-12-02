@@ -380,23 +380,10 @@ class admin_calendar extends adminController
 		);
 		
 		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("calendar/categories/index.tpl");
-	}
-	function categories_add()
-	{
-		if(!empty($_SESSION["admin"]["admin_calendar_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_calendar_categories"]);
-		
-		$this->tpl_display("calendar/categories/add.tpl");
+		$this->tpl_display("calendar/categories.tpl");
 	}
 	function categories_add_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_calendar"] = $_POST;
-			$this->forward("/admin/calendar/categories/add/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"INSERT INTO `calendar_categories`"
 				." (`name`)"
@@ -408,34 +395,10 @@ class admin_calendar extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/calendar/categories/?notice=".urlencode("Category created successfully!"));
-	}
-	function categories_edit($aParams)
-	{
-		if(!empty($_SESSION["admin"]["admin_calendar_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_calendar_categories"]);
-		else
-		{
-			$aCategory = $this->db_results(
-				"SELECT * FROM `calendar_categories`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
-				,"admin->calendar->category_edit"
-				,"row"
-			);
-			
-			$this->tpl_assign("aCategory", $aCategory);
-		}
-		
-		$this->tpl_display("calendar/categories/edit.tpl");
+		echo "/admin/calendar/categories/?notice=".urlencode("Category created successfully!");
 	}
 	function categories_edit_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_calendar_categories"] = $_POST;
-			$this->forward("/admin/calendar/categories/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"UPDATE `calendar_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
@@ -443,7 +406,7 @@ class admin_calendar extends adminController
 			,"admin->calendar->categories->edit"
 		);
 
-		$this->forward("/admin/calendar/categories/?notice=".urlencode("Changes saved successfully!"));
+		echo "/admin/calendar/categories/?notice=".urlencode("Changes saved successfully!");
 	}
 	function categories_delete($aParams)
 	{

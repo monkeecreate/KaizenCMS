@@ -379,23 +379,10 @@ class admin_events extends adminController
 		);
 		
 		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("events/categories/index.tpl");
-	}
-	function categories_add()
-	{
-		if(!empty($_SESSION["admin"]["admin_events_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_events_categories"]);
-		
-		$this->tpl_display("events/categories/add.tpl");
+		$this->tpl_display("events/categories.tpl");
 	}
 	function categories_add_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_events"] = $_POST;
-			$this->forward("/admin/events/categories/add/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"INSERT INTO `events_categories`"
 				." (`name`)"
@@ -407,34 +394,10 @@ class admin_events extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/events/categories/?notice=".urlencode("Category added successfully!"));
-	}
-	function categories_edit($aParams)
-	{
-		if(!empty($_SESSION["admin"]["admin_events_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_events_categories"]);
-		else
-		{
-			$aCategory = $this->db_results(
-				"SELECT * FROM `events_categories`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
-				,"admin->events->category_edit"
-				,"row"
-			);
-			
-			$this->tpl_assign("aCategory", $aCategory);
-		}
-		
-		$this->tpl_display("events/categories/edit.tpl");
+		echo "/admin/events/categories/?notice=".urlencode("Category added successfully!");
 	}
 	function categories_edit_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_events_categories"] = $_POST;
-			$this->forward("/admin/events/categories/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"UPDATE `events_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
@@ -442,7 +405,7 @@ class admin_events extends adminController
 			,"admin->events->categories->edit"
 		);
 
-		$this->forward("/admin/events/categories/?notice=".urlencode("Changes saved successfully!"));
+		echo "/admin/events/categories/?notice=".urlencode("Changes saved successfully!");
 	}
 	function categories_delete($aParams)
 	{

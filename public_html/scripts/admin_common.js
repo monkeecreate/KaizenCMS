@@ -35,6 +35,16 @@ $(document).ready(function() {
 	
 	/*### Add Category Dialog ###*/
 	// workaround for allowing the dialog to open again
+	function addCategory(){
+		$.post(
+			$("#add-category form").attr("action"),
+			$("#add-category form").serialize(),
+			function(data){
+				window.location.replace(data);
+			}
+		);
+	}
+	
 	var $addCategoryDialog = $('#add-category')
 		.dialog({
 			autoOpen: false,
@@ -46,13 +56,7 @@ $(document).ready(function() {
 						alert("Please fill in category name.");
 						return false;
 					} else {
-						$.post(
-							$("#add-category form").attr("action"),
-							$("#add-category form").serialize(),
-							function(data){
-								window.location.replace(data);
-							}
-						);
+						addCategory();
 					}
 				},
 				Cancel: function() {
@@ -60,13 +64,25 @@ $(document).ready(function() {
 				}
 			}
 		});
-			
+	$('#add-category form').submit(function(){
+		addCategory();
+		return false;
+	});
 	$('#add-category-btn').click(function() {
 		$addCategoryDialog.dialog('open');
 	});
 	/*### END ###*/
 	
 	/*### Edit Category Dialog ###*/
+	function editCategory(item){
+		$.post(
+			$(item).find('form').attr("action"),
+			$(item).find('form').serialize(),
+			function(data){
+				window.location.replace(data);
+			}
+		);
+	}
 	var editCategoryDialog = new Array();
 	$("a[id^='dialog_edit_']").each(function(){
 		id = $(this).attr('id');
@@ -82,13 +98,7 @@ $(document).ready(function() {
 							alert("Please fill in category name.");
 							return false;
 						} else {
-							$.post(
-								$(this).find('form').attr("action"),
-								$(this).find('form').serialize(),
-								function(data){
-									window.location.replace(data);
-								}
-							);
+							editCategory(this);
 						}
 					},
 					Cancel: function() {
@@ -96,7 +106,14 @@ $(document).ready(function() {
 					}
 				}
 			});
-		
+		$('#'+id+'_form').each(function(){
+			var item = this;
+			
+			$(this).find('form').submit(function(){
+				editCategory(item);
+				return false;
+			});
+		});
 		$(this).click(function(){
 			id = $(this).attr('id');
 			editCategoryDialog[id].dialog('open');

@@ -379,23 +379,10 @@ class admin_testimonials extends adminController
 		);
 		
 		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("testimonials/categories/index.tpl");
-	}
-	function categories_add()
-	{
-		if(!empty($_SESSION["admin"]["admin_testimonials_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_testimonials_categories"]);
-		
-		$this->tpl_display("testimonials/categories/add.tpl");
+		$this->tpl_display("testimonials/categories.tpl");
 	}
 	function categories_add_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_testimonials"] = $_POST;
-			$this->forward("/admin/testimonials/categories/add/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"INSERT INTO `testimonials_categories`"
 				." (`name`)"
@@ -407,34 +394,10 @@ class admin_testimonials extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Category added successfully!"));
-	}
-	function categories_edit($aParams)
-	{
-		if(!empty($_SESSION["admin"]["admin_testimonials_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_testimonials_categories"]);
-		else
-		{
-			$aCategory = $this->db_results(
-				"SELECT * FROM `testimonials_categories`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
-				,"admin->testimonials->category_edit"
-				,"row"
-			);
-			
-			$this->tpl_assign("aCategory", $aCategory);
-		}
-		
-		$this->tpl_display("testimonials/categories/edit.tpl");
+		echo "/admin/testimonials/categories/?notice=".urlencode("Category added successfully!");
 	}
 	function categories_edit_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_testimonials_categories"] = $_POST;
-			$this->forward("/admin/testimonials/categories/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"UPDATE `testimonials_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
@@ -442,7 +405,7 @@ class admin_testimonials extends adminController
 			,"admin->testimonials->categories->edit"
 		);
 
-		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Changes saved successfully!"));
+		echo "/admin/testimonials/categories/?notice=".urlencode("Changes saved successfully!");
 	}
 	function categories_delete($aParams)
 	{

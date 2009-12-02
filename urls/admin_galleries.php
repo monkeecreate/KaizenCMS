@@ -32,17 +32,9 @@ $aUrlPatterns_import = array(
         "cmd" => "admin_galleries",
         "action" => "categories_index"
     ),
-	"/admin/galleries/categories/add/" => array(
-        "cmd" => "admin_galleries",
-        "action" => "categories_add"
-    ),
 	"/admin/galleries/categories/add/s/" => array(
         "cmd" => "admin_galleries",
         "action" => "categories_add_s"
-    ),
-	"/admin/galleries/categories/edit/{id:[0-9]+}/" => array(
-        "cmd" => "admin_galleries",
-        "action" => "categories_edit"
     ),
 	"/admin/galleries/categories/edit/s/" => array(
         "cmd" => "admin_galleries",
