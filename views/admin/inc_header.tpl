@@ -48,7 +48,7 @@
 						<ul>
 							<li><a href="/admin/news/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add News Article</a></li>
 							<li><a href="/admin/news/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage News Articles</a></li>
-							<li><a href="/admin/news/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/news/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
 							<li><a href="/admin/news/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
 						</ul>
 					</div>
@@ -57,7 +57,7 @@
 						<ul>
 							<li><a href="/admin/events/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Event</a></li>
 							<li><a href="/admin/events/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Events</a></li>
-							<li><a href="/admin/events/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/events/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
 							<li><a href="/admin/events/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
 						</ul>
 					</div>
@@ -66,7 +66,7 @@
 						<ul>
 							<li><a href="/admin/calendar/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Calendar Event</a></li>
 							<li><a href="/admin/calendar/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Calendar Events</a></li>
-							<li><a href="/admin/calendar/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/calendar/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
 							<li><a href="/admin/calendar/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
 						</ul>
 					</div>
@@ -76,7 +76,7 @@
 						<ul>
 							<li><a href="/admin/faq/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Question &amp; Answer</a></li>
 							<li><a href="/admin/faq/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Question</a></li>
-							<li><a href="/admin/faq/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/faq/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
 							<li><a href="/admin/faq/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
 						</ul>
 					</div>
@@ -85,7 +85,7 @@
 						<ul>
 							<li><a href="/admin/links/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Link</a></li>
 							<li><a href="/admin/links/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Links</a></li>
-							<li><a href="/admin/links/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/links/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
 							<li><a href="/admin/links/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
 						</ul>
 					</div>
@@ -94,7 +94,7 @@
 						<ul>
 							<li><a href="/admin/documents/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Document</a></li>
 							<li><a href="/admin/documents/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Documents</a></li>
-							<li><a href="/admin/documents/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/documents/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
 							<li><a href="/admin/documents/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
 						</ul>
 					</div>
@@ -103,7 +103,7 @@
 						<ul>
 							<li><a href="/admin/testimonials/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Testimonial</a></li>
 							<li><a href="/admin/testimonials/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Testimonials</a></li>
-							<li><a href="/admin/testimonials/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/testimonials/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
 							<li><a href="/admin/testimonials/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
 						</ul>
 					</div>
@@ -112,7 +112,7 @@
 						<ul>
 							<li><a href="/admin/galleries/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Gallery</a></li>
 							<li><a href="/admin/galleries/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Galleries</a></li>
-							<li><a href="/admin/galleries/categories/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/galleries/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
 							<li><a href="/admin/galleries/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
 						</ul>
 					</div>
