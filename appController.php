@@ -1,11 +1,11 @@
 <?php
 class appController
 {
-	private $_db;
-	private $_memcache;
-	private $_mail;
-	private $_smarty;
-	private $_firephp;
+	protected $_db;
+	protected $_memcache;
+	protected $_mail;
+	protected $_smarty;
+	protected $_firephp;
 	public $_settings;
 	public $_enc;
 	
@@ -58,6 +58,18 @@ class appController
 		echo "</pre>";
 		
 		phpinfo();
+	}
+	function loadModule($sModule)
+	{
+		if(!class_exists($sModule."_model"))
+			require($this->_settings->root."models/".$sModule.".model.php");
+			
+		$sModule = $sModule."_model";
+		
+		$oModule = new $sModule;
+		// $oModule->loadModel($this);
+		
+		return $oModule;
 	}
 	##################################
 	
