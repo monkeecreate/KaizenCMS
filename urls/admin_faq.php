@@ -32,17 +32,9 @@ $aUrlPatterns_import = array(
         "cmd" => "admin_faq",
         "action" => "categories_index"
     ),
-	"/admin/faq/categories/add/" => array(
-        "cmd" => "admin_faq",
-        "action" => "categories_add"
-    ),
 	"/admin/faq/categories/add/s/" => array(
         "cmd" => "admin_faq",
         "action" => "categories_add_s"
-    ),
-	"/admin/faq/categories/edit/{id:[0-9]+}/" => array(
-        "cmd" => "admin_faq",
-        "action" => "categories_edit"
     ),
 	"/admin/faq/categories/edit/s/" => array(
         "cmd" => "admin_faq",

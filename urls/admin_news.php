@@ -48,17 +48,9 @@ $aUrlPatterns_import = array(
         "cmd" => "admin_news",
         "action" => "categories_index"
     ),
-	"/admin/news/categories/add/" => array(
-        "cmd" => "admin_news",
-        "action" => "categories_add"
-    ),
 	"/admin/news/categories/add/s/" => array(
         "cmd" => "admin_news",
         "action" => "categories_add_s"
-    ),
-	"/admin/news/categories/edit/{id:[0-9]+}/" => array(
-        "cmd" => "admin_news",
-        "action" => "categories_edit"
     ),
 	"/admin/news/categories/edit/s/" => array(
         "cmd" => "admin_news",

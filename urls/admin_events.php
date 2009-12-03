@@ -48,17 +48,9 @@ $aUrlPatterns_import = array(
         "cmd" => "admin_events",
         "action" => "categories_index"
     ),
-	"/admin/events/categories/add/" => array(
-        "cmd" => "admin_events",
-        "action" => "categories_add"
-    ),
 	"/admin/events/categories/add/s/" => array(
         "cmd" => "admin_events",
         "action" => "categories_add_s"
-    ),
-	"/admin/events/categories/edit/{id:[0-9]+}/" => array(
-        "cmd" => "admin_events",
-        "action" => "categories_edit"
     ),
 	"/admin/events/categories/edit/s/" => array(
         "cmd" => "admin_events",

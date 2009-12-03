@@ -1,4 +1,16 @@
-$(document).ready(function() { 
+$(document).ready(function() {
+	
+	var qsParm = new Array();
+	var query = window.location.search.substring(1);
+	var parms = query.split('&');
+	for (var i=0; i<parms.length; i++) {
+		var pos = parms[i].indexOf('=');
+		if (pos > 0) {
+			var key = parms[i].substring(0,pos);
+			var val = parms[i].substring(pos+1);
+			qsParm[key] = val;
+		}
+	}
 	
 	// Tooltips for all anchor title's
 	// included themes include cream, dark, green, light, red, blue
@@ -35,6 +47,16 @@ $(document).ready(function() {
 	
 	/*### Add Category Dialog ###*/
 	// workaround for allowing the dialog to open again
+	function addCategory(){
+		$.post(
+			$("#add-category form").attr("action"),
+			$("#add-category form").serialize(),
+			function(data){
+				window.location.replace(data);
+			}
+		);
+	}
+	
 	var $addCategoryDialog = $('#add-category')
 		.dialog({
 			autoOpen: false,
@@ -46,13 +68,7 @@ $(document).ready(function() {
 						alert("Please fill in category name.");
 						return false;
 					} else {
-						$.post(
-							$("#add-category form").attr("action"),
-							$("#add-category form").serialize(),
-							function(data){
-								window.location.replace(data);
-							}
-						);
+						addCategory();
 					}
 				},
 				Cancel: function() {
@@ -60,13 +76,28 @@ $(document).ready(function() {
 				}
 			}
 		});
-			
+	$('#add-category form').submit(function(){
+		addCategory();
+		return false;
+	});
 	$('#add-category-btn').click(function() {
 		$addCategoryDialog.dialog('open');
 	});
+	if(qsParm["addcategory"] == 1) {
+		$addCategoryDialog.dialog('open');
+	}
 	/*### END ###*/
 	
 	/*### Edit Category Dialog ###*/
+	function editCategory(item){
+		$.post(
+			$(item).find('form').attr("action"),
+			$(item).find('form').serialize(),
+			function(data){
+				window.location.replace(data);
+			}
+		);
+	}
 	var editCategoryDialog = new Array();
 	$("a[id^='dialog_edit_']").each(function(){
 		id = $(this).attr('id');
@@ -82,13 +113,7 @@ $(document).ready(function() {
 							alert("Please fill in category name.");
 							return false;
 						} else {
-							$.post(
-								$(this).find('form').attr("action"),
-								$(this).find('form').serialize(),
-								function(data){
-									window.location.replace(data);
-								}
-							);
+							editCategory(this);
 						}
 					},
 					Cancel: function() {
@@ -96,7 +121,14 @@ $(document).ready(function() {
 					}
 				}
 			});
-		
+		$('#'+id+'_form').each(function(){
+			var item = this;
+			
+			$(this).find('form').submit(function(){
+				editCategory(item);
+				return false;
+			});
+		});
 		$(this).click(function(){
 			id = $(this).attr('id');
 			editCategoryDialog[id].dialog('open');

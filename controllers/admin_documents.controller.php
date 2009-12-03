@@ -282,23 +282,10 @@ class admin_documents extends adminController
 		);
 		
 		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("documents/categories/index.tpl");
-	}
-	function categories_add()
-	{
-		if(!empty($_SESSION["admin"]["admin_documents_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_documents_categories"]);
-		
-		$this->tpl_display("documents/categories/add.tpl");
+		$this->tpl_display("documents/categories.tpl");
 	}
 	function categories_add_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_documents"] = $_POST;
-			$this->forward("/admin/documents/categories/add/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"INSERT INTO `documents_categories`"
 				." (`name`)"
@@ -310,34 +297,10 @@ class admin_documents extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/documents/categories/?notice=".urlencode("Category added successfully!"));
-	}
-	function categories_edit($aParams)
-	{
-		if(!empty($_SESSION["admin"]["admin_documents_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_documents_categories"]);
-		else
-		{
-			$aCategory = $this->db_results(
-				"SELECT * FROM `documents_categories`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
-				,"admin->documents->category_edit"
-				,"row"
-			);
-			
-			$this->tpl_assign("aCategory", $aCategory);
-		}
-		
-		$this->tpl_display("documents/categories/edit.tpl");
+		echo "/admin/documents/categories/?notice=".urlencode("Category added successfully!");
 	}
 	function categories_edit_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_documents_categories"] = $_POST;
-			$this->forward("/admin/documents/categories/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"UPDATE `documents_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
@@ -345,7 +308,7 @@ class admin_documents extends adminController
 			,"admin->documents->categories->edit"
 		);
 
-		$this->forward("/admin/documents/categories/?notice=".urlencode("Changes saved successfully!"));
+		echo "/admin/documents/categories/?notice=".urlencode("Changes saved successfully!");
 	}
 	function categories_delete($aParams)
 	{

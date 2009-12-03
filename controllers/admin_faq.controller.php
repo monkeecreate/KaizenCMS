@@ -258,23 +258,10 @@ class admin_faq extends adminController
 		);
 		
 		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("faq/categories/index.tpl");
-	}
-	function categories_add()
-	{
-		if(!empty($_SESSION["admin"]["admin_faq_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_faq_categories"]);
-		
-		$this->tpl_display("faq/categories/add.tpl");
+		$this->tpl_display("faq/categories.tpl");
 	}
 	function categories_add_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_faq"] = $_POST;
-			$this->forward("/admin/faq/categories/add/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"INSERT INTO `faq_categories`"
 				." (`name`)"
@@ -286,34 +273,10 @@ class admin_faq extends adminController
 			,"insert"
 		);
 
-		$this->forward("/admin/faq/categories/?notice=".urlencode("Category added successfully!"));
-	}
-	function categories_edit($aParams)
-	{
-		if(!empty($_SESSION["admin"]["admin_faq_categories"]))
-			$this->tpl_assign("aCategory", $_SESSION["admin"]["admin_faq_categories"]);
-		else
-		{
-			$aCategory = $this->db_results(
-				"SELECT * FROM `faq_categories`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
-				,"admin->faq->category_edit"
-				,"row"
-			);
-			
-			$this->tpl_assign("aCategory", $aCategory);
-		}
-		
-		$this->tpl_display("faq/categories/edit.tpl");
+		echo "/admin/faq/categories/?notice=".urlencode("Category added successfully!");
 	}
 	function categories_edit_s()
 	{
-		if(empty($_POST["name"]))
-		{
-			$_SESSION["admin"]["admin_faq_categories"] = $_POST;
-			$this->forward("/admin/faq/categories/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
-		}
-		
 		$this->db_results(
 			"UPDATE `faq_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
@@ -321,7 +284,7 @@ class admin_faq extends adminController
 			,"admin->faq->categories->edit"
 		);
 
-		$this->forward("/admin/faq/categories/?notice=".urlencode("Changes saved successfully!"));
+		echo "/admin/faq/categories/?notice=".urlencode("Changes saved successfully!");
 	}
 	function categories_delete($aParams)
 	{

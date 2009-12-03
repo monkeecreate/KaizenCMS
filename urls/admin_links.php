@@ -28,17 +28,9 @@ $aUrlPatterns_import = array(
         "cmd" => "admin_links",
         "action" => "categories_index"
     ),
-	"/admin/links/categories/add/" => array(
-        "cmd" => "admin_links",
-        "action" => "categories_add"
-    ),
 	"/admin/links/categories/add/s/" => array(
         "cmd" => "admin_links",
         "action" => "categories_add_s"
-    ),
-	"/admin/links/categories/edit/{id:[0-9]+}/" => array(
-        "cmd" => "admin_links",
-        "action" => "categories_edit"
     ),
 	"/admin/links/categories/edit/s/" => array(
         "cmd" => "admin_links",
