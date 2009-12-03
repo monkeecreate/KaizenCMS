@@ -18,7 +18,7 @@
 	</form>
 </div>
 <div id="add-category-btn" class="float-right" style="margin-bottom:10px;">
-	<a href="#" id="dialogbtn" class="btn ui-button ui-corner-all ui-state-default">
+	<a href="#addCategory" id="dialogbtn" class="btn ui-button ui-corner-all ui-state-default">
 		<span class="icon ui-icon ui-icon-circle-plus"></span> Add Category
 	</a>
 </div>

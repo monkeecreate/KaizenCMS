@@ -19,7 +19,7 @@ function smarty_function_html_editor($aParams, &$smarty)
 	$return .= "tinyMCE.init({\n";
 	$return .= "\tmode : 'textareas',\n";
 	$return .= "\ttheme : 'advanced',\n";
-	//$return .= "\tskin : 'o2k7',\n";
+	$return .= "\tskin : 'thebigreason',\n";
 	$return .= "\tplugins : 'imagemanager,filemanager,advimage,advlink,paste,table,preview,fullscreen',\n";
 	$return .= "\teditor_selector : '".$aParams["name"]."_editor',\n";
 	$return .= "\trelative_urls: false,\n";
