@@ -358,7 +358,7 @@ class admin_galleries extends adminController
 			else
 			{
 				$sOrder = $this->db_results(
-					"SELECT MAX(`sort_order`) + 1 FROM `galleries`"
+					"SELECT MAX(`sort_order`) + 1 FROM `galleries_photos`"
 					,"admin->galleries->add->max_order"
 					,"one"
 				);

@@ -43,7 +43,7 @@ class galleries extends appController
 				." INNER JOIN `galleries_categories` AS `categories` ON `galleries_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `galleries`.`id`"
-				." ORDER BY `galleries`.`name`"
+				." ORDER BY `galleries`.`sort_order`"
 				." LIMIT ".$start.",".$sPerPage
 			,"galleries->current_page"
 			,"all"
