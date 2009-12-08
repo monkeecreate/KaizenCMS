@@ -71,6 +71,7 @@ class calendar extends appController
 			/*# Image #*/
 		}
 
+		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
 		$this->tpl_assign("aCategories", $aCategories);
 		$this->tpl_assign("aEvents", $aEvents);
 		$this->tpl_assign("aPaging", $oPage->build_array());

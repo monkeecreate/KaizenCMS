@@ -32,9 +32,9 @@
 				{$aArticle.title|htmlspecialchars|stripslashes}
 			</a>
 		</h3>
-		<small><time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time> | Categories: {$aArticle.categories}</small>
+		<small><time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time> | Categories: {$aArticle.categories|htmlspecialchars|stripslashes}</small>
 		<p>
-			{$aArticle.short_content|stripslashes}<br />
+			{$aArticle.short_content|htmlspecialchars|stripslashes}<br />
 			<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">More Info&raquo;</a>
 		</p>
 	</div>

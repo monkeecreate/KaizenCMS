@@ -1,13 +1,13 @@
 <?php
 class appController
 {
-	protected $_db;
-	protected $_memcache;
-	protected $_mail;
-	protected $_smarty;
-	protected $_firephp;
+	private $_db;
+	private $_memcache;
+	private $_mail;
+	private $_smarty;
+	private $_firephp;
+	private $_enc;
 	public $_settings;
-	public $_enc;
 	
 	function appController()
 	{
@@ -130,6 +130,8 @@ class appController
 	{
 		if($this->template_exists($sTemplate))
 			$this->_smarty->display($sTemplate);
+		else
+			$this->send_error("Can't find template - (".$sTemplate.")");
 	}
 	function tpl_variable_get($sVariable)
 	{
@@ -214,20 +216,15 @@ class appController
 			$body .= "Error: ".$db->message."\n";
 			$body .= $aMessage[1]."\n";
 			$body .= "Query: ".$this->_db->last_query."\n";
-			$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
-			$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
-			$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
-			$body .= "Time: ".time()."\n";
 			
 		}
 		else
-		{
 			$body .= "Error: ".$error."\n";
-			$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
-			$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
-			$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
-			$body .= "Time: ".time()."\n";
-		}
+		
+		$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
+		$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
+		$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
+		$body .= "Time: ".date("M j,Y - h:i:s a")."\n";
 		
 		if($this->_settings->debug == true)
 			die(str_replace("\n","<br />",$body));
