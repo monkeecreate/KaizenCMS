@@ -98,6 +98,7 @@ class news extends appController
 		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
 		$this->tpl_assign("aArticles", $aArticles);
 		
+		header("Content-Type: application/rss+xml");
 		$this->tpl_display("news/rss.tpl");
 	}
 	function article($aParams)
