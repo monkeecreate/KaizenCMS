@@ -4,7 +4,8 @@
 		<div class="portlet-content">
 			<div class="section">
 				<label>Last Updated:</label>
-				{$aArticle.updated_at}
+				{$aArticle.updated_datetime|date_format:"%D - %I:%M %p"}<br>
+				<small>by {$aArticle.updated_by.fname|stripslashes} {$aArticle.update_by.lname|stripslashes}</small>
 			</div>
 			<div class="section">
 				<label class="helpTip" title="Controls whether the Unpublish date/time is used.">Use Unpublish:</label>
