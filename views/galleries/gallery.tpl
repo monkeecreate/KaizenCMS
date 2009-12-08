@@ -12,15 +12,15 @@ $(document).ready(function(){ldelim}
 </script>
 {/head}
 
-<h2>{$aGallery.name|htmlspecialchars|stripslashes}</h2>
-<small class="timeCat">Categories: {$aGallery.categories}</small>
+<h2>{$aGallery.name|clean_html}</h2>
+<small class="timeCat">Categories: {$aGallery.categories|clean_html}</small>
 
 <p>
 	{$aGallery.description|stripslashes}<br />
 </p><br />
 
 {foreach from=$aGallery.photos item=aPhoto}
-	<a href="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=600&height=600" rel="prettyPhoto[gallery]" title="{$aPhoto.description|htmlspecialchars|stripslashes}"><img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=140&height=140" alt="{$aPhoto.title|stripslashes}" class="galleryPics"></a>
+	<a href="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=600&height=600" rel="prettyPhoto[gallery]" title="{$aPhoto.description|clean_html}"><img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=140&height=140" alt="{$aPhoto.title|stripslashes}" class="galleryPics"></a>
 {/foreach}
 <div class="clear"></div>
 {include file="inc_footer.tpl"}

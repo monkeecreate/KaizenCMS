@@ -5,7 +5,7 @@
 	<select name="category">
 		<option value="">- All Categories -</option>
 		{foreach from=$aCategories item=aCategory}
-			<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|htmlspecialchars|stripslashes}</option>
+			<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|clean_html}</option>
 		{/foreach}
 	</select>
 	<script type="text/javascript">
@@ -27,12 +27,12 @@
 		{/if}
 		<h3>
 			<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/">
-				{$aEvent.title|htmlspecialchars|stripslashes}
+				{$aEvent.title|clean_html}
 			</a>
 		</h3>
-		<small><time>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</time> | Categories: {$aEvent.categories}</small>
+		<small><time>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</time> | Categories: {$aEvent.categories|clean_html}</small>
 		<p>
-			{$aEvent.short_content|stripslashes}<br />
+			{$aEvent.short_content|clean_html}<br />
 			<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/">More Info&raquo;</a>
 		</p>
 	</div>
@@ -52,7 +52,7 @@
 	{/if}
 </div>
 <div style="text-align:center;margin-top:10px">
-	<a href="/calendar/rss/">
+	<a href="webcal://{$domain}/calendar/ics/">
 		<img src="/images/admin/icons/calendar.png"> Subscribe to Calendar
 	</a>
 </div>

@@ -100,7 +100,7 @@ else
 ### PAGE CACHED ##############################
 $sPage = $oMemcache->get(md5($aConfig["memcache"]["salt"].$sURL));
 if($sPage != false)
-	die("<h2>Cache:</h2> ".$oEnc->decrypt($sPage));
+	die($oEnc->decrypt($sPage));
 ##############################################
 
 ### PREPARE URL PATTERN #######################
