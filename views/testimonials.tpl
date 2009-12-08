@@ -6,7 +6,7 @@
 	{$aContent.content|stripslashes}
 </div>
 <p>
-	<h4>{$aCurTestimonial.name} - <small>{$aCurTestimonial.sub_name}</small></h4>
+	<h4>{$aCurTestimonial.name|clean_html} - <small>{$aCurTestimonial.sub_name|clean_html}</small></h4>
 	{if !empty($aCurTestimonial.video)}
 		<div class="player">
 			{include file="inc_corners.tpl"}
@@ -45,7 +45,7 @@
 		</script>
 	{else}
 		<blockquote>
-			{$aCurTestimonial.text|stripslashes}
+			{$aCurTestimonial.text|clean_html}
 		</blockquote>
 	{/if}
 </p>
@@ -61,7 +61,7 @@
 		{else}
 			<div class="{if $aTestimonial.id == $aCurTestimonial.id}selected{/if} tours textTest">
 				<a href="/testimonials/{$aTestimonial.id}/">
-					{$aTestimonial.name}
+					{$aTestimonial.name|clean_html}
 				</a>
 			</div>
 		{/if}

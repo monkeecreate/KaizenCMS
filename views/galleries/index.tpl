@@ -5,7 +5,7 @@
 	<select name="category">
 		<option value="">- All Categories -</option>
 		{foreach from=$aCategories item=aCategory}
-			<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|htmlspecialchars|stripslashes}</option>
+			<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|clean_html}</option>
 		{/foreach}
 	</select>
 	<script type="text/javascript">
@@ -27,10 +27,10 @@
 		{/if}
 		<h3>
 			<a href="/galleries/{$aGallery.id}/">
-				{$aGallery.name|htmlspecialchars|stripslashes}
+				{$aGallery.name|clean_html}
 			</a>
 		</h3>
-		<small>Categories: {$aGallery.categories}</small>
+		<small>Categories: {$aGallery.categories|clean_html}</small>
 		<p>
 			{$aGallery.description|stripslashes}
 		</p>
