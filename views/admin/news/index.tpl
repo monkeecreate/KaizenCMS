@@ -11,6 +11,21 @@
 	{rdelim});
 </script>
 {/head}
+<form name="category" method="get" action="/admin/news/" class="float-right" style="margin-bottom:10px">
+	View by category: <select name="category">
+		<option value="">- All Categories -</option>
+		{foreach from=$aCategories item=aCategory}
+			<option value="{$aCategory.id}"{if $aCategory.id == $sCategory} selected="selected"{/if}>{$aCategory.name}</option>
+		{/foreach}
+	</select>
+	<script type="text/javascript">
+	$(function(){ldelim}
+		$('select[name=category]').change(function(){ldelim}
+			$('form[name=category]').submit();
+		{rdelim});
+	{rdelim});
+	</script>
+</form>
 <div class="clear"></div>
 <table class="dataTable">
 	<thead>

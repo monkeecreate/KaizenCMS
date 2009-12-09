@@ -7,13 +7,29 @@ class admin_promos extends adminController
 		// Clear saved form info
 		$_SESSION["admin"]["admin_promos"] = null;
 		
-		$aPromos = $this->db_results(
-			"SELECT `promos`.* FROM `promos`"
-				." ORDER BY `promos`.`datetime_show` DESC"
-			,"admin->promos->index"
+		$aPositions = $this->db_results(
+			"SELECT * FROM `promos_positions`"
+				." ORDER BY `name`"
+			,"admin->promos->index->positions"
 			,"all"
 		);
 		
+		if(!empty($_GET["position"]))
+		{
+			$sSQLPosition = " INNER JOIN `promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`";
+			$sSQLPosition .= " WHERE `assign`.`positionid` = ".$this->db_quote($_GET["position"], "integer");
+		}
+		
+		$aPromos = $this->db_results(
+			"SELECT `promos`.* FROM `promos`"
+				.$sSQLPosition
+				." ORDER BY `promos`.`datetime_show` DESC"
+			,"admin->promos->index->promos"
+			,"all"
+		);
+		
+		$this->tpl_assign("aPositions", $aPositions);
+		$this->tpl_assign("sPosition", $_GET["position"]);
 		$this->tpl_assign("aPromos", $aPromos);
 		$this->tpl_display("promos/index.tpl");
 	}

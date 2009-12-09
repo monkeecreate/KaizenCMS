@@ -49,18 +49,18 @@ class content extends appController
 		else
 			$this->error("404");
 	}
-	function contact()
-	{
-		$aForm["to"] = $this->encrypt("defvayne23@gmail.com");
-		$aForm["from"] = $this->encrypt("defvayne23@gmail.com");
-		$aForm["subject"] = $this->encrypt("Test email!");
-		$aForm["forward"] = $this->encrypt("/");
-		
-		$this->tpl_assign("aForm", $aForm);
-		$this->tpl_display("contact.tpl");
-	}
 	function form_submit()
 	{
+		require_once($this->_settings->root.'helpers/recaptchalib.php');
+		$privatekey = "6LfXQwkAAAAAAJ2WgHyDtraMxy639SPAln9f0uFj";
+		$resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+		
+		if (!$resp->is_valid)
+		{
+			$_SESSION["post_data"] = $_POST;
+			$this->forward($this->decrypt($_POST["return"]));
+		}
+		
 		// name="{ order | linetype | text }"
 		$aItems = array();//Email components
 		$aInfo = array();//Form values
@@ -103,13 +103,38 @@ class content extends appController
 			$this->decrypt($_POST["to"])
 		);
 		
-		$aHeaders["From"] = $this->decrypt($_POST["from"]);
-		$aHeaders["To"] = $this->decrypt($_POST["to"]);
-		$aHeaders["Subject"] = $this->decrypt($_POST["subject"]);
+		$aHeaders["From"] = $this->form_submit_values($this->decrypt($_POST["from"]), $aItems);
+		$aHeaders["To"] = $this->form_submit_values($this->decrypt($_POST["to"]), $aItems);
+		$aHeaders["Subject"] = $this->form_submit_values($this->decrypt($_POST["subject"]), $aItems);
 		
 		$this->mail($aRecipients, $aHeaders, $sBody);
 		
 		$this->forward($this->decrypt($_POST["forward"]));
+	}
+	function form_submit_values($sString, $aValues)
+	{
+		foreach($aValues as $key => $item)
+			$sString = str_replace("[$".$key."]", $item["value"], $sString);
+		
+		return $sString;
+	}
+	function promo($aParams)
+	{
+		$aPromo = $this->db_results(
+			"SELECT `promos`.* FROM `promos`"
+				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+			,"content->promo"
+			,"row"
+		);
+		
+		$this->db_results(
+			"UPDATE `promos` SET"
+				." `clicks` = `clicks` + 1"
+				." WHERE `id` = ".$aPromo["id"]
+			,"content->promo->clicks"
+		);
+		
+		$this->forward($aPromo["link"]);
 	}
 	##################################
 	
