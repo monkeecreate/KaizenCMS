@@ -3,6 +3,11 @@
 	<div id="sidebar" class="portlet">
 		<div class="portlet-content">
 			<div class="section">
+				<label>Last Updated:</label>
+				{$aLink.updated_datetime|date_format:"%D - %I:%M %p"}<br>
+				<small>by {$aLink.updated_by.fname|stripslashes} {$aLink.update_by.lname|stripslashes}</small>
+			</div>
+			<div class="section">
 				<label>Active:</label>
 				<input type="checkbox" name="active" value="1"{if $aLink.active == 1} checked="checked"{/if}> Yes
 			</div>
