@@ -11,7 +11,7 @@ class calendar_model extends appModel
 		$sWHERE .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
 		$sWhere .= " AND `calendar`.`datetime_end` > ".time();
 		$sWhere .= " AND `calendar`.`active` = 1";
-		if(!empty($_GET["category"]))
+		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($sCategory, "integer");
 		
 		// Get all events for paging
