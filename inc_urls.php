@@ -20,10 +20,6 @@ $aUrlPatterns = array(
 		"cmd" => "content",
 		"action" => "siteinfo"
 	),
-	"/contact/" => array(
-		"cmd" => "content",
-		"action" => "contact"
-	),
 	"/sendform/" => array(
 		"cmd" => "content",
 		"action" => "form_submit"
@@ -107,6 +103,10 @@ $aUrlPatterns = array(
 	"/image/calendar/{id:[0-9]+}/" => array(
 		"cmd" => "image",
 		"action" => "image_calendar"
+	),
+	"/promos/{id:[0-9]+}/" => array(
+		"cmd" => "content",
+		"action" => "promo"
 	),
 	"/{page:[a-z0-9_-]+}/" => array(
 		"cmd" => "content",
