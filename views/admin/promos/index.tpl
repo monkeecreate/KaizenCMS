@@ -11,6 +11,21 @@
 	{rdelim});
 </script>
 {/head}
+<form name="position" method="get" action="/admin/promos/" class="float-right" style="margin-bottom:10px">
+	View by position: <select name="position">
+		<option value="">- All Positions -</option>
+		{foreach from=$aPositions item=aPosition}
+			<option value="{$aPosition.id}"{if $aPosition.id == $sPosition} selected="selected"{/if}>{$aPosition.name}</option>
+		{/foreach}
+	</select>
+	<script type="text/javascript">
+	$(function(){ldelim}
+		$('select[name=position]').change(function(){ldelim}
+			$('form[name=position]').submit();
+		{rdelim});
+	{rdelim});
+	</script>
+</form>
 <div class="clear"></div>
 <table class="dataTable">
 	<thead>
