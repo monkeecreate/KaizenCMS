@@ -19,6 +19,7 @@ class news_model extends appModel
 				." INNER JOIN `news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `news`.`id`"
+				." ORDER BY `news`.`datetime_show` DESC"
 			,"model->news->get_articles"
 			,"all"
 		);
@@ -71,6 +72,8 @@ class news_model extends appModel
 		if(file_exists($this->_settings->root_public."uploads/news/".$aArticle["id"].".jpg"))
 			$aArticle["image"] = 1;
 		/*# Image #*/
+		
+		return $aArticle;
 	}
 	function getCategories()
 	{
