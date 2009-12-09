@@ -23,7 +23,6 @@ class documents_model extends appModel
 		
 		foreach($aDocuments as $x => $aDocument)
 		{
-			/*# Categories #*/
 			$aDocumentCategories = $this->db_results(
 				"SELECT `name` FROM `documents_categories` AS `categories`"
 					." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
@@ -33,7 +32,6 @@ class documents_model extends appModel
 			);
 		
 			$aDocuments[$x]["categories"] = implode(", ", $aDocumentCategories);
-			/*# Categories #*/
 		}
 		
 		return $aDocuments;

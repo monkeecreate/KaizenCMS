@@ -27,7 +27,7 @@ class calendar extends appController
 		if(($sCurrentPage - 1) < 1 || $sCurrentPage == 1)
 			$aPaging["back"]["use"] = false;
 		
-		if($sCurrentPage == count($aEventPages))
+		if($sCurrentPage == count($aEventPages) || count($aEventPages) == 0)
 			$aPaging["next"]["use"] = false;
 		#########################
 

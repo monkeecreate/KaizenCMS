@@ -57,21 +57,22 @@ class news_model extends appModel
 			,"news->article"
 			,"row"
 		);
-
-		$aCategories = $this->db_results(
-			"SELECT `name` FROM `news_categories` AS `category`"
-				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `category`.`id`"
-				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-			,"news->article->categories"
-			,"col"
-		);
-
-		$aArticle["categories"] = implode(", ", $aCategories);
 		
-		/*# Image #*/
-		if(file_exists($this->_settings->root_public."uploads/news/".$aArticle["id"].".jpg"))
-			$aArticle["image"] = 1;
-		/*# Image #*/
+		if(!empty($aArticle))
+		{
+			$aCategories = $this->db_results(
+				"SELECT `name` FROM `news_categories` AS `category`"
+					." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `category`.`id`"
+					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
+				,"news->article->categories"
+				,"col"
+			);
+			
+			$aArticle["categories"] = implode(", ", $aCategories);
+			
+			if(file_exists($this->_settings->root_public."uploads/news/".$aArticle["id"].".jpg"))
+				$aArticle["image"] = 1;
+		}
 		
 		return $aArticle;
 	}

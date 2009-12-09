@@ -27,7 +27,7 @@ class news extends appController
 		if(($sCurrentPage - 1) < 1 || $sCurrentPage == 1)
 			$aPaging["back"]["use"] = false;
 		
-		if($sCurrentPage == count($aArticlePages))
+		if($sCurrentPage == count($aArticlePages) || count($aArticlePages) == 0)
 			$aPaging["next"]["use"] = false;
 		#########################
 

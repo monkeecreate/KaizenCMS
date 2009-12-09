@@ -28,7 +28,6 @@ class calendar_model extends appModel
 	
 		foreach($aEvents as $x => $aEvent)
 		{
-			/*# Categories #*/
 			$aEventCategories = $this->db_results(
 				"SELECT `name` FROM `calendar_categories` AS `categories`"
 					." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `categories`.`id`"
@@ -38,12 +37,9 @@ class calendar_model extends appModel
 			);
 		
 			$aEvents[$x]["categories"] = implode(", ", $aEventCategories);
-			/*# Categories #*/
 		
-			/*# Image #*/
 			if(file_exists($this->_settings->root_public."uploads/calendar/".$aEvent["id"].".jpg"))
 				$aEvents[$x]["image"] = 1;
-			/*# Image #*/
 		}
 		
 		return $aEvents;
@@ -59,21 +55,22 @@ class calendar_model extends appModel
 			,"calendar->event"
 			,"row"
 		);
-
-		$aCategories = $this->db_results(
-			"SELECT `name` FROM `calendar_categories` AS `category`"
-				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
-				." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
-			,"calendar->event->categories"
-			,"col"
-		);
-
-		$aEvent["categories"] = implode(", ", $aCategories);
 		
-		/*# Image #*/
-		if(file_exists($this->_settings->root_public."uploads/calendar/".$aEvent["id"].".jpg"))
-			$aEvent["image"] = 1;
-		/*# Image #*/
+		if(!empty($aEvent))
+		{
+			$aCategories = $this->db_results(
+				"SELECT `name` FROM `calendar_categories` AS `category`"
+					." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
+					." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
+				,"calendar->event->categories"
+				,"col"
+			);
+		
+			$aEvent["categories"] = implode(", ", $aCategories);
+		
+			if(file_exists($this->_settings->root_public."uploads/calendar/".$aEvent["id"].".jpg"))
+				$aEvent["image"] = 1;
+		}
 		
 		return $aEvent;
 	}
