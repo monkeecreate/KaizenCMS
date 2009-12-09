@@ -12,7 +12,6 @@ class news_model extends appModel
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($sCategory, "integer");
 		
-		// Get all articles for paging
 		$aArticles = $this->db_results(
 			"SELECT `news`.* FROM `news` AS `news`"
 				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
@@ -20,28 +19,24 @@ class news_model extends appModel
 				.$sWhere
 				." GROUP BY `news`.`id`"
 				." ORDER BY `news`.`datetime_show` DESC"
-			,"model->news->get_articles"
+			,"model->news->getArticles"
 			,"all"
 		);
 	
 		foreach($aArticles as $x => $aArticle)
 		{
-			/*# Categories #*/
 			$aArticleCategories = $this->db_results(
 				"SELECT `name` FROM `news_categories` AS `categories`"
 					." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-				,"model->new->get_articles->article_categories"
+				,"model->new->getArticles->article_categories"
 				,"col"
 			);
 		
 			$aArticles[$x]["categories"] = implode(", ", $aArticleCategories);
-			/*# Categories #*/
-		
-			/*# Image #*/
+			
 			if(file_exists($this->_settings->root_public."upload/news/".$aArticle["id"].".jpg") && $aArticle["photo_x2"] > 0)
 				$aArticles[$x]["image"] = 1;
-			/*# Image #*/
 		}
 		
 		return $aArticles;
@@ -54,7 +49,7 @@ class news_model extends appModel
 				." AND `news`.`active` = 1"
 				." AND `news`.`datetime_show` < ".time()
 				." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")"
-			,"news->article"
+			,"model->news->getArticle"
 			,"row"
 		);
 		
@@ -64,7 +59,7 @@ class news_model extends appModel
 				"SELECT `name` FROM `news_categories` AS `category`"
 					." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `category`.`id`"
 					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-				,"news->article->categories"
+				,"model->news->getArticle->categories"
 				,"col"
 			);
 			
@@ -81,7 +76,7 @@ class news_model extends appModel
 		$aCategories = $this->db_results(
 			"SELECT * FROM `news_categories`"
 				." ORDER BY `name`"
-			,"model->news->get_categories"
+			,"model->news->getCategories"
 			,"all"
 		);
 		

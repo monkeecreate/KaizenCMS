@@ -84,7 +84,7 @@ $aUrlPatterns = array(
 		"cmd" => "galleries",
 		"action" => "index"
 	),
-	"/galleries/{gallery:[0-9]+}/" => array(
+	"/galleries/{id:[0-9]+}/" => array(
 		"cmd" => "galleries",
 		"action" => "gallery"
 	),

@@ -27,7 +27,7 @@ class documents_model extends appModel
 				"SELECT `name` FROM `documents_categories` AS `categories`"
 					." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
-				,"documents->document_categories"
+				,"model->documents->getDocuments->document_categories"
 				,"col"
 			);
 		
@@ -41,7 +41,7 @@ class documents_model extends appModel
 		$aCategories = $this->db_results(
 			"SELECT * FROM `documents_categories`"
 				." ORDER BY `name`"
-			,"model->news->get_categories"
+			,"model->documents->getCategories"
 			,"all"
 		);
 		

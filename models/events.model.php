@@ -21,28 +21,24 @@ class events_model extends appModel
 				.$sWhere
 				." GROUP BY `events`.`id`"
 				." ORDER BY `events`.`datetime_start`"
-			,"events->all_events_pages"
+			,"model->events->getEvents"
 			,"all"
 		);
 		
 		foreach($aEvents as $x => $aEvent)
 		{
-			/*# Categories #*/
 			$aEventCategories = $this->db_results(
 				"SELECT `name` FROM `events_categories` AS `categories`"
 					." INNER JOIN `events_categories_assign` AS `events_assign` ON `events_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `events_assign`.`eventid` = ".$aEvent["id"]
-				,"events->event_categories"
+				,"model->events->getEvents->event_categories"
 				,"col"
 			);
 		
 			$aEvents[$x]["categories"] = implode(", ", $aEventCategories);
-			/*# Categories #*/
-		
-			/*# Image #*/
+			
 			if(file_exists($this->_settings->root_public."upload/events/".$aEvent["id"].".jpg"))
 				$aEvents[$x]["image"] = 1;
-			/*# Image #*/
 		}
 		
 		return $aEvents;
@@ -55,7 +51,7 @@ class events_model extends appModel
 				." AND `events`.`active` = 1"
 				." AND `events`.`datetime_show` < ".time()
 				." AND (`events`.`use_kill` = 0 OR `events`.`datetime_kill` > ".time().")"
-			,"events->event"
+			,"model->events->getEvent"
 			,"row"
 		);
 		
@@ -65,7 +61,7 @@ class events_model extends appModel
 				"SELECT `name` FROM `events_categories` AS `category`"
 					." INNER JOIN `events_categories_assign` AS `events_assign` ON `events_assign`.`categoryid` = `category`.`id`"
 					." WHERE `events_assign`.`eventid` = ".$aEvent["id"]
-				,"events->event->categories"
+				,"model->events->getEvent->categories"
 				,"col"
 			);
 			
@@ -82,7 +78,7 @@ class events_model extends appModel
 		$aCategories = $this->db_results(
 			"SELECT * FROM `events_categories`"
 				." ORDER BY `name`"
-			,"events->get_categories->categories"
+			,"model->events->getCategories"
 			,"all"
 		);
 		
