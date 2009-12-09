@@ -100,7 +100,7 @@ class admin_events extends adminController
 		
 		$sID = $this->db_results(
 			"INSERT INTO `events`"
-				." (`title`, `short_content`, `content`, `allday`, `datetime_start`, `datetime_end`, `datetime_show`, `datetime_kill`, `use_kill`, `active`)"
+				." (`title`, `short_content`, `content`, `allday`, `datetime_start`, `datetime_end`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["title"], "text")
@@ -113,6 +113,10 @@ class admin_events extends adminController
 					.", ".$this->db_quote($datetime_kill, "integer")
 					.", ".$this->db_quote($use_kill, "integer")
 					.", ".$this->db_quote($active, "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->events->add"
 			,"insert"
@@ -139,7 +143,26 @@ class admin_events extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_events"]))
-			$this->tpl_assign("aEvent", $_SESSION["admin"]["admin_events"]);
+		{
+			$aEventRow = $this->db_results(
+				"SELECT * FROM `events`"
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				,"admin->events->edit"
+				,"row"
+			);
+			
+			$aEvent = $_SESSION["admin"]["admin_events"];
+			
+			$aEvent["updated_datetime"] = $aEventRow["updated_datetime"];
+			$aEvent["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aEventRow["updated_by"]
+				,"admin->events->edit->updated_by"
+				,"row"
+			);
+			
+			$this->tpl_assign("aEvent", $aEvent);
+		}
 		else
 		{
 			$aEvent = $this->db_results(
@@ -163,6 +186,13 @@ class admin_events extends adminController
 			$aEvent["datetime_end_date"] = date("m/d/Y", $aEvent["datetime_end"]);
 			$aEvent["datetime_show_date"] = date("m/d/Y", $aEvent["datetime_show"]);
 			$aEvent["datetime_kill_date"] = date("m/d/Y", $aEvent["datetime_kill"]);
+			
+			$aEvent["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aEvent["updated_by"]
+				,"admin->events->edit->updated_by"
+				,"row"
+			);
 			
 			$this->tpl_assign("aEvent", $aEvent);
 		}
@@ -226,6 +256,8 @@ class admin_events extends adminController
 				.", `datetime_kill` = ".$this->db_quote($datetime_kill, "integer")
 				.", `use_kill` = ".$this->db_quote($use_kill, "integer")
 				.", `active` = ".$this->db_quote($active, "integer")
+				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
+				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->events->edit"
 		);

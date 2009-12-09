@@ -71,7 +71,7 @@ class admin_promos extends adminController
 		
 		$sID = $this->db_results(
 			"INSERT INTO `promos`"
-				." (`name`, `link`, `datetime_show`, `datetime_kill`, `use_kill`, `active`)"
+				." (`name`, `link`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["name"], "text")
@@ -80,6 +80,10 @@ class admin_promos extends adminController
 					.", ".$this->db_quote($datetime_kill, "integer")
 					.", ".$this->db_quote($use_kill, "integer")
 					.", ".$this->db_quote($active, "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->promos->add"
 			,"insert"
@@ -142,7 +146,26 @@ class admin_promos extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_promos"]))
-			$this->tpl_assign("aPromo", $_SESSION["admin"]["admin_promos"]);
+		{
+			$aPromoRow = $this->db_results(
+				"SELECT * FROM `promos`"
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				,"admin->promos->edit"
+				,"row"
+			);
+			
+			$aPromo = $_SESSION["admin"]["admin_promos"];
+			
+			$aPromo["updated_datetime"] = $aPromoRow["updated_datetime"];
+			$aPromo["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aPromoRow["updated_by"]
+				,"admin->promos->edit->updated_by"
+				,"row"
+			);
+			
+			$this->tpl_assign("aPromo", $aPromo);
+		}
 		else
 		{
 			$aPromo = $this->db_results(
@@ -164,6 +187,13 @@ class admin_promos extends adminController
 			
 			$aPromo["datetime_show_date"] = date("m/d/Y", $aPromo["datetime_show"]);
 			$aPromo["datetime_kill_date"] = date("m/d/Y", $aPromo["datetime_kill"]);
+			
+			$aPromo["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aPromo["updated_by"]
+				,"admin->promos->edit->updated_by"
+				,"row"
+			);
 			
 			$this->tpl_assign("aPromo", $aPromo);
 		}
@@ -208,6 +238,8 @@ class admin_promos extends adminController
 				.", `datetime_kill` = ".$this->db_quote($datetime_kill, "integer")
 				.", `use_kill` = ".$this->db_quote($use_kill, "integer")
 				.", `active` = ".$this->db_quote($active, "integer")
+				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
+				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->promos->edit"
 		);

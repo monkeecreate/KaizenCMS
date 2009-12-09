@@ -3,6 +3,11 @@
 	<div id="sidebar" class="portlet">
 		<div class="portlet-content">
 			<div class="section">
+				<label>Last Updated:</label>
+				{$aTestimonial.updated_datetime|date_format:"%D - %I:%M %p"}<br>
+				<small>by {$aTestimonial.updated_by.fname|stripslashes} {$aTestimonial.update_by.lname|stripslashes}</small>
+			</div>
+			<div class="section">
 				<label>Display on homepage:</label>
 				<input type="checkbox" name="homepage" value="1"{if $aTestimonial.homepage == 1} checked="checked"{/if}> Yes
 			</div><br />
@@ -23,18 +28,6 @@
 	<label>Text:</label>
 	<textarea name="text" class="elastic">{$aTestimonial.text|htmlspecialchars|stripslashes}</textarea><br>
 	<div class="clear"></div>
-	<fieldset>
-		<legend>Section menu to show testimonial in:</legend>
-		<ul>
-			{foreach from=$aSections item=aSection}
-				<li>
-					<input type="checkbox" name="menu[]" value="{$aSection.id}"
-						{if in_array($aSection.id, $aTestimonial.menu)} checked="checked"{/if}>
-					 {$aSection.name|stripslashes}
-				</li>
-			{/foreach}
-		</ul>
-	</fieldset>
 	<fieldset id="fieldset_categories">
 		<legend>Assign testimonial to category:</legend>
 		<ul>

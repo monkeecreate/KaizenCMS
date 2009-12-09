@@ -73,13 +73,17 @@ class admin_faq extends adminController
 		
 		$sID = $this->db_results(
 			"INSERT INTO `faq`"
-				." (`question`, `answer`, `sort_order`, `active`)"
+				." (`question`, `answer`, `sort_order`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["question"], "text")
 					.", ".$this->db_quote($_POST["answer"], "text")
 					.", ".$this->db_quote($sOrder, "integer")
 					.", ".$this->db_quote($active, "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->faq->add"
 			,"insert"
@@ -163,7 +167,26 @@ class admin_faq extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_faq"]))
-			$this->tpl_assign("aQuestion", $_SESSION["admin"]["admin_faq"]);
+		{
+			$aQuestionRow = $this->db_results(
+				"SELECT * FROM `faq`"
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				,"admin->faq->edit"
+				,"row"
+			);
+			
+			$aQuestion = $_SESSION["admin"]["admin_faq"];
+			
+			$aQuestion["updated_datetime"] = $aQuestionRow["updated_datetime"];
+			$aQuestion["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aQuestionRow["updated_by"]
+				,"admin->faq->edit->updated_by"
+				,"row"
+			);
+			
+			$this->tpl_assign("aQuestion", $aQuestion);
+		}
 		else
 		{
 			$aQuestion = $this->db_results(
@@ -181,6 +204,13 @@ class admin_faq extends adminController
 					." ORDER BY `categories`.`name`"
 				,"admin->faq->edit->categories"
 				,"col"
+			);
+			
+			$aQuestion["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aQuestion["updated_by"]
+				,"admin->faq->edit->updated_by"
+				,"row"
 			);
 			
 			$this->tpl_assign("aQuestion", $aQuestion);
@@ -207,6 +237,8 @@ class admin_faq extends adminController
 				." `question` = ".$this->db_quote($_POST["question"], "text")
 				.", `answer` = ".$this->db_quote($_POST["answer"], "text")
 				.", `active` = ".$this->db_quote($active, "integer")
+				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
+				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->faq->edit"
 		);

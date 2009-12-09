@@ -52,11 +52,6 @@ class admin_testimonials extends adminController
 			$this->forward("/admin/testimonials/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		if(!empty($_POST["homepage"]))
-			$homepage = 1;
-		else
-			$homepage = 0;
-		
 		if(!empty($_POST["active"]))
 			$active = 1;
 		else
@@ -64,14 +59,17 @@ class admin_testimonials extends adminController
 		
 		$sID = $this->db_results(
 			"INSERT INTO `testimonials`"
-				." (`name`, `sub_name`, `text`, `homepage`, `active`)"
+				." (`name`, `sub_name`, `text`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["name"], "text")
 					.", ".$this->db_quote($_POST["sub_name"], "text")
 					.", ".$this->db_quote($_POST["text"], "text")
-					.", ".$this->db_quote($homepage, "integer")
 					.", ".$this->db_quote($active, "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->testimonials->add"
 			,"insert"
@@ -178,7 +176,26 @@ class admin_testimonials extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_testimonials"]))
-			$this->tpl_assign("aTestimonial", $_SESSION["admin"]["admin_testimonials"]);
+		{
+			$aTestimonialRow = $this->db_results(
+				"SELECT * FROM `testimonials`"
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				,"admin->testimonials->edit"
+				,"row"
+			);
+			
+			$aTestimonial = $_SESSION["admin"]["admin_news"];
+			
+			$aTestimonial["updated_datetime"] = $aTestimonialRow["updated_datetime"];
+			$aTestimonial["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aTestimonialRow["updated_by"]
+				,"admin->testimonials->edit->updated_by"
+				,"row"
+			);
+			
+			$this->tpl_assign("aTestimonial", $aTestimonial);
+		}
 		else
 		{
 			$aTestimonial = $this->db_results(
@@ -196,6 +213,13 @@ class admin_testimonials extends adminController
 					." ORDER BY `categories`.`name`"
 				,"admin->testimonials->edit->categories"
 				,"col"
+			);
+			
+			$aTestimonial["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aTestimonial["updated_by"]
+				,"admin->testimonials->edit->updated_by"
+				,"row"
 			);
 		
 			$this->tpl_assign("aTestimonial", $aTestimonial);
@@ -229,6 +253,8 @@ class admin_testimonials extends adminController
 				.", `text` = ".$this->db_quote($_POST["text"], "text")
 				.", `homepage` = ".$this->db_quote($homepage, "integer")
 				.", `active` = ".$this->db_quote($active, "integer")
+				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
+				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->testimonials->edit"
 		);

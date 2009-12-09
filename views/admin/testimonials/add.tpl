@@ -23,18 +23,6 @@
 	<label>Text:</label>
 	<textarea name="text" class="elastic">{$aTestimonial.text|htmlspecialchars|stripslashes}</textarea><br>
 	<div class="clear"></div>
-	<fieldset>
-		<legend>Section menu to show testimonial in:</legend>
-		<ul>
-			{foreach from=$aSections item=aSection}
-				<li>
-					<input type="checkbox" name="menu[]" value="{$aSection.id}"
-						{if in_array($aSection.id, $aTestimonial.menu)} checked="checked"{/if}>
-					 {$aSection.name|stripslashes}
-				</li>
-			{/foreach}
-		</ul>
-	</fieldset>
 	<fieldset id="fieldset_categories">
 		<legend>Assign testimonial to category:</legend>
 		<ul>
