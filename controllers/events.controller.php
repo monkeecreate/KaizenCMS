@@ -3,7 +3,7 @@ class events extends appController
 {
 	function index()
 	{
-		$oEvents = $this->loadModule("events");
+		$oEvents = $this->loadModel("events");
 		
 		## GET CURRENT PAGE NEWS
 		$sCurrentPage = $_GET["page"];
@@ -39,7 +39,7 @@ class events extends appController
 	}
 	function event($aParams)
 	{
-		$oEvents = $this->loadModule("events");
+		$oEvents = $this->loadModel("events");
 		
 		$aEvent = $oEvents->getEvent($aParams["id"]);
 		

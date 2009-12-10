@@ -59,17 +59,16 @@ class appController
 		
 		phpinfo();
 	}
-	function loadModule($sModule)
+	function loadModel($sModel)
 	{
-		if(!class_exists($sModule."_model"))
-			require($this->_settings->root."models/".$sModule.".model.php");
+		if(!class_exists($sModel."_model"))
+			require($this->_settings->root."models/".$sModel.".model.php");
 			
-		$sModule = $sModule."_model";
+		$sModel = $sModel."_model";
 		
-		$oModule = new $sModule;
-		// $oModule->loadModel($this);
+		$sModel = new $sModel;
 		
-		return $oModule;
+		return $sModel;
 	}
 	##################################
 	

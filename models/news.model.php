@@ -1,8 +1,8 @@
 <?php
 class news_model extends appModel
 {
-	public $imageMinWidth = 320;
-	public $imageMinHeight = 200;
+	public $imageMinWidth = 140;
+	public $imageMinHeight = 87;
 	public $perPage = 5;
 	
 	function getArticles($sCategory = null)
@@ -84,6 +84,18 @@ class news_model extends appModel
 	}
 	function getImage($sId)
 	{
+		$aArticle = $this->getArticle($sId);
 		
+		$sFile = $this->_settings->root_public."uploads/news/".$sId.".jpg";
+		
+		$image = imagecreatefromjpeg($sFile);
+		
+		$aImage = array(
+			"image" => $image
+			,"file" => $sFile
+			,"info" => $aArticle
+		);
+		
+		return $aImage;
 	}
 }

@@ -2,8 +2,8 @@
 <div id="sidebar" class="portlet">
 	<div class="portlet-content">
 		<b>&middot;</b> File must be a .jpg<br />
-		<b>&middot;</b> Minimum width is 300px<br />
-		<b>&middot;</b> Minimum height is 225px
+		<b>&middot;</b> Minimum width is {$minWidth}px<br />
+		<b>&middot;</b> Minimum height is {$minHeight}px
 	</div>
 </div>
 <p>

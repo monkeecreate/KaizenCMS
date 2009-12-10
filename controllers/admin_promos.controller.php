@@ -75,27 +75,17 @@ class admin_promos extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		if(!empty($_POST["use_kill"]))
-			$use_kill = 1;
-		else
-			$use_kill = 0;
-		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$sID = $this->db_results(
 			"INSERT INTO `promos`"
 				." (`name`, `link`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["name"], "text")
-					.", ".$this->db_quote($_POST["link"], "integer")
+					.", ".$this->db_quote($_POST["link"], "text")
 					.", ".$this->db_quote($datetime_show, "integer")
 					.", ".$this->db_quote($datetime_kill, "integer")
-					.", ".$this->db_quote($use_kill, "integer")
-					.", ".$this->db_quote($active, "integer")
+					.", ".$this->db_quote($_POST["use_kill"], "integer")
+					.", ".$this->db_quote($_POST["active"], "integer")
 					.", ".$this->db_quote(time(), "integer")
 					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 					.", ".$this->db_quote(time(), "integer")
@@ -236,24 +226,14 @@ class admin_promos extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		if(!empty($_POST["use_kill"]))
-			$use_kill = 1;
-		else
-			$use_kill = 0;
-		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$this->db_results(
 			"UPDATE `promos` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				.", `link` = ".$this->db_quote($_POST["link"], "text")
 				.", `datetime_show` = ".$this->db_quote($datetime_show, "integer")
 				.", `datetime_kill` = ".$this->db_quote($datetime_kill, "integer")
-				.", `use_kill` = ".$this->db_quote($use_kill, "integer")
-				.", `active` = ".$this->db_quote($active, "integer")
+				.", `use_kill` = ".$this->db_quote($_POST["use_kill"], "integer")
+				.", `active` = ".$this->db_quote($_POST["active"], "integer")
 				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
 				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")

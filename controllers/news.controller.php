@@ -3,7 +3,7 @@ class news extends appController
 {
 	function index()
 	{
-		$oNews = $this->loadModule("news");
+		$oNews = $this->loadModel("news");
 		
 		## GET CURRENT PAGE NEWS
 		$sCurrentPage = $_GET["page"];
@@ -39,7 +39,7 @@ class news extends appController
 	}
 	function rss()
 	{
-		$oNews = $this->loadModule("news");
+		$oNews = $this->loadModel("news");
 		
 		$aArticles = array_slice($oNews->getArticles($_GET["category"]), 0, 15);
 
@@ -51,7 +51,7 @@ class news extends appController
 	}
 	function article($aParams)
 	{
-		$oNews = $this->loadModule("news");
+		$oNews = $this->loadModel("news");
 		
 		$aArticle = $oNews->getArticle($aParams["id"]);
 		

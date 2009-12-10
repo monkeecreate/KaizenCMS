@@ -92,17 +92,9 @@ $aUrlPatterns = array(
 		"cmd" => "image",
 		"action" => "resize"
 	),
-	"/image/news/{id:[0-9]+}/" => array(
+	"/image/{model:[a-z]+}/{id:[0-9]+}/" => array(
 		"cmd" => "image",
-		"action" => "image_news"
-	),
-	"/image/events/{id:[0-9]+}/" => array(
-		"cmd" => "image",
-		"action" => "image_events"
-	),
-	"/image/calendar/{id:[0-9]+}/" => array(
-		"cmd" => "image",
-		"action" => "image_calendar"
+		"action" => "itemImage"
 	),
 	"/promos/{id:[0-9]+}/" => array(
 		"cmd" => "content",

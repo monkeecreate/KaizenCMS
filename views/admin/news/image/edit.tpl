@@ -1,6 +1,6 @@
 {include file="inc_header.tpl" page_title="News Articles :: Crop Image" menu="news"}
 {head}
-	{image_crop load="cropper" preview="true" img="cropimage" minw="300" minh="225" rx="300" ry="225" values=$aArticle}
+	{image_crop load="cropper" preview="true" img="cropimage" minw=$minWidth minh=$minHeight rx=$minWidth ry=$minHeight values=$aArticle}
 {/head}
 <p>
 	<b>{$aArticle.title|stripslashes}</b><br />
@@ -19,7 +19,7 @@
 				{image_crop load="form"}
 				<br />
 				<b>Preview:</b>
-				<div style="width:300px;height:225px;overflow:hidden;margin-left:5px;margin-bottom:20px;">
+				<div style="width:{$minWidth}px;height:{$minHeight}px;overflow:hidden;margin-left:5px;margin-bottom:20px;">
 					<img src="{$sFolder}{$aArticle.id}.jpg?{$randnum}" id="preview" />
 				</div>
 				<input type="hidden" name="id" value="{$aArticle.id}" />

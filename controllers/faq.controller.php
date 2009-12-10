@@ -3,7 +3,7 @@ class faq extends appController
 {
 	function index()
 	{
-		$oFAQ = $this->loadModule("faq");
+		$oFAQ = $this->loadModel("faq");
 		
 		## GET CURRENT PAGE QUESTIONS
 		$sCurrentPage = $_GET["page"];

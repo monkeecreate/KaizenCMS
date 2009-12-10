@@ -3,7 +3,7 @@ class galleries extends appController
 {
 	function index($aParams)
 	{
-		$oGalleries = $this->loadModule("galleries");
+		$oGalleries = $this->loadModel("galleries");
 		
 		## GET CURRENT PAGE GALLERIES
 		$sCurrentPage = $_GET["page"];
@@ -39,7 +39,7 @@ class galleries extends appController
 	}
 	function gallery($aParams)
 	{
-		$oGalleries = $this->loadModule("galleries");
+		$oGalleries = $this->loadModel("galleries");
 		
 		$aGallery = $oGalleries->getGallery($aParams["id"]);
 		

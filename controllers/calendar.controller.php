@@ -3,7 +3,7 @@ class calendar extends appController
 {
 	function index()
 	{
-		$oCalendar = $this->loadModule("calendar");
+		$oCalendar = $this->loadModel("calendar");
 		
 		## GET CURRENT PAGE EVENTS
 		$sCurrentPage = $_GET["page"];
@@ -40,7 +40,7 @@ class calendar extends appController
 	}
 	function ics()
 	{
-		$oCalendar = $this->loadModule("calendar");
+		$oCalendar = $this->loadModel("calendar");
 		
 		$aEventPages = array_chunk($oCalendar->getEvents($_GET["category"]), 15);
 		$aEvents = $aEventPages[0];
@@ -52,7 +52,7 @@ class calendar extends appController
 	}
 	function event($aParams)
 	{
-		$oCalendar = $this->loadModule("calendar");
+		$oCalendar = $this->loadModel("calendar");
 		
 		$aEvent = $oCalendar->getEvent($aParams["id"]);
 		
@@ -64,7 +64,7 @@ class calendar extends appController
 	}
 	function event_ics($aParams)
 	{
-		$oCalendar = $this->loadModule("calendar");
+		$oCalendar = $this->loadModel("calendar");
 		
 		$aEvent = $oCalendar->getEvent($aParams["id"]);
 		

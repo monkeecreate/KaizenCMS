@@ -3,7 +3,7 @@ class documents extends appController
 {
 	function index()
 	{
-		$oDocuments = $this->loadModule("documents");
+		$oDocuments = $this->loadModel("documents");
 		
 		## GET CURRENT PAGE DOCUMENTS
 		$sCurrentPage = $_GET["page"];
