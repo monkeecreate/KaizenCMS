@@ -21,6 +21,10 @@ $aUrlPatterns = array(
         "cmd" => "adminController",
         "action" => "login"
     ),
+	"/admin/isloggedin/" => array(
+        "cmd" => "adminController",
+        "action" => "isloggedin"
+    ),
 	"/admin/logout/" => array(
         "cmd" => "adminController",
         "action" => "logout"
