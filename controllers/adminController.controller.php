@@ -76,6 +76,36 @@ class adminController extends appController
 		
 		$this->forward("/admin/");
 	}
+	function isloggedin()
+	{
+		// Change this secret key so it matches the one in the imagemanager/filemanager config
+		$secretKey = md5($_SERVER["SERVER_NAME"]);
+
+		// Check here if the user is logged in or not
+		/*
+		if (!isset($_SESSION["some_session"]))
+			die("You are not logged in.");
+		*/
+
+		// Override any config values here
+		$config = array();
+		//$config['filesystem.path'] = 'c:/Inetpub/wwwroot/somepath';
+		//$config['filesystem.rootpath'] = 'c:/Inetpub/wwwroot/somepath';
+
+		// Generates a unique key of the config values with the secret key
+		$key = md5(implode('', array_values($config)) . $secretKey);
+
+		echo "<html>\n";
+		echo "<body onload=\"document.forms[0].submit();\">\n";
+		echo "<form method=\"post\" action=\"".htmlentities($_GET['return_url'])."\">\n";
+		echo "<input type=\"hidden\" name=\"key\" value=\"".htmlentities($key)."\" />\n";
+		foreach ($config as $key => $value) {
+			echo '<input type="hidden" name="' . htmlentities(str_replace('.', '__', $key)) . '" value="' . htmlentities($value) . '" />';
+		}
+		echo "</form>\n";
+		echo "</body>\n";
+		echo "</html>\n";
+	}
 	##################################
 	
 	### Functions ####################
