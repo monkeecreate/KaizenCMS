@@ -5,7 +5,7 @@
 	<select name="category">
 		<option value="">- All Categories -</option>
 		{foreach from=$aCategories item=aCategory}
-			<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|htmlspecialchars|stripslashes}</option>
+			<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|clean_html}</option>
 		{/foreach}
 	</select>
 	<script type="text/javascript">
@@ -23,9 +23,9 @@
 {foreach from=$aQuestions item=aQuestion}
 	<div class="contentList">
 		<h3>
-			{$aQuestion.question|htmlspecialchars|stripslashes}
+			{$aQuestion.question|clean_html}
 		</h3>
-		<small>Categories: {$aQuestion.categories}</small>
+		<small>Categories: {$aQuestion.categories|clean_html}</small>
 		<p>
 			{$aQuestion.answer|stripslashes}<br />
 		</p>

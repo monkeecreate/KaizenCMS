@@ -5,6 +5,7 @@ RewriteRule ^editor(.*)$ editor$1 [PT]
 RewriteRule ^images(.*)$ images$1 [PT]
 RewriteRule ^css(.*)$ css$1 [PT]
 RewriteRule ^scripts(.*)$ scripts$1 [PT]
+RewriteRule ^uploads(.*)$ uploads$1 [PT]
 
 #RewriteCond %{HTTP_HOST} !^www.(.*) [NC]
 #RewriteCond %{HTTP_HOST} !^[a-z0-9]+\.[a-z0-9]+\.[a-z0-9]+ [NC]

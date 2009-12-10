@@ -58,12 +58,16 @@ class admin_documents extends adminController
 		
 		$sID = $this->db_results(
 			"INSERT INTO `documents`"
-				." (`name`, `description`, `active`)"
+				." (`name`, `description`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["name"], "text")
 					.", ".$this->db_quote($_POST["description"], "text")
 					.", ".$this->db_quote($active, "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->documents->add"
 			,"insert"
@@ -129,7 +133,26 @@ class admin_documents extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_documents"]))
-			$this->tpl_assign("aDocument", $_SESSION["admin"]["admin_documents"]);
+		{
+			$aDocumentRow = $this->db_results(
+				"SELECT * FROM `documents`"
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				,"admin->documents->edit"
+				,"row"
+			);
+			
+			$aDocument = $_SESSION["admin"]["admin_documents"];
+			
+			$aDocument["updated_datetime"] = $aDocumentRow["updated_datetime"];
+			$aDocument["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aDocumentRow["updated_by"]
+				,"admin->documents->edit->updated_by"
+				,"row"
+			);
+			
+			$this->tpl_assign("aDocument", $aDocument);
+		}
 		else
 		{
 			$aDocument = $this->db_results(
@@ -147,6 +170,13 @@ class admin_documents extends adminController
 					." ORDER BY `categories`.`name`"
 				,"admin->documents->edit->categories"
 				,"col"
+			);
+			
+			$aDocument["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aDocument["updated_by"]
+				,"admin->documents->edit->updated_by"
+				,"row"
 			);
 			
 			$this->tpl_assign("aDocument", $aDocument);
@@ -173,6 +203,8 @@ class admin_documents extends adminController
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				.", `description` = ".$this->db_quote($_POST["description"], "text")
 				.", `active` = ".$this->db_quote($active, "integer")
+				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
+				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->documents->edit"
 		);

@@ -52,12 +52,12 @@ function __autoload($class_name) {
 	{
 		if($class_name == "appController")
 			require($site_root."appController.php");
+		elseif($class_name == "appModel")
+			require($site_root."appModel.php");
 		elseif(is_file($site_root."controllers/".$class_name.".controller.php"))
 			require($site_root."controllers/".$class_name.".controller.php");
 		elseif(is_file($site_root."helpers/".$class_name.".helper.php"))
 			require($site_root."helpers/".$class_name.".helper.php");
-		else
-			die("Unable to load class.");
 	}
 }
 ##############################################
@@ -100,7 +100,7 @@ else
 ### PAGE CACHED ##############################
 $sPage = $oMemcache->get(md5($aConfig["memcache"]["salt"].$sURL));
 if($sPage != false)
-	die("<h2>Cache:</h2> ".$oEnc->decrypt($sPage));
+	die($oEnc->decrypt($sPage));
 ##############################################
 
 ### PREPARE URL PATTERN #######################

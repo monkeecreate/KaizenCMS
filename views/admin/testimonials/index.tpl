@@ -17,7 +17,6 @@
 		<tr>
 			<th sort="name">Name</th>
 			<th sort="type">Type</td>
-			<th sort="homepage">Homepage</th>
 			<th sort="active">Active</th>
 			<th></th>
 		</tr>
@@ -31,13 +30,6 @@
 						Video
 					{else}
 						Text
-					{/if}
-				</td>
-				<td class="small center">
-					{if $aTestimonial.homepage == 1}
-						<img src="/images/admin/icons/accept.png">
-					{else}
-						<img src="/images/admin/icons/cancel.png">
 					{/if}
 				</td>
 				<td class="small center">

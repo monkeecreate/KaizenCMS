@@ -58,13 +58,17 @@ class admin_links extends adminController
 		
 		$sID = $this->db_results(
 			"INSERT INTO `links`"
-				." (`name`, `description`, `link`, `active`)"
+				." (`name`, `description`, `link`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["name"], "text")
 					.", ".$this->db_quote($_POST["description"], "text")
 					.", ".$this->db_quote($_POST["link"], "text")
 					.", ".$this->db_quote($active, "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->links->add"
 			,"insert"
@@ -88,7 +92,26 @@ class admin_links extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_links"]))
-			$this->tpl_assign("aLink", $_SESSION["admin"]["admin_links"]);
+		{
+			$aLinkRow = $this->db_results(
+				"SELECT * FROM `links`"
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				,"admin->links->edit"
+				,"row"
+			);
+			
+			$aLink = $_SESSION["admin"]["admin_links"];
+			
+			$aLink["updated_datetime"] = $aLinkRow["updated_datetime"];
+			$aLink["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aLinkRow["updated_by"]
+				,"admin->links->edit->updated_by"
+				,"row"
+			);
+			
+			$this->tpl_assign("aLink", $aLink);
+		}
 		else
 		{
 			$aLink = $this->db_results(
@@ -106,6 +129,13 @@ class admin_links extends adminController
 					." ORDER BY `categories`.`name`"
 				,"admin->links->edit->categories"
 				,"col"
+			);
+			
+			$aLink["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aLink["updated_by"]
+				,"admin->links->edit->updated_by"
+				,"row"
 			);
 			
 			$this->tpl_assign("aLink", $aLink);
@@ -133,6 +163,8 @@ class admin_links extends adminController
 				.", `description` = ".$this->db_quote($_POST["description"], "text")
 				.", `link` = ".$this->db_quote($_POST["link"], "text")
 				.", `active` = ".$this->db_quote($active, "integer")
+				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
+				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->links->edit"
 		);

@@ -1,4 +1,8 @@
 {include file="inc_header.tpl" menu="home"}
+<div style="float:right;width:200px;margin:15px;">
+	{getPromo tag="po1"}
+	{getPromo tag="po2"}
+</div>
 <h1>HTML Ipsum Presents</h1>
 	       
 <p>

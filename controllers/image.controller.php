@@ -16,8 +16,45 @@ class image extends appController
 		$system = array_pop(explode('.',$name));
 		
 		header("Last-Modified: ".gmdate("D, d M Y H:i:s", filemtime($name))." GMT");
+		header("Pragma: public");
+		header("Cache-Control: maxage=".(60*60*24*2));
 		header("Expires: ".gmdate("D, d M Y H:i:s", strtotime("+2 days"))." GMT");
 		header("ETag: ".md5($name));
+		
+		$headers = getallheaders();
+		if (isset($headers['If-Modified-Since'])
+		 && !empty($headers['If-Modified-Since'])
+		 && $headers["If-Modified-Since"] == gmdate("D, d M Y H:i:s", filemtime($name))." GMT") {
+			header('HTTP/1.1 304 Not Modified');
+			exit;
+		}
+		
+		$file_ext = pathinfo($_GET["file"], PATHINFO_EXTENSION);
+		$cache_file = $this->_settings->root_public."uploads/resize/".md5($_GET["file"].filemtime($name))."_".$_GET["width"]."_".$_GET["height"].".".$file_ext;
+		if(is_file($cache_file))
+		{
+			if(preg_match('/jpg|jpeg/',$file_ext))
+			{	
+				header('Content-Type: image/jpeg');
+				$src_img = imagecreatefromjpeg($cache_file);
+				imagejpeg($src_img, null, 85);
+			}
+			elseif(preg_match('/png/',$file_ext))
+			{
+				header('Content-Type: image/png');
+				$src_img = imagecreatefrompng($cache_file);
+				imagegif($src_img);
+			}
+			elseif(preg_match('/gif/',$file_ext))
+			{
+				header('Content-Type: image/gif');
+				$src_img = imagecreatefromgif($cache_file);
+				imagepng($src_img, null, 85);
+			}
+			else
+				$this->error("500");
+			die;
+		}
 		
 		if(preg_match('/jpg|jpeg/',$system))
 		{	
@@ -34,6 +71,8 @@ class image extends appController
 			header('Content-Type: image/gif');
 			$src_img = imagecreatefromgif($name);
 		}
+		else
+			$this->error("500");
 		
 		$old_x = imageSX($src_img);
 		$old_y = imageSY($src_img);
@@ -67,14 +106,115 @@ class image extends appController
 	    imagecopyresampled($dst_img,$src_img,0,0,0,0,$thumb_w,$thumb_h,$old_x,$old_y);
 
 		if(preg_match("/png/",$system))
+		{
 			imagepng($dst_img, null, 0);
+			imagepng($dst_img, $cache_file, 0);
+		}
 		elseif(preg_match("/gif/",$system))
+		{
 			imagegif($dst_img);
+			imagegif($dst_img, $cache_file);
+		}
 		elseif(preg_match("/jpg|jpeg/",$system))
+		{
 			imagejpeg($dst_img, null, 80);
+			imagejpeg($dst_img, $cache_file, 80);
+		}
+		else
+			$this->error("500");
 		
 		imagedestroy($dst_img);
 		imagedestroy($src_img);
+	}
+	function itemImage($aParams)
+	{
+		ini_set("memory_limit", "30m");
+		
+		$oModel = $this->loadModel($aParams["model"]);
+		
+		if(empty($oModel))
+			$this->error("404");
+		
+		$aImage = $oModel->getImage($aParams["id"]);
+		
+		if(empty($aImage))
+			$this->error("404");
+		
+		header("Last-Modified: ".gmdate("D, d M Y H:i:s", filemtime($aImage["file"]))." GMT");
+		header("Pragma: public");
+		header("Cache-Control: maxage=".(60*60*24*2));
+		header("Expires: ".gmdate("D, d M Y H:i:s", strtotime("+2 days"))." GMT");
+		header("ETag: ".md5($aImage["file"]));
+		
+		$headers = getallheaders();
+		if (isset($headers['If-Modified-Since'])
+		 && !empty($headers['If-Modified-Since'])
+		 && $headers["If-Modified-Since"] == gmdate("D, d M Y H:i:s", filemtime($aImage["file"]))." GMT") {
+			header('HTTP/1.1 304 Not Modified');
+			exit;
+		}
+		
+		$file_ext = pathinfo($aImage["file"], PATHINFO_EXTENSION);
+		$cache_file = $this->_settings->root_public."uploads/resize/item_".md5($aImage["file"].filemtime($name))."_".$aParams["model"].".".$file_ext;
+		if(is_file($cache_file))
+		{
+			if(preg_match('/jpg|jpeg/',$file_ext))
+			{	
+				header('Content-Type: image/jpeg');
+				$src_img = imagecreatefromjpeg($cache_file);
+				imagejpeg($src_img, null, 85);
+			}
+			elseif(preg_match('/png/',$file_ext))
+			{
+				header('Content-Type: image/png');
+				$src_img = imagecreatefrompng($cache_file);
+				imagegif($src_img);
+			}
+			elseif(preg_match('/gif/',$file_ext))
+			{
+				header('Content-Type: image/gif');
+				$src_img = imagecreatefromgif($cache_file);
+				imagepng($src_img, null, 85);
+			}
+			else
+				$this->error("500");
+			die;
+		}
+		
+		$image = $this->cropimage($aImage["image"]
+			,$oModel->imageMinWidth
+			,$oModel->imageMinHeight
+			,$aImage["info"]["photo_width"]
+			,$aImage["info"]["photo_height"]
+			,$aImage["info"]["photo_x1"]
+			,$aImage["info"]["photo_y1"]
+		);
+		
+		if(!empty($_GET["width"]) && $_GET["width"] <= $oModel->imageMinWidth)
+			$image = $this->resizeimage($image);
+		
+		// Output
+		$file_ext = pathinfo($aImage["file"], PATHINFO_EXTENSION);
+		if(preg_match('/jpg|jpeg/',$file_ext))
+		{	
+			header('Content-Type: image/jpeg');
+			imagejpeg($image, null, 85);
+			imagejpeg($image, $cache_file, 85);
+		}
+		elseif(preg_match('/png/',$file_ext))
+		{
+			header('Content-Type: image/png');
+			imagegif($image);
+			imagegif($image, $cache_file);
+		}
+		elseif(preg_match('/gif/',$file_ext))
+		{
+			header('Content-Type: image/gif');
+			imagepng($image, null, 85);
+			imagepng($image, $cache_file, 85);
+		}
+		else
+			$this->error("500");
 	}
 	##################################
 	

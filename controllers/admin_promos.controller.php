@@ -7,13 +7,29 @@ class admin_promos extends adminController
 		// Clear saved form info
 		$_SESSION["admin"]["admin_promos"] = null;
 		
-		$aPromos = $this->db_results(
-			"SELECT `promos`.* FROM `promos`"
-				." ORDER BY `promos`.`datetime_show` DESC"
-			,"admin->promos->index"
+		$aPositions = $this->db_results(
+			"SELECT * FROM `promos_positions`"
+				." ORDER BY `name`"
+			,"admin->promos->index->positions"
 			,"all"
 		);
 		
+		if(!empty($_GET["position"]))
+		{
+			$sSQLPosition = " INNER JOIN `promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`";
+			$sSQLPosition .= " WHERE `assign`.`positionid` = ".$this->db_quote($_GET["position"], "integer");
+		}
+		
+		$aPromos = $this->db_results(
+			"SELECT `promos`.* FROM `promos`"
+				.$sSQLPosition
+				." ORDER BY `promos`.`datetime_show` DESC"
+			,"admin->promos->index->promos"
+			,"all"
+		);
+		
+		$this->tpl_assign("aPositions", $aPositions);
+		$this->tpl_assign("sPosition", $_GET["position"]);
 		$this->tpl_assign("aPromos", $aPromos);
 		$this->tpl_display("promos/index.tpl");
 	}
@@ -59,27 +75,21 @@ class admin_promos extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		if(!empty($_POST["use_kill"]))
-			$use_kill = 1;
-		else
-			$use_kill = 0;
-		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$sID = $this->db_results(
 			"INSERT INTO `promos`"
-				." (`name`, `link`, `datetime_show`, `datetime_kill`, `use_kill`, `active`)"
+				." (`name`, `link`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["name"], "text")
-					.", ".$this->db_quote($_POST["link"], "integer")
+					.", ".$this->db_quote($_POST["link"], "text")
 					.", ".$this->db_quote($datetime_show, "integer")
 					.", ".$this->db_quote($datetime_kill, "integer")
-					.", ".$this->db_quote($use_kill, "integer")
-					.", ".$this->db_quote($active, "integer")
+					.", ".$this->db_quote($_POST["use_kill"], "integer")
+					.", ".$this->db_quote($_POST["active"], "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->promos->add"
 			,"insert"
@@ -142,7 +152,26 @@ class admin_promos extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_promos"]))
-			$this->tpl_assign("aPromo", $_SESSION["admin"]["admin_promos"]);
+		{
+			$aPromoRow = $this->db_results(
+				"SELECT * FROM `promos`"
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				,"admin->promos->edit"
+				,"row"
+			);
+			
+			$aPromo = $_SESSION["admin"]["admin_promos"];
+			
+			$aPromo["updated_datetime"] = $aPromoRow["updated_datetime"];
+			$aPromo["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aPromoRow["updated_by"]
+				,"admin->promos->edit->updated_by"
+				,"row"
+			);
+			
+			$this->tpl_assign("aPromo", $aPromo);
+		}
 		else
 		{
 			$aPromo = $this->db_results(
@@ -164,6 +193,13 @@ class admin_promos extends adminController
 			
 			$aPromo["datetime_show_date"] = date("m/d/Y", $aPromo["datetime_show"]);
 			$aPromo["datetime_kill_date"] = date("m/d/Y", $aPromo["datetime_kill"]);
+			
+			$aPromo["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aPromo["updated_by"]
+				,"admin->promos->edit->updated_by"
+				,"row"
+			);
 			
 			$this->tpl_assign("aPromo", $aPromo);
 		}
@@ -190,24 +226,16 @@ class admin_promos extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		if(!empty($_POST["use_kill"]))
-			$use_kill = 1;
-		else
-			$use_kill = 0;
-		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$this->db_results(
 			"UPDATE `promos` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				.", `link` = ".$this->db_quote($_POST["link"], "text")
 				.", `datetime_show` = ".$this->db_quote($datetime_show, "integer")
 				.", `datetime_kill` = ".$this->db_quote($datetime_kill, "integer")
-				.", `use_kill` = ".$this->db_quote($use_kill, "integer")
-				.", `active` = ".$this->db_quote($active, "integer")
+				.", `use_kill` = ".$this->db_quote($_POST["use_kill"], "integer")
+				.", `active` = ".$this->db_quote($_POST["active"], "integer")
+				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
+				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->promos->edit"
 		);

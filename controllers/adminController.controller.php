@@ -20,9 +20,9 @@ class adminController extends appController
 		if(!empty($_GET["notice"]))
 			$this->tpl_assign("page_notice", htmlentities(urldecode($_GET["notice"])));
 		
-		if(empty($_SESSION["admin"]["userid"]) && $this->_settings->url[1] != "login" && $this->_settings->surl != "/admin/")
+		if(!$this->loggedin() && $this->_settings->url[1] != "login" && $this->_settings->surl != "/admin/")
 			$this->forward("/admin/", 401);
-		elseif(!empty($_SESSION["admin"]["userid"]))
+		elseif($this->loggedin())
 		{
 			$aUser = $this->db_results(
 				"SELECT * FROM `users`"
@@ -39,7 +39,7 @@ class adminController extends appController
 	### DISPLAY ######################
 	function index()
 	{
-		if(empty($_SESSION["admin"]["userid"]))
+		if(!$this->loggedin())
 			$this->tpl_display("login.tpl");
 		else
 			$this->tpl_display("index.tpl");
@@ -59,6 +59,7 @@ class adminController extends appController
 			
 			if(!empty($sUser))
 			{
+				session_regenerate_id();
 				$_SESSION["admin"]["userid"] = $sUser;
 				
 				$this->forward("/admin/");
@@ -78,6 +79,25 @@ class adminController extends appController
 	##################################
 	
 	### Functions ####################
+	function loggedin()
+	{
+		if(!empty($_SESSION["admin"]["userid"]))
+		{
+			$aUser = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+				,"admin->loggedin"
+				,"row"
+			);
+			
+			if(!empty($aUser))
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
 	function get_extension($sFilename)
 	{
 		

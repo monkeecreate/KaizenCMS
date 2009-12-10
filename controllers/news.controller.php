@@ -3,132 +3,60 @@ class news extends appController
 {
 	function index()
 	{
-		$sPerPage = 5;
-		
-		## FIND CATEGORIES ##
-		$aCategories = $this->db_results(
-			"SELECT * FROM `news_categories`"
-				." ORDER BY `name`"
-			,"news->get_categories->categories"
-			,"all"
-		);
+		$oNews = $this->loadModel("news");
 		
 		## GET CURRENT PAGE NEWS
 		$sCurrentPage = $_GET["page"];
 		if(empty($sCurrentPage))
 			$sCurrentPage = 1;
 		
-		$sWhere = " WHERE `news`.`datetime_show` < ".time()." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
-		$sWhere .= " AND `news`.`active` = 1";
-		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
+		$aArticlePages = array_chunk($oNews->getArticles($_GET["category"]), $oNews->perPage);
+		$aArticles = $aArticlePages[$sCurrentPage - 1];
 		
-		// Get all articles for paging
-		$aArticles = $this->db_results(
-			"SELECT `news`.* FROM `news` AS `news`"
-				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
-				." INNER JOIN `news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
-				.$sWhere
-				." GROUP BY `news`.`id`"
-			,"news->all_news_pages"
-			,"all"
+		$aPaging = array(
+			"back" => array(
+				"page" => $sCurrentPage - 1,
+				"use" => true
+			),
+			"next" => array(
+				"page" => $sCurrentPage + 1,
+				"use" => true
+			)
 		);
 		
-		$oPage = new Paginate($sPerPage, count($aArticles), $sCurrentPage);
-	
-		$start = $oPage->get_start();
+		if(($sCurrentPage - 1) < 1 || $sCurrentPage == 1)
+			$aPaging["back"]["use"] = false;
 		
-		$aArticles = $this->db_results(
-			"SELECT `news`.* FROM `news` AS `news`"
-				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
-				." INNER JOIN `news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
-				.$sWhere
-				." GROUP BY `news`.`id`"
-				." ORDER BY `news`.`sticky` DESC, `news`.`datetime_show` DESC"
-				." LIMIT ".$start.",".$sPerPage
-			,"news->current_page"
-			,"all"
-		);
-	
-		foreach($aArticles as $x => $aArticle)
-		{
-			/*# Categories #*/
-			$aArticleCategories = $this->db_results(
-				"SELECT `name` FROM `news_categories` AS `categories`"
-					." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
-					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-				,"new->article_categories"
-				,"col"
-			);
-		
-			$aArticles[$x]["categories"] = implode(", ", $aArticleCategories);
-			/*# Categories #*/
-		
-			/*# Image #*/
-			if(file_exists($this->_settings->root_public."upload/news/".$aArticle["id"].".jpg"))
-				$aArticles[$x]["image"] = 1;
-			/*# Image #*/
-		}
+		if($sCurrentPage == count($aArticlePages) || count($aArticlePages) == 0)
+			$aPaging["next"]["use"] = false;
+		#########################
 
-		$this->tpl_assign("aCategories", $aCategories);
+		$this->tpl_assign("aCategories", $oNews->getCategories());
 		$this->tpl_assign("aArticles", $aArticles);
-		$this->tpl_assign("aPaging", $oPage->build_array());
+		$this->tpl_assign("aPaging", $aPaging);
 		
 		$this->tpl_display("news/index.tpl");
 	}
 	function rss()
 	{
-		$sWhere = " WHERE `news`.`datetime_show` < ".time()." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
-		$sWhere .= " AND `news`.`active` = 1";
-		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
+		$oNews = $this->loadModel("news");
 		
-		$aArticles = $this->db_results(
-			"SELECT `news`.* FROM `news` AS `news`"
-				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
-				." INNER JOIN `news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
-				.$sWhere
-				." GROUP BY `news`.`id`"
-				." ORDER BY `news`.`sticky` DESC, `news`.`datetime_show` DESC"
-				." LIMIT 0,15"
-			,"news->rss"
-			,"all"
-		);
+		$aArticles = array_slice($oNews->getArticles($_GET["category"]), 0, 15);
 
 		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
 		$this->tpl_assign("aArticles", $aArticles);
 		
+		header("Content-Type: application/rss+xml");
 		$this->tpl_display("news/rss.tpl");
 	}
 	function article($aParams)
 	{
-		$aArticle = $this->db_results(
-			"SELECT `news`.* FROM `news` AS `news`"
-				." WHERE `news`.`id` = ".$this->db_quote($aParams["id"], "integer")
-				." AND `news`.`active` = 1"
-				." AND `news`.`datetime_show` < ".time()
-				." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")"
-			,"news->article"
-			,"row"
-		);
+		$oNews = $this->loadModel("news");
+		
+		$aArticle = $oNews->getArticle($aParams["id"]);
 		
 		if(empty($aArticle))
 			$this->error('404');
-
-		$aCategories = $this->db_results(
-			"SELECT `name` FROM `news_categories` AS `category`"
-				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `category`.`id`"
-				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-			,"news->article->categories"
-			,"col"
-		);
-
-		$aArticle["categories"] = implode(", ", $aCategories);
-		
-		/*# Image #*/
-		if(file_exists($this->_settings->root_public."uploads/news/".$aArticle["id"].".jpg"))
-			$aArticle["image"] = 1;
-		/*# Image #*/
 
 		$this->tpl_assign("aArticle", $aArticle);
 		

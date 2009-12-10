@@ -5,7 +5,7 @@
 	<select name="category">
 		<option value="">- All Categories -</option>
 		{foreach from=$aCategories item=aCategory}
-			<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|htmlspecialchars|stripslashes}</option>
+			<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|clean_html}</option>
 		{/foreach}
 	</select>
 	<script type="text/javascript">
@@ -24,12 +24,12 @@
 	<div class="contentList">
 		<h3>
 			<a href="/uploads/documents/{$aDocument.document}" target="_blank">
-				{$aDocument.name|htmlspecialchars|stripslashes}
+				{$aDocument.name|clean_html}
 			</a>
 		</h3>
-		<small>Categories: {$aDocument.categories}</small>
+		<small>Categories: {$aDocument.categories|clean_html}</small>
 		<p>
-			{$aDocument.description|stripslashes}<br />
+			{$aDocument.description|clean_html}<br />
 		</p>
 	</div>
 {foreachelse}

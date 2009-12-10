@@ -77,12 +77,16 @@ class admin_galleries extends adminController
 		
 		$sID = $this->db_results(
 			"INSERT INTO `galleries`"
-				." (`name`, `description`, `sort_order`)"
+				." (`name`, `description`, `sort_order`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["name"], "text")
 					.", ".$this->db_quote($_POST["description"], "text")
 					.", ".$this->db_quote($sOrder, "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->galleries->add"
 			,"insert"
@@ -169,7 +173,26 @@ class admin_galleries extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_galleries"]))
-			$this->tpl_assign("aGallery", $_SESSION["admin"]["admin_galleries"]);
+		{
+			$aGalleryRow = $this->db_results(
+				"SELECT * FROM `galleries`"
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				,"admin->galleries->edit"
+				,"row"
+			);
+			
+			$aGallery = $_SESSION["admin"]["admin_galleries"];
+			
+			$aGallery["updated_datetime"] = $aGalleryRow["updated_datetime"];
+			$aGallery["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aGalleryRow["updated_by"]
+				,"admin->galleries->edit->updated_by"
+				,"row"
+			);
+			
+			$this->tpl_assign("aGallery", $aGallery);
+		}
 		else
 		{
 			$aGallery = $this->db_results(
@@ -187,6 +210,13 @@ class admin_galleries extends adminController
 					." ORDER BY `categories`.`name`"
 				,"admin->galleries->edit->categories"
 				,"col"
+			);
+			
+			$aGallery["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aGallery["updated_by"]
+				,"admin->galleries->edit->updated_by"
+				,"row"
 			);
 		
 			$this->tpl_assign("aGallery", $aGallery);
@@ -207,6 +237,8 @@ class admin_galleries extends adminController
 			"UPDATE `galleries` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				.", `description` = ".$this->db_quote($_POST["description"], "text")
+				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
+				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->galleries->edit"
 		);
@@ -358,7 +390,7 @@ class admin_galleries extends adminController
 			else
 			{
 				$sOrder = $this->db_results(
-					"SELECT MAX(`sort_order`) + 1 FROM `galleries`"
+					"SELECT MAX(`sort_order`) + 1 FROM `galleries_photos`"
 					,"admin->galleries->add->max_order"
 					,"one"
 				);

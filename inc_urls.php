@@ -20,10 +20,6 @@ $aUrlPatterns = array(
 		"cmd" => "content",
 		"action" => "siteinfo"
 	),
-	"/contact/" => array(
-		"cmd" => "content",
-		"action" => "contact"
-	),
 	"/sendform/" => array(
 		"cmd" => "content",
 		"action" => "form_submit"
@@ -88,7 +84,7 @@ $aUrlPatterns = array(
 		"cmd" => "galleries",
 		"action" => "index"
 	),
-	"/galleries/{gallery:[0-9]+}/" => array(
+	"/galleries/{id:[0-9]+}/" => array(
 		"cmd" => "galleries",
 		"action" => "gallery"
 	),
@@ -96,17 +92,13 @@ $aUrlPatterns = array(
 		"cmd" => "image",
 		"action" => "resize"
 	),
-	"/image/news/{id:[0-9]+}/" => array(
+	"/image/{model:[a-z]+}/{id:[0-9]+}/" => array(
 		"cmd" => "image",
-		"action" => "image_news"
+		"action" => "itemImage"
 	),
-	"/image/events/{id:[0-9]+}/" => array(
-		"cmd" => "image",
-		"action" => "image_events"
-	),
-	"/image/calendar/{id:[0-9]+}/" => array(
-		"cmd" => "image",
-		"action" => "image_calendar"
+	"/promos/{id:[0-9]+}/" => array(
+		"cmd" => "content",
+		"action" => "promo"
 	),
 	"/{page:[a-z0-9_-]+}/" => array(
 		"cmd" => "content",

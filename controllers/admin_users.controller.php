@@ -32,13 +32,17 @@ class admin_users extends adminController
 		
 		$aRes = $this->db_results(
 			"INSERT INTO `users`"
-				." (`username`, `password`, `fname`, `lname`)"
+				." (`username`, `password`, `fname`, `lname`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["username"], "text")
 					.", ".$this->db_quote(md5($_POST["password"]), "text")
 					.", ".$this->db_quote($_POST["fname"], "text")
 					.", ".$this->db_quote($_POST["lname"], "text")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->users->add"
 		);
@@ -50,7 +54,26 @@ class admin_users extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_users"]))
-			$this->tpl_assign("user", $_SESSION["admin"]["admin_users"]);
+		{
+			$aUserRow = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				,"admin->users->edit"
+				,"row"
+			);
+			
+			$aUser = $_SESSION["admin"]["admin_users"];
+			
+			$aUser["updated_datetime"] = $aUserRow["updated_datetime"];
+			$aUser["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aUserRow["updated_by"]
+				,"admin->users->edit->updated_by"
+				,"row"
+			);
+			
+			$this->tpl_assign("user", $aUser);
+		}
 		else
 		{
 			$aUser = $this->db_results(
@@ -58,6 +81,13 @@ class admin_users extends adminController
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 					." LIMIT 1"
 				,"admin->users->edit"
+				,"row"
+			);
+			
+			$aUser["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aUser["updated_by"]
+				,"admin->users->edit->updated_by"
 				,"row"
 			);
 		
@@ -82,6 +112,8 @@ class admin_users extends adminController
 				." `username` = ".$this->db_quote($_POST["username"], "text")
 				.", `fname` = ".$this->db_quote($_POST["fname"], "text")
 				.", `lname` = ".$this->db_quote($_POST["lname"], "text")
+				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
+				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->users->edit"
 		);

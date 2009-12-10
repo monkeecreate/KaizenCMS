@@ -86,7 +86,7 @@ class admin_news extends adminController
 		
 		$sID = $this->db_results(
 			"INSERT INTO `news`"
-				." (`title`, `short_content`, `content`, `datetime_show`, `datetime_kill`, `use_kill`, `sticky`, `active`)"
+				." (`title`, `short_content`, `content`, `datetime_show`, `datetime_kill`, `use_kill`, `sticky`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->db_quote($_POST["title"], "text")
@@ -97,6 +97,10 @@ class admin_news extends adminController
 					.", ".$this->db_quote($use_kill, "integer")
 					.", ".$this->db_quote($sticky, "integer")
 					.", ".$this->db_quote($active, "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->db_quote(time(), "integer")
+					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->news->add"
 			,"insert"
@@ -123,7 +127,26 @@ class admin_news extends adminController
 	function edit($aParams)
 	{
 		if(!empty($_SESSION["admin"]["admin_news"]))
-			$this->tpl_assign("aArticle", $_SESSION["admin"]["admin_news"]);
+		{
+			$aArticleRow = $this->db_results(
+				"SELECT * FROM `news`"
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				,"admin->news->edit"
+				,"row"
+			);
+			
+			$aArticle = $_SESSION["admin"]["admin_news"];
+			
+			$aArticle["updated_datetime"] = $aArticleRow["updated_datetime"];
+			$aArticle["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aArticleRow["updated_by"]
+				,"admin->news->edit->updated_by"
+				,"row"
+			);
+			
+			$this->tpl_assign("aArticle", $aArticle);
+		}
 		else
 		{
 			$aArticle = $this->db_results(
@@ -145,7 +168,13 @@ class admin_news extends adminController
 			
 			$aArticle["datetime_show_date"] = date("m/d/Y", $aArticle["datetime_show"]);
 			$aArticle["datetime_kill_date"] = date("m/d/Y", $aArticle["datetime_kill"]);
-			$aArticle["updated_at"] = date("Y-m-d h:i:s", strtotime($aArticle["updated_at"]));
+			
+			$aArticle["updated_by"] = $this->db_results(
+				"SELECT * FROM `users`"
+					." WHERE `id` = ".$aArticle["updated_by"]
+				,"admin->news->edit->updated_by"
+				,"row"
+			);
 			
 			$this->tpl_assign("aArticle", $aArticle);
 		}
@@ -197,6 +226,8 @@ class admin_news extends adminController
 				.", `use_kill` = ".$this->db_quote($use_kill, "integer")
 				.", `sticky` = ".$this->db_quote($sticky, "integer")
 				.", `active` = ".$this->db_quote($active, "integer")
+				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
+				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->news->edit"
 		);
@@ -239,6 +270,8 @@ class admin_news extends adminController
 	
 	function image_upload($aParams)
 	{
+		$oNews = $this->loadModel("news");
+		
 		$aArticle = $this->db_results(
 			"SELECT * FROM `news`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
@@ -247,11 +280,13 @@ class admin_news extends adminController
 		);
 
 		$this->tpl_assign("aArticle", $aArticle);
-
+		$this->tpl_assign("minWidth", $oNews->imageMinWidth);
+		$this->tpl_assign("minHeight", $oNews->imageMinHeight);
 		$this->tpl_display("news/image/upload.tpl");
 	}
 	function image_upload_s()
 	{
+		$oNews = $this->loadModel("news");
 		$folder = $this->_settings->root_public."uploads/news/";
 		
 		if(!is_dir($folder))
@@ -270,10 +305,10 @@ class admin_news extends adminController
 					"UPDATE `news` SET"
 						." `photo_x1` = 0"
 						.", `photo_y1` = 0"
-						.", `photo_x2` = 194"
-						.", `photo_y2` = 129"
-						.", `photo_width` = 194"
-						.", `photo_height` = 129"
+						.", `photo_x2` = ".$oNews->imageMinWidth
+						.", `photo_y2` = ".$oNews->imageMinHeight
+						.", `photo_width` = ".$oNews->imageMinWidth
+						.", `photo_height` = ".$oNews->imageMinHeight
 						." WHERE `id` = ".$_POST["id"]
 					,"admin->news->image->upload"
 				);
@@ -288,6 +323,8 @@ class admin_news extends adminController
 	}
 	function image_edit($aParams)
 	{
+		$oNews = $this->loadModel("news");
+		
 		$folder = $this->_settings->root_public."uploads/news/";
 
 		if(!is_file($folder.$aParams["id"].".jpg"))
@@ -302,6 +339,8 @@ class admin_news extends adminController
 
 		$this->tpl_assign("aArticle", $aArticle);
 		$this->tpl_assign("sFolder", "/uploads/news/");
+		$this->tpl_assign("minWidth", $oNews->imageMinWidth);
+		$this->tpl_assign("minHeight", $oNews->imageMinHeight);
 
 		$this->tpl_display("news/image/edit.tpl");
 	}
