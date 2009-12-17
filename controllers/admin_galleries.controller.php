@@ -13,7 +13,7 @@ class admin_galleries extends adminController
 			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->db_quote($_GET["category"], "integer");
 		}
 		
-		$aGalleries = $this->db_results(
+		$aGalleries = $this->dbResults(
 			"SELECT `galleries`.* FROM `galleries`"
 				.$sSQLCategory
 				." ORDER BY `galleries`.`sort_order`"
@@ -21,7 +21,7 @@ class admin_galleries extends adminController
 			,"all"
 		);
 		
-		$sMaxSort = $this->db_results(
+		$sMaxSort = $this->dbResults(
 			"SELECT MAX(`sort_order`) FROM `galleries`"
 			,"admin->menu_categories->maxsort"
 			,"one"
@@ -29,7 +29,7 @@ class admin_galleries extends adminController
 		
 		foreach($aGalleries as $x => $aGallery)
 		{
-			$aGalleries[$x]["photos"] = $this->db_results(
+			$aGalleries[$x]["photos"] = $this->dbResults(
 				"SELECT COUNT(*) FROM `galleries_photos`"
 					." WHERE `galleryid` = ".$aGallery["id"]
 				,"admin->galleries->photos"
@@ -66,7 +66,7 @@ class admin_galleries extends adminController
 			$this->forward("/admin/galleries/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$sOrder = $this->db_results(
+		$sOrder = $this->dbResults(
 			"SELECT MAX(`sort_order`) + 1 FROM `galleries`"
 			,"admin->galleries->add->max_order"
 			,"one"
@@ -75,7 +75,7 @@ class admin_galleries extends adminController
 		if(empty($sOrder))
 			$sOrder = 1;
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `galleries`"
 				." (`name`, `description`, `sort_order`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -94,7 +94,7 @@ class admin_galleries extends adminController
 		
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `galleries_categories_assign`"
 					." (`galleryid`, `categoryid`)"
 					." VALUES"
@@ -112,7 +112,7 @@ class admin_galleries extends adminController
 	}
 	function sort($aParams)
 	{
-		$aGallery = $this->db_results(
+		$aGallery = $this->dbResults(
 			"SELECT * FROM `galleries`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->galleries->sort"
@@ -121,7 +121,7 @@ class admin_galleries extends adminController
 		
 		if($aParams["sort"] == "up")
 		{
-			$aOld = $this->db_results(
+			$aOld = $this->dbResults(
 				"SELECT * FROM `galleries`"
 					." WHERE `sort_order` < ".$aGallery["sort_order"]
 					." ORDER BY `sort_order` DESC"
@@ -129,14 +129,14 @@ class admin_galleries extends adminController
 				,"row"
 			);
 			
-			$this->db_results(
+			$this->dbResults(
 				"UPDATE `galleries` SET"
 					." `sort_order` = ".$this->db_quote($aOld["sort_order"], "text")
 					." WHERE `id` = ".$this->db_quote($aGallery["id"], "integer")
 				,"admin->galleries->sort->up->update_pos1"
 			);
 			
-			$this->db_results(
+			$this->dbResults(
 				"UPDATE `galleries` SET"
 					." `sort_order` = ".$this->db_quote($aGallery["sort_order"], "text")
 					." WHERE `id` = ".$this->db_quote($aOld["id"], "integer")
@@ -145,7 +145,7 @@ class admin_galleries extends adminController
 		}
 		elseif($aParams["sort"] == "down")
 		{
-			$aOld = $this->db_results(
+			$aOld = $this->dbResults(
 				"SELECT * FROM `galleries`"
 					." WHERE `sort_order` > ".$aGallery["sort_order"]
 					." ORDER BY `sort_order` ASC"
@@ -153,14 +153,14 @@ class admin_galleries extends adminController
 				,"row"
 			);
 			
-			$this->db_results(
+			$this->dbResults(
 				"UPDATE `galleries` SET"
 					." `sort_order` = ".$this->db_quote($aOld["sort_order"], "text")
 					." WHERE `id` = ".$this->db_quote($aGallery["id"], "integer")
 				,"admin->galleries->sort->down->update_pos1"
 			);
 			
-			$this->db_results(
+			$this->dbResults(
 				"UPDATE `galleries` SET"
 					." `sort_order` = ".$this->db_quote($aGallery["sort_order"], "text")
 					." WHERE `id` = ".$this->db_quote($aOld["id"], "integer")
@@ -174,7 +174,7 @@ class admin_galleries extends adminController
 	{
 		if(!empty($_SESSION["admin"]["admin_galleries"]))
 		{
-			$aGalleryRow = $this->db_results(
+			$aGalleryRow = $this->dbResults(
 				"SELECT * FROM `galleries`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->galleries->edit"
@@ -184,7 +184,7 @@ class admin_galleries extends adminController
 			$aGallery = $_SESSION["admin"]["admin_galleries"];
 			
 			$aGallery["updated_datetime"] = $aGalleryRow["updated_datetime"];
-			$aGallery["updated_by"] = $this->db_results(
+			$aGallery["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aGalleryRow["updated_by"]
 				,"admin->galleries->edit->updated_by"
@@ -195,14 +195,14 @@ class admin_galleries extends adminController
 		}
 		else
 		{
-			$aGallery = $this->db_results(
+			$aGallery = $this->dbResults(
 				"SELECT * FROM `galleries`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->galleries->edit"
 				,"row"
 			);
 			
-			$aGallery["categories"] = $this->db_results(
+			$aGallery["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `galleries_categories` AS `categories`"
 					." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `categories`.`id` = `galleries_assign`.`categoryid`"
 					." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
@@ -212,7 +212,7 @@ class admin_galleries extends adminController
 				,"col"
 			);
 			
-			$aGallery["updated_by"] = $this->db_results(
+			$aGallery["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aGallery["updated_by"]
 				,"admin->galleries->edit->updated_by"
@@ -233,7 +233,7 @@ class admin_galleries extends adminController
 			$this->forward("/admin/galleries/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `galleries` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				.", `description` = ".$this->db_quote($_POST["description"], "text")
@@ -243,14 +243,14 @@ class admin_galleries extends adminController
 			,"admin->galleries->edit"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `galleries_categories_assign`"
 				." WHERE `galleryid` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->galleries->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `galleries_categories_assign`"
 					." (`galleryid`, `categoryid`)"
 					." VALUES"
@@ -265,13 +265,13 @@ class admin_galleries extends adminController
 	}
 	function delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `galleries`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->galleries->delete"
 		);
 		
-		$aPhotos = $this->db_results(
+		$aPhotos = $this->dbResults(
 			"SELECT * FROM `galleries_photos`"
 				." WHERE `galleryid` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->galleries->photos_delete"
@@ -282,7 +282,7 @@ class admin_galleries extends adminController
 		{
 			@unlink($this->_settings->root_public."uploads/galleries/".$aParams["id"]."/".$aPhoto["photo"]);
 		
-			$this->db_results(
+			$this->dbResults(
 				"DELETE FROM `galleries_photos`"
 					." WHERE `id` = ".$this->db_quote($aPhoto["id"], "integer")
 				,"admin->galleries->photo_delete"
@@ -297,7 +297,7 @@ class admin_galleries extends adminController
 	{
 		$_SESSION["admin"]["admin_galleries_categories"] = null;
 		
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `galleries_categories`"
 				." ORDER BY `name`"
 			,"admin->galleries->categories"
@@ -309,7 +309,7 @@ class admin_galleries extends adminController
 	}
 	function categories_add_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"INSERT INTO `galleries_categories`"
 				." (`name`)"
 				." VALUES"
@@ -324,7 +324,7 @@ class admin_galleries extends adminController
 	}
 	function categories_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `galleries_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -335,12 +335,12 @@ class admin_galleries extends adminController
 	}
 	function categories_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `galleries_categories`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->galleries->category->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `galleries_categories_assign`"
 				." WHERE `categoryid` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->galleries->category->delete_assign"
@@ -350,7 +350,7 @@ class admin_galleries extends adminController
 	}
 	function photos_index($aParams)
 	{
-		$aPhotos = $this->db_results(
+		$aPhotos = $this->dbResults(
 			"SELECT * FROM `galleries_photos`"
 				." WHERE `galleryid` = ".$aParams["gallery"]
 				." ORDER BY `sort_order`"
@@ -358,7 +358,7 @@ class admin_galleries extends adminController
 			,"all"
 		);
 		
-		$aGallery = $this->db_results(
+		$aGallery = $this->dbResults(
 			"SELECT * FROM `galleries`"
 				." WHERE `id` = ".$this->db_quote($aParams["gallery"], "integer")
 			,"admin->galleries->photos->gallery"
@@ -371,7 +371,7 @@ class admin_galleries extends adminController
 	}
 	function photos_add($aParams)
 	{
-		$aGallery = $this->db_results(
+		$aGallery = $this->dbResults(
 			"SELECT * FROM `galleries`"
 				." WHERE `id` = ".$this->db_quote($aParams["gallery"], "integer")
 			,"admin->galleries->photos->gallery"
@@ -389,7 +389,7 @@ class admin_galleries extends adminController
 				$this->forward("/admin/galleries/".$aParams["gallery"]."/photos/add/?notice=".urlencode("Photo file size was too large!"));
 			else
 			{
-				$sOrder = $this->db_results(
+				$sOrder = $this->dbResults(
 					"SELECT MAX(`sort_order`) + 1 FROM `galleries_photos`"
 					,"admin->galleries->add->max_order"
 					,"one"
@@ -398,7 +398,7 @@ class admin_galleries extends adminController
 				if(empty($sOrder))
 					$sOrder = 1;
 			
-				$sID = $this->db_results(
+				$sID = $this->dbResults(
 					"INSERT INTO `galleries_photos`"
 						." (`galleryid`, `title`, `description`, `sort_order`)"
 						." VALUES"
@@ -421,7 +421,7 @@ class admin_galleries extends adminController
 				$upload_file = $sID.".".strtolower($file_ext);
 				
 				if(move_uploaded_file($_FILES["photo"]["tmp_name"], $upload_dir.$upload_file))
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `galleries_photos` SET"
 							." `photo` = ".$this->db_quote($upload_file, "text")
 							." WHERE `id` = ".$this->db_quote($sID, "integer")
@@ -429,7 +429,7 @@ class admin_galleries extends adminController
 					);
 				else
 				{
-					$this->db_results(
+					$this->dbResults(
 						"DELETE FROM `galleries_photos`"
 							." WHERE `id` = ".$this->db_quote($sID, "integer")
 						,"admin->galleries->photo->delete"
@@ -448,7 +448,7 @@ class admin_galleries extends adminController
 		
 		foreach($aItems as $x => $aItem)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"UPDATE `galleries_photos` SET"
 					." `sort_order` = ".($x +1)
 					." WHERE `id` = ".$this->db_quote($aItem, "integer")
@@ -460,14 +460,14 @@ class admin_galleries extends adminController
 	}
 	function photos_default($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `galleries_photos` SET"
 				." `gallery_default` = 0"
 				." WHERE `galleryid` = ".$this->db_quote($aParams["gallery"], "integer")
 			,"admin->galleries->photo->default->unset"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `galleries_photos` SET"
 				." `gallery_default` = 1"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
@@ -478,14 +478,14 @@ class admin_galleries extends adminController
 	}
 	function photos_edit($aParams)
 	{
-		$aPhoto = $this->db_results(
+		$aPhoto = $this->dbResults(
 			"SELECT * FROM `galleries_photos`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->galleries->photos->edit->photo"
 			,"row"
 		);
 		
-		$aGallery = $this->db_results(
+		$aGallery = $this->dbResults(
 			"SELECT * FROM `galleries`"
 				." WHERE `id` = ".$this->db_quote($aParams["gallery"], "integer")
 			,"admin->galleries->photos->edit->gallery"
@@ -498,7 +498,7 @@ class admin_galleries extends adminController
 	}
 	function photos_edit_s($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `galleries_photos` SET"
 				." `title` = ".$this->db_quote($_POST["title"], "text")
 				.", `description` = ".$this->db_quote($_POST["title"], "text")
@@ -510,7 +510,7 @@ class admin_galleries extends adminController
 	}
 	function photos_delete($aParams)
 	{
-		$aPhoto = $this->db_results(
+		$aPhoto = $this->dbResults(
 			"SELECT * FROM `galleries_photos`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->galleries->photos->gallery"
@@ -519,7 +519,7 @@ class admin_galleries extends adminController
 		
 		@unlink($this->_settings->root_public."uploads/galleries/".$aParams["gallery"]."/".$aPhoto["photo"]);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `galleries_photos`"
 				." WHERE `id` = ".$this->db_quote($aPhoto["id"], "integer")
 			,"admin->galleries->photo->delete"
@@ -532,7 +532,7 @@ class admin_galleries extends adminController
 	### Functions ####################
 	private function get_categories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `galleries_categories`"
 				." ORDER BY `name`"
 			,"admin->galleries->get_categories->categories"

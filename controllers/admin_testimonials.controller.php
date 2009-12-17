@@ -13,7 +13,7 @@ class admin_testimonials extends adminController
 			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->db_quote($_GET["category"], "integer");
 		}
 		
-		$aTestimonials = $this->db_results(
+		$aTestimonials = $this->dbResults(
 			"SELECT `testimonials`.* FROM `testimonials`"
 				.$sSQLCategory
 				." ORDER BY `testimonials`.`name`"
@@ -57,7 +57,7 @@ class admin_testimonials extends adminController
 		else
 			$active = 0;
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `testimonials`"
 				." (`name`, `sub_name`, `text`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -77,7 +77,7 @@ class admin_testimonials extends adminController
 		
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `testimonials_categories_assign`"
 					." (`testimonialid`, `categoryid`)"
 					." VALUES"
@@ -90,7 +90,7 @@ class admin_testimonials extends adminController
 		{
 			if($_FILES["video"]["error"] == 1)
 			{
-				$this->db_results(
+				$this->dbResults(
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->db_quote($sID, "integer")
@@ -107,7 +107,7 @@ class admin_testimonials extends adminController
 			
 				if(move_uploaded_file($_FILES["video"]["tmp_name"], $upload_dir.$upload_file))
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `video` = ".$this->db_quote($upload_file, "text")
 							." WHERE `id` = ".$this->db_quote($sID, "integer")
@@ -116,7 +116,7 @@ class admin_testimonials extends adminController
 				}
 				else
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->db_quote($sID, "integer")
@@ -131,7 +131,7 @@ class admin_testimonials extends adminController
 		{
 			if($_FILES["poster"]["error"] == 1)
 			{
-				$this->db_results(
+				$this->dbResults(
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->db_quote($sID, "integer")
@@ -148,7 +148,7 @@ class admin_testimonials extends adminController
 			
 				if(move_uploaded_file($_FILES["poster"]["tmp_name"], $upload_dir.$upload_file))
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `poster` = ".$this->db_quote($upload_file, "text")
 							." WHERE `id` = ".$this->db_quote($sID, "integer")
@@ -157,7 +157,7 @@ class admin_testimonials extends adminController
 				}
 				else
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->db_quote($sID, "integer")
@@ -177,7 +177,7 @@ class admin_testimonials extends adminController
 	{
 		if(!empty($_SESSION["admin"]["admin_testimonials"]))
 		{
-			$aTestimonialRow = $this->db_results(
+			$aTestimonialRow = $this->dbResults(
 				"SELECT * FROM `testimonials`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->testimonials->edit"
@@ -187,7 +187,7 @@ class admin_testimonials extends adminController
 			$aTestimonial = $_SESSION["admin"]["admin_news"];
 			
 			$aTestimonial["updated_datetime"] = $aTestimonialRow["updated_datetime"];
-			$aTestimonial["updated_by"] = $this->db_results(
+			$aTestimonial["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aTestimonialRow["updated_by"]
 				,"admin->testimonials->edit->updated_by"
@@ -198,14 +198,14 @@ class admin_testimonials extends adminController
 		}
 		else
 		{
-			$aTestimonial = $this->db_results(
+			$aTestimonial = $this->dbResults(
 				"SELECT * FROM `testimonials`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->testimonials->edit"
 				,"row"
 			);
 			
-			$aTestimonial["categories"] = $this->db_results(
+			$aTestimonial["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `testimonials_categories` AS `categories`"
 					." INNER JOIN `testimonials_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`"
 					." WHERE `assign`.`testimonialid` = ".$aTestimonial["id"]
@@ -215,7 +215,7 @@ class admin_testimonials extends adminController
 				,"col"
 			);
 			
-			$aTestimonial["updated_by"] = $this->db_results(
+			$aTestimonial["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aTestimonial["updated_by"]
 				,"admin->testimonials->edit->updated_by"
@@ -246,7 +246,7 @@ class admin_testimonials extends adminController
 		else
 			$active = 0;
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `testimonials` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				.", `sub_name` = ".$this->db_quote($_POST["sub_name"], "text")
@@ -259,14 +259,14 @@ class admin_testimonials extends adminController
 			,"admin->testimonials->edit"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `testimonials_categories_assign`"
 				." WHERE `testimonialid` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->testimonials->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `testimonials_categories_assign`"
 					." (`testimonialid`, `categoryid`)"
 					." VALUES"
@@ -279,7 +279,7 @@ class admin_testimonials extends adminController
 		{
 			if($_FILES["video"]["error"] == 1)
 			{
-				$this->db_results(
+				$this->dbResults(
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -294,7 +294,7 @@ class admin_testimonials extends adminController
 				$file_ext = pathinfo($_FILES["video"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
-				$sVideo = $this->db_results(
+				$sVideo = $this->dbResults(
 					"SELECT `video` FROM `testimonials`"
 						." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 					,"admin->testimonials->edit"
@@ -304,7 +304,7 @@ class admin_testimonials extends adminController
 			
 				if(move_uploaded_file($_FILES["video"]["tmp_name"], $upload_dir.$upload_file))
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `video` = ".$this->db_quote($upload_file, "text")
 							." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -313,7 +313,7 @@ class admin_testimonials extends adminController
 				}
 				else
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -328,7 +328,7 @@ class admin_testimonials extends adminController
 		{
 			if($_FILES["poster"]["error"] == 1)
 			{
-				$this->db_results(
+				$this->dbResults(
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -343,7 +343,7 @@ class admin_testimonials extends adminController
 				$file_ext = pathinfo($_FILES["poster"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
-				$sPoster = $this->db_results(
+				$sPoster = $this->dbResults(
 					"SELECT `poster` FROM `testimonials`"
 						." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 					,"admin->testimonials->edit"
@@ -353,7 +353,7 @@ class admin_testimonials extends adminController
 			
 				if(move_uploaded_file($_FILES["poster"]["tmp_name"], $upload_dir.$upload_file))
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `poster` = ".$this->db_quote($upload_file, "text")
 							." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -362,7 +362,7 @@ class admin_testimonials extends adminController
 				}
 				else
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -380,12 +380,12 @@ class admin_testimonials extends adminController
 	}
 	function delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `testimonials`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->testimonials->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `testimonials_categories_assign`"
 				." WHERE `testimonialid` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->testimonials->categories_assign_delete"
@@ -397,7 +397,7 @@ class admin_testimonials extends adminController
 	{
 		$_SESSION["admin"]["admin_testimonials_categories"] = null;
 		
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `testimonials_categories`"
 				." ORDER BY `name`"
 			,"admin->testimonials->categories"
@@ -409,7 +409,7 @@ class admin_testimonials extends adminController
 	}
 	function categories_add_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"INSERT INTO `testimonials_categories`"
 				." (`name`)"
 				." VALUES"
@@ -424,7 +424,7 @@ class admin_testimonials extends adminController
 	}
 	function categories_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `testimonials_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -435,12 +435,12 @@ class admin_testimonials extends adminController
 	}
 	function categories_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `testimonials_categories`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->testimonials->category->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `testimonials_categories_assign`"
 				." WHERE `categoryid` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->testimonials->category->delete_assign"
@@ -453,7 +453,7 @@ class admin_testimonials extends adminController
 	### Functions ####################
 	private function get_categories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `testimonials_categories`"
 				." ORDER BY `name`"
 			,"admin->testimonials->get_categories->categories"

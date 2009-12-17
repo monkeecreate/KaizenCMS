@@ -7,7 +7,7 @@ class admin_content extends adminController
 		// Clear saved form info
 		$_SESSION["admin"]["admin_content"] = null;
 		
-		$aPages = $this->db_results(
+		$aPages = $this->dbResults(
 			"SELECT * FROM `content`"
 				." ORDER BY `title`"
 			,"admin->content->index"
@@ -33,7 +33,7 @@ class admin_content extends adminController
 		
 		$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"])))));
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `content`"
 				." (`tag`, `title`, `content`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -58,7 +58,7 @@ class admin_content extends adminController
 	{
 		if(!empty($_SESSION["admin"]["admin_content"]))
 		{
-			$aPage = $this->db_results(
+			$aPage = $this->dbResults(
 				"SELECT * FROM `content`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->content->edit"
@@ -68,7 +68,7 @@ class admin_content extends adminController
 			$aPage = $_SESSION["admin"]["admin_content"];
 			
 			$aPage["updated_datetime"] = $aPageRow["updated_datetime"];
-			$aPage["updated_by"] = $this->db_results(
+			$aPage["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aPageRow["updated_by"]
 				,"admin->content->edit->updated_by"
@@ -79,14 +79,14 @@ class admin_content extends adminController
 		}
 		else
 		{
-			$aPage = $this->db_results(
+			$aPage = $this->dbResults(
 				"SELECT * FROM `content`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->content->edit"
 				,"row"
 			);
 			
-			$aPage["updated_by"] = $this->db_results(
+			$aPage["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aPage["updated_by"]
 				,"admin->content->edit->updated_by"
@@ -106,7 +106,7 @@ class admin_content extends adminController
 			$this->forward("/admin/content/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `content` SET"
 				." `title` = ".$this->db_quote($_POST["title"], "text")
 				.", `content` = ".$this->db_quote($_POST["content"], "text")
@@ -122,7 +122,7 @@ class admin_content extends adminController
 	}
 	function delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `content`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->content->delete"

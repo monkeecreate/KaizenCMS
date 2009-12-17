@@ -12,7 +12,7 @@ class news_model extends appModel
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($sCategory, "integer");
 		
-		$aArticles = $this->db_results(
+		$aArticles = $this->dbResults(
 			"SELECT `news`.* FROM `news` AS `news`"
 				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
 				." INNER JOIN `news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
@@ -25,7 +25,7 @@ class news_model extends appModel
 	
 		foreach($aArticles as $x => $aArticle)
 		{
-			$aArticleCategories = $this->db_results(
+			$aArticleCategories = $this->dbResults(
 				"SELECT `name` FROM `news_categories` AS `categories`"
 					." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
@@ -43,7 +43,7 @@ class news_model extends appModel
 	}
 	function getArticle($sId)
 	{
-		$aArticle = $this->db_results(
+		$aArticle = $this->dbResults(
 			"SELECT `news`.* FROM `news` AS `news`"
 				." WHERE `news`.`id` = ".$this->db_quote($sId, "integer")
 				." AND `news`.`active` = 1"
@@ -55,7 +55,7 @@ class news_model extends appModel
 		
 		if(!empty($aArticle))
 		{
-			$aCategories = $this->db_results(
+			$aCategories = $this->dbResults(
 				"SELECT `name` FROM `news_categories` AS `category`"
 					." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `category`.`id`"
 					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
@@ -73,7 +73,7 @@ class news_model extends appModel
 	}
 	function getCategories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `news_categories`"
 				." ORDER BY `name`"
 			,"model->news->getCategories"

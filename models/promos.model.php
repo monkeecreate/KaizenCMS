@@ -3,7 +3,7 @@ class promos_model extends appModel
 {
 	function getPromo($sTag)
 	{
-		$aPromo = $this->db_results(
+		$aPromo = $this->dbResults(
 			"SELECT `promos`.* FROM `promos`"
 				." INNER JOIN `promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`"
 				." INNER JOIN `promos_positions` AS `positions` ON `assign`.`positionid` = `positions`.`id`"
@@ -18,7 +18,7 @@ class promos_model extends appModel
 		
 		if(!empty($aPromo))
 		{
-			$this->db_results(
+			$this->dbResults(
 				"UPDATE `promos` SET"
 					." `impressions` = `impressions` + 1"
 					." WHERE `id` = ".$aPromo["id"]
@@ -30,7 +30,7 @@ class promos_model extends appModel
 	}
 	function getPosition($sTag)
 	{
-		$aPosition = $this->db_results(
+		$aPosition = $this->dbResults(
 			"SELECT * FROM `promos_positions`"
 				." WHERE `tag` = ".$this->db_quote($sTag, "text")
 			,"model->promos->getPosition"

@@ -24,7 +24,7 @@ class adminController extends appController
 			$this->forward("/admin/", 401);
 		elseif($this->loggedin())
 		{
-			$aUser = $this->db_results(
+			$aUser = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$this->db_quote($_SESSION["admin"]["userid"], "text")
 					." LIMIT 1"
@@ -48,7 +48,7 @@ class adminController extends appController
 	{
 		if(!empty($_POST["username"]) && !empty($_POST["password"]))
 		{
-			$sUser = $this->db_results(
+			$sUser = $this->dbResults(
 				"SELECT `id` FROM `users`"
 					." WHERE `username` = ".$this->db_quote($_POST["username"], "text")
 					." AND `password` = ".$this->db_quote(md5($_POST["password"]), "text")
@@ -113,7 +113,7 @@ class adminController extends appController
 	{
 		if(!empty($_SESSION["admin"]["userid"]))
 		{
-			$aUser = $this->db_results(
+			$aUser = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				,"admin->loggedin"

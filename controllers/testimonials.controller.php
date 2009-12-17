@@ -3,7 +3,7 @@ class testimonials extends appController
 {
 	function index($aParams)
 	{
-		$aTestimonials = $this->db_results(
+		$aTestimonials = $this->dbResults(
 			"SELECT `testimonials`.* FROM `testimonials`"
 				." INNER JOIN `testimonials_categories_assign` AS `assign` ON `testimonials`.`id` = `assign`.`testimonialid`"
 				." INNER JOIN `testimonials_categories` AS `categories` ON `assign`.`categoryid` = `categories`.`id`"
@@ -17,7 +17,7 @@ class testimonials extends appController
 			$this->tpl_assign("aCurTestimonial", $aTestimonials[0]);
 		else
 		{
-			$aTestimonial = $this->db_results(
+			$aTestimonial = $this->dbResults(
 				"SELECT * FROM `testimonials`"
 					." WHERE `id` = ".$aParams["id"]
 				,"testimonials->testimonial"

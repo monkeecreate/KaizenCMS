@@ -25,7 +25,7 @@ class content extends appController
 				$this->tpl_display("content/".$sPage.".tpl");
 			else
 			{
-				$aContent = $this->db_results(
+				$aContent = $this->dbResults(
 					"SELECT * FROM `content`"
 						." WHERE `tag` = ".$this->db_quote($sPage, "text")
 						." LIMIT 1"
@@ -120,14 +120,14 @@ class content extends appController
 	}
 	function promo($aParams)
 	{
-		$aPromo = $this->db_results(
+		$aPromo = $this->dbResults(
 			"SELECT `promos`.* FROM `promos`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"content->promo"
 			,"row"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `promos` SET"
 				." `clicks` = `clicks` + 1"
 				." WHERE `id` = ".$aPromo["id"]

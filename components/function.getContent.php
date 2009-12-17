@@ -4,14 +4,14 @@ function smarty_function_getContent($aParams, &$oSmarty)
 	$oApp = $oSmarty->get_registered_object("appController");
 	
 	if(!empty($aParams["tag"]))
-		$aContent = $oApp->db_results(
+		$aContent = $oApp->dbResults(
 			"SELECT * FROM `content`"
 				." WHERE `tag` = ".$oApp->db_quote($aParams["tag"], "text")
 			,"smarty->getContent->tag"
 			,"row"
 		);
 	elseif(!empty($aParams["id"]))
-		$aContent = $oApp->db_results(
+		$aContent = $oApp->dbResults(
 			"SELECT * FROM `content`"
 				." WHERE `id` = ".$oApp->db_quote($aParams["id"], "text")
 			,"smarty->getContent->id"

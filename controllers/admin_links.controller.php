@@ -13,7 +13,7 @@ class admin_links extends adminController
 			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->db_quote($_GET["category"], "integer");
 		}
 		
-		$aLinks = $this->db_results(
+		$aLinks = $this->dbResults(
 			"SELECT `links`.* FROM `links`"
 				.$sSQLCategory
 				." GROUP BY `links`.`id`"
@@ -56,7 +56,7 @@ class admin_links extends adminController
 		else
 			$active = 0;
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `links`"
 				." (`name`, `description`, `link`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -76,7 +76,7 @@ class admin_links extends adminController
 		
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `links_categories_assign`"
 					." (`linkid`, `categoryid`)"
 					." VALUES"
@@ -93,7 +93,7 @@ class admin_links extends adminController
 	{
 		if(!empty($_SESSION["admin"]["admin_links"]))
 		{
-			$aLinkRow = $this->db_results(
+			$aLinkRow = $this->dbResults(
 				"SELECT * FROM `links`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->links->edit"
@@ -103,7 +103,7 @@ class admin_links extends adminController
 			$aLink = $_SESSION["admin"]["admin_links"];
 			
 			$aLink["updated_datetime"] = $aLinkRow["updated_datetime"];
-			$aLink["updated_by"] = $this->db_results(
+			$aLink["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aLinkRow["updated_by"]
 				,"admin->links->edit->updated_by"
@@ -114,14 +114,14 @@ class admin_links extends adminController
 		}
 		else
 		{
-			$aLink = $this->db_results(
+			$aLink = $this->dbResults(
 				"SELECT * FROM `links`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->links->edit"
 				,"row"
 			);
 			
-			$aLink["categories"] = $this->db_results(
+			$aLink["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `links_categories` AS `categories`"
 					." INNER JOIN `links_categories_assign` AS `links_assign` ON `categories`.`id` = `links_assign`.`categoryid`"
 					." WHERE `links_assign`.`linkid` = ".$aLink["id"]
@@ -131,7 +131,7 @@ class admin_links extends adminController
 				,"col"
 			);
 			
-			$aLink["updated_by"] = $this->db_results(
+			$aLink["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aLink["updated_by"]
 				,"admin->links->edit->updated_by"
@@ -157,7 +157,7 @@ class admin_links extends adminController
 		else
 			$active = 0;
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `links` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				.", `description` = ".$this->db_quote($_POST["description"], "text")
@@ -169,14 +169,14 @@ class admin_links extends adminController
 			,"admin->links->edit"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `links_categories_assign`"
 				." WHERE `linkid` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->links->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `links_categories_assign`"
 					." (`linkid`, `categoryid`)"
 					." VALUES"
@@ -191,7 +191,7 @@ class admin_links extends adminController
 	}
 	function delete($aParams)
 	{
-		$aLink = $this->db_results(
+		$aLink = $this->dbResults(
 			"SELECT * FROM `links`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->links->edit"
@@ -199,12 +199,12 @@ class admin_links extends adminController
 		);
 		@unlink($this->_settings->root_public."uploads/links/".$aLink["link"]);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `links`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->links->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `links_categories_assign`"
 				." WHERE `linkid` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->links->categories_assign_delete"
@@ -216,7 +216,7 @@ class admin_links extends adminController
 	{
 		$_SESSION["admin"]["admin_links_categories"] = null;
 		
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `links_categories`"
 				." ORDER BY `name`"
 			,"admin->links->categories"
@@ -228,7 +228,7 @@ class admin_links extends adminController
 	}
 	function categories_add_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"INSERT INTO `links_categories`"
 				." (`name`)"
 				." VALUES"
@@ -243,7 +243,7 @@ class admin_links extends adminController
 	}
 	function categories_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `links_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -254,12 +254,12 @@ class admin_links extends adminController
 	}
 	function categories_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `links_categories`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->links->category->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `links_categories_assign`"
 				." WHERE `categoryid` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->links->category->delete_assign"
@@ -272,7 +272,7 @@ class admin_links extends adminController
 	### Functions ####################
 	private function get_categories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `links_categories`"
 				." ORDER BY `name`"
 			,"admin->links->get_categories->categories"

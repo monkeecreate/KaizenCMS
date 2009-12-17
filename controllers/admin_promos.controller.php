@@ -7,7 +7,7 @@ class admin_promos extends adminController
 		// Clear saved form info
 		$_SESSION["admin"]["admin_promos"] = null;
 		
-		$aPositions = $this->db_results(
+		$aPositions = $this->dbResults(
 			"SELECT * FROM `promos_positions`"
 				." ORDER BY `name`"
 			,"admin->promos->index->positions"
@@ -20,7 +20,7 @@ class admin_promos extends adminController
 			$sSQLPosition .= " WHERE `assign`.`positionid` = ".$this->db_quote($_GET["position"], "integer");
 		}
 		
-		$aPromos = $this->db_results(
+		$aPromos = $this->dbResults(
 			"SELECT `promos`.* FROM `promos`"
 				.$sSQLPosition
 				." ORDER BY `promos`.`datetime_show` DESC"
@@ -85,7 +85,7 @@ class admin_promos extends adminController
 		else
 			$active = 0;
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `promos`"
 				." (`name`, `link`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -107,7 +107,7 @@ class admin_promos extends adminController
 		
 		foreach($_POST["positions"] as $sPosition)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `promos_positions_assign`"
 					." (`promoid`, `positionid`)"
 					." VALUES"
@@ -118,7 +118,7 @@ class admin_promos extends adminController
 
 		if($_FILES["promo"]["error"] == 1)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"UPDATE `promos` SET"
 					." `active` = 0"
 					." WHERE `id` = ".$this->db_quote($sID, "integer")
@@ -135,7 +135,7 @@ class admin_promos extends adminController
 		
 			if(move_uploaded_file($_FILES["promo"]["tmp_name"], $upload_dir.$upload_file))
 			{
-				$this->db_results(
+				$this->dbResults(
 					"UPDATE `promos` SET"
 						." `promo` = ".$this->db_quote($upload_file, "text")
 						." WHERE `id` = ".$this->db_quote($sID, "integer")
@@ -144,7 +144,7 @@ class admin_promos extends adminController
 			}
 			else
 			{
-				$this->db_results(
+				$this->dbResults(
 					"UPDATE `promos` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->db_quote($sID, "integer")
@@ -163,7 +163,7 @@ class admin_promos extends adminController
 	{
 		if(!empty($_SESSION["admin"]["admin_promos"]))
 		{
-			$aPromoRow = $this->db_results(
+			$aPromoRow = $this->dbResults(
 				"SELECT * FROM `promos`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->promos->edit"
@@ -173,7 +173,7 @@ class admin_promos extends adminController
 			$aPromo = $_SESSION["admin"]["admin_promos"];
 			
 			$aPromo["updated_datetime"] = $aPromoRow["updated_datetime"];
-			$aPromo["updated_by"] = $this->db_results(
+			$aPromo["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aPromoRow["updated_by"]
 				,"admin->promos->edit->updated_by"
@@ -184,14 +184,14 @@ class admin_promos extends adminController
 		}
 		else
 		{
-			$aPromo = $this->db_results(
+			$aPromo = $this->dbResults(
 				"SELECT * FROM `promos`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->promos->edit"
 				,"row"
 			);
 			
-			$aPromo["positions"] = $this->db_results(
+			$aPromo["positions"] = $this->dbResults(
 				"SELECT `positions`.`id` FROM `promos_positions` AS `positions`"
 					." INNER JOIN `promos_positions_assign` AS `assign` ON `positions`.`id` = `assign`.`positionid`"
 					." WHERE `assign`.`promoid` = ".$aPromo["id"]
@@ -204,7 +204,7 @@ class admin_promos extends adminController
 			$aPromo["datetime_show_date"] = date("m/d/Y", $aPromo["datetime_show"]);
 			$aPromo["datetime_kill_date"] = date("m/d/Y", $aPromo["datetime_kill"]);
 			
-			$aPromo["updated_by"] = $this->db_results(
+			$aPromo["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aPromo["updated_by"]
 				,"admin->promos->edit->updated_by"
@@ -246,7 +246,7 @@ class admin_promos extends adminController
 		else
 			$active = 0;
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `promos` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				.", `link` = ".$this->db_quote($_POST["link"], "text")
@@ -260,14 +260,14 @@ class admin_promos extends adminController
 			,"admin->promos->edit"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `promos_positions_assign`"
 				." WHERE `promoid` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->promos->edit->remove_positions"
 		);
 		foreach($_POST["positions"] as $sPosition)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `promos_positions_assign`"
 					." (`promoid`, `positionid`)"
 					." VALUES"
@@ -280,7 +280,7 @@ class admin_promos extends adminController
 		{
 			if($_FILES["promo"]["error"] == 1)
 			{
-				$this->db_results(
+				$this->dbResults(
 					"UPDATE `promos` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -295,7 +295,7 @@ class admin_promos extends adminController
 				$file_ext = pathinfo($_FILES["promo"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
-				$sPromo = $this->db_results(
+				$sPromo = $this->dbResults(
 					"SELECT `promo` FROM `promos`"
 						." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
 					,"admin->promos->edit"
@@ -305,7 +305,7 @@ class admin_promos extends adminController
 			
 				if(move_uploaded_file($_FILES["promo"]["tmp_name"], $upload_dir.$upload_file))
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `promos` SET"
 							." `promo` = ".$this->db_quote($upload_file, "text")
 							." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -314,7 +314,7 @@ class admin_promos extends adminController
 				}
 				else
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `promo` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -332,12 +332,12 @@ class admin_promos extends adminController
 	}
 	function delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `promos`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->promos->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `promos_positions_assign`"
 				." WHERE `promoid` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->promos->positions_assign_delete"
@@ -350,7 +350,7 @@ class admin_promos extends adminController
 	### Functions ####################
 	private function get_positions()
 	{
-		$aPositions = $this->db_results(
+		$aPositions = $this->dbResults(
 			"SELECT * FROM `promos_positions`"
 				." ORDER BY `name`"
 			,"admin->promos->get_positions"

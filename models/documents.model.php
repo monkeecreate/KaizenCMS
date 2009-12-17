@@ -10,7 +10,7 @@ class documents_model extends appModel
 			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($sCategory, "integer");
 		
 		// Get all documents for paging
-		$aDocuments = $this->db_results(
+		$aDocuments = $this->dbResults(
 			"SELECT `documents`.* FROM `documents` AS `documents`"
 				." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `documents`.`id` = `documents_assign`.`documentid`"
 				." INNER JOIN `documents_categories` AS `categories` ON `documents_assign`.`categoryid` = `categories`.`id`"
@@ -23,7 +23,7 @@ class documents_model extends appModel
 		
 		foreach($aDocuments as $x => $aDocument)
 		{
-			$aDocumentCategories = $this->db_results(
+			$aDocumentCategories = $this->dbResults(
 				"SELECT `name` FROM `documents_categories` AS `categories`"
 					." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
@@ -38,7 +38,7 @@ class documents_model extends appModel
 	}
 	function getCategories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `documents_categories`"
 				." ORDER BY `name`"
 			,"model->documents->getCategories"

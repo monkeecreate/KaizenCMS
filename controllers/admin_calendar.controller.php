@@ -13,7 +13,7 @@ class admin_calendar extends adminController
 			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->db_quote($_GET["category"], "integer");
 		}
 		
-		$aEvents = $this->db_results(
+		$aEvents = $this->dbResults(
 			"SELECT `calendar`.* FROM `calendar`"
 				.$sSQLCategory
 				." GROUP BY `calendar`.`id`"
@@ -98,7 +98,7 @@ class admin_calendar extends adminController
 		else
 			$active = 0;
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `calendar`"
 				." (`title`, `short_content`, `content`, `allday`, `datetime_start`, `datetime_end`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -124,7 +124,7 @@ class admin_calendar extends adminController
 		
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `calendar_categories_assign`"
 					." (`eventid`, `categoryid`)"
 					." VALUES"
@@ -144,7 +144,7 @@ class admin_calendar extends adminController
 	{
 		if(!empty($_SESSION["admin"]["admin_calendar"]))
 		{
-			$aEventRow = $this->db_results(
+			$aEventRow = $this->dbResults(
 				"SELECT * FROM `calendar`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->calendar->edit"
@@ -154,7 +154,7 @@ class admin_calendar extends adminController
 			$aEvent = $_SESSION["admin"]["admin_calendar"];
 			
 			$aEvent["updated_datetime"] = $aEventRow["updated_datetime"];
-			$aEvent["updated_by"] = $this->db_results(
+			$aEvent["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aEventRow["updated_by"]
 				,"admin->calendar->edit->updated_by"
@@ -165,14 +165,14 @@ class admin_calendar extends adminController
 		}
 		else
 		{
-			$aEvent = $this->db_results(
+			$aEvent = $this->dbResults(
 				"SELECT * FROM `calendar`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->calendar->edit"
 				,"row"
 			);
 			
-			$aEvent["categories"] = $this->db_results(
+			$aEvent["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `calendar_categories` AS `categories`"
 					." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `categories`.`id` = `calendar_assign`.`categoryid`"
 					." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
@@ -187,7 +187,7 @@ class admin_calendar extends adminController
 			$aEvent["datetime_show_date"] = date("m/d/Y", $aEvent["datetime_show"]);
 			$aEvent["datetime_kill_date"] = date("m/d/Y", $aEvent["datetime_kill"]);
 			
-			$aEvent["updated_by"] = $this->db_results(
+			$aEvent["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aEvent["updated_by"]
 				,"admin->calendar->edit->updated_by"
@@ -244,7 +244,7 @@ class admin_calendar extends adminController
 		else
 			$active = 0;
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `calendar` SET"
 				." `title` = ".$this->db_quote($_POST["title"], "text")
 				.", `short_content` = ".$this->db_quote($_POST["short_content"], "text")
@@ -262,14 +262,14 @@ class admin_calendar extends adminController
 			,"admin->calendar->edit"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `calendar_categories_assign`"
 				." WHERE `eventid` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->calendar->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `calendar_categories_assign`"
 					." (`eventid`, `categoryid`)"
 					." VALUES"
@@ -284,12 +284,12 @@ class admin_calendar extends adminController
 	}
 	function delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `calendar`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->content->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `calendar_categories_assign`"
 				." WHERE `eventid` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->content->categories_assign_delete"
@@ -300,7 +300,7 @@ class admin_calendar extends adminController
 	
 	function image_upload($aParams)
 	{
-		$aEvent = $this->db_results(
+		$aEvent = $this->dbResults(
 			"SELECT * FROM `calendar`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->calendar->image->upload"
@@ -327,7 +327,7 @@ class admin_calendar extends adminController
 
 			if(move_uploaded_file($_FILES["image"]["tmp_name"], $folder.$_POST["id"].".jpg"))
 			{
-				$this->db_results(
+				$this->dbResults(
 					"UPDATE `calendar` SET"
 						." `photo_x1` = 0"
 						.", `photo_y1` = 0"
@@ -354,7 +354,7 @@ class admin_calendar extends adminController
 		if(!is_file($folder.$aParams["id"].".jpg"))
 			$this->forward("/admin/calendar/image/".$aParams["id"]."/upload/");
 
-		$aEvent = $this->db_results(
+		$aEvent = $this->dbResults(
 			"SELECT * FROM `calendar`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->calendar->image->edit"
@@ -368,7 +368,7 @@ class admin_calendar extends adminController
 	}
 	function image_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `calendar` SET"
 				." photo_x1 = ".$this->db_quote($_POST["x1"], "integer")
 				.", photo_y1 = ".$this->db_quote($_POST["y1"], "integer")
@@ -384,7 +384,7 @@ class admin_calendar extends adminController
 	}
 	function image_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `calendar` SET"
 				." photo_x1 = 0"
 				.", photo_y1 = 0"
@@ -404,7 +404,7 @@ class admin_calendar extends adminController
 	{
 		$_SESSION["admin"]["admin_calendar_categories"] = null;
 		
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT `categories`.* FROM `calendar_categories` AS `categories`"
 				." ORDER BY `categories`.`name`"
 			,"admin->calendar->categories"
@@ -416,7 +416,7 @@ class admin_calendar extends adminController
 	}
 	function categories_add_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"INSERT INTO `calendar_categories`"
 				." (`name`)"
 				." VALUES"
@@ -431,7 +431,7 @@ class admin_calendar extends adminController
 	}
 	function categories_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `calendar_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -442,12 +442,12 @@ class admin_calendar extends adminController
 	}
 	function categories_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `calendar_categories`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->calendar->category->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `calendar_categories_assign`"
 				." WHERE `categoryid` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->calendar->category->delete_assign"
@@ -460,7 +460,7 @@ class admin_calendar extends adminController
 	### Functions ####################
 	private function get_categories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `calendar_categories`"
 				." ORDER BY `name`"
 			,"admin->calendar->get_categories->categories"

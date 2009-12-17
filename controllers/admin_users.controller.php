@@ -7,7 +7,7 @@ class admin_users extends adminController
 		// Clear saved form info
 		$_SESSION["admin"]["admin_users"] = null;
 		
-		$aUsers = $this->db_results(
+		$aUsers = $this->dbResults(
 			"SELECT * FROM `users`"
 				." ORDER BY `lname`"
 			,"admin->users->index"
@@ -30,7 +30,7 @@ class admin_users extends adminController
 			$this->forward("/admin/users/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$aRes = $this->db_results(
+		$aRes = $this->dbResults(
 			"INSERT INTO `users`"
 				." (`username`, `password`, `fname`, `lname`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -55,7 +55,7 @@ class admin_users extends adminController
 	{
 		if(!empty($_SESSION["admin"]["admin_users"]))
 		{
-			$aUserRow = $this->db_results(
+			$aUserRow = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->users->edit"
@@ -65,7 +65,7 @@ class admin_users extends adminController
 			$aUser = $_SESSION["admin"]["admin_users"];
 			
 			$aUser["updated_datetime"] = $aUserRow["updated_datetime"];
-			$aUser["updated_by"] = $this->db_results(
+			$aUser["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aUserRow["updated_by"]
 				,"admin->users->edit->updated_by"
@@ -76,7 +76,7 @@ class admin_users extends adminController
 		}
 		else
 		{
-			$aUser = $this->db_results(
+			$aUser = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 					." LIMIT 1"
@@ -84,7 +84,7 @@ class admin_users extends adminController
 				,"row"
 			);
 			
-			$aUser["updated_by"] = $this->db_results(
+			$aUser["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aUser["updated_by"]
 				,"admin->users->edit->updated_by"
@@ -107,7 +107,7 @@ class admin_users extends adminController
 			$this->forward("/admin/users/edit/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$aRes = $this->db_results(
+		$aRes = $this->dbResults(
 			"UPDATE `users` SET"
 				." `username` = ".$this->db_quote($_POST["username"], "text")
 				.", `fname` = ".$this->db_quote($_POST["fname"], "text")
@@ -120,7 +120,7 @@ class admin_users extends adminController
 		
 		if(!empty($_POST["password"]))
 		{
-			$aRes = $this->db_results(
+			$aRes = $this->dbResults(
 				"UPDATE `users` SET"
 					." `password` = ".$this->db_quote(md5($_POST["password"]), "text")
 					." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -134,7 +134,7 @@ class admin_users extends adminController
 	}
 	function delete($aParams)
 	{
-		$aRes = $this->db_results(
+		$aRes = $this->dbResults(
 			"DELETE FROM `users`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->users->delete"

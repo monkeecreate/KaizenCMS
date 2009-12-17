@@ -13,7 +13,7 @@ class admin_news extends adminController
 			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->db_quote($_GET["category"], "integer");
 		}
 		
-		$aArticles = $this->db_results(
+		$aArticles = $this->dbResults(
 			"SELECT `news`.* FROM `news`"
 				.$sSQLCategory
 				." GROUP BY `news`.`id`"
@@ -84,7 +84,7 @@ class admin_news extends adminController
 		else
 			$active = 0;
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `news`"
 				." (`title`, `short_content`, `content`, `datetime_show`, `datetime_kill`, `use_kill`, `sticky`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -108,7 +108,7 @@ class admin_news extends adminController
 		
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `news_categories_assign`"
 					." (`articleid`, `categoryid`)"
 					." VALUES"
@@ -128,7 +128,7 @@ class admin_news extends adminController
 	{
 		if(!empty($_SESSION["admin"]["admin_news"]))
 		{
-			$aArticleRow = $this->db_results(
+			$aArticleRow = $this->dbResults(
 				"SELECT * FROM `news`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->news->edit"
@@ -138,7 +138,7 @@ class admin_news extends adminController
 			$aArticle = $_SESSION["admin"]["admin_news"];
 			
 			$aArticle["updated_datetime"] = $aArticleRow["updated_datetime"];
-			$aArticle["updated_by"] = $this->db_results(
+			$aArticle["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aArticleRow["updated_by"]
 				,"admin->news->edit->updated_by"
@@ -149,14 +149,14 @@ class admin_news extends adminController
 		}
 		else
 		{
-			$aArticle = $this->db_results(
+			$aArticle = $this->dbResults(
 				"SELECT * FROM `news`"
 					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 				,"admin->news->edit"
 				,"row"
 			);
 			
-			$aArticle["categories"] = $this->db_results(
+			$aArticle["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `news_categories` AS `categories`"
 					." INNER JOIN `news_categories_assign` AS `news_assign` ON `categories`.`id` = `news_assign`.`categoryid`"
 					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
@@ -169,7 +169,7 @@ class admin_news extends adminController
 			$aArticle["datetime_show_date"] = date("m/d/Y", $aArticle["datetime_show"]);
 			$aArticle["datetime_kill_date"] = date("m/d/Y", $aArticle["datetime_kill"]);
 			
-			$aArticle["updated_by"] = $this->db_results(
+			$aArticle["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aArticle["updated_by"]
 				,"admin->news->edit->updated_by"
@@ -216,7 +216,7 @@ class admin_news extends adminController
 		else
 			$active = 0;
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `news` SET"
 				." `title` = ".$this->db_quote($_POST["title"], "text")
 				.", `short_content` = ".$this->db_quote($_POST["short_content"], "text")
@@ -232,14 +232,14 @@ class admin_news extends adminController
 			,"admin->news->edit"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `news_categories_assign`"
 				." WHERE `articleid` = ".$this->db_quote($_POST["id"], "integer")
 			,"admin->news->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `news_categories_assign`"
 					." (`articleid`, `categoryid`)"
 					." VALUES"
@@ -254,12 +254,12 @@ class admin_news extends adminController
 	}
 	function delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `news`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->news->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `news_categories_assign`"
 				." WHERE `articleid` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->news->categories_assign_delete"
@@ -272,7 +272,7 @@ class admin_news extends adminController
 	{
 		$oNews = $this->loadModel("news");
 		
-		$aArticle = $this->db_results(
+		$aArticle = $this->dbResults(
 			"SELECT * FROM `news`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->news->image->upload"
@@ -301,7 +301,7 @@ class admin_news extends adminController
 
 			if(move_uploaded_file($_FILES["image"]["tmp_name"], $folder.$_POST["id"].".jpg"))
 			{
-				$this->db_results(
+				$this->dbResults(
 					"UPDATE `news` SET"
 						." `photo_x1` = 0"
 						.", `photo_y1` = 0"
@@ -330,7 +330,7 @@ class admin_news extends adminController
 		if(!is_file($folder.$aParams["id"].".jpg"))
 			$this->forward("/admin/news/image/".$aParams["id"]."/upload/");
 
-		$aArticle = $this->db_results(
+		$aArticle = $this->dbResults(
 			"SELECT * FROM `news`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->news->image->edit"
@@ -346,7 +346,7 @@ class admin_news extends adminController
 	}
 	function image_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `news` SET"
 				." photo_x1 = ".$this->db_quote($_POST["x1"], "integer")
 				.", photo_y1 = ".$this->db_quote($_POST["y1"], "integer")
@@ -362,7 +362,7 @@ class admin_news extends adminController
 	}
 	function image_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `news` SET"
 				." photo_x1 = 0"
 				.", photo_y1 = 0"
@@ -382,7 +382,7 @@ class admin_news extends adminController
 	{
 		$_SESSION["admin"]["admin_news_categories"] = null;
 		
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `news_categories`"
 				." ORDER BY `name`"
 			,"admin->news->categories"
@@ -394,7 +394,7 @@ class admin_news extends adminController
 	}
 	function categories_add_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"INSERT INTO `news_categories`"
 				." (`name`)"
 				." VALUES"
@@ -410,7 +410,7 @@ class admin_news extends adminController
 	}
 	function categories_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `news_categories` SET"
 				." `name` = ".$this->db_quote($_POST["name"], "text")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
@@ -421,12 +421,12 @@ class admin_news extends adminController
 	}
 	function categories_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `news_categories`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->news->category->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `news_categories_assign`"
 				." WHERE `categoryid` = ".$this->db_quote($aParams["id"], "integer")
 			,"admin->news->category->delete_assign"
@@ -439,7 +439,7 @@ class admin_news extends adminController
 	### Functions ####################
 	private function get_categories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `news_categories`"
 				." ORDER BY `name`"
 			,"admin->news->get_categories->categories"
