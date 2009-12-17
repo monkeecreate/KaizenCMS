@@ -12,7 +12,7 @@ class calendar_model extends appModel
 		$sWhere .= " AND `calendar`.`datetime_end` > ".time();
 		$sWhere .= " AND `calendar`.`active` = 1";
 		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($sCategory, "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
 		// Get all events for paging
 		$aEvents = $this->dbResults(
@@ -48,7 +48,7 @@ class calendar_model extends appModel
 	{
 		$aEvent = $this->dbResults(
 			"SELECT `calendar`.* FROM `calendar` AS `calendar`"
-				." WHERE `calendar`.`id` = ".$this->db_quote($sId, "integer")
+				." WHERE `calendar`.`id` = ".$this->dbQuote($sId, "integer")
 				." AND `calendar`.`active` = 1"
 				." AND `calendar`.`datetime_show` < ".time()
 				." AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")"

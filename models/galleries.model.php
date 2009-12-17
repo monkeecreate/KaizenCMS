@@ -7,7 +7,7 @@ class galleries_model extends appModel
 	{
 		$sWhere = " WHERE `galleries`.`id` > 0";
 		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($sCategory, "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
 		// Get all gallerys for paging
 		$aGalleries = $this->dbResults(
@@ -47,7 +47,7 @@ class galleries_model extends appModel
 	{
 		$aGallery = $this->dbResults(
 			"SELECT * FROM `galleries`"
-				." WHERE `id` = ".$this->db_quote($sId, "integer")
+				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"model->galleries->getGallery"
 			,"row"
 		);
@@ -71,7 +71,7 @@ class galleries_model extends appModel
 	{
 		$aPhotos = $this->dbResults(
 			"SELECT * FROM `galleries_photos`"
-				." WHERE `galleryid` = ".$this->db_quote($sId, "integer")
+				." WHERE `galleryid` = ".$this->dbQuote($sId, "integer")
 			,"model->galleries->getPhotos"
 			,"all"
 		);

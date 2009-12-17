@@ -7,7 +7,7 @@ class documents_model extends appModel
 	{
 		$sWhere = " WHERE `documents`.`active` = 1";
 		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($sCategory, "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
 		// Get all documents for paging
 		$aDocuments = $this->dbResults(

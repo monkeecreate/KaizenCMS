@@ -10,7 +10,7 @@ class news_model extends appModel
 		$sWhere = " WHERE `news`.`datetime_show` < ".time()." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
 		$sWhere .= " AND `news`.`active` = 1";
 		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($sCategory, "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
 		$aArticles = $this->dbResults(
 			"SELECT `news`.* FROM `news` AS `news`"
@@ -45,7 +45,7 @@ class news_model extends appModel
 	{
 		$aArticle = $this->dbResults(
 			"SELECT `news`.* FROM `news` AS `news`"
-				." WHERE `news`.`id` = ".$this->db_quote($sId, "integer")
+				." WHERE `news`.`id` = ".$this->dbQuote($sId, "integer")
 				." AND `news`.`active` = 1"
 				." AND `news`.`datetime_show` < ".time()
 				." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")"

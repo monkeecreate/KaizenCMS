@@ -4,7 +4,7 @@ class content extends appController
 	### DISPLAY ######################
 	function index()
 	{
-		$this->tpl_display("index.tpl");
+		$this->tplDisplay("index.tpl");
 	}
 	function siteinfo()
 	{
@@ -22,12 +22,12 @@ class content extends appController
 		if(preg_match("/[a-z0-9_-]+/i", $sPage) > 0)
 		{
 			if($this->template_exists("content/".$sPage.".tpl"))
-				$this->tpl_display("content/".$sPage.".tpl");
+				$this->tplDisplay("content/".$sPage.".tpl");
 			else
 			{
 				$aContent = $this->dbResults(
 					"SELECT * FROM `content`"
-						." WHERE `tag` = ".$this->db_quote($sPage, "text")
+						." WHERE `tag` = ".$this->dbQuote($sPage, "text")
 						." LIMIT 1"
 					,"content->view"
 					,"row"
@@ -35,12 +35,12 @@ class content extends appController
 			
 				if(!empty($aContent))
 				{
-					$this->tpl_assign("aContent", $aContent);
+					$this->tplAssign("aContent", $aContent);
 					
 					if(empty($aContent["template"]))
-						$this->tpl_display("content.tpl");
+						$this->tplDisplay("content.tpl");
 					else
-						$this->tpl_display("content/".$aContent["template"]);
+						$this->tplDisplay("content/".$aContent["template"]);
 				}
 				else
 					$this->error("404");
@@ -122,7 +122,7 @@ class content extends appController
 	{
 		$aPromo = $this->dbResults(
 			"SELECT `promos`.* FROM `promos`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"content->promo"
 			,"row"
 		);

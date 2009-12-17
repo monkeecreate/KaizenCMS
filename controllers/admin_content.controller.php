@@ -14,14 +14,14 @@ class admin_content extends adminController
 			,"all"
 		);
 		
-		$this->tpl_assign("aPages", $aPages);
-		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
-		$this->tpl_display("content/index.tpl");
+		$this->tplAssign("aPages", $aPages);
+		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
+		$this->tplDisplay("content/index.tpl");
 	}
 	function add()
 	{
-		$this->tpl_assign("aPage", $_SESSION["admin"]["admin_content"]);
-		$this->tpl_display("content/add.tpl");
+		$this->tplAssign("aPage", $_SESSION["admin"]["admin_content"]);
+		$this->tplDisplay("content/add.tpl");
 	}
 	function add_s()
 	{
@@ -38,13 +38,13 @@ class admin_content extends adminController
 				." (`tag`, `title`, `content`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
-					.$this->db_quote($sTag, "text")
-					.", ".$this->db_quote($_POST["title"], "text")
-					.", ".$this->db_quote($_POST["content"], "text")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.$this->dbQuote($sTag, "text")
+					.", ".$this->dbQuote($_POST["title"], "text")
+					.", ".$this->dbQuote($_POST["content"], "text")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->content->add"
 			,"insert"
@@ -60,7 +60,7 @@ class admin_content extends adminController
 		{
 			$aPage = $this->dbResults(
 				"SELECT * FROM `content`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->content->edit"
 				,"row"
 			);
@@ -75,13 +75,13 @@ class admin_content extends adminController
 				,"row"
 			);
 			
-			$this->tpl_assign("aPage", $aPage);
+			$this->tplAssign("aPage", $aPage);
 		}
 		else
 		{
 			$aPage = $this->dbResults(
 				"SELECT * FROM `content`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->content->edit"
 				,"row"
 			);
@@ -93,10 +93,10 @@ class admin_content extends adminController
 				,"row"
 			);
 		
-			$this->tpl_assign("aPage", $aPage);
+			$this->tplAssign("aPage", $aPage);
 		}
 		
-		$this->tpl_display("content/edit.tpl");
+		$this->tplDisplay("content/edit.tpl");
 	}
 	function edit_s()
 	{
@@ -108,11 +108,11 @@ class admin_content extends adminController
 		
 		$this->dbResults(
 			"UPDATE `content` SET"
-				." `title` = ".$this->db_quote($_POST["title"], "text")
-				.", `content` = ".$this->db_quote($_POST["content"], "text")
-				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
-				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `title` = ".$this->dbQuote($_POST["title"], "text")
+				.", `content` = ".$this->dbQuote($_POST["content"], "text")
+				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
+				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->content->edit"
 		);
 		
@@ -124,7 +124,7 @@ class admin_content extends adminController
 	{
 		$this->dbResults(
 			"DELETE FROM `content`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->content->delete"
 		);
 		

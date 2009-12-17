@@ -10,7 +10,7 @@ class admin_calendar extends adminController
 		if(!empty($_GET["category"]))
 		{
 			$sSQLCategory = " INNER JOIN `calendar_categories_assign` AS `assign` ON `calendar`.`id` = `assign`.`eventid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->db_quote($_GET["category"], "integer");
+			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
 		}
 		
 		$aEvents = $this->dbResults(
@@ -22,10 +22,10 @@ class admin_calendar extends adminController
 			,"all"
 		);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_assign("sCategory", $_GET["category"]);
-		$this->tpl_assign("aEvents", $aEvents);
-		$this->tpl_display("calendar/index.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("sCategory", $_GET["category"]);
+		$this->tplAssign("aEvents", $aEvents);
+		$this->tplDisplay("calendar/index.tpl");
 	}
 	function add()
 	{
@@ -37,10 +37,10 @@ class admin_calendar extends adminController
 			$aEvent["datetime_show"] = strtotime($aEvent["datetime_show_date"]." ".$aEvent["datetime_show_Hour"].":".$aEvent["datetime_show_Minute"]." ".$aEvent["datetime_show_Meridian"]);
 			$aEvent["datetime_kill"] = strtotime($aEvent["datetime_kill_date"]." ".$aEvent["datetime_kill_Hour"].":".$aEvent["datetime_kill_Minute"]." ".$aEvent["datetime_kill_Meridian"]);
 			
-			$this->tpl_assign("aEvent", $aEvent);
+			$this->tplAssign("aEvent", $aEvent);
 		}
 		else
-			$this->tpl_assign("aEvent",
+			$this->tplAssign("aEvent",
 				array(
 					"datetime_start_date" => date("m/d/Y")
 					,"datetime_end_date" => date("m/d/Y")
@@ -51,8 +51,8 @@ class admin_calendar extends adminController
 				)
 			);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("calendar/add.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("calendar/add.tpl");
 	}
 	function add_s()
 	{
@@ -103,20 +103,20 @@ class admin_calendar extends adminController
 				." (`title`, `short_content`, `content`, `allday`, `datetime_start`, `datetime_end`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
-					.$this->db_quote($_POST["title"], "text")
-					.", ".$this->db_quote($_POST["short_content"], "text")
-					.", ".$this->db_quote($_POST["content"], "text")
-					.", ".$this->db_quote($allday, "integer")
-					.", ".$this->db_quote($datetime_start, "integer")
-					.", ".$this->db_quote($datetime_end, "integer")
-					.", ".$this->db_quote($datetime_show, "integer")
-					.", ".$this->db_quote($datetime_kill, "integer")
-					.", ".$this->db_quote($use_kill, "integer")
-					.", ".$this->db_quote($active, "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.$this->dbQuote($_POST["title"], "text")
+					.", ".$this->dbQuote($_POST["short_content"], "text")
+					.", ".$this->dbQuote($_POST["content"], "text")
+					.", ".$this->dbQuote($allday, "integer")
+					.", ".$this->dbQuote($datetime_start, "integer")
+					.", ".$this->dbQuote($datetime_end, "integer")
+					.", ".$this->dbQuote($datetime_show, "integer")
+					.", ".$this->dbQuote($datetime_kill, "integer")
+					.", ".$this->dbQuote($use_kill, "integer")
+					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->calendar->add"
 			,"insert"
@@ -146,7 +146,7 @@ class admin_calendar extends adminController
 		{
 			$aEventRow = $this->dbResults(
 				"SELECT * FROM `calendar`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->calendar->edit"
 				,"row"
 			);
@@ -161,13 +161,13 @@ class admin_calendar extends adminController
 				,"row"
 			);
 			
-			$this->tpl_assign("aEvent", $aEvent);
+			$this->tplAssign("aEvent", $aEvent);
 		}
 		else
 		{
 			$aEvent = $this->dbResults(
 				"SELECT * FROM `calendar`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->calendar->edit"
 				,"row"
 			);
@@ -194,11 +194,11 @@ class admin_calendar extends adminController
 				,"row"
 			);
 			
-			$this->tpl_assign("aEvent", $aEvent);
+			$this->tplAssign("aEvent", $aEvent);
 		}
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("calendar/edit.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("calendar/edit.tpl");
 	}
 	function edit_s()
 	{
@@ -246,25 +246,25 @@ class admin_calendar extends adminController
 		
 		$this->dbResults(
 			"UPDATE `calendar` SET"
-				." `title` = ".$this->db_quote($_POST["title"], "text")
-				.", `short_content` = ".$this->db_quote($_POST["short_content"], "text")
-				.", `content` = ".$this->db_quote($_POST["content"], "text")
-				.", `allday` = ".$this->db_quote($allday, "integer")
-				.", `datetime_start` = ".$this->db_quote($datetime_start, "integer")
-				.", `datetime_end` = ".$this->db_quote($datetime_end, "integer")
-				.", `datetime_show` = ".$this->db_quote($datetime_show, "integer")
-				.", `datetime_kill` = ".$this->db_quote($datetime_kill, "integer")
-				.", `use_kill` = ".$this->db_quote($use_kill, "integer")
-				.", `active` = ".$this->db_quote($active, "integer")
-				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
-				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `title` = ".$this->dbQuote($_POST["title"], "text")
+				.", `short_content` = ".$this->dbQuote($_POST["short_content"], "text")
+				.", `content` = ".$this->dbQuote($_POST["content"], "text")
+				.", `allday` = ".$this->dbQuote($allday, "integer")
+				.", `datetime_start` = ".$this->dbQuote($datetime_start, "integer")
+				.", `datetime_end` = ".$this->dbQuote($datetime_end, "integer")
+				.", `datetime_show` = ".$this->dbQuote($datetime_show, "integer")
+				.", `datetime_kill` = ".$this->dbQuote($datetime_kill, "integer")
+				.", `use_kill` = ".$this->dbQuote($use_kill, "integer")
+				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
+				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->calendar->edit"
 		);
 		
 		$this->dbResults(
 			"DELETE FROM `calendar_categories_assign`"
-				." WHERE `eventid` = ".$this->db_quote($_POST["id"], "integer")
+				." WHERE `eventid` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->calendar->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
@@ -273,7 +273,7 @@ class admin_calendar extends adminController
 				"INSERT INTO `calendar_categories_assign`"
 					." (`eventid`, `categoryid`)"
 					." VALUES"
-					." (".$this->db_quote($_POST["id"], "integer").", ".$sCategory.")"
+					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
 				,"admin->calendar->edit->categories"
 			);
 		}
@@ -286,12 +286,12 @@ class admin_calendar extends adminController
 	{
 		$this->dbResults(
 			"DELETE FROM `calendar`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->content->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `calendar_categories_assign`"
-				." WHERE `eventid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `eventid` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->content->categories_assign_delete"
 		);
 		
@@ -302,14 +302,14 @@ class admin_calendar extends adminController
 	{
 		$aEvent = $this->dbResults(
 			"SELECT * FROM `calendar`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->calendar->image->upload"
 			,"row"
 		);
 
-		$this->tpl_assign("aEvent", $aEvent);
+		$this->tplAssign("aEvent", $aEvent);
 
-		$this->tpl_display("calendar/image/upload.tpl");
+		$this->tplDisplay("calendar/image/upload.tpl");
 	}
 	function image_upload_s()
 	{
@@ -356,27 +356,27 @@ class admin_calendar extends adminController
 
 		$aEvent = $this->dbResults(
 			"SELECT * FROM `calendar`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->calendar->image->edit"
 			,"row"
 		);
 
-		$this->tpl_assign("aEvent", $aEvent);
-		$this->tpl_assign("sFolder", "/uploads/calendar/");
+		$this->tplAssign("aEvent", $aEvent);
+		$this->tplAssign("sFolder", "/uploads/calendar/");
 
-		$this->tpl_display("calendar/image/edit.tpl");
+		$this->tplDisplay("calendar/image/edit.tpl");
 	}
 	function image_edit_s()
 	{
 		$this->dbResults(
 			"UPDATE `calendar` SET"
-				." photo_x1 = ".$this->db_quote($_POST["x1"], "integer")
-				.", photo_y1 = ".$this->db_quote($_POST["y1"], "integer")
-				.", photo_x2 = ".$this->db_quote($_POST["x2"], "integer")
-				.", photo_y2 = ".$this->db_quote($_POST["y2"], "integer")
-				.", photo_width = ".$this->db_quote($_POST["width"], "integer")
-				.", photo_height = ".$this->db_quote($_POST["height"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." photo_x1 = ".$this->dbQuote($_POST["x1"], "integer")
+				.", photo_y1 = ".$this->dbQuote($_POST["y1"], "integer")
+				.", photo_x2 = ".$this->dbQuote($_POST["x2"], "integer")
+				.", photo_y2 = ".$this->dbQuote($_POST["y2"], "integer")
+				.", photo_width = ".$this->dbQuote($_POST["width"], "integer")
+				.", photo_height = ".$this->dbQuote($_POST["height"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->calendar->image->edit_s"
 		);
 
@@ -392,7 +392,7 @@ class admin_calendar extends adminController
 				.", photo_y2 = 0"
 				.", photo_width = 0"
 				.", photo_height = 0"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->calendar->image->delete"
 		);
 		
@@ -411,8 +411,8 @@ class admin_calendar extends adminController
 			,"all"
 		);
 		
-		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("calendar/categories.tpl");
+		$this->tplAssign("aCategories", $aCategories);
+		$this->tplDisplay("calendar/categories.tpl");
 	}
 	function categories_add_s()
 	{
@@ -421,7 +421,7 @@ class admin_calendar extends adminController
 				." (`name`)"
 				." VALUES"
 				." ("
-				.$this->db_quote($_POST["name"], "text")
+				.$this->dbQuote($_POST["name"], "text")
 				.")"
 			,"admin->calendar->category->add_s"
 			,"insert"
@@ -433,8 +433,8 @@ class admin_calendar extends adminController
 	{
 		$this->dbResults(
 			"UPDATE `calendar_categories` SET"
-				." `name` = ".$this->db_quote($_POST["name"], "text")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `name` = ".$this->dbQuote($_POST["name"], "text")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->calendar->categories->edit"
 		);
 
@@ -444,12 +444,12 @@ class admin_calendar extends adminController
 	{
 		$this->dbResults(
 			"DELETE FROM `calendar_categories`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->calendar->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `calendar_categories_assign`"
-				." WHERE `categoryid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->calendar->category->delete_assign"
 		);
 

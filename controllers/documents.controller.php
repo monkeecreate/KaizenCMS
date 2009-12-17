@@ -31,10 +31,10 @@ class documents extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tpl_assign("aCategories", $oDocuments->getCategories());
-		$this->tpl_assign("aDocuments", $aDocuments);
-		$this->tpl_assign("aPaging", $aPaging);
+		$this->tplAssign("aCategories", $oDocuments->getCategories());
+		$this->tplAssign("aDocuments", $aDocuments);
+		$this->tplAssign("aPaging", $aPaging);
 		
-		$this->tpl_display("documents.tpl");
+		$this->tplDisplay("documents.tpl");
 	}
 }

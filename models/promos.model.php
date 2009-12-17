@@ -7,7 +7,7 @@ class promos_model extends appModel
 			"SELECT `promos`.* FROM `promos`"
 				." INNER JOIN `promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`"
 				." INNER JOIN `promos_positions` AS `positions` ON `assign`.`positionid` = `positions`.`id`"
-				." WHERE `positions`.`tag` = ".$this->db_quote($sTag, "text")
+				." WHERE `positions`.`tag` = ".$this->dbQuote($sTag, "text")
 				." AND `promos`.`datetime_show` < ".time()
 				." AND (`promos`.`datetime_kill` > ".time()." OR `promos`.`use_kill` = 0)"
 				." ORDER BY rand()"
@@ -32,7 +32,7 @@ class promos_model extends appModel
 	{
 		$aPosition = $this->dbResults(
 			"SELECT * FROM `promos_positions`"
-				." WHERE `tag` = ".$this->db_quote($sTag, "text")
+				." WHERE `tag` = ".$this->dbQuote($sTag, "text")
 			,"model->promos->getPosition"
 			,"row"
 		);

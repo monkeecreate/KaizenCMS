@@ -14,13 +14,13 @@ class admin_users extends adminController
 			,"all"
 		);
 		
-		$this->tpl_assign("users", $aUsers);
-		$this->tpl_display("users/index.tpl");
+		$this->tplAssign("users", $aUsers);
+		$this->tplDisplay("users/index.tpl");
 	}
 	function add()
 	{
-		$this->tpl_assign("user", $_SESSION["admin"]["admin_users"]);
-		$this->tpl_display("users/add.tpl");
+		$this->tplAssign("user", $_SESSION["admin"]["admin_users"]);
+		$this->tplDisplay("users/add.tpl");
 	}
 	function add_s()
 	{
@@ -35,14 +35,14 @@ class admin_users extends adminController
 				." (`username`, `password`, `fname`, `lname`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
-					.$this->db_quote($_POST["username"], "text")
-					.", ".$this->db_quote(md5($_POST["password"]), "text")
-					.", ".$this->db_quote($_POST["fname"], "text")
-					.", ".$this->db_quote($_POST["lname"], "text")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.$this->dbQuote($_POST["username"], "text")
+					.", ".$this->dbQuote(md5($_POST["password"]), "text")
+					.", ".$this->dbQuote($_POST["fname"], "text")
+					.", ".$this->dbQuote($_POST["lname"], "text")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->users->add"
 		);
@@ -57,7 +57,7 @@ class admin_users extends adminController
 		{
 			$aUserRow = $this->dbResults(
 				"SELECT * FROM `users`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->users->edit"
 				,"row"
 			);
@@ -72,13 +72,13 @@ class admin_users extends adminController
 				,"row"
 			);
 			
-			$this->tpl_assign("user", $aUser);
+			$this->tplAssign("user", $aUser);
 		}
 		else
 		{
 			$aUser = $this->dbResults(
 				"SELECT * FROM `users`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 					." LIMIT 1"
 				,"admin->users->edit"
 				,"row"
@@ -94,10 +94,10 @@ class admin_users extends adminController
 			if(empty($aUser))
 				$this->error();
 		
-			$this->tpl_assign("user", $aUser);
+			$this->tplAssign("user", $aUser);
 		}
 		
-		$this->tpl_display("users/edit.tpl");
+		$this->tplDisplay("users/edit.tpl");
 	}
 	function edit_s()
 	{
@@ -109,12 +109,12 @@ class admin_users extends adminController
 		
 		$aRes = $this->dbResults(
 			"UPDATE `users` SET"
-				." `username` = ".$this->db_quote($_POST["username"], "text")
-				.", `fname` = ".$this->db_quote($_POST["fname"], "text")
-				.", `lname` = ".$this->db_quote($_POST["lname"], "text")
-				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
-				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `username` = ".$this->dbQuote($_POST["username"], "text")
+				.", `fname` = ".$this->dbQuote($_POST["fname"], "text")
+				.", `lname` = ".$this->dbQuote($_POST["lname"], "text")
+				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
+				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->users->edit"
 		);
 		
@@ -122,8 +122,8 @@ class admin_users extends adminController
 		{
 			$aRes = $this->dbResults(
 				"UPDATE `users` SET"
-					." `password` = ".$this->db_quote(md5($_POST["password"]), "text")
-					." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+					." `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
+					." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 				,"admin->users->edit_password"
 			);
 		}
@@ -136,7 +136,7 @@ class admin_users extends adminController
 	{
 		$aRes = $this->dbResults(
 			"DELETE FROM `users`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->users->delete"
 		);
 		

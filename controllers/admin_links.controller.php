@@ -10,7 +10,7 @@ class admin_links extends adminController
 		if(!empty($_GET["category"]))
 		{
 			$sSQLCategory = " INNER JOIN `links_categories_assign` AS `assign` ON `links`.`id` = `assign`.`linkid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->db_quote($_GET["category"], "integer");
+			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
 		}
 		
 		$aLinks = $this->dbResults(
@@ -22,26 +22,26 @@ class admin_links extends adminController
 			,"all"
 		);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_assign("sCategory", $_GET["category"]);
-		$this->tpl_assign("aLinks", $aLinks);
-		$this->tpl_display("links/index.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("sCategory", $_GET["category"]);
+		$this->tplAssign("aLinks", $aLinks);
+		$this->tplDisplay("links/index.tpl");
 	}
 	function add()
 	{
 		if(!empty($_SESSION["admin"]["admin_links"]))
-			$this->tpl_assign("aLink", $_SESSION["admin"]["admin_links"]);
+			$this->tplAssign("aLink", $_SESSION["admin"]["admin_links"]);
 		
 		else
-			$this->tpl_assign("aLink",
+			$this->tplAssign("aLink",
 				array(
 					"active" => 1
 					,"categories" => array()
 				)
 			);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("links/add.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("links/add.tpl");
 	}
 	function add_s()
 	{
@@ -61,14 +61,14 @@ class admin_links extends adminController
 				." (`name`, `description`, `link`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
-					.$this->db_quote($_POST["name"], "text")
-					.", ".$this->db_quote($_POST["description"], "text")
-					.", ".$this->db_quote($_POST["link"], "text")
-					.", ".$this->db_quote($active, "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.$this->dbQuote($_POST["name"], "text")
+					.", ".$this->dbQuote($_POST["description"], "text")
+					.", ".$this->dbQuote($_POST["link"], "text")
+					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->links->add"
 			,"insert"
@@ -95,7 +95,7 @@ class admin_links extends adminController
 		{
 			$aLinkRow = $this->dbResults(
 				"SELECT * FROM `links`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->links->edit"
 				,"row"
 			);
@@ -110,13 +110,13 @@ class admin_links extends adminController
 				,"row"
 			);
 			
-			$this->tpl_assign("aLink", $aLink);
+			$this->tplAssign("aLink", $aLink);
 		}
 		else
 		{
 			$aLink = $this->dbResults(
 				"SELECT * FROM `links`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->links->edit"
 				,"row"
 			);
@@ -138,11 +138,11 @@ class admin_links extends adminController
 				,"row"
 			);
 			
-			$this->tpl_assign("aLink", $aLink);
+			$this->tplAssign("aLink", $aLink);
 		}
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("links/edit.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("links/edit.tpl");
 	}
 	function edit_s()
 	{
@@ -159,19 +159,19 @@ class admin_links extends adminController
 		
 		$this->dbResults(
 			"UPDATE `links` SET"
-				." `name` = ".$this->db_quote($_POST["name"], "text")
-				.", `description` = ".$this->db_quote($_POST["description"], "text")
-				.", `link` = ".$this->db_quote($_POST["link"], "text")
-				.", `active` = ".$this->db_quote($active, "integer")
-				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
-				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `name` = ".$this->dbQuote($_POST["name"], "text")
+				.", `description` = ".$this->dbQuote($_POST["description"], "text")
+				.", `link` = ".$this->dbQuote($_POST["link"], "text")
+				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
+				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->links->edit"
 		);
 		
 		$this->dbResults(
 			"DELETE FROM `links_categories_assign`"
-				." WHERE `linkid` = ".$this->db_quote($_POST["id"], "integer")
+				." WHERE `linkid` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->links->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
@@ -180,7 +180,7 @@ class admin_links extends adminController
 				"INSERT INTO `links_categories_assign`"
 					." (`linkid`, `categoryid`)"
 					." VALUES"
-					." (".$this->db_quote($_POST["id"], "integer").", ".$sCategory.")"
+					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
 				,"admin->links->edit->categories"
 			);
 		}
@@ -193,7 +193,7 @@ class admin_links extends adminController
 	{
 		$aLink = $this->dbResults(
 			"SELECT * FROM `links`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->links->edit"
 			,"row"
 		);
@@ -201,12 +201,12 @@ class admin_links extends adminController
 		
 		$this->dbResults(
 			"DELETE FROM `links`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->links->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `links_categories_assign`"
-				." WHERE `linkid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `linkid` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->links->categories_assign_delete"
 		);
 		
@@ -223,8 +223,8 @@ class admin_links extends adminController
 			,"all"
 		);
 		
-		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("links/categories.tpl");
+		$this->tplAssign("aCategories", $aCategories);
+		$this->tplDisplay("links/categories.tpl");
 	}
 	function categories_add_s()
 	{
@@ -233,7 +233,7 @@ class admin_links extends adminController
 				." (`name`)"
 				." VALUES"
 				." ("
-				.$this->db_quote($_POST["name"], "text")
+				.$this->dbQuote($_POST["name"], "text")
 				.")"
 			,"admin->links->category->add_s"
 			,"insert"
@@ -245,8 +245,8 @@ class admin_links extends adminController
 	{
 		$this->dbResults(
 			"UPDATE `links_categories` SET"
-				." `name` = ".$this->db_quote($_POST["name"], "text")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `name` = ".$this->dbQuote($_POST["name"], "text")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->links->categories->edit"
 		);
 
@@ -256,12 +256,12 @@ class admin_links extends adminController
 	{
 		$this->dbResults(
 			"DELETE FROM `links_categories`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->links->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `links_categories_assign`"
-				." WHERE `categoryid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->links->category->delete_assign"
 		);
 

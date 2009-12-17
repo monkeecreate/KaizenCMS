@@ -14,7 +14,7 @@ class testimonials extends appController
 		);
 		
 		if(empty($aParams["id"]))
-			$this->tpl_assign("aCurTestimonial", $aTestimonials[0]);
+			$this->tplAssign("aCurTestimonial", $aTestimonials[0]);
 		else
 		{
 			$aTestimonial = $this->dbResults(
@@ -23,10 +23,10 @@ class testimonials extends appController
 				,"testimonials->testimonial"
 				,"row"
 			);
-			$this->tpl_assign("aCurTestimonial", $aTestimonial);
+			$this->tplAssign("aCurTestimonial", $aTestimonial);
 		}
 		
-		$this->tpl_assign("aTestimonials", $aTestimonials);
-		$this->tpl_display("testimonials.tpl");
+		$this->tplAssign("aTestimonials", $aTestimonials);
+		$this->tplDisplay("testimonials.tpl");
 	}
 }

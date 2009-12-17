@@ -15,10 +15,10 @@ class adminController extends appController
 		}
 		
 		if(!empty($_GET["error"]))
-			$this->tpl_assign("page_error", htmlentities(urldecode($_GET["error"])));
+			$this->tplAssign("page_error", htmlentities(urldecode($_GET["error"])));
 			
 		if(!empty($_GET["notice"]))
-			$this->tpl_assign("page_notice", htmlentities(urldecode($_GET["notice"])));
+			$this->tplAssign("page_notice", htmlentities(urldecode($_GET["notice"])));
 		
 		if(!$this->loggedin() && $this->_settings->url[1] != "login" && $this->_settings->surl != "/admin/")
 			$this->forward("/admin/", 401);
@@ -26,23 +26,23 @@ class adminController extends appController
 		{
 			$aUser = $this->dbResults(
 				"SELECT * FROM `users`"
-					." WHERE `id` = ".$this->db_quote($_SESSION["admin"]["userid"], "text")
+					." WHERE `id` = ".$this->dbQuote($_SESSION["admin"]["userid"], "text")
 					." LIMIT 1"
 				,"admin->user_detail"
 				,"row"
 			);
 			
-			$this->tpl_assign("loggedin", 1);
-			$this->tpl_assign("user_details", $aUser);
+			$this->tplAssign("loggedin", 1);
+			$this->tplAssign("user_details", $aUser);
 		}
 	}
 	### DISPLAY ######################
 	function index()
 	{
 		if(!$this->loggedin())
-			$this->tpl_display("login.tpl");
+			$this->tplDisplay("login.tpl");
 		else
-			$this->tpl_display("index.tpl");
+			$this->tplDisplay("index.tpl");
 	}
 	function login()
 	{
@@ -50,8 +50,8 @@ class adminController extends appController
 		{
 			$sUser = $this->dbResults(
 				"SELECT `id` FROM `users`"
-					." WHERE `username` = ".$this->db_quote($_POST["username"], "text")
-					." AND `password` = ".$this->db_quote(md5($_POST["password"]), "text")
+					." WHERE `username` = ".$this->dbQuote($_POST["username"], "text")
+					." AND `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
 					." LIMIT 1"
 				,"admin->login"
 				,"one"
@@ -115,7 +115,7 @@ class adminController extends appController
 		{
 			$aUser = $this->dbResults(
 				"SELECT * FROM `users`"
-					." WHERE `id` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					." WHERE `id` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				,"admin->loggedin"
 				,"row"
 			);

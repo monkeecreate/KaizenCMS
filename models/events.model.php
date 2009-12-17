@@ -11,7 +11,7 @@ class events_model extends appModel
 		$sWhere .= " AND `events`.`datetime_end` > ".time();
 		$sWhere .= " AND `events`.`active` = 1";
 		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($sCategory, "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
 		// Get all events for paging
 		$aEvents = $this->dbResults(
@@ -47,7 +47,7 @@ class events_model extends appModel
 	{
 		$aEvent = $this->dbResults(
 			"SELECT `events`.* FROM `events` AS `events`"
-				." WHERE `events`.`id` = ".$this->db_quote($sId, "integer")
+				." WHERE `events`.`id` = ".$this->dbQuote($sId, "integer")
 				." AND `events`.`active` = 1"
 				." AND `events`.`datetime_show` < ".time()
 				." AND (`events`.`use_kill` = 0 OR `events`.`datetime_kill` > ".time().")"

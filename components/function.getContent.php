@@ -6,14 +6,14 @@ function smarty_function_getContent($aParams, &$oSmarty)
 	if(!empty($aParams["tag"]))
 		$aContent = $oApp->dbResults(
 			"SELECT * FROM `content`"
-				." WHERE `tag` = ".$oApp->db_quote($aParams["tag"], "text")
+				." WHERE `tag` = ".$oApp->dbQuote($aParams["tag"], "text")
 			,"smarty->getContent->tag"
 			,"row"
 		);
 	elseif(!empty($aParams["id"]))
 		$aContent = $oApp->dbResults(
 			"SELECT * FROM `content`"
-				." WHERE `id` = ".$oApp->db_quote($aParams["id"], "text")
+				." WHERE `id` = ".$oApp->dbQuote($aParams["id"], "text")
 			,"smarty->getContent->id"
 			,"row"
 		);
@@ -21,5 +21,5 @@ function smarty_function_getContent($aParams, &$oSmarty)
 	if(empty($aParams["var"]))
 		return stripslashes($aContent["content"]);
 	else
-		$oSmarty->assign($aParams["var"], $aContent);
+		$oApp->tplAssign($aParams["var"], $aContent);
 }

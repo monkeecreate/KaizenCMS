@@ -7,7 +7,7 @@ class faq_model extends appModel
 	{
 		$sWhere = " WHERE `faq`.`active` = 1";
 		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($_GET["category"], "integer");
 		
 		// Get all faq for paging
 		$aQuestions = $this->dbResults(

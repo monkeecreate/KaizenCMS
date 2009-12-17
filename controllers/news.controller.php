@@ -31,11 +31,11 @@ class news extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tpl_assign("aCategories", $oNews->getCategories());
-		$this->tpl_assign("aArticles", $aArticles);
-		$this->tpl_assign("aPaging", $aPaging);
+		$this->tplAssign("aCategories", $oNews->getCategories());
+		$this->tplAssign("aArticles", $aArticles);
+		$this->tplAssign("aPaging", $aPaging);
 		
-		$this->tpl_display("news/index.tpl");
+		$this->tplDisplay("news/index.tpl");
 	}
 	function rss()
 	{
@@ -43,11 +43,11 @@ class news extends appController
 		
 		$aArticles = array_slice($oNews->getArticles($_GET["category"]), 0, 15);
 
-		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
-		$this->tpl_assign("aArticles", $aArticles);
+		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
+		$this->tplAssign("aArticles", $aArticles);
 		
 		header("Content-Type: application/rss+xml");
-		$this->tpl_display("news/rss.tpl");
+		$this->tplDisplay("news/rss.tpl");
 	}
 	function article($aParams)
 	{
@@ -58,8 +58,8 @@ class news extends appController
 		if(empty($aArticle))
 			$this->error('404');
 
-		$this->tpl_assign("aArticle", $aArticle);
+		$this->tplAssign("aArticle", $aArticle);
 		
-		$this->tpl_display("news/article.tpl");
+		$this->tplDisplay("news/article.tpl");
 	}
 }
