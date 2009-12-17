@@ -8,7 +8,7 @@ $aConfig["encryption"]["salt"] = sha1("6%54d68732#@13546f54*65adsf798");
 // Info used to send when an error happens when debug is off
 $aConfig["admin_info"] = array(
 	"name" => "John Hoover",
-	"email" => "defvayne23@gmail.com"
+	"email" => "john@crane-west.com"
 );
 ###############################################
 
