@@ -79,6 +79,11 @@ class admin_promos extends adminController
 			$use_kill = 1;
 		else
 			$use_kill = 0;
+			
+		if(!empty($_POST["active"]))
+			$active = 1;
+		else
+			$active = 0;
 		
 		$sID = $this->db_results(
 			"INSERT INTO `promos`"
@@ -90,7 +95,7 @@ class admin_promos extends adminController
 					.", ".$this->db_quote($datetime_show, "integer")
 					.", ".$this->db_quote($datetime_kill, "integer")
 					.", ".$this->db_quote($use_kill, "integer")
-					.", ".$this->db_quote($_POST["active"], "integer")
+					.", ".$this->db_quote($active, "integer")
 					.", ".$this->db_quote(time(), "integer")
 					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 					.", ".$this->db_quote(time(), "integer")
@@ -235,6 +240,11 @@ class admin_promos extends adminController
 			$use_kill = 1;
 		else
 			$use_kill = 0;
+			
+		if(!empty($_POST["active"]))
+			$active = 1;
+		else
+			$active = 0;
 		
 		$this->db_results(
 			"UPDATE `promos` SET"
@@ -243,7 +253,7 @@ class admin_promos extends adminController
 				.", `datetime_show` = ".$this->db_quote($datetime_show, "integer")
 				.", `datetime_kill` = ".$this->db_quote($datetime_kill, "integer")
 				.", `use_kill` = ".$this->db_quote($use_kill, "integer")
-				.", `active` = ".$this->db_quote($_POST["active"], "integer")
+				.", `active` = ".$this->db_quote($active, "integer")
 				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
 				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
