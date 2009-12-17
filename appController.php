@@ -130,7 +130,7 @@ class appController
 		if($this->template_exists($sTemplate))
 			$this->_smarty->display($sTemplate);
 		else
-			$this->send_error("Can't find template - (".$sTemplate.")");
+			$this->send_error("appController->tpl_display", "Can't find template - (".$sTemplate.")");
 	}
 	function tpl_variable_get($sVariable)
 	{
