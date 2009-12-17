@@ -1,7 +1,7 @@
 {include file="inc_header.tpl" page_title="Gallery :: Photos :: Edit Photo" menu="galleries"}
 
 <h2>{$aGallery.name|stripslashes}</h2>
-<form method="post" action="/admin/galleries/{$aTour.id}/photos/edit/s/">
+<form method="post" action="/admin/galleries/{$aGallery.id}/photos/edit/s/">
 	<label>*Title:</label>
 	<input type="text" name="title" maxlength="100" value="{$aPhoto.title|htmlspecialchars|stripslashes}"><br>
 	<label>Description:</label>
