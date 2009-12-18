@@ -103,7 +103,7 @@ if($sPage != false)
 	die($oEnc->decrypt($sPage));
 ##############################################
 
-### PREPARE URL PATTERN #######################
+### PREPARE URL PATTERN ######################
 if($aUrl[0] == "admin")
 	require("../inc_urls_admin.php");
 else
@@ -209,7 +209,7 @@ $oApp = new appController;
 $oSmarty->register_object("appController", $oApp);
 ##############################################
 
-### INCLUDE CLASS WITH CMD NAME ###############
+### INCLUDE CLASS WITH CMD NAME ##############
 /* Check Url Pattern for usable pattern */
 if(count($aUrlPatterns[$pattern]) > 0)
 {
@@ -229,7 +229,11 @@ if(count($aUrlPatterns[$pattern]) > 0)
 /* Complete failure, throw 404 */
 else
 {
-	$oApp = new appController;
+	if($aUrl[0] == "admin")
+		$oApp = new adminController;
+	else
+		$oApp = new appController;
+	
 	$oApp->error('404');
 }
 ##############################################
