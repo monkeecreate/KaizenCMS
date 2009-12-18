@@ -5,15 +5,6 @@ class adminController extends appController
 	{
 		parent::appController();
 		
-		$this->tpl_variable_set("template_dir", $this->tpl_variable_get("template_dir")."/admin");
-		$this->tpl_variable_set("compile_dir", $this->tpl_variable_get("compile_dir")."/admin");
-		
-		if(!is_dir($this->tpl_variable_get("template_dir")))
-		{
-			if(!mkdir($this->tpl_variable_get("template_dir"), 0777))
-				die("Please create `".$this->tpl_variable_get("template_dir")."`. Unable to create automatically.");
-		}
-		
 		if(!empty($_GET["error"]))
 			$this->tpl_assign("page_error", htmlentities(urldecode($_GET["error"])));
 			
