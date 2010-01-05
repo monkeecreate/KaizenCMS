@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 05, 2010 at 01:51 PM
+-- Generation Time: Jan 05, 2010 at 01:59 PM
 -- Server version: 5.0.75
 -- PHP Version: 5.2.6-3ubuntu4.4
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `calendar` (
   `updated_by` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `allday` (`allday`,`datetime_start`,`datetime_end`,`datetime_show`,`datetime_kill`,`use_kill`,`active`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `calendar_categories` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `content` (
   `updated_by` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `tag` (`tag`,`perminate`,`has_sub_menu`,`sub_item_of`,`sort_order`,`module`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `documents` (
   `updated_by` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `active` (`active`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `documents_categories` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `events` (
   `updated_by` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `use_kill` (`use_kill`,`active`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `events_categories` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -220,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `faq` (
   PRIMARY KEY  (`id`),
   KEY `active` (`active`),
   KEY `sort_order` (`sort_order`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -232,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `faq_categories` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -263,7 +263,7 @@ CREATE TABLE IF NOT EXISTS `galleries` (
   `updated_by` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `order` (`sort_order`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -275,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `galleries_categories` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -306,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `galleries_photos` (
   PRIMARY KEY  (`id`),
   KEY `galleryid` (`galleryid`,`sort_order`),
   KEY `gallery_default` (`gallery_default`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -326,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `links` (
   `updated_by` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `active` (`active`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -338,7 +338,7 @@ CREATE TABLE IF NOT EXISTS `links_categories` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -380,7 +380,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `updated_by` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `use_kill` (`use_kill`,`sticky`,`active`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -392,7 +392,7 @@ CREATE TABLE IF NOT EXISTS `news_categories` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -431,7 +431,7 @@ CREATE TABLE IF NOT EXISTS `promos` (
   KEY `active` (`active`),
   KEY `datetime_show` (`datetime_show`),
   KEY `use_kill` (`use_kill`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -446,7 +446,7 @@ CREATE TABLE IF NOT EXISTS `promos_positions` (
   `promo_width` int(11) default NULL,
   `promo_height` int(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -480,7 +480,7 @@ CREATE TABLE IF NOT EXISTS `testimonials` (
   `updated_by` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `active` (`active`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -492,7 +492,7 @@ CREATE TABLE IF NOT EXISTS `testimonials_categories` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -523,4 +523,4 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_datetime` int(11) NOT NULL default '0',
   `updated_by` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
