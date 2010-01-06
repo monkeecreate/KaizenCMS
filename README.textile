@@ -14,6 +14,10 @@ Both directories should be writeable.
 
 * Open and edit ./inc_config_example.php with your details including database, using the included pear or the pear on your server, turning memcache on or off, etc. Rename this file to ./inc_config.php
 
+* Import the ./database.sql file to your database using phpMyAdmin or your preferred method.
+
+* You can now hit http://yourdomain.com. The backend is at http://yourdomain.com/admin/ and the default login is; user: admin | pass: admin
+
 h2. Developers
 
 John Hoover, "http://defvayne23.com":http://defvayne23.com
