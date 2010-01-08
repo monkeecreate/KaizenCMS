@@ -68,7 +68,7 @@
 	</div>
 	<div class="clear"></div>
 	<fieldset id="fieldset_categories">
-		<legend>Assign article to category:</legend>
+		<legend>Assign event to category:</legend>
 		<ul>
 			{foreach from=$aCategories item=aCategory}
 				<li>
