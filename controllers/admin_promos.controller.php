@@ -345,6 +345,111 @@ class admin_promos extends adminController
 		
 		$this->forward("/admin/promos/?notice=".urlencode("Promo removed successfully!"));
 	}
+	function positions_index()
+	{
+		// Clear saved form info
+		$_SESSION["admin"]["admin_promo_positions"] = null;
+		
+		$aPositions = $this->get_positions();
+		
+		$this->tpl_assign("aPositions", $aPositions);
+		$this->tpl_display("promos/positions/index.tpl");
+	}
+	function positions_add()
+	{	
+		$this->tpl_assign("aPosition", $_SESSION["admin"]["admin_promo_positions"]);
+		$this->tpl_display("promos/positions/add.tpl");
+	}
+	function positions_add_s()
+	{
+		if(empty($_POST["name"]))
+		{
+			$_SESSION["admin"]["admin_promo_positions"] = $_POST;
+			$this->forward("/admin/promos/positions/add/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		if(empty($_POST["tag"]))				
+			$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"])))));
+		else
+			$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["tag"])))));
+		
+		$sID = $this->db_results(
+			"INSERT INTO `promos_positions`"
+				." (`tag`, `name`, `promo_width`, `promo_height`)"
+				." VALUES"
+				." ("
+					.$this->db_quote($sTag, "text")
+					.", ".$this->db_quote($_POST["name"], "text")
+					.", ".$this->db_quote($_POST["promo_width"], "integer")
+					.", ".$this->db_quote($_POST["promo_height"], "integer")
+				.")"
+			,"admin->promos->positions->add"
+			,"insert"
+		);
+		
+		$_SESSION["admin"]["admin_promo_positions"] = null;
+		
+		$this->forward("/admin/promos/positions/?notice=".urlencode("Position created successfully!"));
+	}
+	function positions_edit($aParams)
+	{
+		if(!empty($_SESSION["admin"]["admin_promo_positions"]))
+		{	
+			$aPosition = $_SESSION["admin"]["admin_promo_positions"];
+			
+			$this->tpl_assign("aPosition", $aPosition);
+		}
+		else
+		{
+			$aPosition = $this->db_results(
+				"SELECT * FROM `promos_positions`"
+					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				,"admin->promos->positions->edit"
+				,"row"
+			);
+		
+			$this->tpl_assign("aPosition", $aPosition);
+		}
+		
+		$this->tpl_display("promos/positions/edit.tpl");
+	}
+	function positions_edit_s()
+	{
+		if(empty($_POST["name"]))
+		{
+			$_SESSION["admin"]["admin_promo_positions"] = $_POST;
+			$this->forward("/admin/promos/positions/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		if(empty($_POST["tag"]))				
+			$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"])))));
+		else
+			$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["tag"])))));
+		
+		$this->db_results(
+			"UPDATE `promos_positions` SET"
+				." `tag` = ".$this->db_quote($sTag, "text")
+				.", `name` = ".$this->db_quote($_POST["name"], "text")
+				.", `promo_width` = ".$this->db_quote($_POST["promo_width"], "integer")
+				.", `promo_height` = ".$this->db_quote($_POST["promo_height"], "integer")
+				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+			,"admin->promos->positions->edit"
+		);
+		
+		$_SESSION["admin"]["admin_promo_positions"] = null;
+
+		$this->forward("/admin/promos/positions/?notice=".urlencode("Changes saved successfully!"));
+	}
+	function positions_delete($aParams)
+	{
+		$this->db_results(
+			"DELETE FROM `promos_positions`"
+				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+			,"admin->content->delete"
+		);
+		
+		$this->forward("/admin/promos/positions/?notice=".urlencode("Position removed successfully!"));
+	}
 	##################################
 	
 	### Functions ####################
