@@ -5,7 +5,7 @@
 			<div class="section">
 				<label>Last Updated:</label>
 				{$aArticle.updated_datetime|date_format:"%D - %I:%M %p"}<br>
-				<small>by {$aArticle.updated_by.fname|stripslashes} {$aArticle.update_by.lname|stripslashes}</small>
+				<small>by {$aArticle.updated_by.fname|clean_html} {$aArticle.update_by.lname|clean_html}</small>
 			</div>
 			<div class="section">
 				<label class="helpTip" title="Controls whether the Unpublish date/time is used.">Use Unpublish:</label>
@@ -22,9 +22,9 @@
 		</div>
 	</div>
 	<label>*Title:</label>
-	<input type="text" name="title" maxlength="100" value="{$aArticle.title|htmlspecialchars|stripslashes}"><br>
+	<input type="text" name="title" maxlength="100" value="{$aArticle.title|clean_html}"><br>
 	<label>Short Content:</label>
-	<textarea name="short_content" class="enlarge">{$aArticle.short_content|htmlspecialchars|stripslashes}</textarea><br>
+	<textarea name="short_content" class="enlarge">{$aArticle.short_content|clean_html}</textarea><br>
 	<div class="clear"></div>
 	<label>Content:</label>
 	{html_editor content=$aArticle.content name="content"}
@@ -56,7 +56,7 @@
 				<li>
 					<input type="checkbox" name="categories[]" value="{$aCategory.id}"
 						{if in_array($aCategory.id, $aArticle.categories)} checked="checked"{/if}>
-					{$aCategory.name|stripslashes}
+					{$aCategory.name|clean_html}
 				</li>
 			{/foreach}
 		</ul>

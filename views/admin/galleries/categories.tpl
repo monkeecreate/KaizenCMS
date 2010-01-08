@@ -14,7 +14,7 @@
 <div id="add-category" style="display:none;" title="Add Category">
 	<form method="post" id="addCategory-form" action="/admin/galleries/categories/add/s/">
 		<label>*Name:</label>
-		<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|stripslashes}"><br>
+		<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|clean_html}"><br>
 	</form>
 </div>
 <div id="add-category-btn" class="float-right" style="margin-bottom:10px;">

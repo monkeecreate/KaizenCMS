@@ -7,7 +7,7 @@
 	</div>
 </div>
 <p>
-	<b>{$aArticle.title|stripslashes}</b><br />
+	<b>{$aArticle.title|clean_html}</b><br />
 	<span>{$aArticle.datetime_show|date_format}</span>
 </p><br />
 <form name="upload" action="/admin/news/image/upload/s/" method="post" enctype="multipart/form-data">

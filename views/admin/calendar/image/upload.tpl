@@ -7,7 +7,7 @@
 	</div>
 </div>
 <p>
-	<b>{$aEvent.title|stripslashes}</b><br />
+	<b>{$aEvent.title|clean_html}</b><br />
 	<span>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</span>
 </p><br />
 <form name="upload" action="/admin/calendar/image/upload/s/" method="post" enctype="multipart/form-data">

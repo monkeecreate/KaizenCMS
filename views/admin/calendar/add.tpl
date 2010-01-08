@@ -19,9 +19,9 @@
 		</div>
 	</div>
 	<label>*Title:</label>
-	<input type="text" name="title" maxlength="100" value="{$aEvent.title|htmlspecialchars|stripslashes}"><br>
+	<input type="text" name="title" maxlength="100" value="{$aEvent.title|clean_html}"><br>
 	<label>Short Content:</label>
-	<textarea name="short_content" class="elastic">{$aEvent.short_content|htmlspecialchars|stripslashes}</textarea><br>
+	<textarea name="short_content" class="elastic">{$aEvent.short_content|clean_html}</textarea><br>
 	<div class="clear"></div>
 	<label>Content:</label>
 	{html_editor content=$aEvent.content name="content"}

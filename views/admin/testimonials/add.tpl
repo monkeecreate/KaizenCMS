@@ -13,15 +13,15 @@
 		</div>
 	</div>
 	<label>*Name:</label>
-	<input type="text" name="name" maxlength="100" value="{$aTestimonial.name|htmlspecialchars|stripslashes}"><br>
+	<input type="text" name="name" maxlength="100" value="{$aTestimonial.name|clean_html}"><br>
 	<label>Sub-Name:</label>
-	<input type="text" name="sub_name" maxlength="100" value="{$aTestimonial.sub_name|htmlspecialchars|stripslashes}"><br>
+	<input type="text" name="sub_name" maxlength="100" value="{$aTestimonial.sub_name|clean_html}"><br>
 	<label>Video:</label>
 	<input type="file" name="video"><br>
 	<label>Video Poster:</label>
 	<input type="file" name="poster"><br>
 	<label>Text:</label>
-	<textarea name="text" class="elastic">{$aTestimonial.text|htmlspecialchars|stripslashes}</textarea><br>
+	<textarea name="text" class="elastic">{$aTestimonial.text|clean_html}</textarea><br>
 	<div class="clear"></div>
 	<fieldset id="fieldset_categories">
 		<legend>Assign testimonial to category:</legend>

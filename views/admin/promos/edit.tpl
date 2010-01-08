@@ -5,7 +5,7 @@
 			<div class="section">
 				<label>Last Updated:</label>
 				{$aPromo.updated_datetime|date_format:"%D - %I:%M %p"}<br>
-				<small>by {$aPromo.updated_by.fname|stripslashes} {$aPromo.update_by.lname|stripslashes}</small>
+				<small>by {$aPromo.updated_by.fname|clean_html} {$aPromo.update_by.lname|clean_html}</small>
 			</div>
 			<div class="section">
 				<label>Use Unpublish:</label>
@@ -19,9 +19,9 @@
 		</div>
 	</div>
 	<label>*Name:</label>
-	<input type="text" name="name" maxlength="100" value="{$aPromo.name|htmlspecialchars|stripslashes}"><br>
+	<input type="text" name="name" maxlength="100" value="{$aPromo.name|clean_html}"><br>
 	<label>Link:</label>
-	<input type="text" name="link" maxlength="100" value="{$aPromo.link|htmlspecialchars|stripslashes}"><br>
+	<input type="text" name="link" maxlength="100" value="{$aPromo.link|clean_html}"><br>
 	<label>Promo:</label>
 	<input type="file" name="promo"><br>
 	<div class="clear"></div>
@@ -62,7 +62,7 @@
 					<tr>
 						<td class="small center"><input type="checkbox" name="positions[]" value="{$aPosition.id}"
 						{if in_array($aPosition.id, $aPromo.positions)} checked="checked"{/if}></td>
-						<td>{$aPosition.name|stripslashes}</td>
+						<td>{$aPosition.name|clean_html}</td>
 						<td class="small center">{$aPosition.promo_width}px</td>
 						<td class="small center border-end">{$aPosition.promo_height}px</td>
 					</tr>

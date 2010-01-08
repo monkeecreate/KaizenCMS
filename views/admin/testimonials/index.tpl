@@ -24,7 +24,7 @@
 	<tbody>
 		{foreach from=$aTestimonials item=aTestimonial}
 			<tr>
-				<td>{$aTestimonial.name|stripslashes}</td>
+				<td>{$aTestimonial.name|clean_html}</td>
 				<td class="small center">
 					{if !empty($aTestimonial.video)}
 						Video

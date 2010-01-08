@@ -39,7 +39,7 @@
 	<tbody>
 		{foreach from=$aGalleries item=aGallery}
 			<tr>
-				<td>{$aGallery.name|stripslashes}</td>
+				<td>{$aGallery.name|clean_html}</td>
 				<td class="small center">{$aGallery.photos}</td>
 				<td class="small center">
 					{if $aGallery.sort_order != 1}

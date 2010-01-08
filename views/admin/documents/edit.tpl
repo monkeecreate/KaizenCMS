@@ -5,7 +5,7 @@
 			<div class="section">
 				<label>Last Updated:</label>
 				{$aDocument.updated_datetime|date_format:"%D - %I:%M %p"}<br>
-				<small>by {$aDocument.updated_by.fname|stripslashes} {$aDocument.update_by.lname|stripslashes}</small>
+				<small>by {$aDocument.updated_by.fname|clean_html} {$aDocument.update_by.lname|clean_html}</small>
 			</div>
 			<div class="section">
 				<label>Active:</label>
@@ -14,11 +14,11 @@
 		</div>
 	</div>
 	<label>*Name:</label>
-	<input type="text" name="name" maxlength="100" value="{$aDocument.name|htmlspecialchars|stripslashes}"><br>
+	<input type="text" name="name" maxlength="100" value="{$aDocument.name|clean_html}"><br>
 	<label>Document:</label>
 	<input type="file" name="document"><br>
 	<label>Description:</label>
-	<textarea name="description" class="elastic">{$aDocument.description|htmlspecialchars|stripslashes}</textarea><br>
+	<textarea name="description" class="elastic">{$aDocument.description|clean_html}</textarea><br>
 	<div class="clear"></div>
 	<fieldset id="fieldset_categories">
 		<legend>Assign document to category:</legend>
@@ -27,7 +27,7 @@
 				<li>
 					<input type="checkbox" name="categories[]" value="{$aCategory.id}"
 						{if in_array($aCategory.id, $aDocument.categories)} checked="checked"{/if}>
-					{$aCategory.name|stripslashes}
+					{$aCategory.name|clean_html}
 				</li>
 			{/foreach}
 		</ul>

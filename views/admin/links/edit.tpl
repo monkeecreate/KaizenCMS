@@ -5,7 +5,7 @@
 			<div class="section">
 				<label>Last Updated:</label>
 				{$aLink.updated_datetime|date_format:"%D - %I:%M %p"}<br>
-				<small>by {$aLink.updated_by.fname|stripslashes} {$aLink.update_by.lname|stripslashes}</small>
+				<small>by {$aLink.updated_by.fname|clean_html} {$aLink.update_by.lname|clean_html}</small>
 			</div>
 			<div class="section">
 				<label>Active:</label>
@@ -14,11 +14,11 @@
 		</div>
 	</div>
 	<label>*Name:</label>
-	<input type="text" name="name" maxlength="100" value="{$aLink.name|htmlspecialchars|stripslashes}"><br>
+	<input type="text" name="name" maxlength="100" value="{$aLink.name|clean_html}"><br>
 	<label>Link Destination:</label>
-	<input type="text" name="link" maxlength="100" value="{$aLink.link|htmlspecialchars|stripslashes}"><br>
+	<input type="text" name="link" maxlength="100" value="{$aLink.link|clean_html}"><br>
 	<label>Description:</label>
-	<textarea name="description" class="elastic">{$aLink.description|htmlspecialchars|stripslashes}</textarea><br>
+	<textarea name="description" class="elastic">{$aLink.description|clean_html}</textarea><br>
 	<div class="clear"></div>
 	<fieldset id="fieldset_categories">
 		<legend>Assign link to category:</legend>
@@ -27,7 +27,7 @@
 				<li>
 					<input type="checkbox" name="categories[]" value="{$aCategory.id}"
 						{if in_array($aCategory.id, $aLink.categories)} checked="checked"{/if}>
-					{$aCategory.name|stripslashes}
+					{$aCategory.name|clean_html}
 				</li>
 			{/foreach}
 		</ul>
