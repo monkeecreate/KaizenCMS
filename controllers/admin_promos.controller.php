@@ -445,7 +445,7 @@ class admin_promos extends adminController
 		$this->db_results(
 			"DELETE FROM `promos_positions`"
 				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
-			,"admin->content->delete"
+			,"admin->promos-positions->delete"
 		);
 		
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Position removed successfully!"));
