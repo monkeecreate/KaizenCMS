@@ -121,8 +121,10 @@
 						<ul>
 							<li><a href="/admin/promos/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Promo</a></li>
 							<li><a href="/admin/promos/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Promos</a></li>
+							{if $user_details.id == 1}
 							<li><a href="/admin/promos/positions/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Position</a></li>
 							<li><a href="/admin/promos/positions/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Positions</a></li>
+							{/if}
 						</ul>
 					</div>
 					<div class="header"><a href="#" tabindex="-1">Users</a></div>
