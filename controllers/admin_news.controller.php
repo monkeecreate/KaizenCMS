@@ -301,19 +301,25 @@ class admin_news extends adminController
 
 			if(move_uploaded_file($_FILES["image"]["tmp_name"], $folder.$_POST["id"].".jpg"))
 			{
-				$this->db_results(
-					"UPDATE `news` SET"
-						." `photo_x1` = 0"
-						.", `photo_y1` = 0"
-						.", `photo_x2` = ".$oNews->imageMinWidth
-						.", `photo_y2` = ".$oNews->imageMinHeight
-						.", `photo_width` = ".$oNews->imageMinWidth
-						.", `photo_height` = ".$oNews->imageMinHeight
-						." WHERE `id` = ".$_POST["id"]
-					,"admin->news->image->upload"
-				);
+				$aImageSize = getimagesize($folder.$_POST["id"].".jpg");
+				if($aImageSize[0] < $oNews->imageMinWidth || $aImageSize[1] < $oNews->imageMinHeight) {
+					@unlink($folder + $id.".jpg");
+					$this->forward("/admin/news/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+				} else {				
+					$this->db_results(
+						"UPDATE `news` SET"
+							." `photo_x1` = 0"
+							.", `photo_y1` = 0"
+							.", `photo_x2` = ".$oNews->imageMinWidth
+							.", `photo_y2` = ".$oNews->imageMinHeight
+							.", `photo_width` = ".$oNews->imageMinWidth
+							.", `photo_height` = ".$oNews->imageMinHeight
+							." WHERE `id` = ".$_POST["id"]
+						,"admin->news->image->upload"
+					);
 
-				$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
+					$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
+				}
 			}
 			else
 				$this->forward("/admin/news/image/".$_POST["id"]."/upload/?error=".urlencode("Unable to upload image."));
