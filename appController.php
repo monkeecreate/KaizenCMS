@@ -145,7 +145,12 @@ class appController
 	### Mail ##########################
 	function mail($recipients, $headers, $message)
 	{
-		$mail = $this->_mail->send($recipients, $headers, $message);
+		$oMail = $this->_mail->send($recipients, $headers, $message);
+		
+		if(PEAR::iserror($oMail))
+			$this->error("Mail - ".$headers["Subject"], $oMail->message);
+		else
+			return true;
 	}
 	###################################
 	
