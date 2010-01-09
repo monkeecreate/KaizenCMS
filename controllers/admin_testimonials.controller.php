@@ -101,7 +101,7 @@ class admin_testimonials extends adminController
 			}
 			else
 			{
-				$upload_dir = $this->_settings->root_public."uploads/testimonials/";
+				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/";
 				$file_ext = pathinfo($_FILES["video"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
 			
@@ -142,7 +142,7 @@ class admin_testimonials extends adminController
 			}
 			else
 			{
-				$upload_dir = $this->_settings->root_public."uploads/testimonials/posters/";
+				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/posters/";
 				$file_ext = pathinfo($_FILES["poster"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
 			
@@ -290,7 +290,7 @@ class admin_testimonials extends adminController
 			}
 			else
 			{
-				$upload_dir = $this->_settings->root_public."uploads/testimonials/";
+				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/";
 				$file_ext = pathinfo($_FILES["video"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
@@ -339,7 +339,7 @@ class admin_testimonials extends adminController
 			}
 			else
 			{
-				$upload_dir = $this->_settings->root_public."uploads/testimonials/posters/";
+				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/posters/";
 				$file_ext = pathinfo($_FILES["poster"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				

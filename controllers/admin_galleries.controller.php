@@ -103,7 +103,7 @@ class admin_galleries extends adminController
 			);
 		}
 		
-		$folder = $this->_settings->root_public."uploads/galleries/".$sID."/";
+		$folder = $this->_settings->rootPublic."uploads/galleries/".$sID."/";
 		@mkdir($folder, 0777);
 		
 		$_SESSION["admin"]["admin_galleries"] = null;
@@ -280,7 +280,7 @@ class admin_galleries extends adminController
 		
 		foreach($aPhotos as $aPhoto)
 		{
-			@unlink($this->_settings->root_public."uploads/galleries/".$aParams["id"]."/".$aPhoto["photo"]);
+			@unlink($this->_settings->rootPublic."uploads/galleries/".$aParams["id"]."/".$aPhoto["photo"]);
 		
 			$this->dbResults(
 				"DELETE FROM `galleries_photos`"
@@ -289,7 +289,7 @@ class admin_galleries extends adminController
 			);
 		}
 		
-		@unlink($this->_settings->root_public."uploads/galleries/".$aParams["id"]."/");
+		@unlink($this->_settings->rootPublic."uploads/galleries/".$aParams["id"]."/");
 		
 		$this->forward("/admin/galleries/?notice=".urlencode("Gallery removed successfully!"));
 	}
@@ -412,7 +412,7 @@ class admin_galleries extends adminController
 					,"insert"
 				);
 				
-				$upload_dir = $this->_settings->root_public."uploads/galleries/".$aParams["gallery"]."/";
+				$upload_dir = $this->_settings->rootPublic."uploads/galleries/".$aParams["gallery"]."/";
 				
 				if(!is_dir($upload_dir))
 					mkdir($upload_dir, 0777);
@@ -517,7 +517,7 @@ class admin_galleries extends adminController
 			,"row"
 		);
 		
-		@unlink($this->_settings->root_public."uploads/galleries/".$aParams["gallery"]."/".$aPhoto["photo"]);
+		@unlink($this->_settings->rootPublic."uploads/galleries/".$aParams["gallery"]."/".$aPhoto["photo"]);
 		
 		$this->dbResults(
 			"DELETE FROM `galleries_photos`"

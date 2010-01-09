@@ -22,7 +22,7 @@ class admin_calendar extends adminController
 			,"all"
 		);
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $this->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
 		$this->tplAssign("aEvents", $aEvents);
 		$this->tplDisplay("calendar/index.tpl");
@@ -51,7 +51,7 @@ class admin_calendar extends adminController
 				)
 			);
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $this->getCategories());
 		$this->tplDisplay("calendar/add.tpl");
 	}
 	function add_s()
@@ -197,7 +197,7 @@ class admin_calendar extends adminController
 			$this->tplAssign("aEvent", $aEvent);
 		}
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $this->getCategories());
 		$this->tplDisplay("calendar/edit.tpl");
 	}
 	function edit_s()
@@ -317,7 +317,7 @@ class admin_calendar extends adminController
 	function image_upload_s()
 	{
 		$oCalendar = $this->loadModel("calendar");
-		$folder = $this->_settings->root_public."uploads/calendar/";
+		$folder = $this->_settings->rootPublic."uploads/calendar/";
 		
 		if(!is_dir($folder))
 			mkdir($folder, 0777);
@@ -359,7 +359,7 @@ class admin_calendar extends adminController
 	}
 	function image_edit($aParams)
 	{
-		$folder = $this->_settings->root_public."uploads/calendar/";
+		$folder = $this->_settings->rootPublic."uploads/calendar/";
 
 		if(!is_file($folder.$aParams["id"].".jpg"))
 			$this->forward("/admin/calendar/image/".$aParams["id"]."/upload/");
@@ -406,7 +406,7 @@ class admin_calendar extends adminController
 			,"admin->calendar->image->delete"
 		);
 		
-		@unlink($this->_settings->root_public."upload/calendar/".$id.".jpg");
+		@unlink($this->_settings->rootPublic."upload/calendar/".$id.".jpg");
 
 		$this->forward("/admin/calendar/?notice=".urlencode("Image removed successfully!"));
 	}
@@ -468,12 +468,12 @@ class admin_calendar extends adminController
 	##################################
 	
 	### Functions ####################
-	private function get_categories()
+	private function getCategories()
 	{
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `calendar_categories`"
 				." ORDER BY `name`"
-			,"admin->calendar->get_categories->categories"
+			,"admin->calendar->getCategories->categories"
 			,"all"
 		);
 		

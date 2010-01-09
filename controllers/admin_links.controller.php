@@ -197,7 +197,7 @@ class admin_links extends adminController
 			,"admin->links->edit"
 			,"row"
 		);
-		@unlink($this->_settings->root_public."uploads/links/".$aLink["link"]);
+		@unlink($this->_settings->rootPublic."uploads/links/".$aLink["link"]);
 		
 		$this->dbResults(
 			"DELETE FROM `links`"

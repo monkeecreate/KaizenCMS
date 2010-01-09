@@ -37,7 +37,7 @@ class events_model extends appModel
 		
 			$aEvents[$x]["categories"] = implode(", ", $aEventCategories);
 			
-			if(file_exists($this->_settings->root_public."upload/events/".$aEvent["id"].".jpg"))
+			if(file_exists($this->_settings->rootPublic."upload/events/".$aEvent["id"].".jpg"))
 				$aEvents[$x]["image"] = 1;
 		}
 		
@@ -67,7 +67,7 @@ class events_model extends appModel
 			
 			$aEvent["categories"] = implode(", ", $aCategories);
 			
-			if(file_exists($this->_settings->root_public."upload/events/".$aEvent["id"].".jpg"))
+			if(file_exists($this->_settings->rootPublic."upload/events/".$aEvent["id"].".jpg"))
 				$aEvent["image"] = 1;
 		}
 		

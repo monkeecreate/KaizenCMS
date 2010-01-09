@@ -8,7 +8,7 @@ class content extends appController
 	}
 	function siteinfo()
 	{
-		$this->site_info();
+		$this->siteInfo();
 	}
 	function view($aUrlParam = null, $aParams)
 	{
@@ -21,7 +21,7 @@ class content extends appController
 		
 		if(preg_match("/[a-z0-9_-]+/i", $sPage) > 0)
 		{
-			if($this->template_exists("content/".$sPage.".tpl"))
+			if($this->tplExists("content/".$sPage.".tpl"))
 				$this->tplDisplay("content/".$sPage.".tpl");
 			else
 			{
@@ -95,7 +95,7 @@ class content extends appController
 			elseif($input["linetype"] == "n")
 				$sBody .= "\n".$input["name"]."\n".stripslashes($input["value"])."\n";
 			else
-				$this->send_error("content->form_submit", "Invalid line type. (".$input["linetype"].")");
+				$this->sendError("content->form_submit", "Invalid line type. (".$input["linetype"].")");
 		}
 		
 		// Email to
@@ -111,7 +111,7 @@ class content extends appController
 		
 		$this->forward($this->decrypt($_POST["forward"]));
 	}
-	function form_submit_values($sString, $aValues)
+	function formSubmitValues($sString, $aValues)
 	{
 		foreach($aValues as $key => $item)
 			$sString = str_replace("[$".$key."]", $item["value"], $sString);

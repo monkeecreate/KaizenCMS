@@ -129,7 +129,7 @@ class admin_promos extends adminController
 		}
 		else
 		{
-			$upload_dir = $this->_settings->root_public."uploads/promos/";
+			$upload_dir = $this->_settings->rootPublic."uploads/promos/";
 			$file_ext = pathinfo($_FILES["promo"]["name"], PATHINFO_EXTENSION);
 			$upload_file = $sID.".".strtolower($file_ext);
 		
@@ -291,7 +291,7 @@ class admin_promos extends adminController
 			}
 			else
 			{
-				$upload_dir = $this->_settings->root_public."uploads/promos/";
+				$upload_dir = $this->_settings->rootPublic."uploads/promos/";
 				$file_ext = pathinfo($_FILES["promo"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				

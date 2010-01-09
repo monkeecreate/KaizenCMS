@@ -99,7 +99,7 @@ class admin_documents extends adminController
 			}
 			else
 			{
-				$upload_dir = $this->_settings->root_public."uploads/documents/";
+				$upload_dir = $this->_settings->rootPublic."uploads/documents/";
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
 			
@@ -240,7 +240,7 @@ class admin_documents extends adminController
 			}
 			else
 			{
-				$upload_dir = $this->_settings->root_public."uploads/documents/";
+				$upload_dir = $this->_settings->rootPublic."uploads/documents/";
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
@@ -287,7 +287,7 @@ class admin_documents extends adminController
 			,"admin->documents->edit"
 			,"row"
 		);
-		@unlink($this->_settings->root_public."uploads/documents/".$aDocument["document"]);
+		@unlink($this->_settings->rootPublic."uploads/documents/".$aDocument["document"]);
 		
 		$this->dbResults(
 			"DELETE FROM `documents`"

@@ -287,7 +287,7 @@ class admin_news extends adminController
 	function image_upload_s()
 	{
 		$oNews = $this->loadModel("news");
-		$folder = $this->_settings->root_public."uploads/news/";
+		$folder = $this->_settings->rootPublic."uploads/news/";
 		
 		if(!is_dir($folder))
 			mkdir($folder, 0777);
@@ -331,7 +331,7 @@ class admin_news extends adminController
 	{
 		$oNews = $this->loadModel("news");
 		
-		$folder = $this->_settings->root_public."uploads/news/";
+		$folder = $this->_settings->rootPublic."uploads/news/";
 
 		if(!is_file($folder.$aParams["id"].".jpg"))
 			$this->forward("/admin/news/image/".$aParams["id"]."/upload/");
@@ -380,7 +380,7 @@ class admin_news extends adminController
 			,"admin->news->image->delete"
 		);
 		
-		@unlink($this->_settings->root_public."upload/news/".$id.".jpg");
+		@unlink($this->_settings->rootPublic."upload/news/".$id.".jpg");
 
 		$this->forward("/admin/news/?notice=".urlencode("Image removed successfully!"));
 	}

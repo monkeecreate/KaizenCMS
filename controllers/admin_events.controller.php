@@ -316,7 +316,7 @@ class admin_events extends adminController
 	function image_upload_s()
 	{
 		$oEvents = $this->loadModel("events");
-		$folder = $this->_settings->root_public."uploads/events/";
+		$folder = $this->_settings->rootPublic."uploads/events/";
 		
 		if(!is_dir($folder))
 			mkdir($folder, 0777);
@@ -358,7 +358,7 @@ class admin_events extends adminController
 	}
 	function image_edit($aParams)
 	{
-		$folder = $this->_settings->root_public."uploads/events/";
+		$folder = $this->_settings->rootPublic."uploads/events/";
 
 		if(!is_file($folder.$aParams["id"].".jpg"))
 			$this->forward("/admin/events/image/".$aParams["id"]."/upload/");
@@ -405,7 +405,7 @@ class admin_events extends adminController
 			,"admin->events->image->delete"
 		);
 		
-		@unlink($this->_settings->root_public."upload/events/".$id.".jpg");
+		@unlink($this->_settings->rootPublic."upload/events/".$id.".jpg");
 
 		$this->forward("/admin/events/?notice=".urlencode("Image removed successfully!"));
 	}

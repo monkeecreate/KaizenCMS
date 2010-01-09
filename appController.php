@@ -21,12 +21,12 @@ class appController
 		$this->_smarty = $oSmarty;
 		$this->_settings = (object) array(
 			"root" => $site_root
-			,"root_public" => $site_public_root
-			,"admin_info" => $aConfig["admin_info"]
+			,"rootPublic" => $site_public_root
+			,"adminInfo" => $aConfig["admin_info"]
 			,"debug" => $aConfig["options"]["debug"]
 			,"surl" => $sURL
 			,"url" => $aUrl
-			,"memcache_salt" => $aConfig["memcache"]["salt"]
+			,"memcacheSalt" => $aConfig["memcache"]["salt"]
 		);
 	}
 	
@@ -163,7 +163,7 @@ class appController
 	### Memcache #####################
 	function memcacheGet($key)
 	{
-		$value = $this->_memcache->get(md5($this->_settings->memcache_salt.$key));
+		$value = $this->_memcache->get(md5($this->_settings->memcacheSalt.$key));
 		
 		if($value != false)
 			return $this->decrypt($value);
@@ -172,7 +172,7 @@ class appController
 	}
 	function memcacheSet($key, $value, $expire = 0)
 	{
-		return $this->_memcache->set(md5($this->_settings->memcache_salt.$key), $this->encrypt($value), false, $expire);
+		return $this->_memcache->set(md5($this->_settings->memcacheSalt.$key), $this->encrypt($value), false, $expire);
 	}
 	##################################
 
@@ -202,9 +202,9 @@ class appController
 	}
 	protected function sendError($section, $error, $db = null)
 	{
-		$recipients = $this->_settings->admin_info["email"];
-		$headers["To"] = $this->_settings->admin_info["email"];
-		$headers["From"] = $this->_settings->admin_info["email"];
+		$recipients = $this->_settings->adminInfo["email"];
+		$headers["To"] = $this->_settings->adminInfo["email"];
+		$headers["From"] = $this->_settings->adminInfo["email"];
 		$headers["Subject"] = "Website Error - ".$section;
 		
 		$body = "Where: ".$section."\n";
