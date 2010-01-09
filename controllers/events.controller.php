@@ -31,11 +31,11 @@ class events extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tpl_assign("aCategories", $oEvents->getCategories());
-		$this->tpl_assign("aEvents", $aEvents);
-		$this->tpl_assign("aPaging", $aPaging);
+		$this->tplAssign("aCategories", $oEvents->getCategories());
+		$this->tplAssign("aEvents", $aEvents);
+		$this->tplAssign("aPaging", $aPaging);
 		
-		$this->tpl_display("events/index.tpl");
+		$this->tplDisplay("events/index.tpl");
 	}
 	function event($aParams)
 	{
@@ -46,11 +46,11 @@ class events extends appController
 		if(empty($aEvent))
 			$this->error('404');
 
-		$this->tpl_assign("aEvent", $aEvent);
+		$this->tplAssign("aEvent", $aEvent);
 		
 		if(!empty($aEvent["template"]))
-			$this->tpl_display("events/tpl/".$aEvent["template"]);
+			$this->tplDisplay("events/tpl/".$aEvent["template"]);
 		else
-			$this->tpl_display("events/event.tpl");
+			$this->tplDisplay("events/event.tpl");
 	}
 }

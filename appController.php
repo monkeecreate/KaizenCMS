@@ -49,7 +49,7 @@ class appController
 		header("Location: ".$url);
 		exit;
 	}
-	function site_info()
+	function siteInfo()
 	{
 		echo "<pre>";
 		print_r($this->_settings);
@@ -73,12 +73,12 @@ class appController
 	##################################
 	
 	### Database #####################
-	function db_results($sSQL, $section, $return = null)
+	function dbResults($sSQL, $section, $return = null)
 	{
 		$oResult = $this->_db->query($sSQL);
 		
 		if(PEAR::isError($oResult))
-			$this->send_error($section, "dberror", $oResult);
+			$this->sendError($section, "dberror", $oResult);
 			
 		switch($return)
 		{
@@ -108,35 +108,35 @@ class appController
 		
 		return $aReturn;
 	}
-	function db_quote($sValue, $sType)
+	function dbQuote($sValue, $sType)
 	{
 		return $this->_db->quote($sValue, $sType);
 	}
 	##################################
 	
 	### Template #####################
-	function template_exists($template_file)
+	function tplExists($template_file)
 	{
 		$template_file = $this->_smarty->template_dir."/".$template_file;
 
 		return is_file($template_file);
 	}
-	function tpl_assign($sVariable, $sValue)
+	function tplAssign($sVariable, $sValue)
 	{
 		$this->_smarty->assign($sVariable, $sValue);
 	}
-	function tpl_display($sTemplate)
+	function tplDisplay($sTemplate)
 	{
-		if($this->template_exists($sTemplate))
+		if($this->tplExists($sTemplate))
 			$this->_smarty->display($sTemplate);
 		else
-			$this->send_error("appController->tpl_display", "Can't find template - (".$sTemplate.")");
+			$this->sendError("appController->tpl_display", "Can't find template - (".$sTemplate.")");
 	}
-	function tpl_variable_get($sVariable)
+	function tplVariableGet($sVariable)
 	{
 		return $this->_smarty->$sVariable;
 	}
-	function tpl_variable_set($sVariable, $sValue)
+	function tplVariableSet($sVariable, $sValue)
 	{
 		$this->_smarty->$sVariable = $sValue;
 	}
@@ -161,7 +161,7 @@ class appController
 	##################################
 	
 	### Memcache #####################
-	function memcache_get($key)
+	function memcacheGet($key)
 	{
 		$value = $this->_memcache->get(md5($this->_settings->memcache_salt.$key));
 		
@@ -170,7 +170,7 @@ class appController
 		else
 			return false;
 	}
-	function memcache_set($key, $value, $expire = 0)
+	function memcacheSet($key, $value, $expire = 0)
 	{
 		return $this->_memcache->set(md5($this->_settings->memcache_salt.$key), $this->encrypt($value), false, $expire);
 	}
@@ -187,20 +187,20 @@ class appController
 		{
 			case "403":
 				header('HTTP/1.1 403 Forbidden');
-				$this->_smarty->display("error/403.tpl");
+				$this->tplDisplay("error/403.tpl");
 				break;
 			case "404":
 				header("HTTP/1.1 404 Not Found");
-				$this->_smarty->display("error/404.tpl");
+				$this->tplDisplay("error/404.tpl");
 				break;
 			case "500":
 				header("HTTP/1.1 500 Internal Server Error");
-				$this->_smarty->display("error/500.tpl");
+				$this->tplDisplay("error/500.tpl");
 				break;
 		}
 		exit;
 	}
-	protected function send_error($section, $error, $db = null)
+	protected function sendError($section, $error, $db = null)
 	{
 		$recipients = $this->_settings->admin_info["email"];
 		$headers["To"] = $this->_settings->admin_info["email"];

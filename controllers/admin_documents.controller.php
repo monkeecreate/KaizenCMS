@@ -10,10 +10,10 @@ class admin_documents extends adminController
 		if(!empty($_GET["category"]))
 		{
 			$sSQLCategory = " INNER JOIN `documents_categories_assign` AS `assign` ON `documents`.`id` = `assign`.`documentid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->db_quote($_GET["category"], "integer");
+			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
 		}
 		
-		$aDocuments = $this->db_results(
+		$aDocuments = $this->dbResults(
 			"SELECT `documents`.* FROM `documents`"
 				.$sSQLCategory
 				." GROUP BY `documents`.`id`"
@@ -22,26 +22,26 @@ class admin_documents extends adminController
 			,"all"
 		);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_assign("sCategory", $_GET["category"]);
-		$this->tpl_assign("aDocuments", $aDocuments);
-		$this->tpl_display("documents/index.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("sCategory", $_GET["category"]);
+		$this->tplAssign("aDocuments", $aDocuments);
+		$this->tplDisplay("documents/index.tpl");
 	}
 	function add()
 	{
 		if(!empty($_SESSION["admin"]["admin_documents"]))
-			$this->tpl_assign("aDocument", $_SESSION["admin"]["admin_documents"]);
+			$this->tplAssign("aDocument", $_SESSION["admin"]["admin_documents"]);
 		
 		else
-			$this->tpl_assign("aDocument",
+			$this->tplAssign("aDocument",
 				array(
 					"active" => 1
 					,"categories" => array()
 				)
 			);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("documents/add.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("documents/add.tpl");
 	}
 	function add_s()
 	{
@@ -56,18 +56,18 @@ class admin_documents extends adminController
 		else
 			$active = 0;
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `documents`"
 				." (`name`, `description`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
-					.$this->db_quote($_POST["name"], "text")
-					.", ".$this->db_quote($_POST["description"], "text")
-					.", ".$this->db_quote($active, "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.$this->dbQuote($_POST["name"], "text")
+					.", ".$this->dbQuote($_POST["description"], "text")
+					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->documents->add"
 			,"insert"
@@ -75,7 +75,7 @@ class admin_documents extends adminController
 		
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `documents_categories_assign`"
 					." (`documentid`, `categoryid`)"
 					." VALUES"
@@ -88,10 +88,10 @@ class admin_documents extends adminController
 		{
 			if($_FILES["document"]["error"] == 1)
 			{
-				$this->db_results(
+				$this->dbResults(
 					"UPDATE `documents` SET"
 						." `active` = 0"
-						." WHERE `id` = ".$this->db_quote($sID, "integer")
+						." WHERE `id` = ".$this->dbQuote($sID, "integer")
 					,"admin->document->failed_document_upload"
 				);
 				
@@ -105,19 +105,19 @@ class admin_documents extends adminController
 			
 				if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file))
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `documents` SET"
-							." `document` = ".$this->db_quote($upload_file, "text")
-							." WHERE `id` = ".$this->db_quote($sID, "integer")
+							." `document` = ".$this->dbQuote($upload_file, "text")
+							." WHERE `id` = ".$this->dbQuote($sID, "integer")
 						,"admin->documents->add_document_upload"
 					);
 				}
 				else
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `documents` SET"
 							." `active` = 0"
-							." WHERE `id` = ".$this->db_quote($sID, "integer")
+							." WHERE `id` = ".$this->dbQuote($sID, "integer")
 						,"admin->documents->failed_document_upload"
 					);
 					
@@ -134,9 +134,9 @@ class admin_documents extends adminController
 	{
 		if(!empty($_SESSION["admin"]["admin_documents"]))
 		{
-			$aDocumentRow = $this->db_results(
+			$aDocumentRow = $this->dbResults(
 				"SELECT * FROM `documents`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->documents->edit"
 				,"row"
 			);
@@ -144,25 +144,25 @@ class admin_documents extends adminController
 			$aDocument = $_SESSION["admin"]["admin_documents"];
 			
 			$aDocument["updated_datetime"] = $aDocumentRow["updated_datetime"];
-			$aDocument["updated_by"] = $this->db_results(
+			$aDocument["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aDocumentRow["updated_by"]
 				,"admin->documents->edit->updated_by"
 				,"row"
 			);
 			
-			$this->tpl_assign("aDocument", $aDocument);
+			$this->tplAssign("aDocument", $aDocument);
 		}
 		else
 		{
-			$aDocument = $this->db_results(
+			$aDocument = $this->dbResults(
 				"SELECT * FROM `documents`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->documents->edit"
 				,"row"
 			);
 			
-			$aDocument["categories"] = $this->db_results(
+			$aDocument["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `documents_categories` AS `categories`"
 					." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `categories`.`id` = `documents_assign`.`categoryid`"
 					." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
@@ -172,18 +172,18 @@ class admin_documents extends adminController
 				,"col"
 			);
 			
-			$aDocument["updated_by"] = $this->db_results(
+			$aDocument["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aDocument["updated_by"]
 				,"admin->documents->edit->updated_by"
 				,"row"
 			);
 			
-			$this->tpl_assign("aDocument", $aDocument);
+			$this->tplAssign("aDocument", $aDocument);
 		}
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("documents/edit.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("documents/edit.tpl");
 	}
 	function edit_s()
 	{
@@ -198,29 +198,29 @@ class admin_documents extends adminController
 		else
 			$active = 0;
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `documents` SET"
-				." `name` = ".$this->db_quote($_POST["name"], "text")
-				.", `description` = ".$this->db_quote($_POST["description"], "text")
-				.", `active` = ".$this->db_quote($active, "integer")
-				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
-				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `name` = ".$this->dbQuote($_POST["name"], "text")
+				.", `description` = ".$this->dbQuote($_POST["description"], "text")
+				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
+				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->documents->edit"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `documents_categories_assign`"
-				." WHERE `documentid` = ".$this->db_quote($_POST["id"], "integer")
+				." WHERE `documentid` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->documents->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `documents_categories_assign`"
 					." (`documentid`, `categoryid`)"
 					." VALUES"
-					." (".$this->db_quote($_POST["id"], "integer").", ".$sCategory.")"
+					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
 				,"admin->documents->edit->categories"
 			);
 		}
@@ -229,10 +229,10 @@ class admin_documents extends adminController
 		{
 			if($_FILES["document"]["error"] == 1)
 			{
-				$this->db_results(
+				$this->dbResults(
 					"UPDATE `documents` SET"
 						." `active` = 0"
-						." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 					,"admin->documents->failed_document_upload"
 				);
 				
@@ -244,9 +244,9 @@ class admin_documents extends adminController
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
-				$sDocument = $this->db_results(
+				$sDocument = $this->dbResults(
 					"SELECT `document` FROM `documents`"
-						." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 					,"admin->documents->edit"
 					,"one"
 				);
@@ -254,19 +254,19 @@ class admin_documents extends adminController
 			
 				if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file))
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `documents` SET"
-							." `document` = ".$this->db_quote($upload_file, "text")
-							." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+							." `document` = ".$this->dbQuote($upload_file, "text")
+							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 						,"admin->documents->edit_document_upload"
 					);
 				}
 				else
 				{
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `documents` SET"
 							." `active` = 0"
-							." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 						,"admin->documents->edit_failed_document_upload"
 					);
 					
@@ -281,22 +281,22 @@ class admin_documents extends adminController
 	}
 	function delete($aParams)
 	{
-		$aDocument = $this->db_results(
+		$aDocument = $this->dbResults(
 			"SELECT * FROM `documents`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->documents->edit"
 			,"row"
 		);
 		@unlink($this->_settings->root_public."uploads/documents/".$aDocument["document"]);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `documents`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->documents->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `documents_categories_assign`"
-				." WHERE `documentid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `documentid` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->documents->categories_assign_delete"
 		);
 		
@@ -306,24 +306,24 @@ class admin_documents extends adminController
 	{
 		$_SESSION["admin"]["admin_documents_categories"] = null;
 		
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `documents_categories`"
 				." ORDER BY `name`"
 			,"admin->documents->categories"
 			,"all"
 		);
 		
-		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("documents/categories.tpl");
+		$this->tplAssign("aCategories", $aCategories);
+		$this->tplDisplay("documents/categories.tpl");
 	}
 	function categories_add_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"INSERT INTO `documents_categories`"
 				." (`name`)"
 				." VALUES"
 				." ("
-				.$this->db_quote($_POST["name"], "text")
+				.$this->dbQuote($_POST["name"], "text")
 				.")"
 			,"admin->documents->category->add_s"
 			,"insert"
@@ -333,10 +333,10 @@ class admin_documents extends adminController
 	}
 	function categories_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `documents_categories` SET"
-				." `name` = ".$this->db_quote($_POST["name"], "text")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `name` = ".$this->dbQuote($_POST["name"], "text")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->documents->categories->edit"
 		);
 
@@ -344,14 +344,14 @@ class admin_documents extends adminController
 	}
 	function categories_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `documents_categories`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->documents->category->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `documents_categories_assign`"
-				." WHERE `categoryid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->documents->category->delete_assign"
 		);
 
@@ -362,7 +362,7 @@ class admin_documents extends adminController
 	### Functions ####################
 	private function get_categories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `documents_categories`"
 				." ORDER BY `name`"
 			,"admin->documents->get_categories->categories"

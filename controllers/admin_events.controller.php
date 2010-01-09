@@ -10,10 +10,10 @@ class admin_events extends adminController
 		if(!empty($_GET["category"]))
 		{
 			$sSQLCategory = " INNER JOIN `events_categories_assign` AS `assign` ON `events`.`id` = `assign`.`eventid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->db_quote($_GET["category"], "integer");
+			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
 		}
 		
-		$aEvents = $this->db_results(
+		$aEvents = $this->dbResults(
 			"SELECT `events`.* FROM `events`"
 				.$sSQLCategory
 				." GROUP BY `events`.`id`"
@@ -22,10 +22,10 @@ class admin_events extends adminController
 			,"all"
 		);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_assign("sCategory", $_GET["category"]);
-		$this->tpl_assign("aEvents", $aEvents);
-		$this->tpl_display("events/index.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("sCategory", $_GET["category"]);
+		$this->tplAssign("aEvents", $aEvents);
+		$this->tplDisplay("events/index.tpl");
 	}
 	function add()
 	{
@@ -37,10 +37,10 @@ class admin_events extends adminController
 			$aEvent["datetime_show"] = strtotime($aEvent["datetime_show_date"]." ".$aEvent["datetime_show_Hour"].":".$aEvent["datetime_show_Minute"]." ".$aEvent["datetime_show_Meridian"]);
 			$aEvent["datetime_kill"] = strtotime($aEvent["datetime_kill_date"]." ".$aEvent["datetime_kill_Hour"].":".$aEvent["datetime_kill_Minute"]." ".$aEvent["datetime_kill_Meridian"]);
 			
-			$this->tpl_assign("aEvent", $aEvent);
+			$this->tplAssign("aEvent", $aEvent);
 		}
 		else
-			$this->tpl_assign("aEvent",
+			$this->tplAssign("aEvent",
 				array(
 					"datetime_start_date" => date("m/d/Y")
 					,"datetime_end_date" => date("m/d/Y")
@@ -51,8 +51,8 @@ class admin_events extends adminController
 				)
 			);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("events/add.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("events/add.tpl");
 	}
 	function add_s()
 	{
@@ -98,25 +98,25 @@ class admin_events extends adminController
 		else
 			$active = 0;
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `events`"
 				." (`title`, `short_content`, `content`, `allday`, `datetime_start`, `datetime_end`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
-					.$this->db_quote($_POST["title"], "text")
-					.", ".$this->db_quote($_POST["short_content"], "text")
-					.", ".$this->db_quote($_POST["content"], "text")
-					.", ".$this->db_quote($allday, "integer")
-					.", ".$this->db_quote($datetime_start, "integer")
-					.", ".$this->db_quote($datetime_end, "integer")
-					.", ".$this->db_quote($datetime_show, "integer")
-					.", ".$this->db_quote($datetime_kill, "integer")
-					.", ".$this->db_quote($use_kill, "integer")
-					.", ".$this->db_quote($active, "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.$this->dbQuote($_POST["title"], "text")
+					.", ".$this->dbQuote($_POST["short_content"], "text")
+					.", ".$this->dbQuote($_POST["content"], "text")
+					.", ".$this->dbQuote($allday, "integer")
+					.", ".$this->dbQuote($datetime_start, "integer")
+					.", ".$this->dbQuote($datetime_end, "integer")
+					.", ".$this->dbQuote($datetime_show, "integer")
+					.", ".$this->dbQuote($datetime_kill, "integer")
+					.", ".$this->dbQuote($use_kill, "integer")
+					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->events->add"
 			,"insert"
@@ -124,7 +124,7 @@ class admin_events extends adminController
 		
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `events_categories_assign`"
 					." (`eventid`, `categoryid`)"
 					." VALUES"
@@ -144,9 +144,9 @@ class admin_events extends adminController
 	{
 		if(!empty($_SESSION["admin"]["admin_events"]))
 		{
-			$aEventRow = $this->db_results(
+			$aEventRow = $this->dbResults(
 				"SELECT * FROM `events`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->events->edit"
 				,"row"
 			);
@@ -154,25 +154,25 @@ class admin_events extends adminController
 			$aEvent = $_SESSION["admin"]["admin_events"];
 			
 			$aEvent["updated_datetime"] = $aEventRow["updated_datetime"];
-			$aEvent["updated_by"] = $this->db_results(
+			$aEvent["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aEventRow["updated_by"]
 				,"admin->events->edit->updated_by"
 				,"row"
 			);
 			
-			$this->tpl_assign("aEvent", $aEvent);
+			$this->tplAssign("aEvent", $aEvent);
 		}
 		else
 		{
-			$aEvent = $this->db_results(
+			$aEvent = $this->dbResults(
 				"SELECT * FROM `events`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->events->edit"
 				,"row"
 			);
 			
-			$aEvent["categories"] = $this->db_results(
+			$aEvent["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `events_categories` AS `categories`"
 					." INNER JOIN `events_categories_assign` AS `events_assign` ON `categories`.`id` = `events_assign`.`categoryid`"
 					." WHERE `events_assign`.`eventid` = ".$aEvent["id"]
@@ -187,18 +187,18 @@ class admin_events extends adminController
 			$aEvent["datetime_show_date"] = date("m/d/Y", $aEvent["datetime_show"]);
 			$aEvent["datetime_kill_date"] = date("m/d/Y", $aEvent["datetime_kill"]);
 			
-			$aEvent["updated_by"] = $this->db_results(
+			$aEvent["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aEvent["updated_by"]
 				,"admin->events->edit->updated_by"
 				,"row"
 			);
 			
-			$this->tpl_assign("aEvent", $aEvent);
+			$this->tplAssign("aEvent", $aEvent);
 		}
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("events/edit.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("events/edit.tpl");
 	}
 	function edit_s()
 	{
@@ -244,36 +244,36 @@ class admin_events extends adminController
 		else
 			$active = 0;
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `events` SET"
-				." `title` = ".$this->db_quote($_POST["title"], "text")
-				.", `short_content` = ".$this->db_quote($_POST["short_content"], "text")
-				.", `content` = ".$this->db_quote($_POST["content"], "text")
-				.", `allday` = ".$this->db_quote($allday, "integer")
-				.", `datetime_start` = ".$this->db_quote($datetime_start, "integer")
-				.", `datetime_end` = ".$this->db_quote($datetime_end, "integer")
-				.", `datetime_show` = ".$this->db_quote($datetime_show, "integer")
-				.", `datetime_kill` = ".$this->db_quote($datetime_kill, "integer")
-				.", `use_kill` = ".$this->db_quote($use_kill, "integer")
-				.", `active` = ".$this->db_quote($active, "integer")
-				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
-				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `title` = ".$this->dbQuote($_POST["title"], "text")
+				.", `short_content` = ".$this->dbQuote($_POST["short_content"], "text")
+				.", `content` = ".$this->dbQuote($_POST["content"], "text")
+				.", `allday` = ".$this->dbQuote($allday, "integer")
+				.", `datetime_start` = ".$this->dbQuote($datetime_start, "integer")
+				.", `datetime_end` = ".$this->dbQuote($datetime_end, "integer")
+				.", `datetime_show` = ".$this->dbQuote($datetime_show, "integer")
+				.", `datetime_kill` = ".$this->dbQuote($datetime_kill, "integer")
+				.", `use_kill` = ".$this->dbQuote($use_kill, "integer")
+				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
+				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->events->edit"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `events_categories_assign`"
-				." WHERE `eventid` = ".$this->db_quote($_POST["id"], "integer")
+				." WHERE `eventid` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->events->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `events_categories_assign`"
 					." (`eventid`, `categoryid`)"
 					." VALUES"
-					." (".$this->db_quote($_POST["id"], "integer").", ".$sCategory.")"
+					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
 				,"admin->events->edit->categories"
 			);
 		}
@@ -284,14 +284,14 @@ class admin_events extends adminController
 	}
 	function delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `events`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->content->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `events_categories_assign`"
-				." WHERE `eventid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `eventid` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->content->categories_assign_delete"
 		);
 		
@@ -303,7 +303,7 @@ class admin_events extends adminController
 		
 		$aEvent = $this->db_results(
 			"SELECT * FROM `events`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->events->image->upload"
 			,"row"
 		);
@@ -363,29 +363,29 @@ class admin_events extends adminController
 		if(!is_file($folder.$aParams["id"].".jpg"))
 			$this->forward("/admin/events/image/".$aParams["id"]."/upload/");
 
-		$aEvent = $this->db_results(
+		$aEvent = $this->dbResults(
 			"SELECT * FROM `events`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->events->image->edit"
 			,"row"
 		);
 
-		$this->tpl_assign("aEvent", $aEvent);
-		$this->tpl_assign("sFolder", "/uploads/events/");
+		$this->tplAssign("aEvent", $aEvent);
+		$this->tplAssign("sFolder", "/uploads/events/");
 
-		$this->tpl_display("events/image/edit.tpl");
+		$this->tplDisplay("events/image/edit.tpl");
 	}
 	function image_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `events` SET"
-				." photo_x1 = ".$this->db_quote($_POST["x1"], "integer")
-				.", photo_y1 = ".$this->db_quote($_POST["y1"], "integer")
-				.", photo_x2 = ".$this->db_quote($_POST["x2"], "integer")
-				.", photo_y2 = ".$this->db_quote($_POST["y2"], "integer")
-				.", photo_width = ".$this->db_quote($_POST["width"], "integer")
-				.", photo_height = ".$this->db_quote($_POST["height"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." photo_x1 = ".$this->dbQuote($_POST["x1"], "integer")
+				.", photo_y1 = ".$this->dbQuote($_POST["y1"], "integer")
+				.", photo_x2 = ".$this->dbQuote($_POST["x2"], "integer")
+				.", photo_y2 = ".$this->dbQuote($_POST["y2"], "integer")
+				.", photo_width = ".$this->dbQuote($_POST["width"], "integer")
+				.", photo_height = ".$this->dbQuote($_POST["height"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->events->image->edit_s"
 		);
 
@@ -393,7 +393,7 @@ class admin_events extends adminController
 	}
 	function image_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `events` SET"
 				." photo_x1 = 0"
 				.", photo_y1 = 0"
@@ -401,7 +401,7 @@ class admin_events extends adminController
 				.", photo_y2 = 0"
 				.", photo_width = 0"
 				.", photo_height = 0"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->events->image->delete"
 		);
 		
@@ -413,24 +413,24 @@ class admin_events extends adminController
 	{
 		$_SESSION["admin"]["admin_events_categories"] = null;
 		
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `events_categories`"
 				." ORDER BY `name`"
 			,"admin->events->categories"
 			,"all"
 		);
 		
-		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("events/categories.tpl");
+		$this->tplAssign("aCategories", $aCategories);
+		$this->tplDisplay("events/categories.tpl");
 	}
 	function categories_add_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"INSERT INTO `events_categories`"
 				." (`name`)"
 				." VALUES"
 				." ("
-				.$this->db_quote($_POST["name"], "text")
+				.$this->dbQuote($_POST["name"], "text")
 				.")"
 			,"admin->events->category->add_s"
 			,"insert"
@@ -440,10 +440,10 @@ class admin_events extends adminController
 	}
 	function categories_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `events_categories` SET"
-				." `name` = ".$this->db_quote($_POST["name"], "text")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `name` = ".$this->dbQuote($_POST["name"], "text")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->events->categories->edit"
 		);
 
@@ -451,14 +451,14 @@ class admin_events extends adminController
 	}
 	function categories_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `events_categories`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->events->category->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `events_categories_assign`"
-				." WHERE `categoryid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->events->category->delete_assign"
 		);
 
@@ -469,7 +469,7 @@ class admin_events extends adminController
 	### Functions ####################
 	private function get_categories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `events_categories`"
 				." ORDER BY `name`"
 			,"admin->events->get_categories->categories"

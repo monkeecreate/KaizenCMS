@@ -11,10 +11,10 @@ class events_model extends appModel
 		$sWhere .= " AND `events`.`datetime_end` > ".time();
 		$sWhere .= " AND `events`.`active` = 1";
 		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($sCategory, "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
 		// Get all events for paging
-		$aEvents = $this->db_results(
+		$aEvents = $this->dbResults(
 			"SELECT `events`.* FROM `events` AS `events`"
 				." INNER JOIN `events_categories_assign` AS `events_assign` ON `events`.`id` = `events_assign`.`eventid`"
 				." INNER JOIN `events_categories` AS `categories` ON `events_assign`.`categoryid` = `categories`.`id`"
@@ -27,7 +27,7 @@ class events_model extends appModel
 		
 		foreach($aEvents as $x => $aEvent)
 		{
-			$aEventCategories = $this->db_results(
+			$aEventCategories = $this->dbResults(
 				"SELECT `name` FROM `events_categories` AS `categories`"
 					." INNER JOIN `events_categories_assign` AS `events_assign` ON `events_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `events_assign`.`eventid` = ".$aEvent["id"]
@@ -45,9 +45,9 @@ class events_model extends appModel
 	}
 	function getEvent($sId)
 	{
-		$aEvent = $this->db_results(
+		$aEvent = $this->dbResults(
 			"SELECT `events`.* FROM `events` AS `events`"
-				." WHERE `events`.`id` = ".$this->db_quote($sId, "integer")
+				." WHERE `events`.`id` = ".$this->dbQuote($sId, "integer")
 				." AND `events`.`active` = 1"
 				." AND `events`.`datetime_show` < ".time()
 				." AND (`events`.`use_kill` = 0 OR `events`.`datetime_kill` > ".time().")"
@@ -57,7 +57,7 @@ class events_model extends appModel
 		
 		if(!empty($aEvent))
 		{
-			$aCategories = $this->db_results(
+			$aCategories = $this->dbResults(
 				"SELECT `name` FROM `events_categories` AS `category`"
 					." INNER JOIN `events_categories_assign` AS `events_assign` ON `events_assign`.`categoryid` = `category`.`id`"
 					." WHERE `events_assign`.`eventid` = ".$aEvent["id"]
@@ -75,7 +75,7 @@ class events_model extends appModel
 	}
 	function getCategories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `events_categories`"
 				." ORDER BY `name`"
 			,"model->events->getCategories"

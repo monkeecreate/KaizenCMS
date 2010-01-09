@@ -10,10 +10,10 @@ class admin_faq extends adminController
 		if(!empty($_GET["category"]))
 		{
 			$sSQLCategory = " INNER JOIN `faq_categories_assign` AS `assign` ON `faq`.`id` = `assign`.`faqid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->db_quote($_GET["category"], "integer");
+			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
 		}
 		
-		$aQuestions = $this->db_results(
+		$aQuestions = $this->dbResults(
 			"SELECT `faq`.* FROM `faq`"
 				.$sSQLCategory
 				." GROUP BY `faq`.`id`"
@@ -22,32 +22,32 @@ class admin_faq extends adminController
 			,"all"
 		);
 		
-		$sMaxSort = $this->db_results(
+		$sMaxSort = $this->dbResults(
 			"SELECT MAX(`sort_order`) FROM `faq`"
 			,"admin->faq->maxsort"
 			,"one"
 		);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_assign("sCategory", $_GET["category"]);
-		$this->tpl_assign("aQuestions", $aQuestions);
-		$this->tpl_assign("maxsort", $sMaxSort);
-		$this->tpl_display("faq/index.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("sCategory", $_GET["category"]);
+		$this->tplAssign("aQuestions", $aQuestions);
+		$this->tplAssign("maxsort", $sMaxSort);
+		$this->tplDisplay("faq/index.tpl");
 	}
 	function add()
 	{
 		if(!empty($_SESSION["admin"]["admin_faq"]))
-			$this->tpl_assign("aQuestion", $_SESSION["admin"]["admin_faq"]);
+			$this->tplAssign("aQuestion", $_SESSION["admin"]["admin_faq"]);
 		else
-			$this->tpl_assign("aQuestion",
+			$this->tplAssign("aQuestion",
 				array(
 					"active" => 1
 					,"categories" => array()
 				)
 			);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("faq/add.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("faq/add.tpl");
 	}
 	function add_s()
 	{
@@ -57,7 +57,7 @@ class admin_faq extends adminController
 			$this->forward("/admin/faq/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$sOrder = $this->db_results(
+		$sOrder = $this->dbResults(
 			"SELECT MAX(`sort_order`) + 1 FROM `faq`"
 			,"admin->faq->add->max_order"
 			,"one"
@@ -71,19 +71,19 @@ class admin_faq extends adminController
 		else
 			$active = 0;
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `faq`"
 				." (`question`, `answer`, `sort_order`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
-					.$this->db_quote($_POST["question"], "text")
-					.", ".$this->db_quote($_POST["answer"], "text")
-					.", ".$this->db_quote($sOrder, "integer")
-					.", ".$this->db_quote($active, "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.$this->dbQuote($_POST["question"], "text")
+					.", ".$this->dbQuote($_POST["answer"], "text")
+					.", ".$this->dbQuote($sOrder, "integer")
+					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->faq->add"
 			,"insert"
@@ -91,7 +91,7 @@ class admin_faq extends adminController
 		
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `faq_categories_assign`"
 					." (`faqid`, `categoryid`)"
 					." VALUES"
@@ -106,16 +106,16 @@ class admin_faq extends adminController
 	}
 	function sort($aParams)
 	{
-		$aGallery = $this->db_results(
+		$aGallery = $this->dbResults(
 			"SELECT * FROM `faq`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->faq->sort"
 			,"row"
 		);
 		
 		if($aParams["sort"] == "up")
 		{
-			$aOld = $this->db_results(
+			$aOld = $this->dbResults(
 				"SELECT * FROM `faq`"
 					." WHERE `sort_order` < ".$aGallery["sort_order"]
 					." ORDER BY `sort_order` DESC"
@@ -123,23 +123,23 @@ class admin_faq extends adminController
 				,"row"
 			);
 			
-			$this->db_results(
+			$this->dbResults(
 				"UPDATE `faq` SET"
-					." `sort_order` = ".$this->db_quote($aOld["sort_order"], "text")
-					." WHERE `id` = ".$this->db_quote($aGallery["id"], "integer")
+					." `sort_order` = ".$this->dbQuote($aOld["sort_order"], "text")
+					." WHERE `id` = ".$this->dbQuote($aGallery["id"], "integer")
 				,"admin->faq->sort->up->update_pos1"
 			);
 			
-			$this->db_results(
+			$this->dbResults(
 				"UPDATE `faq` SET"
-					." `sort_order` = ".$this->db_quote($aGallery["sort_order"], "text")
-					." WHERE `id` = ".$this->db_quote($aOld["id"], "integer")
+					." `sort_order` = ".$this->dbQuote($aGallery["sort_order"], "text")
+					." WHERE `id` = ".$this->dbQuote($aOld["id"], "integer")
 				,"admin->faq->sort->up->update_pos2"
 			);
 		}
 		elseif($aParams["sort"] == "down")
 		{
-			$aOld = $this->db_results(
+			$aOld = $this->dbResults(
 				"SELECT * FROM `faq`"
 					." WHERE `sort_order` > ".$aGallery["sort_order"]
 					." ORDER BY `sort_order` ASC"
@@ -147,17 +147,17 @@ class admin_faq extends adminController
 				,"row"
 			);
 			
-			$this->db_results(
+			$this->dbResults(
 				"UPDATE `faq` SET"
-					." `sort_order` = ".$this->db_quote($aOld["sort_order"], "text")
-					." WHERE `id` = ".$this->db_quote($aGallery["id"], "integer")
+					." `sort_order` = ".$this->dbQuote($aOld["sort_order"], "text")
+					." WHERE `id` = ".$this->dbQuote($aGallery["id"], "integer")
 				,"admin->faq->sort->down->update_pos1"
 			);
 			
-			$this->db_results(
+			$this->dbResults(
 				"UPDATE `faq` SET"
-					." `sort_order` = ".$this->db_quote($aGallery["sort_order"], "text")
-					." WHERE `id` = ".$this->db_quote($aOld["id"], "integer")
+					." `sort_order` = ".$this->dbQuote($aGallery["sort_order"], "text")
+					." WHERE `id` = ".$this->dbQuote($aOld["id"], "integer")
 				,"admin->faq->sort->down->update_pos2"
 			);
 		}
@@ -168,9 +168,9 @@ class admin_faq extends adminController
 	{
 		if(!empty($_SESSION["admin"]["admin_faq"]))
 		{
-			$aQuestionRow = $this->db_results(
+			$aQuestionRow = $this->dbResults(
 				"SELECT * FROM `faq`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->faq->edit"
 				,"row"
 			);
@@ -178,25 +178,25 @@ class admin_faq extends adminController
 			$aQuestion = $_SESSION["admin"]["admin_faq"];
 			
 			$aQuestion["updated_datetime"] = $aQuestionRow["updated_datetime"];
-			$aQuestion["updated_by"] = $this->db_results(
+			$aQuestion["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aQuestionRow["updated_by"]
 				,"admin->faq->edit->updated_by"
 				,"row"
 			);
 			
-			$this->tpl_assign("aQuestion", $aQuestion);
+			$this->tplAssign("aQuestion", $aQuestion);
 		}
 		else
 		{
-			$aQuestion = $this->db_results(
+			$aQuestion = $this->dbResults(
 				"SELECT * FROM `faq`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->faq->edit"
 				,"row"
 			);
 			
-			$aQuestion["categories"] = $this->db_results(
+			$aQuestion["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `faq_categories` AS `categories`"
 					." INNER JOIN `faq_categories_assign` AS `faq_assign` ON `categories`.`id` = `faq_assign`.`categoryid`"
 					." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
@@ -206,18 +206,18 @@ class admin_faq extends adminController
 				,"col"
 			);
 			
-			$aQuestion["updated_by"] = $this->db_results(
+			$aQuestion["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aQuestion["updated_by"]
 				,"admin->faq->edit->updated_by"
 				,"row"
 			);
 			
-			$this->tpl_assign("aQuestion", $aQuestion);
+			$this->tplAssign("aQuestion", $aQuestion);
 		}
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("faq/edit.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("faq/edit.tpl");
 	}
 	function edit_s()
 	{
@@ -232,29 +232,29 @@ class admin_faq extends adminController
 		else
 			$active = 0;
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `faq` SET"
-				." `question` = ".$this->db_quote($_POST["question"], "text")
-				.", `answer` = ".$this->db_quote($_POST["answer"], "text")
-				.", `active` = ".$this->db_quote($active, "integer")
-				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
-				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `question` = ".$this->dbQuote($_POST["question"], "text")
+				.", `answer` = ".$this->dbQuote($_POST["answer"], "text")
+				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
+				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->faq->edit"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `faq_categories_assign`"
-				." WHERE `faqid` = ".$this->db_quote($_POST["id"], "integer")
+				." WHERE `faqid` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->faq->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `faq_categories_assign`"
 					." (`faqid`, `categoryid`)"
 					." VALUES"
-					." (".$this->db_quote($_POST["id"], "integer").", ".$sCategory.")"
+					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
 				,"admin->faq->edit->categories"
 			);
 		}
@@ -265,14 +265,14 @@ class admin_faq extends adminController
 	}
 	function delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `faq`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->faq->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `faq_categories_assign`"
-				." WHERE `faqid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `faqid` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->faq->categories_assign_delete"
 		);
 		
@@ -282,24 +282,24 @@ class admin_faq extends adminController
 	{
 		$_SESSION["admin"]["admin_faq_categories"] = null;
 		
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `faq_categories`"
 				." ORDER BY `name`"
 			,"admin->faq->categories"
 			,"all"
 		);
 		
-		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("faq/categories.tpl");
+		$this->tplAssign("aCategories", $aCategories);
+		$this->tplDisplay("faq/categories.tpl");
 	}
 	function categories_add_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"INSERT INTO `faq_categories`"
 				." (`name`)"
 				." VALUES"
 				." ("
-				.$this->db_quote($_POST["name"], "text")
+				.$this->dbQuote($_POST["name"], "text")
 				.")"
 			,"admin->faq->category->add_s"
 			,"insert"
@@ -309,10 +309,10 @@ class admin_faq extends adminController
 	}
 	function categories_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `faq_categories` SET"
-				." `name` = ".$this->db_quote($_POST["name"], "text")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `name` = ".$this->dbQuote($_POST["name"], "text")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->faq->categories->edit"
 		);
 
@@ -320,14 +320,14 @@ class admin_faq extends adminController
 	}
 	function categories_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `faq_categories`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->faq->category->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `faq_categories_assign`"
-				." WHERE `categoryid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->faq->category->delete_assign"
 		);
 
@@ -338,7 +338,7 @@ class admin_faq extends adminController
 	### Functions ####################
 	private function get_categories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `faq_categories`"
 				." ORDER BY `name`"
 			,"admin->faq->get_categories->categories"

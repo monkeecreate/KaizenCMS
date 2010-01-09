@@ -31,10 +31,10 @@ class links extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tpl_assign("aCategories", $oLinks->getCategories());
-		$this->tpl_assign("aLinks", $aLinks);
-		$this->tpl_assign("aPaging", $aPaging);
+		$this->tplAssign("aCategories", $oLinks->getCategories());
+		$this->tplAssign("aLinks", $aLinks);
+		$this->tplAssign("aPaging", $aPaging);
 		
-		$this->tpl_display("links.tpl");
+		$this->tplDisplay("links.tpl");
 	}
 }

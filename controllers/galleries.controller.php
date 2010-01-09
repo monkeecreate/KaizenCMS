@@ -31,11 +31,11 @@ class galleries extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tpl_assign("aCategories", $oGalleries->getCategories());
-		$this->tpl_assign("aGalleries", $aGalleries);
-		$this->tpl_assign("aPaging", $aPaging);
+		$this->tplAssign("aCategories", $oGalleries->getCategories());
+		$this->tplAssign("aGalleries", $aGalleries);
+		$this->tplAssign("aPaging", $aPaging);
 		
-		$this->tpl_display("galleries/index.tpl");
+		$this->tplDisplay("galleries/index.tpl");
 	}
 	function gallery($aParams)
 	{
@@ -48,7 +48,7 @@ class galleries extends appController
 		
 		$aGallery["photos"] = $oGalleries->getPhotos($aParams["id"]);
 		
-		$this->tpl_assign("aGallery", $aGallery);
-		$this->tpl_display("galleries/gallery.tpl");
+		$this->tplAssign("aGallery", $aGallery);
+		$this->tplDisplay("galleries/gallery.tpl");
 	}
 }

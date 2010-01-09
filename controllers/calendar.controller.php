@@ -31,12 +31,12 @@ class calendar extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
-		$this->tpl_assign("aCategories", $oCalendar->getCategories());
-		$this->tpl_assign("aEvents", $aEvents);
-		$this->tpl_assign("aPaging", $aPaging);
+		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
+		$this->tplAssign("aCategories", $oCalendar->getCategories());
+		$this->tplAssign("aEvents", $aEvents);
+		$this->tplAssign("aPaging", $aPaging);
 		
-		$this->tpl_display("calendar/index.tpl");
+		$this->tplDisplay("calendar/index.tpl");
 	}
 	function ics()
 	{
@@ -45,10 +45,10 @@ class calendar extends appController
 		$aEventPages = array_chunk($oCalendar->getEvents($_GET["category"]), 15);
 		$aEvents = $aEventPages[0];
 
-		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
-		$this->tpl_assign("aEvents", $aEvents);
+		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
+		$this->tplAssign("aEvents", $aEvents);
 		
-		$this->tpl_display("calendar/ics.tpl");
+		$this->tplDisplay("calendar/ics.tpl");
 	}
 	function event($aParams)
 	{
@@ -59,8 +59,8 @@ class calendar extends appController
 		if(empty($aEvent))
 			$this->error('404');
 		
-		$this->tpl_assign("aEvent", $aEvent);
-		$this->tpl_display("calendar/event.tpl");
+		$this->tplAssign("aEvent", $aEvent);
+		$this->tplDisplay("calendar/event.tpl");
 	}
 	function event_ics($aParams)
 	{
@@ -71,14 +71,14 @@ class calendar extends appController
 		if(empty($aEvent))
 			$this->error('404');
 
-		$this->tpl_assign("domain", $_SERVER["SERVER_NAME"]);
-		$this->tpl_assign("aEvent", $aEvent);
+		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
+		$this->tplAssign("aEvent", $aEvent);
 		
 		header("Content-type: text/calendar");
 		header("Content-Transfer-Encoding: Binary");
 		header("Content-length: ".strlen($sFile));
 		header("Content-disposition: attachment; filename=\"event.ics\"");
 
-		$this->tpl_display("calendar/event_ics.tpl");
+		$this->tplDisplay("calendar/event_ics.tpl");
 	}
 }
