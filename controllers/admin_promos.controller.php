@@ -352,13 +352,13 @@ class admin_promos extends adminController
 		
 		$aPositions = $this->get_positions();
 		
-		$this->tpl_assign("aPositions", $aPositions);
-		$this->tpl_display("promos/positions/index.tpl");
+		$this->tplAssign("aPositions", $aPositions);
+		$this->tplDisplay("promos/positions/index.tpl");
 	}
 	function positions_add()
 	{	
-		$this->tpl_assign("aPosition", $_SESSION["admin"]["admin_promo_positions"]);
-		$this->tpl_display("promos/positions/add.tpl");
+		$this->tplAssign("aPosition", $_SESSION["admin"]["admin_promo_positions"]);
+		$this->tplDisplay("promos/positions/add.tpl");
 	}
 	function positions_add_s()
 	{
@@ -373,15 +373,15 @@ class admin_promos extends adminController
 		else
 			$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["tag"])))));
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `promos_positions`"
 				." (`tag`, `name`, `promo_width`, `promo_height`)"
 				." VALUES"
 				." ("
-					.$this->db_quote($sTag, "text")
-					.", ".$this->db_quote($_POST["name"], "text")
-					.", ".$this->db_quote($_POST["promo_width"], "integer")
-					.", ".$this->db_quote($_POST["promo_height"], "integer")
+					.$this->dbQuote($sTag, "text")
+					.", ".$this->dbQuote($_POST["name"], "text")
+					.", ".$this->dbQuote($_POST["promo_width"], "integer")
+					.", ".$this->dbQuote($_POST["promo_height"], "integer")
 				.")"
 			,"admin->promos->positions->add"
 			,"insert"
@@ -397,21 +397,21 @@ class admin_promos extends adminController
 		{	
 			$aPosition = $_SESSION["admin"]["admin_promo_positions"];
 			
-			$this->tpl_assign("aPosition", $aPosition);
+			$this->tplAssign("aPosition", $aPosition);
 		}
 		else
 		{
-			$aPosition = $this->db_results(
+			$aPosition = $this->dbResults(
 				"SELECT * FROM `promos_positions`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 				,"admin->promos->positions->edit"
 				,"row"
 			);
 		
-			$this->tpl_assign("aPosition", $aPosition);
+			$this->tplAssign("aPosition", $aPosition);
 		}
 		
-		$this->tpl_display("promos/positions/edit.tpl");
+		$this->tplDisplay("promos/positions/edit.tpl");
 	}
 	function positions_edit_s()
 	{
@@ -426,13 +426,13 @@ class admin_promos extends adminController
 		else
 			$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["tag"])))));
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `promos_positions` SET"
-				." `tag` = ".$this->db_quote($sTag, "text")
-				.", `name` = ".$this->db_quote($_POST["name"], "text")
-				.", `promo_width` = ".$this->db_quote($_POST["promo_width"], "integer")
-				.", `promo_height` = ".$this->db_quote($_POST["promo_height"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `tag` = ".$this->dbQuote($sTag, "text")
+				.", `name` = ".$this->dbQuote($_POST["name"], "text")
+				.", `promo_width` = ".$this->dbQuote($_POST["promo_width"], "integer")
+				.", `promo_height` = ".$this->dbQuote($_POST["promo_height"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->promos->positions->edit"
 		);
 		
@@ -442,9 +442,9 @@ class admin_promos extends adminController
 	}
 	function positions_delete($aParams)
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `promos_positions`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->promos-positions->delete"
 		);
 		

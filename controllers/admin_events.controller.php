@@ -301,17 +301,17 @@ class admin_events extends adminController
 	{
 		$oEvents = $this->loadModel("events");
 		
-		$aEvent = $this->db_results(
+		$aEvent = $this->dbResults(
 			"SELECT * FROM `events`"
 				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->events->image->upload"
 			,"row"
 		);
 
-		$this->tpl_assign("aEvent", $aEvent);
-		$this->tpl_assign("minWidth", $oEvents->imageMinWidth);
-		$this->tpl_assign("minHeight", $oEvents->imageMinHeight);
-		$this->tpl_display("events/image/upload.tpl");
+		$this->tplAssign("aEvent", $aEvent);
+		$this->tplAssign("minWidth", $oEvents->imageMinWidth);
+		$this->tplAssign("minHeight", $oEvents->imageMinHeight);
+		$this->tplDisplay("events/image/upload.tpl");
 	}
 	function image_upload_s()
 	{
@@ -335,7 +335,7 @@ class admin_events extends adminController
 					@unlink($folder + $id.".jpg");
 					$this->forward("/admin/events/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 				} else {
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `events` SET"
 							." `photo_x1` = 0"
 							.", `photo_y1` = 0"

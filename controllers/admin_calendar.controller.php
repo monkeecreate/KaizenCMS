@@ -302,17 +302,17 @@ class admin_calendar extends adminController
 	{
 		$oCalendar = $this->loadModel("calendar");
 		
-		$aEvent = $this->db_results(
+		$aEvent = $this->dbResults(
 			"SELECT * FROM `calendar`"
 				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
 			,"admin->calendar->image->upload"
 			,"row"
 		);
 
-		$this->tpl_assign("aEvent", $aEvent);
-		$this->tpl_assign("minWidth", $oCalendar->imageMinWidth);
-		$this->tpl_assign("minHeight", $oCalendar->imageMinHeight);
-		$this->tpl_display("calendar/image/upload.tpl");
+		$this->tplAssign("aEvent", $aEvent);
+		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
+		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
+		$this->tplDisplay("calendar/image/upload.tpl");
 	}
 	function image_upload_s()
 	{
@@ -336,7 +336,7 @@ class admin_calendar extends adminController
 					@unlink($folder + $id.".jpg");
 					$this->forward("/admin/calendar/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 				} else {
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `calendar` SET"
 							." `photo_x1` = 0"
 							.", `photo_y1` = 0"

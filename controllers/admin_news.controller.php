@@ -306,7 +306,7 @@ class admin_news extends adminController
 					@unlink($folder + $id.".jpg");
 					$this->forward("/admin/news/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 				} else {				
-					$this->db_results(
+					$this->dbResults(
 						"UPDATE `news` SET"
 							." `photo_x1` = 0"
 							.", `photo_y1` = 0"
