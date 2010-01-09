@@ -50,11 +50,11 @@ class calendar extends appController
 		
 		$this->tplDisplay("calendar/ics.tpl");
 	}
-	function event($aParams)
+	function event()
 	{
 		$oCalendar = $this->loadModel("calendar");
 		
-		$aEvent = $oCalendar->getEvent($aParams["id"]);
+		$aEvent = $oCalendar->getEvent($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aEvent))
 			$this->error('404');
@@ -62,11 +62,11 @@ class calendar extends appController
 		$this->tplAssign("aEvent", $aEvent);
 		$this->tplDisplay("calendar/event.tpl");
 	}
-	function event_ics($aParams)
+	function event_ics()
 	{
 		$oCalendar = $this->loadModel("calendar");
 		
-		$aEvent = $oCalendar->getEvent($aParams["id"]);
+		$aEvent = $oCalendar->getEvent($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aEvent))
 			$this->error('404');

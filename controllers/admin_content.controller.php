@@ -54,13 +54,13 @@ class admin_content extends adminController
 		
 		$this->forward("/admin/content/?notice=".urlencode("Page created successfully!"));
 	}
-	function edit($aParams)
+	function edit()
 	{
 		if(!empty($_SESSION["admin"]["admin_content"]))
 		{
 			$aPage = $this->dbResults(
 				"SELECT * FROM `content`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->content->edit"
 				,"row"
 			);
@@ -81,7 +81,7 @@ class admin_content extends adminController
 		{
 			$aPage = $this->dbResults(
 				"SELECT * FROM `content`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->content->edit"
 				,"row"
 			);
@@ -120,11 +120,11 @@ class admin_content extends adminController
 		
 		$this->forward("/admin/content/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete($aParams)
+	function delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `content`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->content->delete"
 		);
 		

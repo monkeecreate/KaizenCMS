@@ -37,11 +37,11 @@ class events extends appController
 		
 		$this->tplDisplay("events/index.tpl");
 	}
-	function event($aParams)
+	function event()
 	{
 		$oEvents = $this->loadModel("events");
 		
-		$aEvent = $oEvents->getEvent($aParams["id"]);
+		$aEvent = $oEvents->getEvent($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aEvent))
 			$this->error('404');

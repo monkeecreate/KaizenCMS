@@ -104,16 +104,16 @@ class admin_faq extends adminController
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Question created successfully!"));
 	}
-	function sort($aParams)
+	function sort()
 	{
 		$aGallery = $this->dbResults(
 			"SELECT * FROM `faq`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->faq->sort"
 			,"row"
 		);
 		
-		if($aParams["sort"] == "up")
+		if($this->_urlVars->dynamic["sort"] == "up")
 		{
 			$aOld = $this->dbResults(
 				"SELECT * FROM `faq`"
@@ -137,7 +137,7 @@ class admin_faq extends adminController
 				,"admin->faq->sort->up->update_pos2"
 			);
 		}
-		elseif($aParams["sort"] == "down")
+		elseif($this->_urlVars->dynamic["sort"] == "down")
 		{
 			$aOld = $this->dbResults(
 				"SELECT * FROM `faq`"
@@ -164,13 +164,13 @@ class admin_faq extends adminController
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Sort order saved successfully!"));
 	}
-	function edit($aParams)
+	function edit()
 	{
 		if(!empty($_SESSION["admin"]["admin_faq"]))
 		{
 			$aQuestionRow = $this->dbResults(
 				"SELECT * FROM `faq`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->faq->edit"
 				,"row"
 			);
@@ -191,7 +191,7 @@ class admin_faq extends adminController
 		{
 			$aQuestion = $this->dbResults(
 				"SELECT * FROM `faq`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->faq->edit"
 				,"row"
 			);
@@ -263,16 +263,16 @@ class admin_faq extends adminController
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete($aParams)
+	function delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `faq`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->faq->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `faq_categories_assign`"
-				." WHERE `faqid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `faqid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->faq->categories_assign_delete"
 		);
 		
@@ -318,16 +318,16 @@ class admin_faq extends adminController
 
 		echo "/admin/faq/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete($aParams)
+	function categories_delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `faq_categories`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->faq->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `faq_categories_assign`"
-				." WHERE `categoryid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->faq->category->delete_assign"
 		);
 

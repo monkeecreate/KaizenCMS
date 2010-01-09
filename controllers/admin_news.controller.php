@@ -124,13 +124,13 @@ class admin_news extends adminController
 		else
 			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!"));
 	}
-	function edit($aParams)
+	function edit()
 	{
 		if(!empty($_SESSION["admin"]["admin_news"]))
 		{
 			$aArticleRow = $this->dbResults(
 				"SELECT * FROM `news`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->news->edit"
 				,"row"
 			);
@@ -151,7 +151,7 @@ class admin_news extends adminController
 		{
 			$aArticle = $this->dbResults(
 				"SELECT * FROM `news`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->news->edit"
 				,"row"
 			);
@@ -252,29 +252,29 @@ class admin_news extends adminController
 		
 		$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete($aParams)
+	function delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `news`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `news_categories_assign`"
-				." WHERE `articleid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `articleid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->categories_assign_delete"
 		);
 		
 		$this->forward("/admin/news/?notice=".urlencode("Article removed successfully!"));
 	}
 	
-	function image_upload($aParams)
+	function image_upload()
 	{
 		$oNews = $this->loadModel("news");
 		
 		$aArticle = $this->dbResults(
 			"SELECT * FROM `news`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->image->upload"
 			,"row"
 		);
@@ -327,18 +327,18 @@ class admin_news extends adminController
 		else
 			$this->forward("/admin/news/image/".$_POST["id"]."/upload/?error=".urlencode("Image not a jpg. Image is (".$_FILES["file"]["type"].")."));
 	}
-	function image_edit($aParams)
+	function image_edit()
 	{
 		$oNews = $this->loadModel("news");
 		
 		$folder = $this->_settings->rootPublic."uploads/news/";
 
-		if(!is_file($folder.$aParams["id"].".jpg"))
-			$this->forward("/admin/news/image/".$aParams["id"]."/upload/");
+		if(!is_file($folder.$this->_urlVars->dynamic["id"].".jpg"))
+			$this->forward("/admin/news/image/".$this->_urlVars->dynamic["id"]."/upload/");
 
 		$aArticle = $this->dbResults(
 			"SELECT * FROM `news`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->image->edit"
 			,"row"
 		);
@@ -366,7 +366,7 @@ class admin_news extends adminController
 
 		$this->forward("/admin/news/?notice=".urlencode("Image cropped successfully!"));
 	}
-	function image_delete($aParams)
+	function image_delete()
 	{
 		$this->dbResults(
 			"UPDATE `news` SET"
@@ -376,7 +376,7 @@ class admin_news extends adminController
 				.", photo_y2 = 0"
 				.", photo_width = 0"
 				.", photo_height = 0"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->image->delete"
 		);
 		
@@ -425,16 +425,16 @@ class admin_news extends adminController
 
 		echo "/admin/news/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete($aParams)
+	function categories_delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `news_categories`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `news_categories_assign`"
-				." WHERE `categoryid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->category->delete_assign"
 		);
 
