@@ -4,8 +4,6 @@
 	{getPromo tag="po2"}
 </div>
 
-{flickr method=photoSets user=true title=false number=5 size=1 tags=snow}
-
 <h1>HTML Ipsum Presents</h1>
 	       
 <p>
