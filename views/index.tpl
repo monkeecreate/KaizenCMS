@@ -4,7 +4,7 @@
 	{getPromo tag="po2"}
 </div>
 
-{flickr method=photoStream number=5 size=2 tag=snow}
+{flickr method=photoSearch user=true number=5 size=2 tags=snow}
 
 <h1>HTML Ipsum Presents</h1>
 	       
