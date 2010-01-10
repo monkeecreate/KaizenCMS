@@ -57,9 +57,11 @@
 					{/if}
 				</td>
 				<td class="small center border-end">
-					<a href="/admin/calendar/image/{$aEvent.id}/edit/" title="Edit Event Photo">
-						<img src="/images/admin/icons/picture.png">
-					</a>
+					{if $sUseImage == true}
+						<a href="/admin/calendar/image/{$aEvent.id}/edit/" title="Edit Event Photo">
+							<img src="/images/admin/icons/picture.png">
+						</a>
+					{/if}
 					<a href="/admin/calendar/edit/{$aEvent.id}/" title="Edit Event">
 						<img src="/images/admin/icons/pencil.png">
 					</a>

@@ -99,7 +99,7 @@ class admin_documents extends adminController
 			}
 			else
 			{
-				$upload_dir = $this->_settings->root_public."uploads/documents/";
+				$upload_dir = $this->_settings->rootPublic."uploads/documents/";
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
 			
@@ -130,13 +130,13 @@ class admin_documents extends adminController
 		
 		$this->forward("/admin/documents/?notice=".urlencode("Document created successfully!"));
 	}
-	function edit($aParams)
+	function edit()
 	{
 		if(!empty($_SESSION["admin"]["admin_documents"]))
 		{
 			$aDocumentRow = $this->dbResults(
 				"SELECT * FROM `documents`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->documents->edit"
 				,"row"
 			);
@@ -157,7 +157,7 @@ class admin_documents extends adminController
 		{
 			$aDocument = $this->dbResults(
 				"SELECT * FROM `documents`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->documents->edit"
 				,"row"
 			);
@@ -240,7 +240,7 @@ class admin_documents extends adminController
 			}
 			else
 			{
-				$upload_dir = $this->_settings->root_public."uploads/documents/";
+				$upload_dir = $this->_settings->rootPublic."uploads/documents/";
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
@@ -279,24 +279,24 @@ class admin_documents extends adminController
 		
 		$this->forward("/admin/documents/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete($aParams)
+	function delete()
 	{
 		$aDocument = $this->dbResults(
 			"SELECT * FROM `documents`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->documents->edit"
 			,"row"
 		);
-		@unlink($this->_settings->root_public."uploads/documents/".$aDocument["document"]);
+		@unlink($this->_settings->rootPublic."uploads/documents/".$aDocument["document"]);
 		
 		$this->dbResults(
 			"DELETE FROM `documents`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->documents->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `documents_categories_assign`"
-				." WHERE `documentid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `documentid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->documents->categories_assign_delete"
 		);
 		
@@ -342,16 +342,16 @@ class admin_documents extends adminController
 
 		echo "/admin/documents/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete($aParams)
+	function categories_delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `documents_categories`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->documents->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `documents_categories_assign`"
-				." WHERE `categoryid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->documents->category->delete_assign"
 		);
 

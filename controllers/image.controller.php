@@ -5,7 +5,7 @@ class image extends appController
 	function resize()
 	{
 		ini_set("memory_limit", "60m");
-		$name = $this->_settings->root_public.substr($_GET["file"], 1);
+		$name = $this->_settings->rootPublic.substr($_GET["file"], 1);
 		
 		if(filesize($name) == 0 || empty($_GET["width"]) || empty($_GET["height"]))
 			$this->error('404');
@@ -30,7 +30,7 @@ class image extends appController
 		}
 		
 		$file_ext = pathinfo($_GET["file"], PATHINFO_EXTENSION);
-		$cache_file = $this->_settings->root_public."uploads/resize/".md5($_GET["file"].filemtime($name))."_".$_GET["width"]."_".$_GET["height"].".".$file_ext;
+		$cache_file = $this->_settings->rootPublic."uploads/resize/".md5($_GET["file"].filemtime($name))."_".$_GET["width"]."_".$_GET["height"].".".$file_ext;
 		if(is_file($cache_file))
 		{
 			if(preg_match('/jpg|jpeg/',$file_ext))
@@ -126,16 +126,16 @@ class image extends appController
 		imagedestroy($dst_img);
 		imagedestroy($src_img);
 	}
-	function itemImage($aParams)
+	function itemImage()
 	{
 		ini_set("memory_limit", "30m");
 		
-		$oModel = $this->loadModel($aParams["model"]);
+		$oModel = $this->loadModel($this->_urlVars->dynamic["model"]);
 		
 		if(empty($oModel))
 			$this->error("404");
 		
-		$aImage = $oModel->getImage($aParams["id"]);
+		$aImage = $oModel->getImage($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aImage))
 			$this->error("404");
@@ -155,7 +155,7 @@ class image extends appController
 		}
 		
 		$file_ext = pathinfo($aImage["file"], PATHINFO_EXTENSION);
-		$cache_file = $this->_settings->root_public."uploads/resize/item_".md5($aImage["file"].filemtime($name))."_".$aParams["model"].".".$file_ext;
+		$cache_file = $this->_settings->rootPublic."uploads/resize/item_".md5($aImage["file"].filemtime($name))."_".$this->_urlVars->dynamic["model"].".".$file_ext;
 		if(is_file($cache_file))
 		{
 			if(preg_match('/jpg|jpeg/',$file_ext))

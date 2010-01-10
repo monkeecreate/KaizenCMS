@@ -1,7 +1,7 @@
 <?php
 class galleries extends appController
 {
-	function index($aParams)
+	function index()
 	{
 		$oGalleries = $this->loadModel("galleries");
 		
@@ -37,16 +37,16 @@ class galleries extends appController
 		
 		$this->tplDisplay("galleries/index.tpl");
 	}
-	function gallery($aParams)
+	function gallery()
 	{
 		$oGalleries = $this->loadModel("galleries");
 		
-		$aGallery = $oGalleries->getGallery($aParams["id"]);
+		$aGallery = $oGalleries->getGallery($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aGallery))
 			$this->error('404');
 		
-		$aGallery["photos"] = $oGalleries->getPhotos($aParams["id"]);
+		$aGallery["photos"] = $oGalleries->getPhotos($this->_urlVars->dynamic["id"]);
 		
 		$this->tplAssign("aGallery", $aGallery);
 		$this->tplDisplay("galleries/gallery.tpl");

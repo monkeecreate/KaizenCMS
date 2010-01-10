@@ -35,7 +35,7 @@ class news_model extends appModel
 		
 			$aArticles[$x]["categories"] = implode(", ", $aArticleCategories);
 			
-			if(file_exists($this->_settings->root_public."upload/news/".$aArticle["id"].".jpg") && $aArticle["photo_x2"] > 0)
+			if(file_exists($this->_settings->rootPublic."upload/news/".$aArticle["id"].".jpg") && $aArticle["photo_x2"] > 0)
 				$aArticles[$x]["image"] = 1;
 		}
 		
@@ -65,7 +65,7 @@ class news_model extends appModel
 			
 			$aArticle["categories"] = implode(", ", $aCategories);
 			
-			if(file_exists($this->_settings->root_public."uploads/news/".$aArticle["id"].".jpg"))
+			if(file_exists($this->_settings->rootPublic."uploads/news/".$aArticle["id"].".jpg"))
 				$aArticle["image"] = 1;
 		}
 		
@@ -86,7 +86,7 @@ class news_model extends appModel
 	{
 		$aArticle = $this->getArticle($sId);
 		
-		$sFile = $this->_settings->root_public."uploads/news/".$sId.".jpg";
+		$sFile = $this->_settings->rootPublic."uploads/news/".$sId.".jpg";
 		
 		$image = imagecreatefromjpeg($sFile);
 		
