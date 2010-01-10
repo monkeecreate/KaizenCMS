@@ -10,12 +10,12 @@ class content extends appController
 	{
 		$this->siteInfo();
 	}
-	function view($aUrlParam = null, $aParams)
+	function view()
 	{
-		if(!empty($aUrlParam["page"]))
-			$sPage = $aUrlParam["page"];
-		elseif(!empty($aParams["page"]))
-			$sPage = $aParams["page"];
+		if(!empty($this->_urlVars->dynamic["page"]))
+			$sPage = $this->_urlVars->dynamic["page"];
+		elseif(!empty($this->_urlVars->manual["page"]))
+			$sPage = $this->_urlVars->manual["page"];
 		else
 			$this->error("404");
 		
@@ -118,11 +118,11 @@ class content extends appController
 		
 		return $sString;
 	}
-	function promo($aParams)
+	function promo()
 	{
 		$aPromo = $this->dbResults(
 			"SELECT `promos`.* FROM `promos`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"content->promo"
 			,"row"
 		);

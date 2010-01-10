@@ -159,13 +159,13 @@ class admin_promos extends adminController
 		
 		$this->forward("/admin/promos/?notice=".urlencode("Promo created successfully!"));
 	}
-	function edit($aParams)
+	function edit()
 	{
 		if(!empty($_SESSION["admin"]["admin_promos"]))
 		{
 			$aPromoRow = $this->dbResults(
 				"SELECT * FROM `promos`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->promos->edit"
 				,"row"
 			);
@@ -186,7 +186,7 @@ class admin_promos extends adminController
 		{
 			$aPromo = $this->dbResults(
 				"SELECT * FROM `promos`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->promos->edit"
 				,"row"
 			);
@@ -330,16 +330,16 @@ class admin_promos extends adminController
 		
 		$this->forward("/admin/promos/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete($aParams)
+	function delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `promos`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->promos->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `promos_positions_assign`"
-				." WHERE `promoid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `promoid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->promos->positions_assign_delete"
 		);
 		
@@ -391,7 +391,7 @@ class admin_promos extends adminController
 		
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Position created successfully!"));
 	}
-	function positions_edit($aParams)
+	function positions_edit()
 	{
 		if(!empty($_SESSION["admin"]["admin_promo_positions"]))
 		{	
@@ -403,7 +403,7 @@ class admin_promos extends adminController
 		{
 			$aPosition = $this->dbResults(
 				"SELECT * FROM `promos_positions`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->promos->positions->edit"
 				,"row"
 			);
@@ -440,11 +440,11 @@ class admin_promos extends adminController
 
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function positions_delete($aParams)
+	function positions_delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `promos_positions`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->promos-positions->delete"
 		);
 		

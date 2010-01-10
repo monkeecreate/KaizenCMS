@@ -140,13 +140,13 @@ class admin_events extends adminController
 		else
 			$this->forward("/admin/events/?notice=".urlencode("Event created successfully!"));
 	}
-	function edit($aParams)
+	function edit()
 	{
 		if(!empty($_SESSION["admin"]["admin_events"]))
 		{
 			$aEventRow = $this->dbResults(
 				"SELECT * FROM `events`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->events->edit"
 				,"row"
 			);
@@ -167,7 +167,7 @@ class admin_events extends adminController
 		{
 			$aEvent = $this->dbResults(
 				"SELECT * FROM `events`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->events->edit"
 				,"row"
 			);
@@ -282,28 +282,28 @@ class admin_events extends adminController
 		
 		$this->forward("/admin/events/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete($aParams)
+	function delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `events`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->content->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `events_categories_assign`"
-				." WHERE `eventid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `eventid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->content->categories_assign_delete"
 		);
 		
 		$this->forward("/admin/events/?notice=".urlencode("Event removed successfully!"));
 	}
-	function image_upload($aParams)
+	function image_upload()
 	{
 		$oEvents = $this->loadModel("events");
 		
 		$aEvent = $this->dbResults(
 			"SELECT * FROM `events`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->events->image->upload"
 			,"row"
 		);
@@ -356,16 +356,16 @@ class admin_events extends adminController
 		else
 			$this->forward("/admin/events/image/".$_POST["id"]."/upload/?error=".urlencode("Image not a jpg. Image is (".$_FILES["file"]["type"].")."));
 	}
-	function image_edit($aParams)
+	function image_edit()
 	{
 		$folder = $this->_settings->rootPublic."uploads/events/";
 
-		if(!is_file($folder.$aParams["id"].".jpg"))
-			$this->forward("/admin/events/image/".$aParams["id"]."/upload/");
+		if(!is_file($folder.$this->_urlVars->dynamic["id"].".jpg"))
+			$this->forward("/admin/events/image/".$this->_urlVars->dynamic["id"]."/upload/");
 
 		$aEvent = $this->dbResults(
 			"SELECT * FROM `events`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->events->image->edit"
 			,"row"
 		);
@@ -391,7 +391,7 @@ class admin_events extends adminController
 
 		$this->forward("/admin/events/?notice=".urlencode("Image cropped successfully!"));
 	}
-	function image_delete($aParams)
+	function image_delete()
 	{
 		$this->dbResults(
 			"UPDATE `events` SET"
@@ -401,7 +401,7 @@ class admin_events extends adminController
 				.", photo_y2 = 0"
 				.", photo_width = 0"
 				.", photo_height = 0"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->events->image->delete"
 		);
 		
@@ -449,16 +449,16 @@ class admin_events extends adminController
 
 		echo "/admin/events/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete($aParams)
+	function categories_delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `events_categories`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->events->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `events_categories_assign`"
-				." WHERE `categoryid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->events->category->delete_assign"
 		);
 

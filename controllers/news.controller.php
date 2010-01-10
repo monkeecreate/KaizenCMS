@@ -49,11 +49,11 @@ class news extends appController
 		header("Content-Type: application/rss+xml");
 		$this->tplDisplay("news/rss.tpl");
 	}
-	function article($aParams)
+	function article()
 	{
 		$oNews = $this->loadModel("news");
 		
-		$aArticle = $oNews->getArticle($aParams["id"]);
+		$aArticle = $oNews->getArticle($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aArticle))
 			$this->error('404');

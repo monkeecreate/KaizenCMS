@@ -89,13 +89,13 @@ class admin_links extends adminController
 		
 		$this->forward("/admin/links/?notice=".urlencode("Link created successfully!"));
 	}
-	function edit($aParams)
+	function edit()
 	{
 		if(!empty($_SESSION["admin"]["admin_links"]))
 		{
 			$aLinkRow = $this->dbResults(
 				"SELECT * FROM `links`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->links->edit"
 				,"row"
 			);
@@ -116,7 +116,7 @@ class admin_links extends adminController
 		{
 			$aLink = $this->dbResults(
 				"SELECT * FROM `links`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->links->edit"
 				,"row"
 			);
@@ -189,11 +189,11 @@ class admin_links extends adminController
 		
 		$this->forward("/admin/links/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete($aParams)
+	function delete()
 	{
 		$aLink = $this->dbResults(
 			"SELECT * FROM `links`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->links->edit"
 			,"row"
 		);
@@ -201,12 +201,12 @@ class admin_links extends adminController
 		
 		$this->dbResults(
 			"DELETE FROM `links`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->links->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `links_categories_assign`"
-				." WHERE `linkid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `linkid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->links->categories_assign_delete"
 		);
 		
@@ -252,16 +252,16 @@ class admin_links extends adminController
 
 		echo "/admin/links/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete($aParams)
+	function categories_delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `links_categories`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->links->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `links_categories_assign`"
-				." WHERE `categoryid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->links->category->delete_assign"
 		);
 

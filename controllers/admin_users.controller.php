@@ -51,13 +51,13 @@ class admin_users extends adminController
 		
 		$this->forward("/admin/users/?notice=".urlencode("User add successfully!"));
 	}
-	function edit($aParams)
+	function edit()
 	{
 		if(!empty($_SESSION["admin"]["admin_users"]))
 		{
 			$aUserRow = $this->dbResults(
 				"SELECT * FROM `users`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->users->edit"
 				,"row"
 			);
@@ -78,7 +78,7 @@ class admin_users extends adminController
 		{
 			$aUser = $this->dbResults(
 				"SELECT * FROM `users`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 					." LIMIT 1"
 				,"admin->users->edit"
 				,"row"
@@ -132,11 +132,11 @@ class admin_users extends adminController
 		
 		$this->forward("/admin/users/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete($aParams)
+	function delete()
 	{
 		$aRes = $this->dbResults(
 			"DELETE FROM `users`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->users->delete"
 		);
 		

@@ -8,10 +8,11 @@ class appController
 	private $_firephp;
 	private $_enc;
 	public $_settings;
+	public $_urlVars;
 	
 	function appController()
 	{
-		global $objDB, $oMemcache, $objMail, $oFirePHP, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl;
+		global $objDB, $oMemcache, $objMail, $oFirePHP, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl, $aURLVars;
 		
 		$this->_db = $objDB;
 		$this->_memcache = $oMemcache;
@@ -28,6 +29,7 @@ class appController
 			,"url" => $aUrl
 			,"memcacheSalt" => $aConfig["memcache"]["salt"]
 		);
+		$this->_urlVars = $aURLVars;
 	}
 	
 	### Functions ####################

@@ -173,13 +173,13 @@ class admin_testimonials extends adminController
 		
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial created successfully!"));
 	}
-	function edit($aParams)
+	function edit()
 	{
 		if(!empty($_SESSION["admin"]["admin_testimonials"]))
 		{
 			$aTestimonialRow = $this->dbResults(
 				"SELECT * FROM `testimonials`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->testimonials->edit"
 				,"row"
 			);
@@ -200,7 +200,7 @@ class admin_testimonials extends adminController
 		{
 			$aTestimonial = $this->dbResults(
 				"SELECT * FROM `testimonials`"
-					." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->testimonials->edit"
 				,"row"
 			);
@@ -378,16 +378,16 @@ class admin_testimonials extends adminController
 		
 		$this->forward("/admin/testimonials/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete($aParams)
+	function delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `testimonials`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->testimonials->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `testimonials_categories_assign`"
-				." WHERE `testimonialid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `testimonialid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->testimonials->categories_assign_delete"
 		);
 		
@@ -433,16 +433,16 @@ class admin_testimonials extends adminController
 
 		echo "/admin/testimonials/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete($aParams)
+	function categories_delete()
 	{
 		$this->dbResults(
 			"DELETE FROM `testimonials_categories`"
-				." WHERE `id` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->testimonials->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `testimonials_categories_assign`"
-				." WHERE `categoryid` = ".$this->dbQuote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->testimonials->category->delete_assign"
 		);
 

@@ -1,7 +1,7 @@
 <?php
 class testimonials extends appController
 {
-	function index($aParams)
+	function index()
 	{
 		$aTestimonials = $this->dbResults(
 			"SELECT `testimonials`.* FROM `testimonials`"
@@ -13,13 +13,13 @@ class testimonials extends appController
 			,"all"
 		);
 		
-		if(empty($aParams["id"]))
+		if(empty($this->_urlVars->dynamic["id"]))
 			$this->tplAssign("aCurTestimonial", $aTestimonials[0]);
 		else
 		{
 			$aTestimonial = $this->dbResults(
 				"SELECT * FROM `testimonials`"
-					." WHERE `id` = ".$aParams["id"]
+					." WHERE `id` = ".$this->_urlVars->dynamic["id"]
 				,"testimonials->testimonial"
 				,"row"
 			);
