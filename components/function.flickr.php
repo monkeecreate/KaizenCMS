@@ -12,8 +12,8 @@ function smarty_function_flickr($aParams, &$oSmarty)
 		default: $flickrSize = "t"; break;
 	endswitch;
 	
-	## photoStream
-	## params: size (required), number (optional, per page limit)
+	## photoStream (Get a list of public photos for the given user.)
+	## params: size, number (optional, per page limit), title (optional, display photo title, true/false)
 	## example: {flickr method=photoSearch number=5 size=1}
 	if ($aParams["method"] == "photoStream")
 	{
@@ -24,9 +24,9 @@ function smarty_function_flickr($aParams, &$oSmarty)
 
 		if ($rsp_obj['stat'] == 'ok') {
 			foreach ($rsp_obj['photos']['photo'] as $flickrPhoto) {
-				echo '<a href="http://www.flickr.com/photos/'.$flickrPhoto['owner'].'/'.$flickrPhoto['id'].'">'.$flickrPhoto['title'].'</a><br />';
-				echo '<img src="http://farm'.$flickrPhoto['farm'].'.static.flickr.com/'.$flickrPhoto['server'].'/'.$flickrPhoto['id'].'_'.$flickrPhoto['secret'].'_'.$flickrSize.'.jpg"><br /><br />';
-		
+				if ($aParams["title"] == true)
+					echo '<a href="http://www.flickr.com/photos/'.$flickrPhoto['owner'].'/'.$flickrPhoto['id'].'" title="'.$flickrPhoto['title'].'" class="flickrTitle">'.$flickrPhoto['title'].'</a>';
+				echo '<img src="http://farm'.$flickrPhoto['farm'].'.static.flickr.com/'.$flickrPhoto['server'].'/'.$flickrPhoto['id'].'_'.$flickrPhoto['secret'].'_'.$flickrSize.'.jpg" alt="'.$flickrPhoto['title'].'" class="flickrPhoto">';
 			}
 		} else {
 
@@ -34,8 +34,31 @@ function smarty_function_flickr($aParams, &$oSmarty)
 		}
 	}
 	
-	## photoSearch
-	## params: size (required), tags (required, to search by), number (optional, per page limit), user (optional, true or false)
+	## photoSets (Returns the photosets belonging to the specified user.)
+	## params: size, title (optional, display photo title, true/false)
+	## example: {flickr method=photoSets}
+	if ($aParams["method"] == "photoSets")
+	{
+		$flickrAPI = 'http://api.flickr.com/services/rest/?&method=flickr.photosets.getList&api_key='.$flickrKey.'&user_id='.$flickrUser.'&format=php_serial';
+		$rsp = file_get_contents($flickrAPI);
+		$rsp_obj = unserialize($rsp);
+
+		if ($rsp_obj['stat'] == 'ok') {
+			foreach ($rsp_obj['photosets']['photoset'] as $flickrSet) {				
+				if ($aParams["title"] == true) 
+				{
+					echo '<a href="http://www.flickr.com/photos/'.$flickrUser.'/sets/'.$flickrSet['id'].'" title="'.$flickrSet['title']['_content'].'" class="flickrTitle">'.$flickrSet['title']['_content'].'</a> ('.$flickrSet['photos'].' photos/'.$flickrSet['videos'].' videos)';
+				}
+				echo '<img src="http://farm'.$flickrSet['farm'].'.static.flickr.com/'.$flickrSet['server'].'/'.$flickrSet['primary'].'_'.$flickrSet['secret'].'_'.$flickrSize.'.jpg" alt="'.$flickrSet['title']['_content'].'" class="flickrPhoto">';
+			}
+		} else {
+
+			echo "Could not retrieve groups from flickr. Please try again.";
+		}
+	}
+	
+	## photoSearch (Return a list of photos matching some criteria.)
+	## params: size, tags (required, to search by), number (optional, per page limit), user (optional, true or false)
 	## example: {flickr method=photoSearch user=true number=6 size=2 tags=snow,winter}
 	if ($aParams["method"] == "photoSearch")
 	{
@@ -48,8 +71,8 @@ function smarty_function_flickr($aParams, &$oSmarty)
 
 		if ($rsp_obj['stat'] == 'ok') {
 			foreach ($rsp_obj['photos']['photo'] as $flickrPhoto) {
-				echo '<a href="http://www.flickr.com/photos/'.$flickrPhoto['owner'].'/'.$flickrPhoto['id'].'">'.$flickrPhoto['title'].'</a><br />';
-				echo '<img src="http://farm'.$flickrPhoto['farm'].'.static.flickr.com/'.$flickrPhoto['server'].'/'.$flickrPhoto['id'].'_'.$flickrPhoto['secret'].'_'.$flickrSize.'.jpg"><br /><br />';
+				echo '<a href="http://www.flickr.com/photos/'.$flickrPhoto['owner'].'/'.$flickrPhoto['id'].'" title="'.$flickrPhoto['title'].'" class="flickrTitle">'.$flickrPhoto['title'].'</a>';
+				echo '<img src="http://farm'.$flickrPhoto['farm'].'.static.flickr.com/'.$flickrPhoto['server'].'/'.$flickrPhoto['id'].'_'.$flickrPhoto['secret'].'_'.$flickrSize.'.jpg" alt="'.$flickrPhoto['title'].'" class="flickrPhoto">';
 		
 			}
 		} else {
