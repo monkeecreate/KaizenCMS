@@ -16,7 +16,6 @@ class calendar_model extends appModel
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
-		// Get all events for paging
 		$aEvents = $this->dbResults(
 			"SELECT `calendar`.* FROM `calendar` AS `calendar`"
 				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar`.`id` = `calendar_assign`.`eventid`"
