@@ -88,11 +88,8 @@ class news_model extends appModel
 		
 		$sFile = $this->_settings->root_public."uploads/news/".$sId.".jpg";
 		
-		$image = imagecreatefromjpeg($sFile);
-		
 		$aImage = array(
-			"image" => $image
-			,"file" => $sFile
+			"file" => $sFile
 			,"info" => $aArticle
 		);
 		

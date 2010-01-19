@@ -85,4 +85,17 @@ class calendar_model extends appModel
 		
 		return $aCategories;
 	}
+	function getImage($sId)
+	{
+		$aEvent = $this->getEvent($sId);
+		
+		$sFile = $this->_settings->root_public."uploads/calendar/".$sId.".jpg";
+		
+		$aImage = array(
+			"file" => $sFile
+			,"info" => $aEvent
+		);
+		
+		return $aImage;
+	}
 }

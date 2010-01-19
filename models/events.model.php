@@ -86,6 +86,15 @@ class events_model extends appModel
 	}
 	function getImage($sId)
 	{
+		$aEvent = $this->getEvent($sId);
 		
+		$sFile = $this->_settings->root_public."uploads/events/".$sId.".jpg";
+		
+		$aImage = array(
+			"file" => $sFile
+			,"info" => $aEvent
+		);
+		
+		return $aImage;
 	}
 }
