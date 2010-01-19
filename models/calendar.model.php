@@ -99,7 +99,7 @@ class calendar_model extends appModel
 	{
 		$aEvent = $this->getEvent($sId);
 		
-		$sFile = $this->_settings->root_public."uploads/calendar/".$sId.".jpg";
+		$sFile = $this->_settings->root_public.substr($this->imageFolder, 1).$sId.".jpg";
 		
 		$aImage = array(
 			"file" => $sFile
