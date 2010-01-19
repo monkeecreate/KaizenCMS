@@ -23,7 +23,7 @@
 {foreach from=$aDocuments item=aDocument}
 	<div class="contentList">
 		<h3>
-			<a href="/uploads/documents/{$aDocument.document}" target="_blank">
+			<a href="{$documentFolder}{$aDocument.document}" target="_blank">
 				{$aDocument.name|clean_html}
 			</a>
 		</h3>

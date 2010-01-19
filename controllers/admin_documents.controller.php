@@ -4,31 +4,20 @@ class admin_documents extends adminController
 	### DISPLAY ######################
 	function index()
 	{
+		$oDocument = $this->loadModel("documents");
+		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_documents"] = null;
 		
-		if(!empty($_GET["category"]))
-		{
-			$sSQLCategory = " INNER JOIN `documents_categories_assign` AS `assign` ON `documents`.`id` = `assign`.`documentid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
-		}
-		
-		$aDocuments = $this->dbResults(
-			"SELECT `documents`.* FROM `documents`"
-				.$sSQLCategory
-				." GROUP BY `documents`.`id`"
-				." ORDER BY `documents`.`name` DESC"
-			,"admin->documents->index"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oDocument->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aDocuments", $aDocuments);
+		$this->tplAssign("aDocuments", $oDocument->getDocuments($_GET["category"], true));
 		$this->tplDisplay("documents/index.tpl");
 	}
 	function add()
 	{
+		$oDocument = $this->loadModel("documents");
+		
 		if(!empty($_SESSION["admin"]["admin_documents"]))
 			$this->tplAssign("aDocument", $_SESSION["admin"]["admin_documents"]);
 		
@@ -40,11 +29,13 @@ class admin_documents extends adminController
 				)
 			);
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oDocument->getCategories());
 		$this->tplDisplay("documents/add.tpl");
 	}
 	function add_s()
 	{
+		$oDocument = $this->loadModel("documents");
+		
 		if(empty($_POST["name"]) || count($_POST["categories"]) == 0)
 		{
 			$_SESSION["admin"]["admin_documents"] = $_POST;
@@ -99,30 +90,39 @@ class admin_documents extends adminController
 			}
 			else
 			{
-				$upload_dir = $this->_settings->rootPublic."uploads/documents/";
+				$upload_dir = $this->_settings->rootPublic.substr($oDocument->documentFolder, 1);
+				
+				if(!is_dir($upload_dir))
+					mkdir($upload_dir, 0777);
+			
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
-			
-				if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file))
+				
+				if(in_array($file_ext, $oDocument->allowedExt) || empty($oDocument->allowedExt))
 				{
-					$this->dbResults(
-						"UPDATE `documents` SET"
-							." `document` = ".$this->dbQuote($upload_file, "text")
-							." WHERE `id` = ".$this->dbQuote($sID, "integer")
-						,"admin->documents->add_document_upload"
-					);
+					if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file))
+					{
+						$this->dbResults(
+							"UPDATE `documents` SET"
+								." `document` = ".$this->dbQuote($upload_file, "text")
+								." WHERE `id` = ".$this->dbQuote($sID, "integer")
+							,"admin->documents->add_document_upload"
+						);
+					}
+					else
+					{
+						$this->dbResults(
+							"UPDATE `documents` SET"
+								." `active` = 0"
+								." WHERE `id` = ".$this->dbQuote($sID, "integer")
+							,"admin->documents->failed_document_upload"
+						);
+						
+						$this->forward("/admin/documents/edit/".$sID."/?error=".urlencode("Failed to upload file!"));
+					}
 				}
 				else
-				{
-					$this->dbResults(
-						"UPDATE `documents` SET"
-							." `active` = 0"
-							." WHERE `id` = ".$this->dbQuote($sID, "integer")
-						,"admin->documents->failed_document_upload"
-					);
-					
-					$this->forward("/admin/documents/?notice=".urlencode("Failed to upload file!"));
-				}
+					$this->forward("/admin/documents/edit/".$sID."/?error=".urlencode("File type not allowed for upload!"));
 			}
 		}
 		
@@ -132,6 +132,8 @@ class admin_documents extends adminController
 	}
 	function edit()
 	{
+		$oDocument = $this->loadModel("documents");
+		
 		if(!empty($_SESSION["admin"]["admin_documents"]))
 		{
 			$aDocumentRow = $this->dbResults(
@@ -150,8 +152,6 @@ class admin_documents extends adminController
 				,"admin->documents->edit->updated_by"
 				,"row"
 			);
-			
-			$this->tplAssign("aDocument", $aDocument);
 		}
 		else
 		{
@@ -178,15 +178,16 @@ class admin_documents extends adminController
 				,"admin->documents->edit->updated_by"
 				,"row"
 			);
-			
-			$this->tplAssign("aDocument", $aDocument);
 		}
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oDocument->getCategories());
+		$this->tplAssign("aDocument", $aDocument);
 		$this->tplDisplay("documents/edit.tpl");
 	}
 	function edit_s()
 	{
+		$oDocument = $this->loadModel("documents");
+		
 		if(empty($_POST["name"]) || count($_POST["categories"]) == 0)
 		{
 			$_SESSION["admin"]["admin_documents"] = $_POST;
@@ -240,38 +241,47 @@ class admin_documents extends adminController
 			}
 			else
 			{
-				$upload_dir = $this->_settings->rootPublic."uploads/documents/";
+				$upload_dir = $this->_settings->rootPublic.substr($oDocument->documentFolder, 1);
+				
+				if(!is_dir($upload_dir))
+					mkdir($upload_dir, 0777);
+					
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
-				$sDocument = $this->dbResults(
-					"SELECT `document` FROM `documents`"
-						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"admin->documents->edit"
-					,"one"
-				);
-				@unlink($upload_dir.$sDocument);
-			
-				if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file))
+				if(in_array($file_ext, $oDocument->allowedExt) || empty($oDocument->allowedExt))
 				{
-					$this->dbResults(
-						"UPDATE `documents` SET"
-							." `document` = ".$this->dbQuote($upload_file, "text")
+					$sDocument = $this->dbResults(
+						"SELECT `document` FROM `documents`"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						,"admin->documents->edit_document_upload"
+						,"admin->documents->edit"
+						,"one"
 					);
+					@unlink($upload_dir.$sDocument);
+			
+					if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file))
+					{
+						$this->dbResults(
+							"UPDATE `documents` SET"
+								." `document` = ".$this->dbQuote($upload_file, "text")
+								." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+							,"admin->documents->edit_document_upload"
+						);
+					}
+					else
+					{
+						$this->dbResults(
+							"UPDATE `documents` SET"
+								." `active` = 0"
+								." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+							,"admin->documents->edit_failed_document_upload"
+						);
+					
+						$this->forward("/admin/documents/?notice=".urlencode("Failed to upload file!"));
+					}
 				}
 				else
-				{
-					$this->dbResults(
-						"UPDATE `documents` SET"
-							." `active` = 0"
-							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						,"admin->documents->edit_failed_document_upload"
-					);
-					
-					$this->forward("/admin/documents/?notice=".urlencode("Failed to upload file!"));
-				}
+					$this->forward("/admin/documents/?error=".urlencode("File type not allowed for upload!"));
 			}
 		}
 		
@@ -281,13 +291,16 @@ class admin_documents extends adminController
 	}
 	function delete()
 	{
+		$oDocument = $this->loadModel("documents");
+		
 		$aDocument = $this->dbResults(
 			"SELECT * FROM `documents`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->documents->edit"
 			,"row"
 		);
-		@unlink($this->_settings->rootPublic."uploads/documents/".$aDocument["document"]);
+		
+		@unlink($this->_settings->rootPublic.substr($oDocument->documentFolder, 1).$aDocument["document"]);
 		
 		$this->dbResults(
 			"DELETE FROM `documents`"
@@ -356,20 +369,6 @@ class admin_documents extends adminController
 		);
 
 		$this->forward("/admin/documents/categories/?notice=".urlencode("Category removed successfully!"));
-	}
-	##################################
-	
-	### Functions ####################
-	private function get_categories()
-	{
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `documents_categories`"
-				." ORDER BY `name`"
-			,"admin->documents->get_categories->categories"
-			,"all"
-		);
-		
-		return $aCategories;
 	}
 	##################################
 }

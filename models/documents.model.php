@@ -1,15 +1,21 @@
 <?php
 class documents_model extends appModel
 {
+	public $allowedExt = array();//array("pdf","doc");
+	public $documentFolder = "/uploads/documents/";
 	public $perPage = 5;
 	
-	function getDocuments($sCategory)
+	function getDocuments($sCategory, $sAll = false)
 	{
-		$sWhere = " WHERE `documents`.`active` = 1";
+		// Start the WHERE
+		$sWhere = " WHERE `documents`.`id` > 0";// Allways true
+		
+		if($sAll == false)
+			$sWhere .= " AND `documents`.`active` = 1";
+		
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
-		// Get all documents for paging
 		$aDocuments = $this->dbResults(
 			"SELECT `documents`.* FROM `documents` AS `documents`"
 				." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `documents`.`id` = `documents_assign`.`documentid`"
@@ -22,19 +28,33 @@ class documents_model extends appModel
 		);
 		
 		foreach($aDocuments as $x => $aDocument)
-		{
-			$aDocumentCategories = $this->dbResults(
-				"SELECT `name` FROM `documents_categories` AS `categories`"
-					." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
-					." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
-				,"model->documents->getDocuments->document_categories"
-				,"col"
-			);
-		
-			$aDocuments[$x]["categories"] = implode(", ", $aDocumentCategories);
-		}
+			$aDocuments[$x] = $this->getDocumentInfo($aDocument);
 		
 		return $aDocuments;
+	}
+	function getDocument($sId)
+	{
+		$aDocument = $this->dbResults(
+			"SELECT `documents`.* FROM `documents` AS `documents`"
+				." WHERE `documents`.`id` = ".$this->dbQuote($sId, "integer")
+				." AND `documents`.`active` = 1"
+			,"model->documents->getDocument"
+			,"row"
+		);
+	}
+	function getDocumentInfo($aDocument)
+	{
+		$aCategories = $this->dbResults(
+			"SELECT `name` FROM `documents_categories` AS `categories`"
+				." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
+				." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
+			,"model->documents->getDocumentInfo->categories"
+			,"col"
+		);
+	
+		$aDocument["categories"] = implode(", ", $aCategories);
+		
+		return $aDocument;
 	}
 	function getCategories()
 	{
@@ -46,5 +66,23 @@ class documents_model extends appModel
 		);
 		
 		return $aCategories;
+	}
+	function getCategory($sId = null, $sName = null)
+	{
+		if(!empty($sId))
+			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
+		elseif(!empty($sName))
+			$sWhere = " WHERE `name` LIKE ".$this->dbQuote($sName, "text");
+		else
+			return false;
+		
+		$aCategory = $this->dbResults(
+			"SELECT * FROM `documents_categories`"
+				.$sWhere
+				." LIMIT 1"
+			,"model->documents->getCategory"
+		);
+		
+		return $aCategory;
 	}
 }
