@@ -47,7 +47,7 @@ class calendar_model extends appModel
 				." AND `calendar`.`active` = 1"
 				." AND `calendar`.`datetime_show` < ".time()
 				." AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")"
-			,"calendar->event"
+			,"model->calendar->getEvent"
 			,"row"
 		);
 		
