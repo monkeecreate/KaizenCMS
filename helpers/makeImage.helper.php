@@ -10,7 +10,7 @@ class makeImage
 	
 	public function __construct($sFile, $sCache = false)
 	{
-		ini_set("memory_limit", "100m");
+		ini_set("memory_limit", "200m");
 		
 		$this->_file = $sFile;
 		$this->_cache = $sCache;
