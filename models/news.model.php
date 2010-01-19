@@ -1,14 +1,23 @@
 <?php
 class news_model extends appModel
 {
+	public $useImage = true;
 	public $imageMinWidth = 140;
 	public $imageMinHeight = 87;
+	public $imageFolder = "/uploads/news/";
 	public $perPage = 5;
 	
 	function getArticles($sCategory = null)
 	{	
-		$sWhere = " WHERE `news`.`datetime_show` < ".time()." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
-		$sWhere .= " AND `news`.`active` = 1";
+		// Start the WHERE
+		$sWhere = " WHERE `news`.`id` > 0";// Allways true
+		
+		if($sAll == false)
+		{
+			$sWhere .= " AND `news`.`datetime_show` < ".time()." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
+			$sWhere .= " AND `news`.`active` = 1";
+		}
+		
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
@@ -24,20 +33,7 @@ class news_model extends appModel
 		);
 	
 		foreach($aArticles as $x => $aArticle)
-		{
-			$aArticleCategories = $this->dbResults(
-				"SELECT `name` FROM `news_categories` AS `categories`"
-					." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
-					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-				,"model->new->getArticles->article_categories"
-				,"col"
-			);
-		
-			$aArticles[$x]["categories"] = implode(", ", $aArticleCategories);
-			
-			if(file_exists($this->_settings->rootPublic."upload/news/".$aArticle["id"].".jpg") && $aArticle["photo_x2"] > 0)
-				$aArticles[$x]["image"] = 1;
-		}
+			$aArticles[$x] = $this->getArticleInfo($aArticle);
 		
 		return $aArticles;
 	}
@@ -54,21 +50,29 @@ class news_model extends appModel
 		);
 		
 		if(!empty($aArticle))
-		{
-			$aCategories = $this->dbResults(
-				"SELECT `name` FROM `news_categories` AS `category`"
-					." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `category`.`id`"
-					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-				,"model->news->getArticle->categories"
-				,"col"
-			);
-			
-			$aArticle["categories"] = implode(", ", $aCategories);
-			
-			if(file_exists($this->_settings->rootPublic."uploads/news/".$aArticle["id"].".jpg"))
-				$aArticle["image"] = 1;
-		}
+			$aArticle = $this->getArticleInfo($aArticle);
 		
+		return $aArticle;
+	}
+	private function getArticleInfo($aArticle)
+	{	
+		$aCategories = $this->dbResults(
+			"SELECT `name` FROM `news_categories` AS `categories`"
+				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
+				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
+			,"model->news->getArticleInfo->categories"
+			,"col"
+		);
+	
+		$aArticle["categories"] = implode(", ", $aCategories);
+		
+		if(file_exists($this->_settings->rootPublic.substr($this->imageFolder, 1).$aArticle["id"].".jpg")
+		 && $aArticle["photo_x2"] > 0
+		 && $this->useImage == true)
+			$aArticle["image"] = 1;
+		else
+			$aArticle["image"] = 0;
+			
 		return $aArticle;
 	}
 	function getCategories()
@@ -82,11 +86,29 @@ class news_model extends appModel
 		
 		return $aCategories;
 	}
+	function getCategory($sId = null, $sName = null)
+	{
+		if(!empty($sId))
+			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
+		elseif(!empty($sName))
+			$sWhere = " WHERE `name` LIKE ".$this->dbQuote($sName, "text");
+		else
+			return false;
+		
+		$aCategory = $this->dbResults(
+			"SELECT * FROM `news_categories`"
+				.$sWhere
+				." LIMIT 1"
+			,"model->news->getCategory"
+		);
+		
+		return $aCategory;
+	}
 	function getImage($sId)
 	{
 		$aArticle = $this->getArticle($sId);
 		
-		$sFile = $this->_settings->rootPublic."uploads/news/".$sId.".jpg";
+		$sFile = $this->_settings->rootPublic.substr($this->imageFolder, 1).$sId.".jpg";
 		
 		$aImage = array(
 			"file" => $sFile

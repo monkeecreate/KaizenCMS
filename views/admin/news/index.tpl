@@ -57,9 +57,11 @@
 					{/if}
 				</td>
 				<td class="small center border-end">
-					<a href="/admin/news/image/{$aArticle.id}/edit/" title="Edit Article Photo">
-						<img src="/images/admin/icons/picture.png">
-					</a>
+					{if $sUseImage == true}
+						<a href="/admin/news/image/{$aArticle.id}/edit/" title="Edit Article Photo">
+							<img src="/images/admin/icons/picture.png">
+						</a>
+					{/if}
 					<a href="/admin/news/edit/{$aArticle.id}/" title="Edit Article">
 						<img src="/images/admin/icons/pencil.png">
 					</a>

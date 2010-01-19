@@ -24,8 +24,10 @@
 <div class="clear"></div>
 {foreach from=$aArticles item=aArticle}
 	<div class="contentList">
-		{if $aArticle.photo_x2 > 0}
-			<img src="/image/news/{$aArticle.id}/?width=140">
+		{if $aArticle.image == 1}
+			<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
+				<img src="/image/news/{$aArticle.id}/?width=140">
+			</a>
 		{/if}
 		<h3>
 			<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
