@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="Testimonials" menu="testimonials"}
+{include file="inc_header.tpl" page_title="Promo Positions" menu="promos"}
 {head}
 <script language="JavaScript" type="text/javascript" src="/scripts/jquery/jTPS/jTPS.js"></script>
 <link rel="stylesheet" type="text/css" href="/scripts/jquery/jTPS/jTPS.css">
@@ -11,40 +11,29 @@
 	{rdelim});
 </script>
 {/head}
-<div class="clear"></div>
+
 <table class="dataTable">
 	<thead>
 		<tr>
-			<th sort="name">Name</th>
-			<th sort="type">Type</td>
-			<th sort="active">Active</th>
+			<th sort="title">Name</th>
+			<th sort="tag">Tag</th>
+			<th sort="dimensions">Dimensions</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		{foreach from=$aTestimonials item=aTestimonial}
+		{foreach from=$aPositions item=aPosition}
 			<tr>
-				<td>{$aTestimonial.name|clean_html}</td>
-				<td class="small center">
-					{if !empty($aTestimonial.video)}
-						Video
-					{else}
-						Text
-					{/if}
-				</td>
-				<td class="small center">
-					{if $aTestimonial.active == 1}
-						<img src="/images/admin/icons/accept.png">
-					{else}
-						<img src="/images/admin/icons/cancel.png">
-					{/if}
-				</td>
+				<td>{$aPosition.name}</td>
+				<td>{$aPosition.tag}</td>
+				<td class="center">{$aPosition.promo_width}x{$aPosition.promo_height}px</td>
 				<td class="small center border-end">
-					<a href="/admin/testimonials/edit/{$aTestimonial.id}/">
+					<a href="/admin/promos/positions/edit/{$aPosition.id}/" title="Edit Promo Position">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
-					<a href="/admin/testimonials/delete/{$aTestimonial.id}/"
-						onclick="return confirm_('Are you sure you would like to delete this testimonial?');">
+					<a href="/admin/promos/positions/delete/{$aPosition.id}/"
+					 onclick="return confirm_('Are you sure you would like to delete this promo position?');"
+					 title="Delete Promo Position">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>
@@ -53,7 +42,7 @@
 	</tbody>
 	<tfoot class="nav">
 		<tr>
-			<td colspan="5">
+			<td colspan="6">
 				<div class="pagination"></div>
 				<div class="paginationTitle">Page</div>
 				<div class="selectPerPage"></div>

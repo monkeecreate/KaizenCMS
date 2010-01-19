@@ -19,14 +19,14 @@ class image extends appController
 		$oImage->resize($sNewWidth, $sNewHeight);
 		$oImage->draw(null, 85);
 	}
-	function itemImage($aParams)
+	function itemImage()
 	{
-		$oModel = $this->loadModel($aParams["model"]);
+		$oModel = $this->loadModel($this->_urlVars->dynamic["model"]);
 		
 		if(empty($oModel))
 			$this->error("404");
 		
-		$aImage = $oModel->getImage($aParams["id"]);
+		$aImage = $oModel->getImage($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aImage))
 			$this->error("404");

@@ -3,7 +3,7 @@
 	{image_crop load="cropper" preview="true" img="cropimage" minw=$minWidth minh=$minHeight rx=$minWidth ry=$minHeight values=$aArticle}
 {/head}
 <p>
-	<b>{$aArticle.title|stripslashes}</b><br />
+	<b>{$aArticle.title|clean_html}</b><br />
 	<span>{$aArticle.datetime_show|date_format}</span>
 </p><br />
 <form name="crop" action="/admin/news/image/edit/s/" method="post">

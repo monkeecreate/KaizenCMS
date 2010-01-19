@@ -14,7 +14,7 @@
 <div id="add-category" style="display:none;" title="Add Category">
 	<form method="post" id="addCategory-form" action="/admin/testimonials/categories/add/s/">
 		<label>*Name:</label>
-		<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|stripslashes}"><br>
+		<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|clean_html}"><br>
 	</form>
 </div>
 <div id="add-category-btn" class="float-right" style="margin-bottom:10px;">
@@ -41,7 +41,7 @@
 					<div id="dialog_edit_{$aCategory.id}_form" style="display:none;" title="Edit Category">
 						<form method="post" action="/admin/testimonials/categories/edit/s/">
 							<label>*Name:</label>
-							<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|stripslashes}"><br>
+							<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|clean_html}"><br>
 							<input type="hidden" name="id" value="{$aCategory.id}">
 						</form>
 					</div>

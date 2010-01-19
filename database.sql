@@ -524,3 +524,5 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_by` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+INSERT INTO `users` VALUES(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Admin', 'User', 0, 0, 0, 0);

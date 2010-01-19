@@ -1,8 +1,10 @@
 <?php
 class calendar_model extends appModel
 {
+	public $useImage = true;
 	public $imageMinWidth = 320;
 	public $imageMinHeight = 200;
+	public $imageFolder = "/uploads/calendar/";
 	public $perPage = 5;
 	
 	function getEvents($sCategory = null)
@@ -12,10 +14,9 @@ class calendar_model extends appModel
 		$sWhere .= " AND `calendar`.`datetime_end` > ".time();
 		$sWhere .= " AND `calendar`.`active` = 1";
 		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($sCategory, "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
-		// Get all events for paging
-		$aEvents = $this->db_results(
+		$aEvents = $this->dbResults(
 			"SELECT `calendar`.* FROM `calendar` AS `calendar`"
 				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar`.`id` = `calendar_assign`.`eventid`"
 				." INNER JOIN `calendar_categories` AS `categories` ON `calendar_assign`.`categoryid` = `categories`.`id`"
@@ -27,28 +28,15 @@ class calendar_model extends appModel
 		);
 	
 		foreach($aEvents as $x => $aEvent)
-		{
-			$aEventCategories = $this->db_results(
-				"SELECT `name` FROM `calendar_categories` AS `categories`"
-					." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `categories`.`id`"
-					." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
-				,"calendar->event_categories"
-				,"col"
-			);
-		
-			$aEvents[$x]["categories"] = implode(", ", $aEventCategories);
-		
-			if(file_exists($this->_settings->root_public."uploads/calendar/".$aEvent["id"].".jpg"))
-				$aEvents[$x]["image"] = 1;
-		}
+			$aEvents[$x] = $this->getEventInfo($aEvent);
 		
 		return $aEvents;
 	}
 	function getEvent($sId)
 	{
-		$aEvent = $this->db_results(
+		$aEvent = $this->dbResults(
 			"SELECT `calendar`.* FROM `calendar` AS `calendar`"
-				." WHERE `calendar`.`id` = ".$this->db_quote($sId, "integer")
+				." WHERE `calendar`.`id` = ".$this->dbQuote($sId, "integer")
 				." AND `calendar`.`active` = 1"
 				." AND `calendar`.`datetime_show` < ".time()
 				." AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")"
@@ -57,33 +45,55 @@ class calendar_model extends appModel
 		);
 		
 		if(!empty($aEvent))
-		{
-			$aCategories = $this->db_results(
-				"SELECT `name` FROM `calendar_categories` AS `category`"
-					." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
-					." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
-				,"calendar->event->categories"
-				,"col"
-			);
+			$aEvent = $this->getEventInfo($aEvent);
 		
-			$aEvent["categories"] = implode(", ", $aCategories);
-		
-			if(file_exists($this->_settings->root_public."uploads/calendar/".$aEvent["id"].".jpg"))
-				$aEvent["image"] = 1;
-		}
-		
+		return $aEvent;
+	}
+	private function getEventInfo($aEvent)
+	{
+		$aCategories = $this->dbResults(
+			"SELECT `name` FROM `calendar_categories` AS `category`"
+				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
+				." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
+			,"calendar->event->categories"
+			,"col"
+		);
+	
+		$aEvent["categories"] = implode(", ", $aCategories);
+	
+		if(file_exists($this->_settings->rootPublic."uploads/calendar/".$aEvent["id"].".jpg") && $this->useImage == true)
+			$aEvent["image"] = 1;
+		else
+			$aEvent["image"] = 1;
+			
 		return $aEvent;
 	}
 	function getCategories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `calendar_categories`"
 				." ORDER BY `name`"
-			,"model->calendar->get_categories"
+			,"model->calendar->getCategories"
 			,"all"
 		);
 		
 		return $aCategories;
+	}
+	function getCategory($sId = null, $sName = null)
+	{
+		if(!empty($sId))
+			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
+		elseif(!empty($sName))
+			$sWhere = " WHERE `name` LIKE ".$this->dbQuote($sName, "text");
+		else
+			return false;
+		
+		$aCategory = $this->dbResults(
+			"SELECT * FROM `calendar_categories`"
+				.$sWhere
+				." LIMIT 1"
+			,"model->calendar->getCategory"
+		);
 	}
 	function getImage($sId)
 	{

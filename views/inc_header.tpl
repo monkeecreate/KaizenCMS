@@ -23,6 +23,7 @@
 			<li><a href="/documents/"{selected_menu var="documents"}>Documents</a></li>
 			<li><a href="/testimonials/"{selected_menu var="testimonials"}>Testimonials</a></li>
 			<li><a href="/galleries/"{selected_menu var="galleries"}>Photo Gallery</a></li>
+			<li><a href="/social/"{selected_menu var="social"}>Social</a></li>
 			<li><a href="/test-content/"{selected_menu var="test-content"}>Test Menu</a></li>
 		</ul>
 		<div class="clear"></div>

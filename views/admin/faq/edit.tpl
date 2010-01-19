@@ -5,7 +5,7 @@
 			<div class="section">
 				<label>Last Updated:</label>
 				{$aQuestion.updated_datetime|date_format:"%D - %I:%M %p"}<br>
-				<small>by {$aQuestion.updated_by.fname|stripslashes} {$aQuestion.update_by.lname|stripslashes}</small>
+				<small>by {$aQuestion.updated_by.fname|clean_html} {$aQuestion.update_by.lname|clean_html}</small>
 			</div>
 			<div class="section">
 				<label>Active:</label>
@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<label>*Question:</label>
-	<textarea name="question" class="elastic">{$aQuestion.question|htmlspecialchars|stripslashes}</textarea><br>
+	<textarea name="question" class="elastic">{$aQuestion.question|clean_html}</textarea><br>
 	<label>Answer:</label>
 	{html_editor content=$aQuestion.answer name="answer"}
 	<div class="clear"></div>
@@ -25,7 +25,7 @@
 				<li>
 					<input type="checkbox" name="categories[]" value="{$aCategory.id}"
 						{if in_array($aCategory.id, $aQuestion.categories)} checked="checked"{/if}>
-					{$aCategory.name|stripslashes}
+					{$aCategory.name|clean_html}
 				</li>
 			{/foreach}
 		</ul>

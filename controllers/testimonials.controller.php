@@ -1,9 +1,9 @@
 <?php
 class testimonials extends appController
 {
-	function index($aParams)
+	function index()
 	{
-		$aTestimonials = $this->db_results(
+		$aTestimonials = $this->dbResults(
 			"SELECT `testimonials`.* FROM `testimonials`"
 				." INNER JOIN `testimonials_categories_assign` AS `assign` ON `testimonials`.`id` = `assign`.`testimonialid`"
 				." INNER JOIN `testimonials_categories` AS `categories` ON `assign`.`categoryid` = `categories`.`id`"
@@ -13,20 +13,20 @@ class testimonials extends appController
 			,"all"
 		);
 		
-		if(empty($aParams["id"]))
-			$this->tpl_assign("aCurTestimonial", $aTestimonials[0]);
+		if(empty($this->_urlVars->dynamic["id"]))
+			$this->tplAssign("aCurTestimonial", $aTestimonials[0]);
 		else
 		{
-			$aTestimonial = $this->db_results(
+			$aTestimonial = $this->dbResults(
 				"SELECT * FROM `testimonials`"
-					." WHERE `id` = ".$aParams["id"]
+					." WHERE `id` = ".$this->_urlVars->dynamic["id"]
 				,"testimonials->testimonial"
 				,"row"
 			);
-			$this->tpl_assign("aCurTestimonial", $aTestimonial);
+			$this->tplAssign("aCurTestimonial", $aTestimonial);
 		}
 		
-		$this->tpl_assign("aTestimonials", $aTestimonials);
-		$this->tpl_display("testimonials.tpl");
+		$this->tplAssign("aTestimonials", $aTestimonials);
+		$this->tplDisplay("testimonials.tpl");
 	}
 }

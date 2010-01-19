@@ -223,6 +223,11 @@ if(count($aUrlPatterns[$pattern]) > 0)
 			$urlParams[$key] = $value;
 	}
 	
+	$aURLVars = (object) array(
+		"dynamic" => $urlParams,
+		"manual" => $aUrlPatterns[$pattern]["params"]
+	);
+	
 	$oClass = new $aUrlPatterns[$pattern]["cmd"];
 	$oClass->$aUrlPatterns[$pattern]["action"]($urlParams, $aUrlPatterns[$pattern]["params"]);
 }

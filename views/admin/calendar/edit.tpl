@@ -5,7 +5,7 @@
 			<div class="section">
 				<label>Last Updated:</label>
 				{$aEvent.updated_datetime|date_format:"%D - %I:%M %p"}<br>
-				<small>by {$aEvent.updated_by.fname|stripslashes} {$aEvent.update_by.lname|stripslashes}</small>
+				<small>by {$aEvent.updated_by.fname|clean_html} {$aEvent.update_by.lname|clean_html}</small>
 			</div>
 			<div class="section">
 				<label>Use Unpublish:</label>
@@ -26,7 +26,7 @@
 	<label>*Title:</label>
 	<input type="text" name="title" maxlength="100" value="{$aEvent.title|htmlspecialchars|stripslashes}"><br>
 	<label>Short Content:</label>
-	<textarea name="short_content" class="enlarge">{$aEvent.short_content|htmlspecialchars|stripslashes}</textarea><br>
+	<textarea name="short_content" class="enlarge">{$aEvent.short_content|clean_html}</textarea><br>
 	<div class="clear"></div>
 	<label>Content:</label>
 	{html_editor content=$aEvent.content name="content"}
@@ -79,7 +79,7 @@
 				<li>
 					<input type="checkbox" name="categories[]" value="{$aCategory.id}"
 						{if in_array($aCategory.id, $aEvent.categories)} checked="checked"{/if}>
-					{$aCategory.name|stripslashes}
+					{$aCategory.name|clean_html}
 				</li>
 			{/foreach}
 		</ul>

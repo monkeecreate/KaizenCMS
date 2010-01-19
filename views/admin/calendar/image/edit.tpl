@@ -3,7 +3,7 @@
 	{image_crop load="cropper" preview="true" img="cropimage" minw="300" minh="225" rx="300" ry="225" values=$aEvent}
 {/head}
 <p>
-	<b>{$aEvent.title|stripslashes}</b><br />
+	<b>{$aEvent.title|clean_html}</b><br />
 	<span>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</span>
 </p><br />
 <form name="crop" action="/admin/calendar/image/edit/s/" method="post">

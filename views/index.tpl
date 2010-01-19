@@ -3,6 +3,7 @@
 	{getPromo tag="po1"}
 	{getPromo tag="po2"}
 </div>
+
 <h1>HTML Ipsum Presents</h1>
 	       
 <p>

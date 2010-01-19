@@ -10,10 +10,10 @@ class admin_news extends adminController
 		if(!empty($_GET["category"]))
 		{
 			$sSQLCategory = " INNER JOIN `news_categories_assign` AS `assign` ON `news`.`id` = `assign`.`articleid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->db_quote($_GET["category"], "integer");
+			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
 		}
 		
-		$aArticles = $this->db_results(
+		$aArticles = $this->dbResults(
 			"SELECT `news`.* FROM `news`"
 				.$sSQLCategory
 				." GROUP BY `news`.`id`"
@@ -22,10 +22,10 @@ class admin_news extends adminController
 			,"all"
 		);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_assign("sCategory", $_GET["category"]);
-		$this->tpl_assign("aArticles", $aArticles);
-		$this->tpl_display("news/index.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("sCategory", $_GET["category"]);
+		$this->tplAssign("aArticles", $aArticles);
+		$this->tplDisplay("news/index.tpl");
 	}
 	function add()
 	{
@@ -35,10 +35,10 @@ class admin_news extends adminController
 			$aArticle["datetime_show"] = strtotime($aArticle["datetime_show_date"]." ".$aArticle["datetime_show_Hour"].":".$aArticle["datetime_show_Minute"]." ".$aArticle["datetime_show_Meridian"]);
 			$aArticle["datetime_kill"] = strtotime($aArticle["datetime_kill_date"]." ".$aArticle["datetime_kill_Hour"].":".$aArticle["datetime_kill_Minute"]." ".$aArticle["datetime_kill_Meridian"]);
 			
-			$this->tpl_assign("aArticle", $aArticle);
+			$this->tplAssign("aArticle", $aArticle);
 		}
 		else
-			$this->tpl_assign("aArticle",
+			$this->tplAssign("aArticle",
 				array(
 					"datetime_show_date" => date("m/j/Y")
 					,"datetime_kill_date" => date("m/j/Y")
@@ -47,8 +47,8 @@ class admin_news extends adminController
 				)
 			);
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("news/add.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("news/add.tpl");
 	}
 	function add_s()
 	{
@@ -84,23 +84,23 @@ class admin_news extends adminController
 		else
 			$active = 0;
 		
-		$sID = $this->db_results(
+		$sID = $this->dbResults(
 			"INSERT INTO `news`"
 				." (`title`, `short_content`, `content`, `datetime_show`, `datetime_kill`, `use_kill`, `sticky`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
-					.$this->db_quote($_POST["title"], "text")
-					.", ".$this->db_quote($_POST["short_content"], "text")
-					.", ".$this->db_quote($_POST["content"], "text")
-					.", ".$this->db_quote($datetime_show, "integer")
-					.", ".$this->db_quote($datetime_kill, "integer")
-					.", ".$this->db_quote($use_kill, "integer")
-					.", ".$this->db_quote($sticky, "integer")
-					.", ".$this->db_quote($active, "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->db_quote(time(), "integer")
-					.", ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
+					.$this->dbQuote($_POST["title"], "text")
+					.", ".$this->dbQuote($_POST["short_content"], "text")
+					.", ".$this->dbQuote($_POST["content"], "text")
+					.", ".$this->dbQuote($datetime_show, "integer")
+					.", ".$this->dbQuote($datetime_kill, "integer")
+					.", ".$this->dbQuote($use_kill, "integer")
+					.", ".$this->dbQuote($sticky, "integer")
+					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+					.", ".$this->dbQuote(time(), "integer")
+					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
 			,"admin->news->add"
 			,"insert"
@@ -108,7 +108,7 @@ class admin_news extends adminController
 		
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `news_categories_assign`"
 					." (`articleid`, `categoryid`)"
 					." VALUES"
@@ -124,13 +124,13 @@ class admin_news extends adminController
 		else
 			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!"));
 	}
-	function edit($aParams)
+	function edit()
 	{
 		if(!empty($_SESSION["admin"]["admin_news"]))
 		{
-			$aArticleRow = $this->db_results(
+			$aArticleRow = $this->dbResults(
 				"SELECT * FROM `news`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->news->edit"
 				,"row"
 			);
@@ -138,25 +138,25 @@ class admin_news extends adminController
 			$aArticle = $_SESSION["admin"]["admin_news"];
 			
 			$aArticle["updated_datetime"] = $aArticleRow["updated_datetime"];
-			$aArticle["updated_by"] = $this->db_results(
+			$aArticle["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aArticleRow["updated_by"]
 				,"admin->news->edit->updated_by"
 				,"row"
 			);
 			
-			$this->tpl_assign("aArticle", $aArticle);
+			$this->tplAssign("aArticle", $aArticle);
 		}
 		else
 		{
-			$aArticle = $this->db_results(
+			$aArticle = $this->dbResults(
 				"SELECT * FROM `news`"
-					." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"admin->news->edit"
 				,"row"
 			);
 			
-			$aArticle["categories"] = $this->db_results(
+			$aArticle["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `news_categories` AS `categories`"
 					." INNER JOIN `news_categories_assign` AS `news_assign` ON `categories`.`id` = `news_assign`.`categoryid`"
 					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
@@ -169,18 +169,18 @@ class admin_news extends adminController
 			$aArticle["datetime_show_date"] = date("m/d/Y", $aArticle["datetime_show"]);
 			$aArticle["datetime_kill_date"] = date("m/d/Y", $aArticle["datetime_kill"]);
 			
-			$aArticle["updated_by"] = $this->db_results(
+			$aArticle["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aArticle["updated_by"]
 				,"admin->news->edit->updated_by"
 				,"row"
 			);
 			
-			$this->tpl_assign("aArticle", $aArticle);
+			$this->tplAssign("aArticle", $aArticle);
 		}
 		
-		$this->tpl_assign("aCategories", $this->get_categories());
-		$this->tpl_display("news/edit.tpl");
+		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplDisplay("news/edit.tpl");
 	}
 	function edit_s()
 	{
@@ -216,34 +216,34 @@ class admin_news extends adminController
 		else
 			$active = 0;
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `news` SET"
-				." `title` = ".$this->db_quote($_POST["title"], "text")
-				.", `short_content` = ".$this->db_quote($_POST["short_content"], "text")
-				.", `content` = ".$this->db_quote($_POST["content"], "text")
-				.", `datetime_show` = ".$this->db_quote($datetime_show, "integer")
-				.", `datetime_kill` = ".$this->db_quote($datetime_kill, "integer")
-				.", `use_kill` = ".$this->db_quote($use_kill, "integer")
-				.", `sticky` = ".$this->db_quote($sticky, "integer")
-				.", `active` = ".$this->db_quote($active, "integer")
-				.", `updated_datetime` = ".$this->db_quote(time(), "integer")
-				.", `updated_by` = ".$this->db_quote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `title` = ".$this->dbQuote($_POST["title"], "text")
+				.", `short_content` = ".$this->dbQuote($_POST["short_content"], "text")
+				.", `content` = ".$this->dbQuote($_POST["content"], "text")
+				.", `datetime_show` = ".$this->dbQuote($datetime_show, "integer")
+				.", `datetime_kill` = ".$this->dbQuote($datetime_kill, "integer")
+				.", `use_kill` = ".$this->dbQuote($use_kill, "integer")
+				.", `sticky` = ".$this->dbQuote($sticky, "integer")
+				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
+				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->news->edit"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `news_categories_assign`"
-				." WHERE `articleid` = ".$this->db_quote($_POST["id"], "integer")
+				." WHERE `articleid` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->news->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
-			$this->db_results(
+			$this->dbResults(
 				"INSERT INTO `news_categories_assign`"
 					." (`articleid`, `categoryid`)"
 					." VALUES"
-					." (".$this->db_quote($_POST["id"], "integer").", ".$sCategory.")"
+					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
 				,"admin->news->edit->categories"
 			);
 		}
@@ -252,42 +252,42 @@ class admin_news extends adminController
 		
 		$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete($aParams)
+	function delete()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `news`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `news_categories_assign`"
-				." WHERE `articleid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `articleid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->categories_assign_delete"
 		);
 		
 		$this->forward("/admin/news/?notice=".urlencode("Article removed successfully!"));
 	}
 	
-	function image_upload($aParams)
+	function image_upload()
 	{
 		$oNews = $this->loadModel("news");
 		
-		$aArticle = $this->db_results(
+		$aArticle = $this->dbResults(
 			"SELECT * FROM `news`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->image->upload"
 			,"row"
 		);
 
-		$this->tpl_assign("aArticle", $aArticle);
-		$this->tpl_assign("minWidth", $oNews->imageMinWidth);
-		$this->tpl_assign("minHeight", $oNews->imageMinHeight);
-		$this->tpl_display("news/image/upload.tpl");
+		$this->tplAssign("aArticle", $aArticle);
+		$this->tplAssign("minWidth", $oNews->imageMinWidth);
+		$this->tplAssign("minHeight", $oNews->imageMinHeight);
+		$this->tplDisplay("news/image/upload.tpl");
 	}
 	function image_upload_s()
 	{
 		$oNews = $this->loadModel("news");
-		$folder = $this->_settings->root_public."uploads/news/";
+		$folder = $this->_settings->rootPublic."uploads/news/";
 		
 		if(!is_dir($folder))
 			mkdir($folder, 0777);
@@ -301,19 +301,25 @@ class admin_news extends adminController
 
 			if(move_uploaded_file($_FILES["image"]["tmp_name"], $folder.$_POST["id"].".jpg"))
 			{
-				$this->db_results(
-					"UPDATE `news` SET"
-						." `photo_x1` = 0"
-						.", `photo_y1` = 0"
-						.", `photo_x2` = ".$oNews->imageMinWidth
-						.", `photo_y2` = ".$oNews->imageMinHeight
-						.", `photo_width` = ".$oNews->imageMinWidth
-						.", `photo_height` = ".$oNews->imageMinHeight
-						." WHERE `id` = ".$_POST["id"]
-					,"admin->news->image->upload"
-				);
+				$aImageSize = getimagesize($folder.$_POST["id"].".jpg");
+				if($aImageSize[0] < $oNews->imageMinWidth || $aImageSize[1] < $oNews->imageMinHeight) {
+					@unlink($folder + $id.".jpg");
+					$this->forward("/admin/news/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+				} else {				
+					$this->dbResults(
+						"UPDATE `news` SET"
+							." `photo_x1` = 0"
+							.", `photo_y1` = 0"
+							.", `photo_x2` = ".$oNews->imageMinWidth
+							.", `photo_y2` = ".$oNews->imageMinHeight
+							.", `photo_width` = ".$oNews->imageMinWidth
+							.", `photo_height` = ".$oNews->imageMinHeight
+							." WHERE `id` = ".$_POST["id"]
+						,"admin->news->image->upload"
+					);
 
-				$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
+					$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
+				}
 			}
 			else
 				$this->forward("/admin/news/image/".$_POST["id"]."/upload/?error=".urlencode("Unable to upload image."));
@@ -321,48 +327,48 @@ class admin_news extends adminController
 		else
 			$this->forward("/admin/news/image/".$_POST["id"]."/upload/?error=".urlencode("Image not a jpg. Image is (".$_FILES["file"]["type"].")."));
 	}
-	function image_edit($aParams)
+	function image_edit()
 	{
 		$oNews = $this->loadModel("news");
 		
-		$folder = $this->_settings->root_public."uploads/news/";
+		$folder = $this->_settings->rootPublic."uploads/news/";
 
-		if(!is_file($folder.$aParams["id"].".jpg"))
-			$this->forward("/admin/news/image/".$aParams["id"]."/upload/");
+		if(!is_file($folder.$this->_urlVars->dynamic["id"].".jpg"))
+			$this->forward("/admin/news/image/".$this->_urlVars->dynamic["id"]."/upload/");
 
-		$aArticle = $this->db_results(
+		$aArticle = $this->dbResults(
 			"SELECT * FROM `news`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->image->edit"
 			,"row"
 		);
 
-		$this->tpl_assign("aArticle", $aArticle);
-		$this->tpl_assign("sFolder", "/uploads/news/");
-		$this->tpl_assign("minWidth", $oNews->imageMinWidth);
-		$this->tpl_assign("minHeight", $oNews->imageMinHeight);
+		$this->tplAssign("aArticle", $aArticle);
+		$this->tplAssign("sFolder", "/uploads/news/");
+		$this->tplAssign("minWidth", $oNews->imageMinWidth);
+		$this->tplAssign("minHeight", $oNews->imageMinHeight);
 
-		$this->tpl_display("news/image/edit.tpl");
+		$this->tplDisplay("news/image/edit.tpl");
 	}
 	function image_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `news` SET"
-				." photo_x1 = ".$this->db_quote($_POST["x1"], "integer")
-				.", photo_y1 = ".$this->db_quote($_POST["y1"], "integer")
-				.", photo_x2 = ".$this->db_quote($_POST["x2"], "integer")
-				.", photo_y2 = ".$this->db_quote($_POST["y2"], "integer")
-				.", photo_width = ".$this->db_quote($_POST["width"], "integer")
-				.", photo_height = ".$this->db_quote($_POST["height"], "integer")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." photo_x1 = ".$this->dbQuote($_POST["x1"], "integer")
+				.", photo_y1 = ".$this->dbQuote($_POST["y1"], "integer")
+				.", photo_x2 = ".$this->dbQuote($_POST["x2"], "integer")
+				.", photo_y2 = ".$this->dbQuote($_POST["y2"], "integer")
+				.", photo_width = ".$this->dbQuote($_POST["width"], "integer")
+				.", photo_height = ".$this->dbQuote($_POST["height"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->news->image->edit_s"
 		);
 
 		$this->forward("/admin/news/?notice=".urlencode("Image cropped successfully!"));
 	}
-	function image_delete($aParams)
+	function image_delete()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `news` SET"
 				." photo_x1 = 0"
 				.", photo_y1 = 0"
@@ -370,11 +376,11 @@ class admin_news extends adminController
 				.", photo_y2 = 0"
 				.", photo_width = 0"
 				.", photo_height = 0"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->image->delete"
 		);
 		
-		@unlink($this->_settings->root_public."upload/news/".$id.".jpg");
+		@unlink($this->_settings->rootPublic."upload/news/".$id.".jpg");
 
 		$this->forward("/admin/news/?notice=".urlencode("Image removed successfully!"));
 	}
@@ -382,24 +388,24 @@ class admin_news extends adminController
 	{
 		$_SESSION["admin"]["admin_news_categories"] = null;
 		
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `news_categories`"
 				." ORDER BY `name`"
 			,"admin->news->categories"
 			,"all"
 		);
 		
-		$this->tpl_assign("aCategories", $aCategories);
-		$this->tpl_display("news/categories.tpl");
+		$this->tplAssign("aCategories", $aCategories);
+		$this->tplDisplay("news/categories.tpl");
 	}
 	function categories_add_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"INSERT INTO `news_categories`"
 				." (`name`)"
 				." VALUES"
 				." ("
-				.$this->db_quote($_POST["name"], "text")
+				.$this->dbQuote($_POST["name"], "text")
 				.")"
 			,"admin->news->category->add_s"
 			,"insert"
@@ -410,25 +416,25 @@ class admin_news extends adminController
 	}
 	function categories_edit_s()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `news_categories` SET"
-				." `name` = ".$this->db_quote($_POST["name"], "text")
-				." WHERE `id` = ".$this->db_quote($_POST["id"], "integer")
+				." `name` = ".$this->dbQuote($_POST["name"], "text")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->news->categories->edit"
 		);
 
 		echo "/admin/news/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete($aParams)
+	function categories_delete()
 	{
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `news_categories`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->category->delete"
 		);
-		$this->db_results(
+		$this->dbResults(
 			"DELETE FROM `news_categories_assign`"
-				." WHERE `categoryid` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"admin->news->category->delete_assign"
 		);
 
@@ -439,7 +445,7 @@ class admin_news extends adminController
 	### Functions ####################
 	private function get_categories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `news_categories`"
 				." ORDER BY `name`"
 			,"admin->news->get_categories->categories"

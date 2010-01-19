@@ -1,7 +1,7 @@
 <?php
 class galleries extends appController
 {
-	function index($aParams)
+	function index()
 	{
 		$oGalleries = $this->loadModel("galleries");
 		
@@ -31,24 +31,24 @@ class galleries extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tpl_assign("aCategories", $oGalleries->getCategories());
-		$this->tpl_assign("aGalleries", $aGalleries);
-		$this->tpl_assign("aPaging", $aPaging);
+		$this->tplAssign("aCategories", $oGalleries->getCategories());
+		$this->tplAssign("aGalleries", $aGalleries);
+		$this->tplAssign("aPaging", $aPaging);
 		
-		$this->tpl_display("galleries/index.tpl");
+		$this->tplDisplay("galleries/index.tpl");
 	}
-	function gallery($aParams)
+	function gallery()
 	{
 		$oGalleries = $this->loadModel("galleries");
 		
-		$aGallery = $oGalleries->getGallery($aParams["id"]);
+		$aGallery = $oGalleries->getGallery($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aGallery))
 			$this->error('404');
 		
-		$aGallery["photos"] = $oGalleries->getPhotos($aParams["id"]);
+		$aGallery["photos"] = $oGalleries->getPhotos($this->_urlVars->dynamic["id"]);
 		
-		$this->tpl_assign("aGallery", $aGallery);
-		$this->tpl_display("galleries/gallery.tpl");
+		$this->tplAssign("aGallery", $aGallery);
+		$this->tplDisplay("galleries/gallery.tpl");
 	}
 }

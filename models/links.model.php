@@ -7,10 +7,10 @@ class links_model extends appModel
 	{
 		$sWhere = " WHERE `links`.`active` = 1";
 		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->db_quote($_GET["category"], "integer");
+			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($_GET["category"], "integer");
 		
 		// Get all links for paging
-		$aLinks = $this->db_results(
+		$aLinks = $this->dbResults(
 			"SELECT `links`.* FROM `links` AS `links`"
 				." INNER JOIN `links_categories_assign` AS `links_assign` ON `links`.`id` = `links_assign`.`linkid`"
 				." INNER JOIN `links_categories` AS `categories` ON `links_assign`.`categoryid` = `categories`.`id`"
@@ -22,7 +22,7 @@ class links_model extends appModel
 	
 		foreach($aLinks as $x => $aLink)
 		{
-			$aLinkCategories = $this->db_results(
+			$aLinkCategories = $this->dbResults(
 				"SELECT `name` FROM `links_categories` AS `categories`"
 					." INNER JOIN `links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `links_assign`.`linkid` = ".$aLink["id"]
@@ -37,7 +37,7 @@ class links_model extends appModel
 	}
 	function getCategories()
 	{
-		$aCategories = $this->db_results(
+		$aCategories = $this->dbResults(
 			"SELECT * FROM `links_categories`"
 				." ORDER BY `name`"
 			,"model->links->getCategories"

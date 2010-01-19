@@ -2,9 +2,9 @@
 <form method="post" action="/admin/content/edit/s/">
 	{if $aPage.module != 1}
 		<label>*Page Title:</label>
-		<input type="text" name="title" maxlength="100" value="{$aPage.title|stripslashes}"><br>
+		<input type="text" name="title" maxlength="100" value="{$aPage.title|clean_html}"><br>
 	{else}
-		<input type="hidden" name="title" value="{$aPage.title|stripslashes}">
+		<input type="hidden" name="title" value="{$aPage.title|clean_html}">
 	{/if}
 	<label>Content:</label>
 	{html_editor content=$aPage.content name="content"}

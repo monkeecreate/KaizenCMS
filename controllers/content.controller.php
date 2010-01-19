@@ -4,30 +4,30 @@ class content extends appController
 	### DISPLAY ######################
 	function index()
 	{
-		$this->tpl_display("index.tpl");
+		$this->tplDisplay("index.tpl");
 	}
 	function siteinfo()
 	{
-		$this->site_info();
+		$this->siteInfo();
 	}
-	function view($aUrlParam = null, $aParams)
+	function view()
 	{
-		if(!empty($aUrlParam["page"]))
-			$sPage = $aUrlParam["page"];
-		elseif(!empty($aParams["page"]))
-			$sPage = $aParams["page"];
+		if(!empty($this->_urlVars->dynamic["page"]))
+			$sPage = $this->_urlVars->dynamic["page"];
+		elseif(!empty($this->_urlVars->manual["page"]))
+			$sPage = $this->_urlVars->manual["page"];
 		else
 			$this->error("404");
 		
 		if(preg_match("/[a-z0-9_-]+/i", $sPage) > 0)
 		{
-			if($this->template_exists("content/".$sPage.".tpl"))
-				$this->tpl_display("content/".$sPage.".tpl");
+			if($this->tplExists("content/".$sPage.".tpl"))
+				$this->tplDisplay("content/".$sPage.".tpl");
 			else
 			{
-				$aContent = $this->db_results(
+				$aContent = $this->dbResults(
 					"SELECT * FROM `content`"
-						." WHERE `tag` = ".$this->db_quote($sPage, "text")
+						." WHERE `tag` = ".$this->dbQuote($sPage, "text")
 						." LIMIT 1"
 					,"content->view"
 					,"row"
@@ -35,12 +35,12 @@ class content extends appController
 			
 				if(!empty($aContent))
 				{
-					$this->tpl_assign("aContent", $aContent);
+					$this->tplAssign("aContent", $aContent);
 					
 					if(empty($aContent["template"]))
-						$this->tpl_display("content.tpl");
+						$this->tplDisplay("content.tpl");
 					else
-						$this->tpl_display("content/".$aContent["template"]);
+						$this->tplDisplay("content/".$aContent["template"]);
 				}
 				else
 					$this->error("404");
@@ -95,7 +95,7 @@ class content extends appController
 			elseif($input["linetype"] == "n")
 				$sBody .= "\n".$input["name"]."\n".stripslashes($input["value"])."\n";
 			else
-				$this->send_error("content->form_submit", "Invalid line type. (".$input["linetype"].")");
+				$this->sendError("content->form_submit", "Invalid line type. (".$input["linetype"].")");
 		}
 		
 		// Email to
@@ -111,23 +111,23 @@ class content extends appController
 		
 		$this->forward($this->decrypt($_POST["forward"]));
 	}
-	function form_submit_values($sString, $aValues)
+	function formSubmitValues($sString, $aValues)
 	{
 		foreach($aValues as $key => $item)
 			$sString = str_replace("[$".$key."]", $item["value"], $sString);
 		
 		return $sString;
 	}
-	function promo($aParams)
+	function promo()
 	{
-		$aPromo = $this->db_results(
+		$aPromo = $this->dbResults(
 			"SELECT `promos`.* FROM `promos`"
-				." WHERE `id` = ".$this->db_quote($aParams["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"content->promo"
 			,"row"
 		);
 		
-		$this->db_results(
+		$this->dbResults(
 			"UPDATE `promos` SET"
 				." `clicks` = `clicks` + 1"
 				." WHERE `id` = ".$aPromo["id"]

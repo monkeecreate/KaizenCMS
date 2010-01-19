@@ -33,7 +33,7 @@
 		<small><time>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</time> | Categories: {$aEvent.categories|clean_html}</small>
 		<p>
 			{$aEvent.short_content|clean_html}<br />
-			<a href="/events/{$aEvent.id}/{$aEvents.title|special_urlencode}/">More Info&raquo;</a>
+			<a href="/events/{$aEvent.id}/{$aEvent.title|special_urlencode}/">More Info&raquo;</a>
 		</p>
 	</div>
 {foreachelse}

@@ -2,12 +2,12 @@
 <div id="sidebar" class="portlet">
 	<div class="portlet-content">
 		<b>&middot;</b> File must be a .jpg<br />
-		<b>&middot;</b> Minimum width is 300px<br />
-		<b>&middot;</b> Minimum height is 225px
+		<b>&middot;</b> Minimum width is {$minWidth}px<br />
+		<b>&middot;</b> Minimum height is {$minHeight}px
 	</div>
 </div>
 <p>
-	<b>{$aEvent.title|stripslashes}</b><br />
+	<b>{$aEvent.title|clean_html}</b><br />
 	<span>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</span>
 </p><br />
 <form name="upload" action="/admin/calendar/image/upload/s/" method="post" enctype="multipart/form-data">
