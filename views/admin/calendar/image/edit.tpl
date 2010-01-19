@@ -1,6 +1,6 @@
 {include file="inc_header.tpl" page_title="Calendar :: Crop Image" menu="calendar"}
 {head}
-	{image_crop load="cropper" preview="true" img="cropimage" minw="300" minh="225" rx="300" ry="225" values=$aEvent}
+	{image_crop load="cropper" preview="true" img="cropimage" minw=$minWidth minh=$minHeight rx=$minWidth ry=$minHeight values=$aEvent}
 {/head}
 <p>
 	<b>{$aEvent.title|clean_html}</b><br />

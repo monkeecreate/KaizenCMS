@@ -11,7 +11,7 @@ class admin_calendar extends adminController
 		
 		$this->tplAssign("aCategories", $oCalendar->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aEvents", $oCalendar->getEvents($_GET["category"]));
+		$this->tplAssign("aEvents", $oCalendar->getEvents($_GET["category"], true));
 		$this->tplAssign("sUseImage", $oCalendar->useImage);
 		
 		$this->tplDisplay("calendar/index.tpl");
@@ -48,6 +48,8 @@ class admin_calendar extends adminController
 	}
 	function add_s()
 	{
+		$oCalendar = $this->loadModel("calendar");
+		
 		if(empty($_POST["title"]) || count($_POST["categories"]) == 0)
 		{
 			$_SESSION["admin"]["admin_calendar"] = $_POST;
@@ -75,6 +77,21 @@ class admin_calendar extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
+		if(!empty($_POST["allday"]))
+			$allday = 1;
+		else
+			$allday = 0;
+		
+		if(!empty($_POST["use_kill"]))
+			$use_kill = 1;
+		else
+			$use_kill = 0;
+		
+		if(!empty($_POST["active"]))
+			$active = 1;
+		else
+			$active = 0;
+		
 		$sID = $this->dbResults(
 			"INSERT INTO `calendar`"
 				." (`title`, `short_content`, `content`, `allday`, `datetime_start`, `datetime_end`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
@@ -83,13 +100,13 @@ class admin_calendar extends adminController
 					.$this->dbQuote($_POST["title"], "text")
 					.", ".$this->dbQuote($_POST["short_content"], "text")
 					.", ".$this->dbQuote($_POST["content"], "text")
-					.", ".$this->dbQuote($allday, "boolean")
+					.", ".$this->dbQuote($allday, "integer")
 					.", ".$this->dbQuote($datetime_start, "integer")
 					.", ".$this->dbQuote($datetime_end, "integer")
 					.", ".$this->dbQuote($datetime_show, "integer")
 					.", ".$this->dbQuote($datetime_kill, "integer")
-					.", ".$this->dbQuote($use_kill, "boolean")
-					.", ".$this->dbQuote($active, "boolean")
+					.", ".$this->dbQuote($use_kill, "integer")
+					.", ".$this->dbQuote($active, "integer")
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 					.", ".$this->dbQuote(time(), "integer")
@@ -119,6 +136,8 @@ class admin_calendar extends adminController
 	}
 	function edit()
 	{
+		$oCalendar = $this->loadModel("calendar");
+		
 		if(!empty($_SESSION["admin"]["admin_calendar"]))
 		{
 			$aEventRow = $this->dbResults(
@@ -203,18 +222,33 @@ class admin_calendar extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
+		if(!empty($_POST["allday"]))
+			$allday = 1;
+		else
+			$allday = 0;
+		
+		if(!empty($_POST["use_kill"]))
+			$use_kill = 1;
+		else
+			$use_kill = 0;
+		
+		if(!empty($_POST["active"]))
+			$active = 1;
+		else
+			$active = 0;
+		
 		$this->dbResults(
 			"UPDATE `calendar` SET"
 				." `title` = ".$this->dbQuote($_POST["title"], "text")
 				.", `short_content` = ".$this->dbQuote($_POST["short_content"], "text")
 				.", `content` = ".$this->dbQuote($_POST["content"], "text")
-				.", `allday` = ".$this->dbQuote($allday, "boolean")
+				.", `allday` = ".$this->dbQuote($allday, "integer")
 				.", `datetime_start` = ".$this->dbQuote($datetime_start, "integer")
 				.", `datetime_end` = ".$this->dbQuote($datetime_end, "integer")
 				.", `datetime_show` = ".$this->dbQuote($datetime_show, "integer")
 				.", `datetime_kill` = ".$this->dbQuote($datetime_kill, "integer")
-				.", `use_kill` = ".$this->dbQuote($use_kill, "boolean")
-				.", `active` = ".$this->dbQuote($active, "boolean")
+				.", `use_kill` = ".$this->dbQuote($use_kill, "integer")
+				.", `active` = ".$this->dbQuote($active, "integer")
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -285,13 +319,15 @@ class admin_calendar extends adminController
 		 || $_FILES["image"]["type"] == "image/pjpeg"
 		)
 		{
-			@unlink($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$_POST["id"].".jpg");
+			$sFile = $this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$_POST["id"].".jpg";
+			
+			@unlink($sFile);
 
-			if(move_uploaded_file($_FILES["image"]["tmp_name"], $this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$_POST["id"].".jpg"))
+			if(move_uploaded_file($_FILES["image"]["tmp_name"], $sFile))
 			{
-				$aImageSize = getimagesize($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$_POST["id"].".jpg");
+				$aImageSize = getimagesize($sFile);
 				if($aImageSize[0] < $oCalendar->imageMinWidth || $aImageSize[1] < $oCalendar->imageMinHeight) {
-					@unlink($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$id.".jpg");
+					@unlink($sFile);
 					$this->forward("/admin/calendar/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 				} else {
 					$this->dbResults(
@@ -319,18 +355,13 @@ class admin_calendar extends adminController
 	{
 		$oCalendar = $this->loadModel("calendar");
 
-		if(!is_file($folder.$this->_urlVars->dynamic["id"].".jpg"))
+		if(!is_file($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg"))
 			$this->forward("/admin/calendar/image/".$this->_urlVars->dynamic["id"]."/upload/");
 
-		$aEvent = $this->dbResults(
-			"SELECT * FROM `calendar`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->calendar->image->edit"
-			,"row"
-		);
-
-		$this->tplAssign("aEvent", $aEvent);
+		$this->tplAssign("aEvent", $oCalendar->getEvent($this->_urlVars->dynamic["id"]));
 		$this->tplAssign("sFolder", $oCalendar->imageFolder);
+		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
+		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
 
 		$this->tplDisplay("calendar/image/edit.tpl");
 	}
@@ -366,7 +397,7 @@ class admin_calendar extends adminController
 			,"admin->calendar->image->delete"
 		);
 		
-		@unlink($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$id.".jpg");
+		@unlink($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 
 		$this->forward("/admin/calendar/?notice=".urlencode("Image removed successfully!"));
 	}

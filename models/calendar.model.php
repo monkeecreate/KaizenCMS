@@ -7,12 +7,19 @@ class calendar_model extends appModel
 	public $imageFolder = "/uploads/calendar/";
 	public $perPage = 5;
 	
-	function getEvents($sCategory = null)
+	function getEvents($sCategory = null, $sAll = false)
 	{
-		$sWhere = " WHERE `calendar`.`datetime_show` < ".time();
-		$sWHERE .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
-		$sWhere .= " AND `calendar`.`datetime_end` > ".time();
-		$sWhere .= " AND `calendar`.`active` = 1";
+		// Start the WHERE
+		$sWhere = " WHERE `calendar`.`id` > 0";// Allways true
+		
+		if($sAll == false)
+		{
+			$sWhere .= " AND `calendar`.`datetime_show` < ".time();
+			$sWhere .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
+			$sWhere .= " AND `calendar`.`datetime_end` > ".time();
+			$sWhere .= " AND `calendar`.`active` = 1";
+		}
+		
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
@@ -61,10 +68,12 @@ class calendar_model extends appModel
 	
 		$aEvent["categories"] = implode(", ", $aCategories);
 	
-		if(file_exists($this->_settings->rootPublic."uploads/calendar/".$aEvent["id"].".jpg") && $this->useImage == true)
+		if(file_exists($this->_settings->rootPublic.substr($this->imageFolder, 1).$aEvent["id"].".jpg")
+		 && $aEvent["photo_x2"] > 0
+		 && $this->useImage == true)
 			$aEvent["image"] = 1;
 		else
-			$aEvent["image"] = 1;
+			$aEvent["image"] = 0;
 			
 		return $aEvent;
 	}
@@ -94,6 +103,8 @@ class calendar_model extends appModel
 				." LIMIT 1"
 			,"model->calendar->getCategory"
 		);
+		
+		return $aCategory;
 	}
 	function getImage($sId)
 	{
