@@ -37,7 +37,7 @@ class image extends appController
 		
 		if(!empty($_GET["width"]) && $_GET["width"] <= $oModel->imageMinWidth)
 			$oImage->resize($_GET["width"], $_GET["width"]);
-			
+		
 		$oImage->draw(null, 85);
 	}
 	##################################

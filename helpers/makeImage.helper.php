@@ -116,6 +116,93 @@ class makeImage
 		else
 			return false;
 	}
+	public function text($sText, $sFont, $sSize = 10, $sAngle = 0, $sX = 0, $sY = 10, $aColor = array(0, 0, 0, 0))
+	{
+		if(!empty($this->_info) && !empty($this->_image))
+		{
+			$oColor = imagecolorallocatealpha($this->_image, $aColor[0], $aColor[1], $aColor[2], $aColor[3]);
+			
+			imagettftext($this->_image, $sSize, $sAngle, $sX, $sY, $oColor, $sFont, $sText);
+			
+			unset($oColor);
+			
+			return true;
+		}
+		else
+			return false;
+	}
+	public function overlay($sType,
+		$sX1 = 0, $sY1 = 0,
+		$sX2 = 1, $sY2 = 1,
+		$aColor = array(0, 0, 0, 0),
+		$aPoints = array(0,0,10,10,0,10)
+		)
+	{
+		if(!empty($this->_info) && !empty($this->_image))
+		{
+			$oColor = imagecolorallocatealpha($this->_image, $aColor[0], $aColor[1], $aColor[2], $aColor[3]);
+			
+			switch($sType)
+			{
+				case "rectangle":
+					imagerectangle($this->_image, $sX1, $sY1, $sX2, $sY2, $oColor);
+					break;
+				case "ellipse":
+					imageellipse($this->_image, $sX1, $sY1, $sX2, $sY2, $oColor);
+					break;
+				case "polygon":
+					if(count($aPoints) >=  6)
+						imagepolygon($this->_image, $aPoints, (count($aPoints) / 2), $oColor);
+					else
+						return false;
+					break;
+				default:
+					return false;
+			}
+			
+			unset($oColor);
+			
+			return true;
+		}
+		else
+			return false;
+	}
+	public function overlay_filled($sType,
+		$sX = 0, $sY = 0,
+		$sWidth = 1, $sHeight = 1,
+		$aColor = array(0, 0, 0, 0),
+		$aPoints = array(0,0,10,10,0,10)
+		)
+	{
+		if(!empty($this->_info) && !empty($this->_image))
+		{
+			$oColor = imagecolorallocatealpha($this->_image, $aColor[0], $aColor[1], $aColor[2], $aColor[3]);
+			
+			switch($sType)
+			{
+				case "rectangle":
+					imagefilledrectangle($this->_image, $sX, $sY, $sWidth, $sHeight, $oColor);
+					break;
+				case "ellipse":
+					imagefilledellipse($this->_image, $sX, $sY, $sWidth, $sHeight, $oColor);
+					break;
+				case "polygon":
+					if(count($aPoints) >=  6)
+						imagefilledpolygon($this->_image, $aPoints, (count($aPoints) / 2), $oColor);
+					else
+						return false;
+					break;
+				default:
+					return false;
+			}
+			
+			unset($oColor);
+		
+			return true;
+		}
+		else
+			return false;
+	}
 	public function draw($sFile = null, $sQuality = 85)
 	{
 		if(!empty($this->_info) && !empty($this->_image))
@@ -152,7 +239,6 @@ class makeImage
 		else
 			return false;
 	}
-	
 	protected function transparency()
 	{
 		if ( ($this->_info[2] == IMAGETYPE_GIF) || ($this->_info[2] == IMAGETYPE_PNG) )
