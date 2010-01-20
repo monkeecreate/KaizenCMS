@@ -55,7 +55,7 @@ class makeImage
 			$this->_width = imageSX($this->_image);
 			$this->_height = imageSY($this->_image);
 			
-			$oImage = null;
+			unset($oImage);
 			
 			return true;
 		}
@@ -109,7 +109,7 @@ class makeImage
 			$this->_width = imageSX($this->_image);
 			$this->_height = imageSY($this->_image);
 			
-			$oResized = null;
+			unset($oResized);
 			
 			return true;
 		}
