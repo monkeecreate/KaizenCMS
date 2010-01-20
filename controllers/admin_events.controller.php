@@ -4,31 +4,21 @@ class admin_events extends adminController
 	### DISPLAY ######################
 	function index()
 	{
+		$oEvent = $this->loadModel("events");
+		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_events"] = null;
 		
-		if(!empty($_GET["category"]))
-		{
-			$sSQLCategory = " INNER JOIN `events_categories_assign` AS `assign` ON `events`.`id` = `assign`.`eventid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
-		}
-		
-		$aEvents = $this->dbResults(
-			"SELECT `events`.* FROM `events`"
-				.$sSQLCategory
-				." GROUP BY `events`.`id`"
-				." ORDER BY `events`.`datetime_start` DESC"
-			,"admin->events->index"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oEvent->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aEvents", $aEvents);
+		$this->tplAssign("aEvents", $oEvent->getEvents($_GET["category"], true));
+		$this->tplAssign("sUseImage", $oCalendar->useImage);
 		$this->tplDisplay("events/index.tpl");
 	}
 	function add()
 	{
+		$oEvent = $this->loadModel("events");
+		
 		if(!empty($_SESSION["admin"]["admin_events"]))
 		{
 			$aEvent = $_SESSION["admin"]["admin_events"];
@@ -51,11 +41,14 @@ class admin_events extends adminController
 				)
 			);
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oEvent->getCategories());
+		$this->tplAssign("sUseImage", $oCalendar->useImage);
 		$this->tplDisplay("events/add.tpl");
 	}
 	function add_s()
 	{
+		$oEvent = $this->loadModel("events");
+		
 		if(empty($_POST["title"]) || count($_POST["categories"]) == 0)
 		{
 			$_SESSION["admin"]["admin_events"] = $_POST;
@@ -142,6 +135,8 @@ class admin_events extends adminController
 	}
 	function edit()
 	{
+		$oEvent = $this->loadModel("events");
+		
 		if(!empty($_SESSION["admin"]["admin_events"]))
 		{
 			$aEventRow = $this->dbResults(
@@ -160,8 +155,6 @@ class admin_events extends adminController
 				,"admin->events->edit->updated_by"
 				,"row"
 			);
-			
-			$this->tplAssign("aEvent", $aEvent);
 		}
 		else
 		{
@@ -193,11 +186,10 @@ class admin_events extends adminController
 				,"admin->events->edit->updated_by"
 				,"row"
 			);
-			
-			$this->tplAssign("aEvent", $aEvent);
 		}
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aEvent", $aEvent);
+		$this->tplAssign("aCategories", $oEvent->getCategories());
 		$this->tplDisplay("events/edit.tpl");
 	}
 	function edit_s()
@@ -316,10 +308,9 @@ class admin_events extends adminController
 	function image_upload_s()
 	{
 		$oEvents = $this->loadModel("events");
-		$folder = $this->_settings->rootPublic."uploads/events/";
 		
-		if(!is_dir($folder))
-			mkdir($folder, 0777);
+		if(!is_dir($this->_settings->rootPublic.substr($oEvents->imageFolder, 1)))
+			mkdir($this->_settings->rootPublic.substr($oEvents->imageFolder, 1), 0777);
 
 		if($_FILES["image"]["type"] == "image/jpeg"
 		 || $_FILES["image"]["type"] == "image/jpg"
@@ -328,11 +319,11 @@ class admin_events extends adminController
 		{
 			@unlink($folder.$_POST["id"].".jpg");
 
-			if(move_uploaded_file($_FILES["image"]["tmp_name"], $folder.$_POST["id"].".jpg"))
+			if(move_uploaded_file($_FILES["image"]["tmp_name"], $this->_settings->rootPublic.substr($oEvents->imageFolder, 1).$_POST["id"].".jpg"))
 			{
-				$aImageSize = getimagesize($folder.$_POST["id"].".jpg");
+				$aImageSize = getimagesize($this->_settings->rootPublic.substr($oEvents->imageFolder, 1).$_POST["id"].".jpg");
 				if($aImageSize[0] < $oEvents->imageMinWidth || $aImageSize[1] < $oEvents->imageMinHeight) {
-					@unlink($folder + $id.".jpg");
+					@unlink($this->_settings->rootPublic.substr($oEvents->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 					$this->forward("/admin/events/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 				} else {
 					$this->dbResults(
@@ -358,9 +349,9 @@ class admin_events extends adminController
 	}
 	function image_edit()
 	{
-		$folder = $this->_settings->rootPublic."uploads/events/";
+		$oEvents = $this->loadModel("events");
 
-		if(!is_file($folder.$this->_urlVars->dynamic["id"].".jpg"))
+		if(!is_file($this->_settings->rootPublic.substr($oEvents->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg"))
 			$this->forward("/admin/events/image/".$this->_urlVars->dynamic["id"]."/upload/");
 
 		$aEvent = $this->dbResults(
@@ -371,12 +362,14 @@ class admin_events extends adminController
 		);
 
 		$this->tplAssign("aEvent", $aEvent);
-		$this->tplAssign("sFolder", "/uploads/events/");
+		$this->tplAssign("sFolder", $oEvents->imageFolder);
 
 		$this->tplDisplay("events/image/edit.tpl");
 	}
 	function image_edit_s()
 	{
+		$oEvents = $this->loadModel("events");
+
 		$this->dbResults(
 			"UPDATE `events` SET"
 				." photo_x1 = ".$this->dbQuote($_POST["x1"], "integer")
@@ -393,6 +386,8 @@ class admin_events extends adminController
 	}
 	function image_delete()
 	{
+		$oEvents = $this->loadModel("events");
+
 		$this->dbResults(
 			"UPDATE `events` SET"
 				." photo_x1 = 0"
@@ -405,7 +400,7 @@ class admin_events extends adminController
 			,"admin->events->image->delete"
 		);
 		
-		@unlink($this->_settings->rootPublic."upload/events/".$id.".jpg");
+		@unlink($this->_settings->rootPublic.substr($oEvents->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 
 		$this->forward("/admin/events/?notice=".urlencode("Image removed successfully!"));
 	}
