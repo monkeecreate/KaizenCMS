@@ -222,7 +222,6 @@ class appController
 			$body .= "Error: ".$db->message."\n";
 			$body .= $aMessage[1]."\n";
 			$body .= "Query: ".$this->_db->last_query."\n";
-			
 		}
 		else
 			$body .= "Error: ".$error."\n";

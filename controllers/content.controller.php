@@ -6,7 +6,7 @@ class content extends appController
 	{
 		$this->tplDisplay("index.tpl");
 	}
-	function siteinfo()
+	function info()
 	{
 		$this->siteInfo();
 	}
