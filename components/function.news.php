@@ -1,35 +1,29 @@
 <?php
-function smarty_function_news($aParams, &$oSmarty)
+function smarty_function_getNews($aParams, &$oSmarty)
 {
-	$rNews = $objDB->query();
+	$oApp = $oSmarty->get_registered_object("appController");
+	$oNews = $this->loadModel("news");
 	
-	if(PEAR::isError($rNews))
-		$this->send_error("smarty->function->news", "dberror", $rNews);
+	$aArticlePages = array_chunk($oNews->getArticles($aParams["category"]), $aParams["limit"]);
+	$aArticles = $aArticlePages[0];
 	
-	$aNews = $rNews->fetchRow();
-	
-	$this->SMARTY->assign("news", $aNews);
-	$this->SMARTY->assign("paging", $oPaginate->build_array($aParams["paging_around"]));
+	$this->SMARTY->assign("aArticles", $aArticles);
 }
-function smarty_function_news_categories($aParams, &$oSmarty)
+function smarty_function_getNewsCategories($aParams, &$oSmarty)
 {
-	$rCategories = $objDB->query();
+	$oApp = $oSmarty->get_registered_object("appController");
+	$oNews = $this->loadModel("news");
 	
-	if(PEAR::isError($rCategories))
-		$this->send_error("smarty->function->news_categories", "dberror", $rCategories);
+	$aCategories = $oNews->getCategories();
 	
-	$aCategories = $rArticle->fetchRow();
-	
-	$this->SMARTY->assign("categories", $aCategories);
+	$this->SMARTY->assign("aCategories", $aCategories);
 }
-function smarty_function_news_article($aParams, &$oSmarty)
+function smarty_function_getNewsArticle($aParams, &$oSmarty)
 {
-	$rArticle = $objDB->query();
+	$oApp = $oSmarty->get_registered_object("appController");
+	$oNews = $this->loadModel("news");
 	
-	if(PEAR::isError($rArticle))
-		$this->send_error("smarty->function->news_article", "dberror", $rArticle);
+	$aArticle = $oNews->getArticle($aParams["id"]);
 	
-	$aArticle = $rArticle->fetchRow();
-	
-	$this->SMARTY->assign("article", $aArticle);
+	$this->SMARTY->assign("aArticle", $aArticle);
 }
