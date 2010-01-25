@@ -32,7 +32,7 @@
 					<a href="/admin/content/edit/{$aPage.id}/" title="Edit Page">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
-					{if $aPage.perm != 1}
+					{if $aPage.perminate != 1}
 						<a href="/admin/content/delete/{$aPage.id}/"
 						 onclick="return confirm_('Are you sure you would like to delete this page?');" title="Delete Page">
 							<img src="/images/admin/icons/bin_closed.png">
