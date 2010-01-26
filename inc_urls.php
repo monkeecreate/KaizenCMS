@@ -88,6 +88,10 @@ $aUrlPatterns = array(
 		"cmd" => "galleries",
 		"action" => "gallery"
 	),
+	"/directory/" => array(
+		"cmd" => "directory_",
+		"action" => "index"
+	),
 	"/image/resize/" => array(
 		"cmd" => "image",
 		"action" => "resize"
