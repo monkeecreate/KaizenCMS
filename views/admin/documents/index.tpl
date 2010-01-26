@@ -38,7 +38,7 @@
 	<tbody>
 		{foreach from=$aDocuments item=aDocument}
 			<tr>
-				<td>{$aDocument.name}</td>
+				<td>{$aDocument.name|clean_html}</td>
 				<td class="small center">
 					{if $aDocument.active == 1}
 						<img src="/images/admin/icons/accept.png" class="helpTip" title="Active">
