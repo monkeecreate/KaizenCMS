@@ -40,7 +40,7 @@
 	<tbody>
 		{foreach from=$aEvents item=aEvent}
 			<tr>
-				<td>{$aEvent.title}</td>
+				<td>{$aEvent.title|clean_html}</td>
 				<td class="center">{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</td>
 				<td class="small center">
 					{if $aEvent.datetime_show < $smarty.now && ($aEvent.use_kill == 0 || $aEvent.datetime_kill > $smarty.now)}
@@ -65,13 +65,11 @@
 					<a href="/admin/calendar/edit/{$aEvent.id}/" title="Edit Event">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
-					{if $aPage.perminate != 1}
-						<a href="/admin/calendar/delete/{$aEvent.id}/"
-						 onclick="return confirm_('Are you sure you would like to delete this event?');"
-						 title="Delete Event">
-							<img src="/images/admin/icons/bin_closed.png">
-						</a>
-					{/if}
+					<a href="/admin/calendar/delete/{$aEvent.id}/"
+					 onclick="return confirm_('Are you sure you would like to delete this event?');"
+					 title="Delete Event">
+						<img src="/images/admin/icons/bin_closed.png">
+					</a>
 				</td>
 			</tr>
 		{/foreach}

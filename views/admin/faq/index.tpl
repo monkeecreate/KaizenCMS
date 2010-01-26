@@ -41,7 +41,7 @@
 	<tbody>
 		{foreach from=$aQuestions item=aQuestion}
 			<tr>
-				<td>{$aQuestion.question|substr:0:80}{if strlen($aQuestion.question) > 80}...{/if}</td>
+				<td>{$aQuestion.question|clean_html|substr:0:80}{if strlen($aQuestion.question) > 80}...{/if}</td>
 				{if empty($sCategory)}
 					<td class="small center">
 						{if $aQuestion.sort_order != 1}

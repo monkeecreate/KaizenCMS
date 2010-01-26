@@ -40,7 +40,7 @@
 	<tbody>
 		{foreach from=$aArticles item=aArticle}
 			<tr>
-				<td>{$aArticle.title}</td>
+				<td>{$aArticle.title|clean_html}</td>
 				<td class="center">{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</td>
 				<td class="small center">
 					{if $aArticle.datetime_show < $smarty.now && ($aArticle.use_kill == 0 || $aArticle.datetime_kill > $smarty.now)}

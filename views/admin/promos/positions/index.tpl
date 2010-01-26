@@ -24,8 +24,8 @@
 	<tbody>
 		{foreach from=$aPositions item=aPosition}
 			<tr>
-				<td>{$aPosition.name}</td>
-				<td>{$aPosition.tag}</td>
+				<td>{$aPosition.name|clean_html}</td>
+				<td>{$aPosition.tag|clean_html}</td>
 				<td class="center">{$aPosition.promo_width}x{$aPosition.promo_height}px</td>
 				<td class="small center border-end">
 					<a href="/admin/promos/positions/edit/{$aPosition.id}/" title="Edit Promo Position">
