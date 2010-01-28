@@ -28,7 +28,7 @@
 	<tbody>
 		{foreach from=$users item=user}
 			<tr>
-				<td>{$user.fname|htmlentities} {$user.lname|htmlentities}</td>
+				<td>{$user.fname|clean_html} {$user.lname|clean_html}</td>
 				<td class="center">{$user.username|htmlentities}</td>
 				<td class="small center">
 					<a href="/admin/users/edit/{$user.id}/">

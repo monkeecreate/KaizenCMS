@@ -39,7 +39,7 @@
 	<tbody>
 		{foreach from=$aLinks item=aLink}
 			<tr>
-				<td>{$aLink.name}</td>
+				<td>{$aLink.name|clean_html}</td>
 				<td class="small center"><a href="{$aLink.link}" title="{$aLink.link}" target="_blank"><img src="/images/admin/icons/link.png"></a></td>
 				<td class="small center">
 					{if $aLink.active == 1}

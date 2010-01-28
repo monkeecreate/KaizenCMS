@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="FAQ" menu="faq"}
+{include file="inc_header.tpl" page_title="Directory" menu="directory"}
 {head}
 <script language="JavaScript" type="text/javascript" src="/scripts/jquery/jTPS/jTPS.js"></script>
 <link rel="stylesheet" type="text/css" href="/scripts/jquery/jTPS/jTPS.css">
@@ -11,7 +11,7 @@
 	{rdelim});
 </script>
 {/head}
-<form name="category" method="get" action="/admin/faq/" class="float-right" style="margin-bottom:10px">
+<form name="category" method="get" action="/admin/directory/" class="float-right" style="margin-bottom:10px">
 	View by category: <select name="category">
 		<option value="">- All Categories -</option>
 		{foreach from=$aCategories item=aCategory}
@@ -30,46 +30,29 @@
 <table class="dataTable">
 	<thead>
 		<tr>
-			<th sort="title">Question</th>
-			{if empty($sCategory)}
-				<th>Order</td>
-			{/if}
+			<th sort="title">Name</th>
 			<th sort="active">Active</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		{foreach from=$aQuestions item=aQuestion}
+		{foreach from=$aListings item=aListing}
 			<tr>
-				<td>{$aQuestion.question|clean_html|substr:0:80}{if strlen($aQuestion.question) > 80}...{/if}</td>
-				{if empty($sCategory)}
-					<td class="small center">
-						{if $aQuestion.sort_order != 1}
-							<a href="/admin/faq/sort/{$aQuestion.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png"></a>
-						{else}
-							<img src="/images/blank.gif" style="width:16px;height:16px;">
-						{/if}
-						{if $aQuestion.sort_order != $maxsort && count($aQuestions) > 1}
-							<a href="/admin/faq/sort/{$aQuestion.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png"></a>
-						{else}
-							<img src="/images/blank.gif" style="width:16px;height:16px;">
-						{/if}
-					</td>
-				{/if}
+				<td>{$aListing.name|clean_html}</td>
 				<td class="small center">
-					{if $aQuestion.active == 1}
+					{if $aListing.active == 1}
 						<img src="/images/admin/icons/accept.png" class="helpTip" title="Active">
 					{else}
 						<img src="/images/admin/icons/cancel.png" class="helpTip" title="Inactive">
 					{/if}
 				</td>
 				<td class="small center border-end">
-					<a href="/admin/faq/edit/{$aQuestion.id}/" title="Edit Question">
+					<a href="/admin/directory/edit/{$aListing.id}/" title="Edit Listing">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
-					<a href="/admin/faq/delete/{$aQuestion.id}/"
-					 onclick="return confirm_('Are you sure you would like to delete this question?');"
-					 title="Delete Question">
+					<a href="/admin/directory/delete/{$aListing.id}/"
+					 onclick="return confirm_('Are you sure you would like to delete this listing?');"
+					 title="Delete Listing">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>
 				</td>

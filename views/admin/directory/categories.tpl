@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="Event  Categories" menu="events"}
+{include file="inc_header.tpl" page_title="Directory Categories" menu="directory"}
 {head}
 <script language="JavaScript" type="text/javascript" src="/scripts/jquery/jTPS/jTPS.js"></script>
 <link rel="stylesheet" type="text/css" href="/scripts/jquery/jTPS/jTPS.css">
@@ -12,7 +12,7 @@
 </script>
 {/head}
 <div id="add-category" style="display:none;" title="Add Category">
-	<form method="post" id="addCategory-form" action="/admin/events/categories/add/s/">
+	<form method="post" id="addCategory-form" action="/admin/directory/categories/add/s/">
 		<label>*Name:</label>
 		<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|clean_html}"><br>
 	</form>
@@ -35,17 +35,17 @@
 			<tr>
 				<td>{$aCategory.name|clean_html}</td>
 				<td class="small center border-end">
-					<a href="/admin/events/categories/edit/{$aCategory.id}/" id="dialog_edit_{$aCategory.id}" title="Edit Category">
+					<a href="/admin/directory/categories/edit/{$aCategory.id}/" id="dialog_edit_{$aCategory.id}" title="Edit Category">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
 					<div id="dialog_edit_{$aCategory.id}_form" style="display:none;" title="Edit Category">
-						<form method="post" action="/admin/events/categories/edit/s/">
+						<form method="post" action="/admin/directory/categories/edit/s/">
 							<label>*Name:</label>
 							<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|clean_html}"><br>
 							<input type="hidden" name="id" value="{$aCategory.id}">
 						</form>
 					</div>
-					<a href="/admin/events/categories/delete/{$aCategory.id}/"
+					<a href="/admin/directory/categories/delete/{$aCategory.id}/"
 					 onclick="return confirm_('Are you sure you would like to delete this category?');" title="Delete Category">
 						<img src="/images/admin/icons/bin_closed.png">
 					</a>

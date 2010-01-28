@@ -22,7 +22,7 @@
 	<tbody>
 		{foreach from=$aPages item=aPage}
 			<tr>
-				<td>{$aPage.title}</td>
+				<td>{$aPage.title|clean_html}</td>
 				<td>
 					{if $aPage.module == 0}
 						<a href="http://{$domain}/{$aPage.tag}/" target="new">http://{$domain}/{$aPage.tag}/</a>

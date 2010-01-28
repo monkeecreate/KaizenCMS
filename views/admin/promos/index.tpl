@@ -41,7 +41,7 @@
 	<tbody>
 		{foreach from=$aPromos item=aPromo}
 			<tr>
-				<td>{$aPromo.name}</td>
+				<td>{$aPromo.name|clean_html}</td>
 				<td class="center">{$aPromo.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</td>
 				<td class="small center">{$aPromo.impressions}</td>
 				<td class="small center">{$aPromo.clicks}</td>

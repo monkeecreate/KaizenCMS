@@ -40,7 +40,7 @@
 	<tbody>
 		{foreach from=$aEvents item=aEvent}
 			<tr>
-				<td>{$aEvent.title}</td>
+				<td>{$aEvent.title|clean_html}</td>
 				<td class="center">{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</td>
 				<td class="small center">
 					{if $aEvent.datetime_show < $smarty.now && ($aEvent.use_kill == 0 || $aEvent.datetime_kill > $smarty.now)}

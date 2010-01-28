@@ -33,7 +33,7 @@
 	<tbody>
 		{foreach from=$aCategories item=aCategory}
 			<tr>
-				<td>{$aCategory.name}</td>
+				<td>{$aCategory.name|clean_html}</td>
 				<td class="small center border-end">
 					<a href="/admin/testimonials/categories/edit/{$aCategory.id}/" id="dialog_edit_{$aCategory.id}" title="Edit Category">
 						<img src="/images/admin/icons/pencil.png">
