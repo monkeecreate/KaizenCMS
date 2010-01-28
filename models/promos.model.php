@@ -1,15 +1,26 @@
 <?php
 class promos_model extends appModel
 {
-	function getPromo($sTag)
+	function getPromo($sTag, $sId = null, $sUsed = null)
 	{
+		if(!empty($sTag))
+			$sWhere = " WHERE `positions`.`tag` = ".$this->dbQuote($sTag, "text");
+		elseif(!empty($sId))
+			$sWhere = " WHERE `positions`.`tag` = ".$this->dbQuote($sTag, "text");
+		else
+			return false;
+		
+		if(!empty($sUsed))
+			$sWhere .= " AND `promos`.`id` NOT IN (".$sUsed.")";
+		
 		$aPromo = $this->dbResults(
 			"SELECT `promos`.* FROM `promos`"
 				." INNER JOIN `promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`"
 				." INNER JOIN `promos_positions` AS `positions` ON `assign`.`positionid` = `positions`.`id`"
-				." WHERE `positions`.`tag` = ".$this->dbQuote($sTag, "text")
+				.$sWhere
 				." AND `promos`.`datetime_show` < ".time()
 				." AND (`promos`.`datetime_kill` > ".time()." OR `promos`.`use_kill` = 0)"
+				." AND `active` = 1"
 				." ORDER BY rand()"
 				." LIMIT 1"
 			,"smarty->getPromos->promo"
@@ -24,6 +35,8 @@ class promos_model extends appModel
 					." WHERE `id` = ".$aPromo["id"]
 				,"smarty->getPromos->promo->impressions"
 			);
+			
+			$this->_settings->displayedPromos[] = $aPromo["id"];
 		}
 		
 		return $aPromo;
