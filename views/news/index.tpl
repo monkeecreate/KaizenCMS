@@ -1,9 +1,11 @@
 {include file="inc_header.tpl" page_title="News" menu="news"}
+
 {head}
 <link rel="alternate" type="application/rss+xml" title="News RSS" href="/news/rss/">
 {/head}
+
 <form name="category" method="get" action="/news/" class="sortCat">
-	Category: 
+	Category:
 	<select name="category">
 		<option value="">- All Categories -</option>
 		{foreach from=$aCategories item=aCategory}
@@ -31,18 +33,19 @@
 		{/if}
 		<h3>
 			<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
-				{$aArticle.title|htmlspecialchars|stripslashes}
+				{$aArticle.title|clean_html}
 			</a>
 		</h3>
 		<small><time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time> | Categories: {$aArticle.categories|htmlspecialchars|stripslashes}</small>
 		<p>
-			{$aArticle.short_content|htmlspecialchars|stripslashes}<br />
+			{$aArticle.short_content|clean_html}<br />
 			<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">More Info&raquo;</a>
 		</p>
 	</div>
 {foreachelse}
 	No news articles.
 {/foreach}
+
 <div id="paging">
 	{if $aPaging.next.use == true}
 		<div style="float:right;">
@@ -55,6 +58,8 @@
 		</div>
 	{/if}
 </div>
+<div class="clear"></div>
+
 <div style="text-align:center;margin-top:10px">
 	<a href="/news/rss/">
 		<img src="/images/admin/icons/feed.png"> RSS Feed
