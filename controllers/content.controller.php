@@ -103,9 +103,9 @@ class content extends appController
 			$this->decrypt($_POST["to"])
 		);
 		
-		$aHeaders["From"] = $this->form_submit_values($this->decrypt($_POST["from"]), $aItems);
-		$aHeaders["To"] = $this->form_submit_values($this->decrypt($_POST["to"]), $aItems);
-		$aHeaders["Subject"] = $this->form_submit_values($this->decrypt($_POST["subject"]), $aItems);
+		$aHeaders["From"] = $this->formSubmitValues($this->decrypt($_POST["from"]), $aItems);
+		$aHeaders["To"] = $this->formSubmitValues($this->decrypt($_POST["to"]), $aItems);
+		$aHeaders["Subject"] = $this->formSubmitValues($this->decrypt($_POST["subject"]), $aItems);
 		
 		$this->mail($aRecipients, $aHeaders, $sBody);
 		
