@@ -21,44 +21,51 @@
 	</script>
 </form>
 
-<h2>News</h2>
+<h1>News</h1>
+<div class="clear">&nbsp;</div>
 
-<div class="clear"></div>
-{foreach from=$aArticles item=aArticle}
-	<div class="contentList">
-		{if $aArticle.image == 1}
-			<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
-				<img src="/image/news/{$aArticle.id}/?width=140">
-			</a>
-		{/if}
-		<h3>
-			<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
-				{$aArticle.title|clean_html}
-			</a>
-		</h3>
-		<small><time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time> | Categories: {$aArticle.categories|htmlspecialchars|stripslashes}</small>
-		<p>
-			{$aArticle.short_content|clean_html}<br />
-			<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">More Info&raquo;</a>
-		</p>
-	</div>
-{foreachelse}
-	No news articles.
-{/foreach}
+<div id="contentList">
+	{foreach from=$aArticles item=aArticle}
+		<div class="contentList">
+			{if $aArticle.image == 1}
+				<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
+					<img src="/image/news/{$aArticle.id}/?width=140">
+				</a>
+			{/if}
+			<h2>
+				<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
+					{$aArticle.title|clean_html}
+				</a>
+			</h2>
+			<small class="timeCat">
+				<time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time>
+				 | Categories: {$aArticle.categories|htmlspecialchars|stripslashes}
+			</small>
+			<p class="content">
+				{$aArticle.short_content|clean_html}<br />
+				<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">More Info&raquo;</a>
+			</p>
+		</div>
+	{foreachelse}
+		<div class="contentListEmpty">
+			No news articles.
+		</div>
+	{/foreach}
+</div>
 
 <div id="paging">
 	{if $aPaging.next.use == true}
-		<div style="float:right;">
+		<div class="right">
 			<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
 		</div>
 	{/if}
 	{if $aPaging.back.use == true}
-		<div>
+		<div class="left">
 			<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
 		</div>
 	{/if}
 </div>
-<div class="clear"></div>
+<div class="clear">&nbsp;</div>
 
 <div style="text-align:center;margin-top:10px">
 	<a href="/news/rss/">

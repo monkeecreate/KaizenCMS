@@ -17,35 +17,43 @@
 	</script>
 </form>
 
-<h2>Documents</h2>
-
+<h1>Documents</h1>
 <div class="clear"></div>
-{foreach from=$aDocuments item=aDocument}
-	<div class="contentList">
-		<h3>
-			<a href="{$documentFolder}{$aDocument.document}" target="_blank">
-				{$aDocument.name|clean_html}
-			</a>
-		</h3>
-		<small>Categories: {$aDocument.categories|clean_html}</small>
-		<p>
-			{$aDocument.description|clean_html}<br />
-		</p>
-	</div>
-{foreachelse}
-	No documents.
-{/foreach}
+
+<div id="contentList">
+	{foreach from=$aDocuments item=aDocument}
+		<div class="contentListItem">
+			<h2>
+				<a href="{$documentFolder}{$aDocument.document}" target="_blank">
+					{$aDocument.name|clean_html}
+				</a>
+			</h2>
+			<small class="timeCat">
+				Categories: {$aDocument.categories|clean_html}
+			</small>
+			<p class="content">
+				{$aDocument.description|clean_html}
+			</p>
+		</div>
+	{foreachelse}
+		<div class="contentListEmpty">
+			No documents.
+		</div>
+	{/foreach}
+</div>
+
 <div id="paging">
 	{if $aPaging.next.use == true}
-		<div style="float:right;">
+		<div class="right">
 			<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
 		</div>
 	{/if}
 	{if $aPaging.back.use == true}
-		<div>
+		<div class="left">
 			<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
 		</div>
 	{/if}
 </div>
+<div class="clear">&nbsp;</div>
 
 {include file="inc_footer.tpl"}

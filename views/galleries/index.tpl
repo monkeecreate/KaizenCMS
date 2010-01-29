@@ -17,38 +17,50 @@
 	</script>
 </form>
 
-<h2>Photo Gallery</h2>
+<h1>Photo Gallery</h1>
+<div class="clear">&nbsp;</div>
 
-<div class="clear"></div>
-{foreach from=$aGalleries item=aGallery}
-	<div class="contentList">
-		{if $aGallery.photo > 0}
-			<div class="galleryPics"><img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aGallery.photo}&width=140&height=140"></div>
-		{/if}
-		<h3>
-			<a href="/galleries/{$aGallery.id}/">
-				{$aGallery.name|clean_html}
-			</a>
-		</h3>
-		<small>Categories: {$aGallery.categories|clean_html}</small>
-		<p>
-			{$aGallery.description|stripslashes}
-		</p>
-	</div>
-{foreachelse}
-	No galleries.
-{/foreach}
+<div id="contentList">
+	{foreach from=$aGalleries item=aGallery}
+		<div class="contentListItem">
+			{if $aGallery.photo > 0}
+				<div class="galleryPics">
+					<a href="/galleries/{$aGallery.id}">
+						<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aGallery.photo}&width=140&height=140">
+					</a>
+				</div>
+			{/if}
+			<h2>
+				<a href="/galleries/{$aGallery.id}/">
+					{$aGallery.name|clean_html}
+				</a>
+			</h2>
+			<small class="timeCat">
+				Categories: {$aGallery.categories|clean_html}
+			</small>
+			<p class="content">
+				{$aGallery.description|clean_html}
+			</p>
+		</div>
+	{foreachelse}
+		<div class="contentListEmpty">
+			No galleries.
+		</div>
+	{/foreach}
+</div>
+
 <div id="paging">
 	{if $aPaging.next.use == true}
-		<div style="float:right;">
+		<div class="right">
 			<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
 		</div>
 	{/if}
 	{if $aPaging.back.use == true}
-		<div>
+		<div class="left">
 			<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
 		</div>
 	{/if}
 </div>
+<div class="clear">&nbsp;</div>
 
 {include file="inc_footer.tpl"}

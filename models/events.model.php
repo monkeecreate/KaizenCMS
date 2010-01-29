@@ -74,6 +74,8 @@ class events_model extends appModel
 			$aEvent["image"] = 1;
 		else
 			$aEvent["image"] = 0;
+		
+		return $aEvent;
 	}
 	function getCategories()
 	{

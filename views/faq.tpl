@@ -17,33 +17,41 @@
 	</script>
 </form>
 
-<h2>FAQ</h2>
+<h1>FAQ</h1>
+<div class="clear">&nbsp;</div>
 
-<div class="clear"></div>
-{foreach from=$aQuestions item=aQuestion}
-	<div class="contentList">
-		<h3>
-			{$aQuestion.question|clean_html}
-		</h3>
-		<small>Categories: {$aQuestion.categories|clean_html}</small>
-		<p>
-			{$aQuestion.answer|stripslashes}<br />
-		</p>
-	</div>
-{foreachelse}
-	No FAQ's.
-{/foreach}
+<div id="contentList">
+	{foreach from=$aQuestions item=aQuestion}
+		<div class="contentListItem">
+			<h2>
+				{$aQuestion.question|clean_html}
+			</h2>
+			<small class="timeCat">
+				Categories: {$aQuestion.categories|clean_html}
+			</small>
+			<p class="content">
+				{$aQuestion.answer|stripslashes}
+			</p>
+		</div>
+	{foreachelse}
+		<div class="contentListEmpty">
+			No FAQ's.
+		</div>
+	{/foreach}
+</div>
+
 <div id="paging">
 	{if $aPaging.next.use == true}
-		<div style="float:right;">
+		<div class="right">
 			<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
 		</div>
 	{/if}
 	{if $aPaging.back.use == true}
-		<div>
+		<div class="left">
 			<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
 		</div>
 	{/if}
 </div>
+<div class="clear">&nbsp;</div>
 
 {include file="inc_footer.tpl"}
