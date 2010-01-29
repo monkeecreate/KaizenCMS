@@ -1,7 +1,5 @@
 {include file="inc_header.tpl" page_title="Directory" menu="directory"}
 
-<h1>Directory</h1>
-
 <form name="category" method="get" action="/directory/" class="sortCat">
 	Category: 
 	<select name="category">
@@ -19,49 +17,57 @@
 	</script>
 </form>
 
-<div class="clear"></div>
+<h1>Directory</h1>
+<div class="clear">&nbsp;</div>
 
-{foreach from=$aListings item=aListing}
-	<div class="contentList">
-		<h2>{$aListing.name|clean_html}</h2>
-		<small>Categories: {$aListing.categories|clean_html}</small>
-		<p>
-			{if !empty($aListing.address1)}
-				{$aListing.address1|clean_html}<br>
-			{/if}
-			{if !empty($aListing.address2)}
-				{$aListing.address2|clean_html}<br>
-			{/if}
-			{$aListing.city|clean_html}, {$aListing.state|clean_html} {$aListing.zip|clean_html}<br>
-			{if !empty($aListing.phone)}
-				Phone#: {$aListing.phone|clean_html}<br>
-			{/if}
-			{if !empty($aListing.fax)}
-				Fax#: {$aListing.fax|clean_html}<br>
-			{/if}
-			{if !empty($aListing.website)}
-				Website: <a href="{$aListing.website|clean_html}" target="_blank">{$aListing.website|clean_html}</a><br>
-			{/if}
-			{if !empty($aListing.email)}
-				Email: <a href="mailto:{$aListing.email|clean_html}">{$aListing.email|clean_html}</a><br>
-			{/if}
-		</p>
-	</div>
-{foreachelse}
-	No listings.
-{/foreach}
+<div id="contentList">
+	{foreach from=$aListings item=aListing}
+		<div class="contentListItem">
+			<h2>{$aListing.name|clean_html}</h2>
+			<small class="timeCat">
+				Categories: {$aListing.categories|clean_html}
+			</small>
+			<p class="content">
+				{if !empty($aListing.address1)}
+					{$aListing.address1|clean_html}<br>
+				{/if}
+				{if !empty($aListing.address2)}
+					{$aListing.address2|clean_html}<br>
+				{/if}
+				{$aListing.city|clean_html}, {$aListing.state|clean_html} {$aListing.zip|clean_html}<br>
+				{if !empty($aListing.phone)}
+					Phone#: {$aListing.phone|clean_html}<br>
+				{/if}
+				{if !empty($aListing.fax)}
+					Fax#: {$aListing.fax|clean_html}<br>
+				{/if}
+				{if !empty($aListing.website)}
+					Website: <a href="{$aListing.website|clean_html}" target="_blank">{$aListing.website|clean_html}</a><br>
+				{/if}
+				{if !empty($aListing.email)}
+					Email: <a href="mailto:{$aListing.email|clean_html}">{$aListing.email|clean_html}</a><br>
+				{/if}
+			</p>
+		</div>
+	{foreachelse}
+		<div class="contentListEmpty">
+			No listings.
+		</div>
+	{/foreach}
+</div>
 
 <div id="paging">
 	{if $aPaging.next.use == true}
-		<div style="float:right;">
+		<div class="right">
 			<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
 		</div>
 	{/if}
 	{if $aPaging.back.use == true}
-		<div>
+		<div class="left">
 			<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
 		</div>
 	{/if}
 </div>
+<div class="clear">&nbsp;</div>
 
 {include file="inc_footer.tpl"}
