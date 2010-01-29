@@ -31,7 +31,7 @@ class admin_content extends adminController
 			$this->forward("/admin/content/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"])))));
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,30);
 		
 		$aPages = $this->dbResults(
 			"SELECT `tag` FROM `content`"
