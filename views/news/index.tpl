@@ -9,7 +9,7 @@
 	<select name="category">
 		<option value="">- All Categories -</option>
 		{foreach from=$aCategories item=aCategory}
-			<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|htmlspecialchars|stripslashes}</option>
+			<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|clean_html}</option>
 		{/foreach}
 	</select>
 	<script type="text/javascript">
@@ -39,7 +39,7 @@
 			</h2>
 			<small class="timeCat">
 				<time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time>
-				 | Categories: {$aArticle.categories|htmlspecialchars|stripslashes}
+				 | Categories: {$aArticle.categories|clean_html}
 			</small>
 			<p class="content">
 				{$aArticle.short_content|clean_html}<br />
