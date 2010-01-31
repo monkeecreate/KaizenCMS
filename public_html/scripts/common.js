@@ -1,4 +1,6 @@
 $(document).ready(function() { 
+	equalHeight($(".column"));
+	
 	// Button
 	$(".btn").hover(
 		function(){
@@ -25,3 +27,14 @@ $(document).ready(function() {
 			.end()
 		.find(".portlet-content");
 });
+
+function equalHeight(group) {
+	tallest = 0;
+	group.each(function() {
+		thisHeight = $(this).height();
+		if(thisHeight > tallest) {
+			tallest = thisHeight;
+		}
+	});
+	group.height(tallest);
+}

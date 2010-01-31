@@ -1,81 +1,270 @@
-body{
+/* 
+Theme Name: Kaizen CMS
+Theme URI: hhttp://github.com/defvayne23/CMS/tree/master
+Description: Default style for the cms
+Version: 1.0
+*/
+
+body {
 	color: #363636;
-	background: #5c6949;
+	background: #333;
+	font: 80% "Arial", Verdana, sans-serif;
 }
 
-/* @group Headers */
+header, footer, section, article, nav {
+	display: block;
+}
+
+a:link, a:visited, a:active {
+	color: #3274bb;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+h1 {
+	font-size: 3em;
+	font: 3em "Georgia", Arial, sans-serif;
+}
 
 h2 {
-	font-size: 24px;
+	font-size: 2em;
 	line-height: 24px;
-	border-bottom: 1px solid #B0B0B0;
+	border-bottom: 1px solid #b0b0b0;
 	margin: 24px 0;
 	padding: 0 0 2px;
 }
+
 h3 {
-	font-size:18px;
-	line-height:18px;
-	margin:24px 0 12px;
-	padding:0 0 6px;
+	font-size: 1.5em;
+	line-height: 18px;
+	margin: 24px 0 12px;
+	padding: 0 0 6px;
 }
-
-/* @end Headers */
-
-/* @group Reset */
-
-a, a:visited {
-	color: #5B6599;
-}
-
-/* @end Reset */
 
 #wrapper {
-	width: 1000px;
+	width: 960px;
 	margin: 0 auto;
-	background: #FFF;
+	/*background: #fff;*/
 	padding: 20px;
 }
-#header {
-	background: #DFDFDF;
-	padding: 10px;
-	margin-bottom:20px;
+
+/* @group header */
+
+header {
 }
-#header ul#menu {
+
+nav {
+	float: left;
+	background: #dfdfdf;
+	padding: 10px 0;
+	width: 100%;
+	border-bottom: 1px solid #999;
+}
+
+nav ul {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	clear: left;
 }
-#header ul#menu li {
+
+nav ul li {
 	float: left;
 	margin: 0;
 	padding: 0px;
-	border-right: 1px solid #AFAFAF;
+	border-right: 1px solid #afafaf;
 }
-#header ul#menu li a {
+
+nav ul li a:link, nav ul li a:visited, nav ul li a:active {
 	display: block;
 	padding: 5px 10px;
 	text-decoration: none;
 }
-#header ul#menu li a.selected {
-	color: #000;
+
+nav ul li a:hover {
+	text-decoration: underline;
 }
-#header ul#menu li:last-child {
+
+nav ul li a.selected {
+	color: #333;
+}
+
+nav ul li:last-child {
 	border: 0;
 }
 
-/* @group Classes */
+/* @end */
+
+/* @group content */
+
+section#content {
+	padding: 20px 15px;
+	background: #fff;
+	clear: both;
+	float: left;
+	display: inline;
+	width: 600px;
+}
+
+.content p {
+	margin-bottom: 1.8em;
+	font-size: 1.2em;
+	line-height: 1.4em;
+}
+
+/* @group article */
+
+article {
+
+}
+
+article span.timeCat {
+	display: block;
+	font-size: 0.8em;
+	margin: 4px 0 10px;
+}
+
+article figure.left img {
+	padding: 0 15px 15px 0;
+}
+
+article figure.right img {
+	padding: 0 0 15px 15px;
+}
+
+/* @end */
+
+/* @group Calendar/Events */
+/* Styles unique to the display of Calendar and Events. */
+
+article.events h3 {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.calSubscribe {
+	display: block;
+	text-align: center;
+	margin: 10px 0 0;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group aside */
+
+aside {
+	background: #efefef;
+	padding: 20px 15px;
+	float: right;
+	display: inline;
+	width: 300px;
+}
+
+aside ul {
+	margin: 0 0 10px 17px;
+	padding: 0;
+}
+
+/* @end */
+
+
+
+/* @group forms */
 
 form.sortCat {
 	float: right;
 	margin: 0 0 2px;
 }
+
+/* @end */
+
+/* @group footer */
+
+footer {
+	background: #565656;
+	clear: both;
+	color: #fff;
+	padding: 25px 15px;
+	-moz-border-radius-bottomleft: 10px;
+	-moz-border-radius-bottomright: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+}
+
+/* @end */
+
 .contentList {
-	border-bottom: 1px solid #D2D2D2;
+	border-bottom: 1px solid #d2d2d2;
 	padding: 0 0 12px;
 }
+
 .contentList img {
 	float: left;
 	margin: 0 24px 12px 0;
 }
-/* @end Classes */
+
+/* @group misc */
+
+.clear {
+	clear: both;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.left {
+	float: left;
+	display: inline;
+}
+
+.right {
+	float: right;
+	display: inline;
+}
+
+/* @end */
+
+
+
+
+.rectangle {
+	background: #7f9db9;
+	height: 50px;
+	width: 990px;
+	position: relative;
+	left:-15px;
+	top: 30px;
+	float: left;
+	-moz-box-shadow: 0px 0px 4px rgba(0,0,0,0.55);
+  	-khtml-box-shadow: 0px 0px 4px rgba(0,0,0,0.55);
+  	-webkit-box-shadow: 0px 0px 4px rgba(0,0,0,0.55);
+	z-index: 100; /* the stack order: foreground */
+}
+
+.triangle-l {
+	border-color: transparent #7d90a3 transparent transparent;
+	border-style:solid;
+	border-width:15px;
+	height:0px;
+	width:0px;
+	position: relative;
+	left: -30px;
+	top: 65px;
+	z-index: -1; /* displayed under bubble */
+}
+
+.triangle-r {
+	border-color: transparent transparent transparent #7d90a3;
+	border-style:solid;
+	border-width:15px;
+	height:0px;
+	width:0px;
+	position: relative;
+	left: 960px;
+	top: 35px;
+	z-index: -1; /* displayed under bubble */
+}

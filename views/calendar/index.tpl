@@ -1,72 +1,77 @@
 {include file="inc_header.tpl" page_title="Calendar" menu="calendar"}
 
-<form name="category" method="get" action="/calendar/" class="sortCat">
-	Category: 
-	<select name="category">
-		<option value="">- All Categories -</option>
-		{foreach from=$aCategories item=aCategory}
-			<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|clean_html}</option>
+	<section id="content" class="content column">
+
+		<form name="category" method="get" action="/calendar/" class="sortCat">
+			Category: 
+			<select name="category">
+				<option value="">- All Categories -</option>
+				{foreach from=$aCategories item=aCategory}
+					<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|clean_html}</option>
+				{/foreach}
+			</select>
+			<script type="text/javascript">
+			$(function(){ldelim}
+				$('select[name=category]').change(function(){ldelim}
+					$('form[name=category]').submit();
+				{rdelim});
+			{rdelim});
+			</script>
+		</form>
+
+		<h2>Calendar</h2>
+
+		{foreach from=$aEvents item=aEvent}
+			<article class="events">
+				<h3>
+					<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="{$aEvent.title|clean_html}">
+						{$aEvent.title|clean_html}
+					</a>
+				</h3>
+				<span class="timeCat">
+					<time>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</time>
+					 | Categories: {$aEvent.categories|clean_html}
+				</span>
+				
+				{if $aEvent.photo_x2 > 0}
+					<figure class="left">
+						<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="{$aEvent.title|clean_html}"><img src="/image/calendar/{$aEvent.id}/?width=140" alt="Calendar Image"></a>
+					</figure>
+				{/if}
+				
+				<p>
+					{$aEvent.short_content|clean_html}
+					<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="More info for {$aEvent.title|clean_html}">More Info&raquo;</a>
+				</p>
+			</article>
+		{foreachelse}
+			<div class="contentListEmpty">
+				No calendar events.
+			</div>
 		{/foreach}
-	</select>
-	<script type="text/javascript">
-	$(function(){ldelim}
-		$('select[name=category]').change(function(){ldelim}
-			$('form[name=category]').submit();
-		{rdelim});
-	{rdelim});
-	</script>
-</form>
 
-<h1>Calendar</h1>
-<div class="clear">&nbsp;</div>
-
-<div id="contentList">
-	{foreach from=$aEvents item=aEvent}
-		<div class="contentListItem">
-			{if $aEvent.photo_x2 > 0}
-				<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/">
-					<img src="/image/calendar/{$aEvent.id}/?width=140">
-				</a>
+		<div id="paging">
+			{if $aPaging.next.use == true}
+				<div class="right">
+					<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
+				</div>
 			{/if}
-			<h2>
-				<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/">
-					{$aEvent.title|clean_html}
-				</a>
-			</h2>
-			<small class="timeCat">
-				<time>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</time>
-				 | Categories: {$aEvent.categories|clean_html}
-			</small>
-			<p class="content">
-				{$aEvent.short_content|clean_html}<br />
-				<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/">More Info&raquo;</a>
-			</p>
+			{if $aPaging.back.use == true}
+				<div>
+					<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
+				</div>
+			{/if}
 		</div>
-	{foreachelse}
-		<div class="contentListEmpty">
-			No calendar events.
-		</div>
-	{/foreach}
-</div>
+		
+		<div class="clear">&nbsp;</div>
 
-<div id="paging">
-	{if $aPaging.next.use == true}
-		<div style="float:right;">
-			<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
-		</div>
-	{/if}
-	{if $aPaging.back.use == true}
-		<div>
-			<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
-		</div>
-	{/if}
-</div>
-<div class="clear">&nbsp;</div>
+		<span class="calSubscribe">
+			<a href="webcal://{$domain}/calendar/ics/" title="Subscribe to Calendar">
+				<img src="/images/admin/icons/calendar.png" alt="calendar icon"> Subscribe to Calendar
+			</a>
+		</span>
+	</section> <!-- #content -->
 
-<div style="text-align:center;margin-top:10px">
-	<a href="webcal://{$domain}/calendar/ics/">
-		<img src="/images/admin/icons/calendar.png"> Subscribe to Calendar
-	</a>
-</div>
+	{include file="inc_sidebar.tpl"}
 
 {include file="inc_footer.tpl"}
