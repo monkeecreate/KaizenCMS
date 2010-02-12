@@ -145,9 +145,24 @@ class appController
 	###################################
 	
 	### Mail ##########################
-	function mail($recipients, $headers, $message)
+	function mail($sRecipients, $aHeaders, $bodyText, $bodyHTML = null, $aAttachment = array())
 	{
-		$oMail = $this->_mail->send($recipients, $headers, $message);
+		include("Mail/mime.php");
+		$oMime = new Mail_mime("\n");
+		
+		// Set text for message body
+		$oMime->setTXTBody($bodyText);
+		
+		// Set HTML message for body
+		if(!empty($bodyHTML))
+			$oMime->setHTMLBody($bodyHTML);
+		
+		// Add attachments to message
+		foreach($aAttachment as $aFile)
+			$oMime->addAttachment($aFile[0], $aFile[1]);
+		
+		// Send message
+		$oMail = $this->_mail->send($sRecipients, $oMime->headers($aHeaders), $oMime->get());
 		
 		if(PEAR::iserror($oMail))
 			$this->error("Mail - ".$headers["Subject"], $oMail->message);
