@@ -31,7 +31,25 @@ class admin_content extends adminController
 			$this->forward("/admin/content/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"])))));
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,30);
+		
+		$aPages = $this->dbResults(
+			"SELECT `tag` FROM `content`"
+				." ORDER BY `tag`"
+			,"admin->content->add_s"
+			,"all"
+		);
+
+		if (in_array(array('tag' => $sTag), $aPages))
+		{
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 30-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aPages);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
 		
 		$sID = $this->dbResults(
 			"INSERT INTO `content`"
