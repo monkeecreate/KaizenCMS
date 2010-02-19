@@ -9,7 +9,6 @@ class testimonials extends appController
 				." INNER JOIN `testimonials_categories` AS `categories` ON `assign`.`categoryid` = `categories`.`id`"
 				." WHERE `testimonials`.`active` = 1"
 				." ORDER BY `testimonials`.`name`"
-			,"testimonials"
 			,"all"
 		);
 		
@@ -20,7 +19,6 @@ class testimonials extends appController
 			$aTestimonial = $this->dbResults(
 				"SELECT * FROM `testimonials`"
 					." WHERE `id` = ".$this->_urlVars->dynamic["id"]
-				,"testimonials->testimonial"
 				,"row"
 			);
 			$this->tplAssign("aCurTestimonial", $aTestimonial);

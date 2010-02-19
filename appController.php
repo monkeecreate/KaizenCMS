@@ -75,12 +75,12 @@ class appController
 	##################################
 	
 	### Database #####################
-	function dbResults($sSQL, $section, $return = null)
+	function dbResults($sSQL, $return = null)
 	{
 		$oResult = $this->_db->query($sSQL);
 		
 		if(PEAR::isError($oResult))
-			$this->sendError($section, "dberror", $oResult);
+			$this->sendError("dbResults", "dberror", $oResult, debug_backtrace());
 			
 		switch($return)
 		{
@@ -112,7 +112,12 @@ class appController
 	}
 	function dbQuote($sValue, $sType)
 	{
-		return $this->_db->quote($sValue, $sType);
+		$sReturn = $this->_db->quote($sValue, $sType);
+		
+		if(PEAR::isError($sReturn))
+			$this->sendError("dbQuote", $sReturn->userinfo, null, debug_backtrace());
+		
+		return $sReturn;
 	}
 	##################################
 	
@@ -145,9 +150,24 @@ class appController
 	###################################
 	
 	### Mail ##########################
-	function mail($recipients, $headers, $message)
+	function mail($sRecipients, $aHeaders, $bodyText, $bodyHTML = null, $aAttachment = array())
 	{
-		$oMail = $this->_mail->send($recipients, $headers, $message);
+		include("Mail/mime.php");
+		$oMime = new Mail_mime("\n");
+		
+		// Set text for message body
+		$oMime->setTXTBody($bodyText);
+		
+		// Set HTML message for body
+		if(!empty($bodyHTML))
+			$oMime->setHTMLBody($bodyHTML);
+		
+		// Add attachments to message
+		foreach($aAttachment as $aFile)
+			$oMime->addAttachment($aFile[0], $aFile[1]);
+		
+		// Send message
+		$oMail = $this->_mail->send($sRecipients, $oMime->headers($aHeaders), $oMime->get());
 		
 		if(PEAR::iserror($oMail))
 			$this->error("Mail - ".$headers["Subject"], $oMail->message);
@@ -207,8 +227,11 @@ class appController
 		}
 		exit;
 	}
-	protected function sendError($section, $error, $db = null)
+	protected function sendError($section, $error, $db = null, $aTrace = array())
 	{
+		if(empty($aTrace))
+			$aTrace = debug_backtrace();
+		
 		$recipients = $this->_settings->adminInfo["email"];
 		$headers["To"] = $this->_settings->adminInfo["email"];
 		$headers["From"] = $this->_settings->adminInfo["email"];
@@ -226,8 +249,11 @@ class appController
 		else
 			$body .= "Error: ".$error."\n";
 		
+		$body .= "File: ".$aTrace[0]["file"]."\n";
+		$body .= "Line: ".$aTrace[0]["line"]."\n";
 		$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
 		$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
+		$body .= "Domain: ".$_SERVER["HTTP_HOST"]."\n";
 		$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
 		$body .= "Time: ".date("M j,Y - h:i:s a")."\n";
 		

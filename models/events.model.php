@@ -30,7 +30,6 @@ class events_model extends appModel
 				.$sWhere
 				." GROUP BY `events`.`id`"
 				." ORDER BY `events`.`datetime_start`"
-			,"model->events->getEvents"
 			,"all"
 		);
 		
@@ -47,7 +46,6 @@ class events_model extends appModel
 				." AND `events`.`active` = 1"
 				." AND `events`.`datetime_show` < ".time()
 				." AND (`events`.`use_kill` = 0 OR `events`.`datetime_kill` > ".time().")"
-			,"model->events->getEvent"
 			,"row"
 		);
 		
@@ -62,7 +60,6 @@ class events_model extends appModel
 			"SELECT `name` FROM `events_categories` AS `categories`"
 				." INNER JOIN `events_categories_assign` AS `events_assign` ON `events_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `events_assign`.`eventid` = ".$aEvent["id"]
-			,"model->events->getEvents->event_categories"
 			,"col"
 		);
 	
@@ -82,7 +79,6 @@ class events_model extends appModel
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `events_categories`"
 				." ORDER BY `name`"
-			,"model->events->getCategories"
 			,"all"
 		);
 		
@@ -101,7 +97,7 @@ class events_model extends appModel
 			"SELECT * FROM `events_categories`"
 				.$sWhere
 				." LIMIT 1"
-			,"model->events->getCategory"
+			,"all"
 		);
 		
 		return $aCategory;

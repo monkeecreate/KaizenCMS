@@ -70,7 +70,6 @@ class admin_directory extends adminController
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
-			,"admin->directory->add"
 			,"insert"
 		);
 		
@@ -81,7 +80,6 @@ class admin_directory extends adminController
 					." (`listingid`, `categoryid`)"
 					." VALUES"
 					." (".$sID.", ".$sCategory.")"
-				,"admin->directory->add->categories"
 			);
 		}
 		
@@ -98,7 +96,6 @@ class admin_directory extends adminController
 			$aListingRow = $this->dbResults(
 				"SELECT * FROM `directory`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->directory->edit"
 				,"row"
 			);
 			
@@ -108,7 +105,6 @@ class admin_directory extends adminController
 			$directory["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aListingRow["updated_by"]
-				,"admin->directory->edit->updated_by"
 				,"row"
 			);
 			
@@ -119,7 +115,6 @@ class admin_directory extends adminController
 			$aListing = $this->dbResults(
 				"SELECT * FROM `directory`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->directory->edit"
 				,"row"
 			);
 			
@@ -129,7 +124,6 @@ class admin_directory extends adminController
 					." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
-				,"admin->directory->edit->categories"
 				,"col"
 			);
 			
@@ -139,7 +133,6 @@ class admin_directory extends adminController
 			$aListing["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aListing["updated_by"]
-				,"admin->directory->edit->updated_by"
 				,"row"
 			);
 			
@@ -179,13 +172,11 @@ class admin_directory extends adminController
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->directory->edit"
 		);
 		
 		$this->dbResults(
 			"DELETE FROM `directory_categories_assign`"
 				." WHERE `listingid` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->directory->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
@@ -194,7 +185,6 @@ class admin_directory extends adminController
 					." (`listingid`, `categoryid`)"
 					." VALUES"
 					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
-				,"admin->directory->edit->categories"
 			);
 		}
 		
@@ -207,12 +197,10 @@ class admin_directory extends adminController
 		$this->dbResults(
 			"DELETE FROM `directory`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->directory->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `directory_categories_assign`"
 				." WHERE `listingid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->directory->categories_assign_delete"
 		);
 		
 		$this->forward("/admin/directory/?notice=".urlencode("Listing removed successfully!"));
@@ -224,7 +212,6 @@ class admin_directory extends adminController
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `directory_categories`"
 				." ORDER BY `name`"
-			,"admin->directory->categories"
 			,"all"
 		);
 		
@@ -240,7 +227,6 @@ class admin_directory extends adminController
 				." ("
 				.$this->dbQuote($_POST["name"], "text")
 				.")"
-			,"admin->directory->category->add_s"
 			,"insert"
 		);
 
@@ -252,7 +238,6 @@ class admin_directory extends adminController
 			"UPDATE `directory_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->directory->categories->edit"
 		);
 
 		echo "/admin/directory/categories/?notice=".urlencode("Changes saved successfully!");
@@ -262,12 +247,10 @@ class admin_directory extends adminController
 		$this->dbResults(
 			"DELETE FROM `directory_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->directory->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `directory_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->directory->category->delete_assign"
 		);
 
 		$this->forward("/admin/directory/categories/?notice=".urlencode("Category removed successfully!"));

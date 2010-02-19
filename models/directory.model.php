@@ -23,7 +23,6 @@ class directory_model extends appModel
 				.$sWhere
 				." GROUP BY `directory`.`id`"
 				." ORDER BY `directory`.`name`"
-			,"model->directory->getArticles"
 			,"all"
 		);
 	
@@ -38,7 +37,6 @@ class directory_model extends appModel
 			"SELECT `name` FROM `directory_categories` AS `categories`"
 				." INNER JOIN `directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
-			,"model->directory->getListingInfo->categories"
 			,"col"
 		);
 	
@@ -57,7 +55,6 @@ class directory_model extends appModel
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `directory_categories`"
 				." ORDER BY `name`"
-			,"model->events->getCategories"
 			,"all"
 		);
 		

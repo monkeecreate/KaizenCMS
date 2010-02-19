@@ -23,7 +23,6 @@ class documents_model extends appModel
 				.$sWhere
 				." GROUP BY `documents`.`id`"
 				." ORDER BY `documents`.`created_datetime` DESC"
-			,"model->documents->getDocuments"
 			,"all"
 		);
 		
@@ -38,7 +37,6 @@ class documents_model extends appModel
 			"SELECT `documents`.* FROM `documents` AS `documents`"
 				." WHERE `documents`.`id` = ".$this->dbQuote($sId, "integer")
 				." AND `documents`.`active` = 1"
-			,"model->documents->getDocument"
 			,"row"
 		);
 	}
@@ -48,7 +46,6 @@ class documents_model extends appModel
 			"SELECT `name` FROM `documents_categories` AS `categories`"
 				." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
-			,"model->documents->getDocumentInfo->categories"
 			,"col"
 		);
 	
@@ -61,7 +58,6 @@ class documents_model extends appModel
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `documents_categories`"
 				." ORDER BY `name`"
-			,"model->documents->getCategories"
 			,"all"
 		);
 		
@@ -80,7 +76,7 @@ class documents_model extends appModel
 			"SELECT * FROM `documents_categories`"
 				.$sWhere
 				." LIMIT 1"
-			,"model->documents->getCategory"
+			,"all"
 		);
 		
 		return $aCategory;

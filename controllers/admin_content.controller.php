@@ -10,7 +10,6 @@ class admin_content extends adminController
 		$aPages = $this->dbResults(
 			"SELECT * FROM `content`"
 				." ORDER BY `title`"
-			,"admin->content->index"
 			,"all"
 		);
 		
@@ -36,7 +35,6 @@ class admin_content extends adminController
 		$aPages = $this->dbResults(
 			"SELECT `tag` FROM `content`"
 				." ORDER BY `tag`"
-			,"admin->content->add_s"
 			,"all"
 		);
 
@@ -64,7 +62,6 @@ class admin_content extends adminController
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
-			,"admin->content->add"
 			,"insert"
 		);
 		
@@ -79,7 +76,6 @@ class admin_content extends adminController
 			$aPage = $this->dbResults(
 				"SELECT * FROM `content`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->content->edit"
 				,"row"
 			);
 			
@@ -89,7 +85,6 @@ class admin_content extends adminController
 			$aPage["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aPageRow["updated_by"]
-				,"admin->content->edit->updated_by"
 				,"row"
 			);
 			
@@ -100,14 +95,12 @@ class admin_content extends adminController
 			$aPage = $this->dbResults(
 				"SELECT * FROM `content`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->content->edit"
 				,"row"
 			);
 			
 			$aPage["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aPage["updated_by"]
-				,"admin->content->edit->updated_by"
 				,"row"
 			);
 		
@@ -131,7 +124,6 @@ class admin_content extends adminController
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->content->edit"
 		);
 		
 		$_SESSION["admin"]["admin_content"] = null;
@@ -143,7 +135,6 @@ class admin_content extends adminController
 		$this->dbResults(
 			"DELETE FROM `content`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->content->delete"
 		);
 		
 		$this->forward("/admin/content/?notice=".urlencode("Page removed successfully!"));

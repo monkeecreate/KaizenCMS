@@ -111,7 +111,6 @@ class admin_events extends adminController
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
-			,"admin->events->add"
 			,"insert"
 		);
 		
@@ -122,7 +121,6 @@ class admin_events extends adminController
 					." (`eventid`, `categoryid`)"
 					." VALUES"
 					." (".$sID.", ".$sCategory.")"
-				,"admin->events->add->categories"
 			);
 		}
 		
@@ -142,7 +140,6 @@ class admin_events extends adminController
 			$aEventRow = $this->dbResults(
 				"SELECT * FROM `events`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->events->edit"
 				,"row"
 			);
 			
@@ -152,7 +149,6 @@ class admin_events extends adminController
 			$aEvent["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aEventRow["updated_by"]
-				,"admin->events->edit->updated_by"
 				,"row"
 			);
 		}
@@ -161,7 +157,6 @@ class admin_events extends adminController
 			$aEvent = $this->dbResults(
 				"SELECT * FROM `events`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->events->edit"
 				,"row"
 			);
 			
@@ -171,7 +166,6 @@ class admin_events extends adminController
 					." WHERE `events_assign`.`eventid` = ".$aEvent["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
-				,"admin->events->edit->categories"
 				,"col"
 			);
 			
@@ -183,7 +177,6 @@ class admin_events extends adminController
 			$aEvent["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aEvent["updated_by"]
-				,"admin->events->edit->updated_by"
 				,"row"
 			);
 		}
@@ -251,13 +244,11 @@ class admin_events extends adminController
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->events->edit"
 		);
 		
 		$this->dbResults(
 			"DELETE FROM `events_categories_assign`"
 				." WHERE `eventid` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->events->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
@@ -266,7 +257,6 @@ class admin_events extends adminController
 					." (`eventid`, `categoryid`)"
 					." VALUES"
 					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
-				,"admin->events->edit->categories"
 			);
 		}
 		
@@ -279,12 +269,10 @@ class admin_events extends adminController
 		$this->dbResults(
 			"DELETE FROM `events`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->content->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `events_categories_assign`"
 				." WHERE `eventid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->content->categories_assign_delete"
 		);
 		
 		$this->forward("/admin/events/?notice=".urlencode("Event removed successfully!"));
@@ -296,7 +284,6 @@ class admin_events extends adminController
 		$aEvent = $this->dbResults(
 			"SELECT * FROM `events`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->events->image->upload"
 			,"row"
 		);
 
@@ -335,7 +322,6 @@ class admin_events extends adminController
 							.", `photo_width` = 194"
 							.", `photo_height` = 129"
 							." WHERE `id` = ".$_POST["id"]
-						,"admin->events->image->upload"
 					);
 
 					$this->forward("/admin/events/image/".$_POST["id"]."/edit/");
@@ -357,7 +343,6 @@ class admin_events extends adminController
 		$aEvent = $this->dbResults(
 			"SELECT * FROM `events`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->events->image->edit"
 			,"row"
 		);
 
@@ -379,7 +364,6 @@ class admin_events extends adminController
 				.", photo_width = ".$this->dbQuote($_POST["width"], "integer")
 				.", photo_height = ".$this->dbQuote($_POST["height"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->events->image->edit_s"
 		);
 
 		$this->forward("/admin/events/?notice=".urlencode("Image cropped successfully!"));
@@ -397,7 +381,6 @@ class admin_events extends adminController
 				.", photo_width = 0"
 				.", photo_height = 0"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->events->image->delete"
 		);
 		
 		@unlink($this->_settings->rootPublic.substr($oEvents->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
@@ -411,7 +394,6 @@ class admin_events extends adminController
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `events_categories`"
 				." ORDER BY `name`"
-			,"admin->events->categories"
 			,"all"
 		);
 		
@@ -427,7 +409,6 @@ class admin_events extends adminController
 				." ("
 				.$this->dbQuote($_POST["name"], "text")
 				.")"
-			,"admin->events->category->add_s"
 			,"insert"
 		);
 
@@ -439,7 +420,6 @@ class admin_events extends adminController
 			"UPDATE `events_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->events->categories->edit"
 		);
 
 		echo "/admin/events/categories/?notice=".urlencode("Changes saved successfully!");
@@ -449,12 +429,10 @@ class admin_events extends adminController
 		$this->dbResults(
 			"DELETE FROM `events_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->events->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `events_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->events->category->delete_assign"
 		);
 
 		$this->forward("/admin/events/categories/?notice=".urlencode("Category removed successfully!"));
@@ -467,7 +445,6 @@ class admin_events extends adminController
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `events_categories`"
 				." ORDER BY `name`"
-			,"admin->events->get_categories->categories"
 			,"all"
 		);
 		

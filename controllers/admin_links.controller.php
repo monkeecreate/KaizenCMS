@@ -18,7 +18,6 @@ class admin_links extends adminController
 				.$sSQLCategory
 				." GROUP BY `links`.`id`"
 				." ORDER BY `links`.`name` DESC"
-			,"admin->links->index"
 			,"all"
 		);
 		
@@ -70,7 +69,6 @@ class admin_links extends adminController
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
-			,"admin->links->add"
 			,"insert"
 		);
 		
@@ -81,7 +79,6 @@ class admin_links extends adminController
 					." (`linkid`, `categoryid`)"
 					." VALUES"
 					." (".$sID.", ".$sCategory.")"
-				,"admin->links->add->categories"
 			);
 		}
 		
@@ -96,7 +93,6 @@ class admin_links extends adminController
 			$aLinkRow = $this->dbResults(
 				"SELECT * FROM `links`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->links->edit"
 				,"row"
 			);
 			
@@ -106,7 +102,6 @@ class admin_links extends adminController
 			$aLink["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aLinkRow["updated_by"]
-				,"admin->links->edit->updated_by"
 				,"row"
 			);
 			
@@ -117,7 +112,6 @@ class admin_links extends adminController
 			$aLink = $this->dbResults(
 				"SELECT * FROM `links`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->links->edit"
 				,"row"
 			);
 			
@@ -127,14 +121,12 @@ class admin_links extends adminController
 					." WHERE `links_assign`.`linkid` = ".$aLink["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
-				,"admin->links->edit->categories"
 				,"col"
 			);
 			
 			$aLink["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aLink["updated_by"]
-				,"admin->links->edit->updated_by"
 				,"row"
 			);
 			
@@ -166,13 +158,11 @@ class admin_links extends adminController
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->links->edit"
 		);
 		
 		$this->dbResults(
 			"DELETE FROM `links_categories_assign`"
 				." WHERE `linkid` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->links->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
@@ -181,7 +171,6 @@ class admin_links extends adminController
 					." (`linkid`, `categoryid`)"
 					." VALUES"
 					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
-				,"admin->links->edit->categories"
 			);
 		}
 		
@@ -194,7 +183,6 @@ class admin_links extends adminController
 		$aLink = $this->dbResults(
 			"SELECT * FROM `links`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->links->edit"
 			,"row"
 		);
 		@unlink($this->_settings->rootPublic."uploads/links/".$aLink["link"]);
@@ -202,12 +190,10 @@ class admin_links extends adminController
 		$this->dbResults(
 			"DELETE FROM `links`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->links->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `links_categories_assign`"
 				." WHERE `linkid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->links->categories_assign_delete"
 		);
 		
 		$this->forward("/admin/links/?notice=".urlencode("Link removed successfully!"));
@@ -219,7 +205,6 @@ class admin_links extends adminController
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `links_categories`"
 				." ORDER BY `name`"
-			,"admin->links->categories"
 			,"all"
 		);
 		
@@ -235,7 +220,6 @@ class admin_links extends adminController
 				." ("
 				.$this->dbQuote($_POST["name"], "text")
 				.")"
-			,"admin->links->category->add_s"
 			,"insert"
 		);
 
@@ -247,7 +231,6 @@ class admin_links extends adminController
 			"UPDATE `links_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->links->categories->edit"
 		);
 
 		echo "/admin/links/categories/?notice=".urlencode("Changes saved successfully!");
@@ -257,12 +240,10 @@ class admin_links extends adminController
 		$this->dbResults(
 			"DELETE FROM `links_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->links->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `links_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->links->category->delete_assign"
 		);
 
 		$this->forward("/admin/links/categories/?notice=".urlencode("Category removed successfully!"));
@@ -275,7 +256,6 @@ class admin_links extends adminController
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `links_categories`"
 				." ORDER BY `name`"
-			,"admin->links->get_categories->categories"
 			,"all"
 		);
 		

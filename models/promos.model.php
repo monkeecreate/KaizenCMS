@@ -23,7 +23,6 @@ class promos_model extends appModel
 				." AND `active` = 1"
 				." ORDER BY rand()"
 				." LIMIT 1"
-			,"smarty->getPromos->promo"
 			,"row"
 		);
 		
@@ -33,7 +32,6 @@ class promos_model extends appModel
 				"UPDATE `promos` SET"
 					." `impressions` = `impressions` + 1"
 					." WHERE `id` = ".$aPromo["id"]
-				,"smarty->getPromos->promo->impressions"
 			);
 			
 			$this->_settings->displayedPromos[] = $aPromo["id"];
@@ -46,7 +44,6 @@ class promos_model extends appModel
 		$aPosition = $this->dbResults(
 			"SELECT * FROM `promos_positions`"
 				." WHERE `tag` = ".$this->dbQuote($sTag, "text")
-			,"model->promos->getPosition"
 			,"row"
 		);
 		

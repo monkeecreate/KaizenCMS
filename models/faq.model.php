@@ -16,7 +16,6 @@ class faq_model extends appModel
 				." INNER JOIN `faq_categories` AS `categories` ON `faq_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `faq`.`id`"
-			,"faq->all_faq_pages"
 			,"all"
 		);
 	
@@ -26,7 +25,6 @@ class faq_model extends appModel
 				"SELECT `name` FROM `faq_categories` AS `categories`"
 					." INNER JOIN `faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
-				,"faq->faq_categories"
 				,"col"
 			);
 		
@@ -40,7 +38,6 @@ class faq_model extends appModel
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `faq_categories`"
 				." ORDER BY `name`"
-			,"model->faq->getCategories"
 			,"all"
 		);
 		

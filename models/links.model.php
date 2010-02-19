@@ -16,7 +16,6 @@ class links_model extends appModel
 				." INNER JOIN `links_categories` AS `categories` ON `links_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `links`.`id`"
-			,"model->links->getLinks"
 			,"all"
 		);
 	
@@ -26,7 +25,6 @@ class links_model extends appModel
 				"SELECT `name` FROM `links_categories` AS `categories`"
 					." INNER JOIN `links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `links_assign`.`linkid` = ".$aLink["id"]
-				,"model->links->getLinks->link_categories"
 				,"col"
 			);
 		
@@ -40,7 +38,6 @@ class links_model extends appModel
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `links_categories`"
 				." ORDER BY `name`"
-			,"model->links->getCategories"
 			,"all"
 		);
 		
