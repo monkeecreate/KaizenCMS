@@ -229,7 +229,7 @@ class appController
 	}
 	protected function sendError($section, $error, $db = null, $aTrace = array())
 	{
-		if(!empty($aTrace))
+		if(empty($aTrace))
 			$aTrace = debug_backtrace();
 		
 		$recipients = $this->_settings->adminInfo["email"];
