@@ -12,21 +12,27 @@ $(document).ready(function(){ldelim}
 </script>
 {/head}
 
-<div id="contentItemPage">
-	<h1>{$aGallery.name|clean_html}</h1>
-	<small class="timeCat">
-		Categories: {$aGallery.categories|clean_html}
-	</small>
-	<p class="content">
-		{$aGallery.description|clean_html}<br />
-	</p>
+	<section id="content" class="content column">
 
-	{foreach from=$aGallery.photos item=aPhoto}
-		<a href="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=600&height=600" rel="prettyPhoto[gallery]" title="{$aPhoto.description|clean_html}">
-			<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=140&height=140" alt="{$aPhoto.title|clean_html}" class="galleryPics">
-		</a>
-	{/foreach}
-	<div class="clear">&nbsp;</div>
-</div>
+		<div id="contentItemPage">
+			<h2>{$aGallery.name|clean_html}</h2>
+			<small class="timeCat">
+				Categories: {$aGallery.categories|clean_html}
+			</small>
+			<p class="content">
+				{$aGallery.description|clean_html}<br />
+			</p>
+
+			{foreach from=$aGallery.photos item=aPhoto}
+				<a href="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=600&height=600" rel="prettyPhoto[gallery]" title="{$aPhoto.description|clean_html}">
+					<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=140&height=140" alt="{$aPhoto.title|clean_html}" class="galleryPics">
+				</a>
+			{/foreach}
+			<div class="clear">&nbsp;</div>
+		</div>
+	
+	</section> <!-- #content -->
+	
+	{include file="inc_sidebar.tpl"}
 
 {include file="inc_footer.tpl"}

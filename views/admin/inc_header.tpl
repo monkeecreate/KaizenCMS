@@ -127,6 +127,15 @@
 							{/if}
 						</ul>
 					</div>
+					<div class="header"><a href="#" tabindex="-1">Directory</a></div>
+					<div class="info">
+						<ul>
+							<li><a href="/admin/directory/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Directory</a></li>
+							<li><a href="/admin/directory/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Directories</a></li>
+							<li><a href="/admin/directory/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
+							<li><a href="/admin/directory/categories"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
+						</ul>
+					</div>
 					<div class="header"><a href="#" tabindex="-1">Users</a></div>
 					<div class="info">
 						<ul>
@@ -162,8 +171,10 @@
 							8
 						{elseif $menu == 'promos'}
 							9
-						{elseif $menu == 'users'}
+						{elseif $menu == 'directory'}
 							10
+						{elseif $menu == 'users'}
+							11
 						{else}
 							0
 						{/if}
