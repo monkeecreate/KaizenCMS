@@ -253,6 +253,7 @@ class appController
 		$body .= "Line: ".$aTrace[0]["line"]."\n";
 		$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
 		$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
+		$body .= "Domain: ".$_SERVER["HTTP_HOST"]."\n";
 		$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
 		$body .= "Time: ".date("M j,Y - h:i:s a")."\n";
 		
