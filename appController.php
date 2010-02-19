@@ -75,12 +75,12 @@ class appController
 	##################################
 	
 	### Database #####################
-	function dbResults($sSQL, $section, $return = null)
+	function dbResults($sSQL, $return = null)
 	{
 		$oResult = $this->_db->query($sSQL);
 		
 		if(PEAR::isError($oResult))
-			$this->sendError($section, "dberror", $oResult);
+			$this->sendError("dbResults", "dberror", $oResult, debug_backtrace());
 			
 		switch($return)
 		{
@@ -115,7 +115,7 @@ class appController
 		$sReturn = $this->_db->quote($sValue, $sType);
 		
 		if(PEAR::isError($sReturn))
-			$this->sendError("dbquote", $sReturn->userinfo, null, debug_backtrace());
+			$this->sendError("dbQuote", $sReturn->userinfo, null, debug_backtrace());
 		
 		return $sReturn;
 	}
@@ -229,6 +229,9 @@ class appController
 	}
 	protected function sendError($section, $error, $db = null, $aTrace = array())
 	{
+		if(!empty($aTrace))
+			$aTrace = debug_backtrace();
+		
 		$recipients = $this->_settings->adminInfo["email"];
 		$headers["To"] = $this->_settings->adminInfo["email"];
 		$headers["From"] = $this->_settings->adminInfo["email"];
@@ -246,12 +249,8 @@ class appController
 		else
 			$body .= "Error: ".$error."\n";
 		
-		if(!empty($aTrace))
-		{
-			$body .= "File: ".$aTrace[0]["file"]."\n";
-			$body .= "Line: ".$aTrace[0]["line"]."\n";
-		}
-		
+		$body .= "File: ".$aTrace[0]["file"]."\n";
+		$body .= "Line: ".$aTrace[0]["line"]."\n";
 		$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
 		$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
 		$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
