@@ -30,7 +30,6 @@ class calendar_model extends appModel
 				.$sWhere
 				." GROUP BY `calendar`.`id`"
 				." ORDER BY `calendar`.`datetime_start`"
-			,"calendar->all_calendar_pages"
 			,"all"
 		);
 	
@@ -47,7 +46,6 @@ class calendar_model extends appModel
 				." AND `calendar`.`active` = 1"
 				." AND `calendar`.`datetime_show` < ".time()
 				." AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")"
-			,"model->calendar->getEvent"
 			,"row"
 		);
 		
@@ -62,7 +60,6 @@ class calendar_model extends appModel
 			"SELECT `name` FROM `calendar_categories` AS `category`"
 				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
 				." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
-			,"calendar->event->categories"
 			,"col"
 		);
 	
@@ -82,7 +79,6 @@ class calendar_model extends appModel
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `calendar_categories`"
 				." ORDER BY `name`"
-			,"model->calendar->getCategories"
 			,"all"
 		);
 		
@@ -101,7 +97,7 @@ class calendar_model extends appModel
 			"SELECT * FROM `calendar_categories`"
 				.$sWhere
 				." LIMIT 1"
-			,"model->calendar->getCategory"
+			,"all"
 		);
 		
 		return $aCategory;

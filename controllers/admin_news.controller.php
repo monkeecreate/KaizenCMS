@@ -96,7 +96,6 @@ class admin_news extends adminController
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
-			,"admin->news->add"
 			,"insert"
 		);
 		
@@ -107,7 +106,6 @@ class admin_news extends adminController
 					." (`articleid`, `categoryid`)"
 					." VALUES"
 					." (".$sID.", ".$sCategory.")"
-				,"admin->news->add->categories"
 			);
 		}
 		
@@ -127,7 +125,6 @@ class admin_news extends adminController
 			$aArticleRow = $this->dbResults(
 				"SELECT * FROM `news`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->news->edit"
 				,"row"
 			);
 			
@@ -137,7 +134,6 @@ class admin_news extends adminController
 			$aArticle["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aArticleRow["updated_by"]
-				,"admin->news->edit->updated_by"
 				,"row"
 			);
 			
@@ -148,7 +144,6 @@ class admin_news extends adminController
 			$aArticle = $this->dbResults(
 				"SELECT * FROM `news`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->news->edit"
 				,"row"
 			);
 			
@@ -158,7 +153,6 @@ class admin_news extends adminController
 					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
-				,"admin->news->edit->categories"
 				,"col"
 			);
 			
@@ -168,7 +162,6 @@ class admin_news extends adminController
 			$aArticle["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aArticle["updated_by"]
-				,"admin->news->edit->updated_by"
 				,"row"
 			);
 			
@@ -226,13 +219,11 @@ class admin_news extends adminController
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->news->edit"
 		);
 		
 		$this->dbResults(
 			"DELETE FROM `news_categories_assign`"
 				." WHERE `articleid` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->news->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
@@ -241,7 +232,6 @@ class admin_news extends adminController
 					." (`articleid`, `categoryid`)"
 					." VALUES"
 					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
-				,"admin->news->edit->categories"
 			);
 		}
 		
@@ -254,12 +244,10 @@ class admin_news extends adminController
 		$this->dbResults(
 			"DELETE FROM `news`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->news->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `news_categories_assign`"
 				." WHERE `articleid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->news->categories_assign_delete"
 		);
 		
 		$this->forward("/admin/news/?notice=".urlencode("Article removed successfully!"));
@@ -272,7 +260,6 @@ class admin_news extends adminController
 		$aArticle = $this->dbResults(
 			"SELECT * FROM `news`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->news->image->upload"
 			,"row"
 		);
 
@@ -313,7 +300,6 @@ class admin_news extends adminController
 							.", `photo_width` = ".$oNews->imageMinWidth
 							.", `photo_height` = ".$oNews->imageMinHeight
 							." WHERE `id` = ".$_POST["id"]
-						,"admin->news->image->upload"
 					);
 
 					$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
@@ -350,7 +336,6 @@ class admin_news extends adminController
 				.", photo_width = ".$this->dbQuote($_POST["width"], "integer")
 				.", photo_height = ".$this->dbQuote($_POST["height"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->news->image->edit_s"
 		);
 
 		$this->forward("/admin/news/?notice=".urlencode("Image cropped successfully!"));
@@ -368,7 +353,6 @@ class admin_news extends adminController
 				.", photo_width = 0"
 				.", photo_height = 0"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->news->image->delete"
 		);
 		
 		@unlink($this->_settings->rootPublic.substr($oNews->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
@@ -382,7 +366,6 @@ class admin_news extends adminController
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `news_categories`"
 				." ORDER BY `name`"
-			,"admin->news->categories"
 			,"all"
 		);
 		
@@ -398,7 +381,6 @@ class admin_news extends adminController
 				." ("
 				.$this->dbQuote($_POST["name"], "text")
 				.")"
-			,"admin->news->category->add_s"
 			,"insert"
 		);
 		
@@ -411,7 +393,6 @@ class admin_news extends adminController
 			"UPDATE `news_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->news->categories->edit"
 		);
 
 		echo "/admin/news/categories/?notice=".urlencode("Changes saved successfully!");
@@ -421,12 +402,10 @@ class admin_news extends adminController
 		$this->dbResults(
 			"DELETE FROM `news_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->news->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `news_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->news->category->delete_assign"
 		);
 
 		$this->forward("/admin/news/categories/?notice=".urlencode("Category removed successfully!"));

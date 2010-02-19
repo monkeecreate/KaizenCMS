@@ -29,7 +29,6 @@ class content extends appController
 					"SELECT * FROM `content`"
 						." WHERE `tag` = ".$this->dbQuote($sPage, "text")
 						." LIMIT 1"
-					,"content->view"
 					,"row"
 				);
 			
@@ -123,7 +122,6 @@ class content extends appController
 		$aPromo = $this->dbResults(
 			"SELECT `promos`.* FROM `promos`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"content->promo"
 			,"row"
 		);
 		
@@ -131,7 +129,7 @@ class content extends appController
 			"UPDATE `promos` SET"
 				." `clicks` = `clicks` + 1"
 				." WHERE `id` = ".$aPromo["id"]
-			,"content->promo->clicks"
+			,"update"
 		);
 		
 		$this->forward($aPromo["link"]);

@@ -17,7 +17,6 @@ class admin_testimonials extends adminController
 			"SELECT `testimonials`.* FROM `testimonials`"
 				.$sSQLCategory
 				." ORDER BY `testimonials`.`name`"
-			,"admin->testimonials"
 			,"all"
 		);
 		
@@ -71,7 +70,6 @@ class admin_testimonials extends adminController
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
-			,"admin->testimonials->add"
 			,"insert"
 		);
 		
@@ -82,7 +80,6 @@ class admin_testimonials extends adminController
 					." (`testimonialid`, `categoryid`)"
 					." VALUES"
 					." (".$sID.", ".$sCategory.")"
-				,"admin->testimonials->add->categories"
 			);
 		}
 		
@@ -94,7 +91,7 @@ class admin_testimonials extends adminController
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($sID, "integer")
-					,"admin->testimonials->failed_video_upload"
+					,"update"
 				);
 				
 				$this->forward("/admin/testimonials/?notice=".urlencode("Video file size was too large!"));
@@ -111,7 +108,7 @@ class admin_testimonials extends adminController
 						"UPDATE `testimonials` SET"
 							." `video` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
-						,"admin->testimonials->add_video_upload"
+						,"update"
 					);
 				}
 				else
@@ -120,7 +117,7 @@ class admin_testimonials extends adminController
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
-						,"admin->testimonials->failed_video_upload"
+						,"update"
 					);
 					
 					$this->forward("/admin/testimonials/?notice=".urlencode("Failed to upload file!"));
@@ -135,7 +132,7 @@ class admin_testimonials extends adminController
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($sID, "integer")
-					,"admin->testimonials->failed_poster_upload"
+					,"update"
 				);
 				
 				$this->forward("/admin/testimonials/?notice=".urlencode("Poster file size was too large!"));
@@ -152,7 +149,7 @@ class admin_testimonials extends adminController
 						"UPDATE `testimonials` SET"
 							." `poster` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
-						,"admin->testimonials->add_poster_upload"
+						,"update"
 					);
 				}
 				else
@@ -161,7 +158,7 @@ class admin_testimonials extends adminController
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
-						,"admin->testimonials->failed_poster_upload"
+						,"update"
 					);
 					
 					$this->forward("/admin/testimonials/?notice=".urlencode("Failed to upload file!"));
@@ -180,7 +177,6 @@ class admin_testimonials extends adminController
 			$aTestimonialRow = $this->dbResults(
 				"SELECT * FROM `testimonials`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->testimonials->edit"
 				,"row"
 			);
 			
@@ -190,7 +186,6 @@ class admin_testimonials extends adminController
 			$aTestimonial["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aTestimonialRow["updated_by"]
-				,"admin->testimonials->edit->updated_by"
 				,"row"
 			);
 			
@@ -201,7 +196,6 @@ class admin_testimonials extends adminController
 			$aTestimonial = $this->dbResults(
 				"SELECT * FROM `testimonials`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->testimonials->edit"
 				,"row"
 			);
 			
@@ -211,14 +205,12 @@ class admin_testimonials extends adminController
 					." WHERE `assign`.`testimonialid` = ".$aTestimonial["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
-				,"admin->testimonials->edit->categories"
 				,"col"
 			);
 			
 			$aTestimonial["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aTestimonial["updated_by"]
-				,"admin->testimonials->edit->updated_by"
 				,"row"
 			);
 		
@@ -256,13 +248,13 @@ class admin_testimonials extends adminController
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->testimonials->edit"
+			,"update"
 		);
 		
 		$this->dbResults(
 			"DELETE FROM `testimonials_categories_assign`"
 				." WHERE `testimonialid` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->testimonials->edit->remove_categories"
+			,"update"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
@@ -271,7 +263,6 @@ class admin_testimonials extends adminController
 					." (`testimonialid`, `categoryid`)"
 					." VALUES"
 					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
-				,"admin->testimonials->edit->categories"
 			);
 		}
 		
@@ -283,7 +274,7 @@ class admin_testimonials extends adminController
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"admin->testimonials->failed_video_upload"
+					,"update"
 				);
 				
 				$this->forward("/admin/testimonials/?notice=".urlencode("Video file size was too large!"));
@@ -297,7 +288,6 @@ class admin_testimonials extends adminController
 				$sVideo = $this->dbResults(
 					"SELECT `video` FROM `testimonials`"
 						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"admin->testimonials->edit"
 					,"one"
 				);
 				@unlink($upload_dir.$sVideo);
@@ -308,7 +298,7 @@ class admin_testimonials extends adminController
 						"UPDATE `testimonials` SET"
 							." `video` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						,"admin->testimonials->edit_video_upload"
+						,"update"
 					);
 				}
 				else
@@ -317,7 +307,7 @@ class admin_testimonials extends adminController
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						,"admin->testimonials->edit_failed_video_upload"
+						,"update"
 					);
 					
 					$this->forward("/admin/testimonials/?notice=".urlencode("Failed to upload file!"));
@@ -332,7 +322,7 @@ class admin_testimonials extends adminController
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"admin->testimonials->failed_poster_upload"
+					,"update"
 				);
 				
 				$this->forward("/admin/testimonials/?notice=".urlencode("Poster file size was too large!"));
@@ -346,7 +336,6 @@ class admin_testimonials extends adminController
 				$sPoster = $this->dbResults(
 					"SELECT `poster` FROM `testimonials`"
 						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"admin->testimonials->edit"
 					,"one"
 				);
 				@unlink($upload_dir.$sPoster);
@@ -357,7 +346,7 @@ class admin_testimonials extends adminController
 						"UPDATE `testimonials` SET"
 							." `poster` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						,"admin->testimonials->edit_poster_upload"
+						,"update"
 					);
 				}
 				else
@@ -366,7 +355,7 @@ class admin_testimonials extends adminController
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						,"admin->testimonials->edit_failed_poster_upload"
+						,"update"
 					);
 					
 					$this->forward("/admin/testimonials/?notice=".urlencode("Failed to upload file!"));
@@ -383,12 +372,12 @@ class admin_testimonials extends adminController
 		$this->dbResults(
 			"DELETE FROM `testimonials`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->testimonials->delete"
+			,"delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `testimonials_categories_assign`"
 				." WHERE `testimonialid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->testimonials->categories_assign_delete"
+			,"delete"
 		);
 		
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial removed successfully!"));
@@ -400,7 +389,6 @@ class admin_testimonials extends adminController
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `testimonials_categories`"
 				." ORDER BY `name`"
-			,"admin->testimonials->categories"
 			,"all"
 		);
 		
@@ -416,7 +404,6 @@ class admin_testimonials extends adminController
 				." ("
 				.$this->dbQuote($_POST["name"], "text")
 				.")"
-			,"admin->testimonials->category->add_s"
 			,"insert"
 		);
 
@@ -428,7 +415,7 @@ class admin_testimonials extends adminController
 			"UPDATE `testimonials_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->testimonials->categories->edit"
+			,"update"
 		);
 
 		echo "/admin/testimonials/categories/?notice=".urlencode("Changes saved successfully!");
@@ -438,12 +425,12 @@ class admin_testimonials extends adminController
 		$this->dbResults(
 			"DELETE FROM `testimonials_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->testimonials->category->delete"
+			,"delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `testimonials_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->testimonials->category->delete_assign"
+			,"delete"
 		);
 
 		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Category removed successfully!"));
@@ -456,7 +443,6 @@ class admin_testimonials extends adminController
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `testimonials_categories`"
 				." ORDER BY `name`"
-			,"admin->testimonials->get_categories->categories"
 			,"all"
 		);
 		

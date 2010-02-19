@@ -7,14 +7,12 @@ function smarty_function_getContent($aParams, &$oSmarty)
 		$aContent = $oApp->dbResults(
 			"SELECT * FROM `content`"
 				." WHERE `tag` = ".$oApp->dbQuote($aParams["tag"], "text")
-			,"smarty->getContent->tag"
 			,"row"
 		);
 	elseif(!empty($aParams["id"]))
 		$aContent = $oApp->dbResults(
 			"SELECT * FROM `content`"
 				." WHERE `id` = ".$oApp->dbQuote($aParams["id"], "text")
-			,"smarty->getContent->id"
 			,"row"
 		);
 	

@@ -19,7 +19,6 @@ class adminController extends appController
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$this->dbQuote($_SESSION["admin"]["userid"], "text")
 					." LIMIT 1"
-				,"admin->user_detail"
 				,"row"
 			);
 			
@@ -44,7 +43,6 @@ class adminController extends appController
 					." WHERE `username` = ".$this->dbQuote($_POST["username"], "text")
 					." AND `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
 					." LIMIT 1"
-				,"admin->login"
 				,"one"
 			);
 			
@@ -107,7 +105,6 @@ class adminController extends appController
 			$aUser = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-				,"admin->loggedin"
 				,"row"
 			);
 			
@@ -118,15 +115,6 @@ class adminController extends appController
 		}
 		else
 			return false;
-	}
-	function get_extension($sFilename)
-	{
-		
-	}
-	// Clears out temp upload directory (added items), default time when item expires is 2 hours
-	function clear_tmp($sDir, $sTime = 7200)
-	{
-		
 	}
 	##################################
 }

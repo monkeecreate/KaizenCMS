@@ -10,7 +10,6 @@ class admin_users extends adminController
 		$aUsers = $this->dbResults(
 			"SELECT * FROM `users`"
 				." ORDER BY `lname`"
-			,"admin->users->index"
 			,"all"
 		);
 		
@@ -30,7 +29,7 @@ class admin_users extends adminController
 			$this->forward("/admin/users/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$aRes = $this->dbResults(
+		$sID = $this->dbResults(
 			"INSERT INTO `users`"
 				." (`username`, `password`, `fname`, `lname`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -44,7 +43,7 @@ class admin_users extends adminController
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
-			,"admin->users->add"
+			,"insert"
 		);
 		
 		$_SESSION["admin"]["admin_users"] = null;
@@ -68,7 +67,6 @@ class admin_users extends adminController
 			$aUser["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aUserRow["updated_by"]
-				,"admin->users->edit->updated_by"
 				,"row"
 			);
 			
@@ -80,14 +78,12 @@ class admin_users extends adminController
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 					." LIMIT 1"
-				,"admin->users->edit"
 				,"row"
 			);
 			
 			$aUser["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aUser["updated_by"]
-				,"admin->users->edit->updated_by"
 				,"row"
 			);
 		
@@ -115,7 +111,7 @@ class admin_users extends adminController
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->users->edit"
+			,"update"
 		);
 		
 		if(!empty($_POST["password"]))
@@ -124,7 +120,7 @@ class admin_users extends adminController
 				"UPDATE `users` SET"
 					." `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
 					." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-				,"admin->users->edit_password"
+				,"update"
 			);
 		}
 		
@@ -137,7 +133,7 @@ class admin_users extends adminController
 		$aRes = $this->dbResults(
 			"DELETE FROM `users`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->users->delete"
+			,"delete"
 		);
 		
 		$this->forward("/admin/users/?notice=".urlencode("User removed successfully!"));

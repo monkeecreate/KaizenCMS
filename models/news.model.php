@@ -28,7 +28,6 @@ class news_model extends appModel
 				.$sWhere
 				." GROUP BY `news`.`id`"
 				." ORDER BY `news`.`datetime_show` DESC"
-			,"model->news->getArticles"
 			,"all"
 		);
 	
@@ -45,7 +44,6 @@ class news_model extends appModel
 				." AND `news`.`active` = 1"
 				." AND `news`.`datetime_show` < ".time()
 				." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")"
-			,"model->news->getArticle"
 			,"row"
 		);
 		
@@ -60,7 +58,6 @@ class news_model extends appModel
 			"SELECT `name` FROM `news_categories` AS `categories`"
 				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-			,"model->news->getArticleInfo->categories"
 			,"col"
 		);
 	
@@ -80,7 +77,6 @@ class news_model extends appModel
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `news_categories`"
 				." ORDER BY `name`"
-			,"model->news->getCategories"
 			,"all"
 		);
 		
@@ -99,7 +95,7 @@ class news_model extends appModel
 			"SELECT * FROM `news_categories`"
 				.$sWhere
 				." LIMIT 1"
-			,"model->news->getCategory"
+			,"all"
 		);
 		
 		return $aCategory;

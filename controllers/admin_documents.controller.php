@@ -60,7 +60,6 @@ class admin_documents extends adminController
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				.")"
-			,"admin->documents->add"
 			,"insert"
 		);
 		
@@ -71,7 +70,6 @@ class admin_documents extends adminController
 					." (`documentid`, `categoryid`)"
 					." VALUES"
 					." (".$sID.", ".$sCategory.")"
-				,"admin->documents->add->categories"
 			);
 		}
 		
@@ -83,7 +81,6 @@ class admin_documents extends adminController
 					"UPDATE `documents` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($sID, "integer")
-					,"admin->document->failed_document_upload"
 				);
 				
 				$this->forward("/admin/document/?notice=".urlencode("Document file size was too large!"));
@@ -106,7 +103,6 @@ class admin_documents extends adminController
 							"UPDATE `documents` SET"
 								." `document` = ".$this->dbQuote($upload_file, "text")
 								." WHERE `id` = ".$this->dbQuote($sID, "integer")
-							,"admin->documents->add_document_upload"
 						);
 					}
 					else
@@ -115,7 +111,6 @@ class admin_documents extends adminController
 							"UPDATE `documents` SET"
 								." `active` = 0"
 								." WHERE `id` = ".$this->dbQuote($sID, "integer")
-							,"admin->documents->failed_document_upload"
 						);
 						
 						$this->forward("/admin/documents/edit/".$sID."/?error=".urlencode("Failed to upload file!"));
@@ -139,7 +134,6 @@ class admin_documents extends adminController
 			$aDocumentRow = $this->dbResults(
 				"SELECT * FROM `documents`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->documents->edit"
 				,"row"
 			);
 			
@@ -149,7 +143,6 @@ class admin_documents extends adminController
 			$aDocument["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aDocumentRow["updated_by"]
-				,"admin->documents->edit->updated_by"
 				,"row"
 			);
 		}
@@ -158,7 +151,6 @@ class admin_documents extends adminController
 			$aDocument = $this->dbResults(
 				"SELECT * FROM `documents`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"admin->documents->edit"
 				,"row"
 			);
 			
@@ -168,14 +160,12 @@ class admin_documents extends adminController
 					." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
-				,"admin->documents->edit->categories"
 				,"col"
 			);
 			
 			$aDocument["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aDocument["updated_by"]
-				,"admin->documents->edit->updated_by"
 				,"row"
 			);
 		}
@@ -207,13 +197,11 @@ class admin_documents extends adminController
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->documents->edit"
 		);
 		
 		$this->dbResults(
 			"DELETE FROM `documents_categories_assign`"
 				." WHERE `documentid` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->documents->edit->remove_categories"
 		);
 		foreach($_POST["categories"] as $sCategory)
 		{
@@ -222,7 +210,6 @@ class admin_documents extends adminController
 					." (`documentid`, `categoryid`)"
 					." VALUES"
 					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
-				,"admin->documents->edit->categories"
 			);
 		}
 		
@@ -234,7 +221,6 @@ class admin_documents extends adminController
 					"UPDATE `documents` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"admin->documents->failed_document_upload"
 				);
 				
 				$this->forward("/admin/documents/?notice=".urlencode("Document file size was too large!"));
@@ -254,7 +240,6 @@ class admin_documents extends adminController
 					$sDocument = $this->dbResults(
 						"SELECT `document` FROM `documents`"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						,"admin->documents->edit"
 						,"one"
 					);
 					@unlink($upload_dir.$sDocument);
@@ -265,7 +250,6 @@ class admin_documents extends adminController
 							"UPDATE `documents` SET"
 								." `document` = ".$this->dbQuote($upload_file, "text")
 								." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-							,"admin->documents->edit_document_upload"
 						);
 					}
 					else
@@ -274,7 +258,6 @@ class admin_documents extends adminController
 							"UPDATE `documents` SET"
 								." `active` = 0"
 								." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-							,"admin->documents->edit_failed_document_upload"
 						);
 					
 						$this->forward("/admin/documents/?notice=".urlencode("Failed to upload file!"));
@@ -296,7 +279,6 @@ class admin_documents extends adminController
 		$aDocument = $this->dbResults(
 			"SELECT * FROM `documents`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->documents->edit"
 			,"row"
 		);
 		
@@ -305,12 +287,10 @@ class admin_documents extends adminController
 		$this->dbResults(
 			"DELETE FROM `documents`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->documents->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `documents_categories_assign`"
 				." WHERE `documentid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->documents->categories_assign_delete"
 		);
 		
 		$this->forward("/admin/documents/?notice=".urlencode("Document removed successfully!"));
@@ -322,7 +302,6 @@ class admin_documents extends adminController
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `documents_categories`"
 				." ORDER BY `name`"
-			,"admin->documents->categories"
 			,"all"
 		);
 		
@@ -338,7 +317,6 @@ class admin_documents extends adminController
 				." ("
 				.$this->dbQuote($_POST["name"], "text")
 				.")"
-			,"admin->documents->category->add_s"
 			,"insert"
 		);
 
@@ -350,7 +328,6 @@ class admin_documents extends adminController
 			"UPDATE `documents_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->documents->categories->edit"
 		);
 
 		echo "/admin/documents/categories/?notice=".urlencode("Changes saved successfully!");
@@ -360,12 +337,10 @@ class admin_documents extends adminController
 		$this->dbResults(
 			"DELETE FROM `documents_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->documents->category->delete"
 		);
 		$this->dbResults(
 			"DELETE FROM `documents_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"admin->documents->category->delete_assign"
 		);
 
 		$this->forward("/admin/documents/categories/?notice=".urlencode("Category removed successfully!"));

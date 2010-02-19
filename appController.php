@@ -112,7 +112,12 @@ class appController
 	}
 	function dbQuote($sValue, $sType)
 	{
-		return $this->_db->quote($sValue, $sType);
+		$sReturn = $this->_db->quote($sValue, $sType);
+		
+		if(PEAR::isError($sReturn))
+			$this->sendError("dbquote", $sReturn->userinfo, null, debug_backtrace());
+		
+		return $sReturn;
 	}
 	##################################
 	
@@ -222,7 +227,7 @@ class appController
 		}
 		exit;
 	}
-	protected function sendError($section, $error, $db = null)
+	protected function sendError($section, $error, $db = null, $aTrace = array())
 	{
 		$recipients = $this->_settings->adminInfo["email"];
 		$headers["To"] = $this->_settings->adminInfo["email"];
@@ -240,6 +245,12 @@ class appController
 		}
 		else
 			$body .= "Error: ".$error."\n";
+		
+		if(!empty($aTrace))
+		{
+			$body .= "File: ".$aTrace[0]["file"]."\n";
+			$body .= "Line: ".$aTrace[0]["line"]."\n";
+		}
 		
 		$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
 		$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
