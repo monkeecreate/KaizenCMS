@@ -1,6 +1,13 @@
 $(document).ready(function() { 
 	equalHeight($(".column"));
 	
+	$(".faq-Question").click(function() {
+		var faqID = $(this).attr("href");
+		$(faqID).toggle(400);
+		$.scrollTo(this, 1000);
+		return false;
+	});
+	
 	// Button
 	$(".btn").hover(
 		function(){

@@ -25,15 +25,13 @@
 		<div id="contentList">
 			{foreach from=$aQuestions item=aQuestion}
 				<div class="contentListItem">
-					<h2>
-						{$aQuestion.question|clean_html}
-					</h2>
-					<small class="timeCat">
-						Categories: {$aQuestion.categories|clean_html}
-					</small>
-					<p class="content">
-						{$aQuestion.answer|stripslashes}
-					</p>
+					<h3>
+						Q: <a href="#{$aQuestion.id}" class="faq-Question">{$aQuestion.question|clean_html}</a>
+					</h3>
+					<div style="display:none;" id="{$aQuestion.id}">
+						<small>Categories: {$aQuestion.categories|clean_html}</small>
+	 					<p>{$aQuestion.answer|stripslashes}</p>
+					</div>
 				</div>
 			{foreachelse}
 				<div class="contentListEmpty">
