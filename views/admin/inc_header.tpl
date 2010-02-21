@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="/css/admin/style.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
 	<link type="text/css" href="/scripts/jquery-ui/themes/crane-west/crane-west.css" rel="stylesheet" />
-	<script type="text/javascript" src="/scripts/jquery/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="/scripts/jquery/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.core.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.accordion.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui/ui.datepicker.js"></script>
