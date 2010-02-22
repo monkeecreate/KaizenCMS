@@ -12,7 +12,7 @@ if($_GET["captcha_error"] != 1)
 		<h2>{$aContent.title|stripslashes}</h2>
 		{$aContent.content|stripslashes}
 		
-		<form name="contact" method="post" action="/sendform/" class="contactForm">
+		<form name="contact" method="post" action="/sendform/" id="myForm" class="contactForm">
 			<input type="hidden" name="subject" value="{enc_encrypt value='Website Inquiry'}">
 			<input type="hidden" name="forward" value="{enc_encrypt value='/thank-you/'}">
 			<input type="hidden" name="return" value="{enc_encrypt value='/contact/?captcha_error=1'}">
@@ -34,12 +34,8 @@ if($_GET["captcha_error"] != 1)
 			<label class="labelWidth">*Email:</label>
 			<input type="text" id="form_email" name="7|s|Email:" value="{post_data key='7|s|Email:'}">
 
-			<hr />
-
 			<label>Comment:</label>
 			<textarea name="8|n|Comment:">{post_data key='8|n|Comment:'}</textarea>
-
-			<hr />
 
 			<div class="captcha">
 				{re_captcha}
@@ -67,7 +63,7 @@ if($_GET["captcha_error"] != 1)
 
 				if($('#form_email').val() == '')
 				{
-					alert("Please fill in your emaill address.");
+					alert("Please fill in your email address.");
 					return false;
 				}
 
