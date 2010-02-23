@@ -24,6 +24,14 @@ h2 {
 	border-bottom:1px solid #CFCFCF;
 }
 
+#content a:link, #content a:visited, #content a:active {
+	color: #337EEC;
+}
+
+#content a:hover {
+	text-decoration: underline;
+}
+
 /* @group Regular Table */
 
 table.tableData {
@@ -400,3 +408,7 @@ select.select {
 }
 
 /* @end */
+
+.selectOptions {
+	margin: 6px 0 8px 20px;
+}

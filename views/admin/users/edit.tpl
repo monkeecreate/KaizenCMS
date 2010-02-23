@@ -10,8 +10,7 @@
 	<input type="text" name="lname" maxlength="100" value="{$aUser.lname|stripslashes}"><br>
 	<div class="clear"></div>
 	<fieldset id="fieldset_categories">
-		<span class="float-right"><a href="#" class="checkAll">select all</a>/<a href="#" class="uncheckAll">deselect all</a></span>
-		<div class="clear">&nbsp;</div>
+		<p class="selectOptions">Select: <a href="#" class="checkAll">All</a>, <a href="#" class="uncheckAll">None</a></p>
 		<legend>Privlages:</legend>
 		<ul>
 			{foreach from=$aAdminMenu item=aMenu key=x}
