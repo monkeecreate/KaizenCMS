@@ -21,21 +21,21 @@ class content extends appController
 		
 		if(preg_match("/[a-z0-9_-]+/i", $sPage) > 0)
 		{
+			$aContent = $this->dbResults(
+				"SELECT * FROM `content`"
+					." WHERE `tag` = ".$this->dbQuote($sPage, "text")
+					." LIMIT 1"
+				,"row"
+			);
+			
+			$this->tplAssign("aContent", $aContent);
+			
 			if($this->tplExists("content/".$sPage.".tpl"))
 				$this->tplDisplay("content/".$sPage.".tpl");
 			else
 			{
-				$aContent = $this->dbResults(
-					"SELECT * FROM `content`"
-						." WHERE `tag` = ".$this->dbQuote($sPage, "text")
-						." LIMIT 1"
-					,"row"
-				);
-			
 				if(!empty($aContent))
 				{
-					$this->tplAssign("aContent", $aContent);
-					
 					if(empty($aContent["template"]))
 						$this->tplDisplay("content.tpl");
 					else
