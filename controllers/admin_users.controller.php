@@ -7,8 +7,15 @@ class admin_users extends adminController
 		// Clear saved form info
 		$_SESSION["admin"]["admin_users"] = null;
 		
+		if($_SESSION["admin"]["userid"] != 1)
+		{
+			$sWhere = " WHERE `id` != ".$_SESSION["admin"]["userid"];
+			$sWhere .= " AND `id` != 1";
+		}
+		
 		$aUsers = $this->dbResults(
 			"SELECT * FROM `users`"
+				.$sWhere
 				." ORDER BY `lname`"
 			,"all"
 		);
@@ -18,7 +25,15 @@ class admin_users extends adminController
 	}
 	function add()
 	{
-		$this->tplAssign("user", $_SESSION["admin"]["admin_users"]);
+		if(!empty($_SESSION["admin"]["admin_users"]))
+			$this->tplAssign("aUser", $_SESSION["admin"]["admin_users"]);
+		else
+			$this->tplAssign("aUser",
+				array(
+					"privlages" => array()
+				)
+			);
+		
 		$this->tplDisplay("users/add.tpl");
 	}
 	function add_s()
@@ -46,6 +61,21 @@ class admin_users extends adminController
 			,"insert"
 		);
 		
+		if(!empty($_POST["privlages"]))
+		{
+			foreach($_POST["privlages"] as $sPrivlage)
+			{
+				$this->dbResults(
+					"INSERT INTO `users_privlages`"
+						." (`userid`, `menu`)"
+						." VALUES"
+						." (".
+						$this->dbQuote($sID, "integer")
+						.", ".$this->dbQuote($sPrivlage, "text").")"
+				);
+			}
+		}
+		
 		$_SESSION["admin"]["admin_users"] = null;
 		
 		$this->forward("/admin/users/?notice=".urlencode("User add successfully!"));
@@ -69,8 +99,6 @@ class admin_users extends adminController
 					." WHERE `id` = ".$aUserRow["updated_by"]
 				,"row"
 			);
-			
-			$this->tplAssign("user", $aUser);
 		}
 		else
 		{
@@ -81,6 +109,12 @@ class admin_users extends adminController
 				,"row"
 			);
 			
+			$aUser["privlages"] = $this->dbResults(
+				"SELECT `menu` FROM `users_privlages`"
+					." WHERE `userid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+				,"col"
+			);
+			
 			$aUser["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aUser["updated_by"]
@@ -89,10 +123,9 @@ class admin_users extends adminController
 		
 			if(empty($aUser))
 				$this->error();
-		
-			$this->tplAssign("user", $aUser);
 		}
 		
+		$this->tplAssign("aUser", $aUser);
 		$this->tplDisplay("users/edit.tpl");
 	}
 	function edit_s()
@@ -113,6 +146,25 @@ class admin_users extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"update"
 		);
+		
+		$this->dbResults(
+			"DELETE FROM `users_privlages`"
+				." WHERE `userid` = ".$this->dbQuote($_POST["id"], "integer")
+		);
+		if(!empty($_POST["privlages"]))
+		{
+			foreach($_POST["privlages"] as $sPrivlage)
+			{
+				$this->dbResults(
+					"INSERT INTO `users_privlages`"
+						." (`userid`, `menu`)"
+						." VALUES"
+						." (".
+						$this->dbQuote($_POST["id"], "integer")
+						.", ".$this->dbQuote($sPrivlage, "text").")"
+				);
+			}
+		}
 		
 		if(!empty($_POST["password"]))
 		{

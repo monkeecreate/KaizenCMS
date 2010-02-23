@@ -36,148 +36,38 @@
 		<div id="menu">
 			{if $loggedin == 1}
 				<div class="menu">
-					<div class="header"><a href="#" tabindex="-1">Content Pages</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/content/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Page</a></li>
-							<li><a href="/admin/content/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Pages</a></li>
-						</ul>
-					</div>
-					<div class="header"><a href="#" tabindex="-1">News Articles</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/news/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add News Article</a></li>
-							<li><a href="/admin/news/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage News Articles</a></li>
-							<li><a href="/admin/news/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
-							<li><a href="/admin/news/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
-						</ul>
-					</div>
-					<div class="header"><a href="#" tabindex="-1">Events</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/events/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Event</a></li>
-							<li><a href="/admin/events/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Events</a></li>
-							<li><a href="/admin/events/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
-							<li><a href="/admin/events/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
-						</ul>
-					</div>
-					<div class="header"><a href="#" tabindex="-1">Calendar</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/calendar/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Calendar Event</a></li>
-							<li><a href="/admin/calendar/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Calendar Events</a></li>
-							<li><a href="/admin/calendar/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
-							<li><a href="/admin/calendar/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
-						</ul>
-					</div>
-					
-					<div class="header"><a href="#" tabindex="-1">FAQ</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/faq/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Question &amp; Answer</a></li>
-							<li><a href="/admin/faq/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Question</a></li>
-							<li><a href="/admin/faq/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
-							<li><a href="/admin/faq/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
-						</ul>
-					</div>
-					<div class="header"><a href="#" tabindex="-1">Links</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/links/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Link</a></li>
-							<li><a href="/admin/links/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Links</a></li>
-							<li><a href="/admin/links/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
-							<li><a href="/admin/links/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
-						</ul>
-					</div>
-					<div class="header"><a href="#" tabindex="-1">Documents</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/documents/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Document</a></li>
-							<li><a href="/admin/documents/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Documents</a></li>
-							<li><a href="/admin/documents/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
-							<li><a href="/admin/documents/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
-						</ul>
-					</div>
-					<div class="header"><a href="#" tabindex="-1">Testimonials</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/testimonials/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Testimonial</a></li>
-							<li><a href="/admin/testimonials/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Testimonials</a></li>
-							<li><a href="/admin/testimonials/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
-							<li><a href="/admin/testimonials/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
-						</ul>
-					</div>
-					<div class="header"><a href="#" tabindex="-1">Photo Galleries</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/galleries/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Gallery</a></li>
-							<li><a href="/admin/galleries/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Galleries</a></li>
-							<li><a href="/admin/galleries/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
-							<li><a href="/admin/galleries/categories/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
-						</ul>
-					</div>
-					<div class="header"><a href="#" tabindex="-1">Promos</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/promos/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Promo</a></li>
-							<li><a href="/admin/promos/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Promos</a></li>
-							{if $user_details.id == 1}
-							<li><a href="/admin/promos/positions/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Position</a></li>
-							<li><a href="/admin/promos/positions/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Positions</a></li>
-							{/if}
-						</ul>
-					</div>
-					<div class="header"><a href="#" tabindex="-1">Directory</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/directory/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Directory</a></li>
-							<li><a href="/admin/directory/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Directories</a></li>
-							<li><a href="/admin/directory/categories/?addcategory=1"><div class="icon ui-icon ui-icon-circle-plus"></div> Add Category</a></li>
-							<li><a href="/admin/directory/categories"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Categories</a></li>
-						</ul>
-					</div>
-					<div class="header"><a href="#" tabindex="-1">Users</a></div>
-					<div class="info">
-						<ul>
-							<li><a href="/admin/users/add/"><div class="icon ui-icon ui-icon-circle-plus"></div> Add User</a></li>
-							<li><a href="/admin/users/"><div class="icon ui-icon ui-icon-circle-triangle-e"></div> Manage Users</a></li>
-						</ul>
-					</div>
+					{assign var="sActiveMenu" value="0"}
+					{assign var="sActiveFound" value="0"}
+					{foreach from=$aAdminMenu item=aMenu key=x}
+						{if $x != $menu && $sActiveFound == 0}
+							{math equation="x + y" x=$sActiveMenu y=1 assign="sActiveMenu"}
+						{else}
+							{assign var="sActiveFound" value="1"}
+						{/if}
+						<div class="header"><a href="#" tabindex="-1">{$aMenu.title|clean_html}</a></div>
+						<div class="info">
+							<ul>
+								{foreach from=$aMenu.menu item=aItem}
+									<li>
+										<a href="{$aItem.link}">
+											<div class="icon ui-icon ui-icon-{$aItem.icon|clean_html|default:'circle-triangle-e'}"></div> {$aItem.text|clean_html}
+										</a>
+									</li>
+								{/foreach}
+							</ul>
+						</div>
+					{/foreach}
 				</div>
+				{if $sActiveFound == 0}
+					{assign var="sActiveMenu" value="0"}
+				{/if}
 				<script type="text/javascript">
 				$(function(){ldelim}
 					$('.menu').accordion({ldelim}
-						collapsible: true,
+						collapsible: false,
 						autoHeight: false,
 						header: ".header",
-						active: 
-						{if $menu == 'content'}
-							0
-						{elseif $menu == 'news'}
-							1
-						{elseif $menu == 'events'}
-							2
-						{elseif $menu == 'calendar'}
-							3
-						{elseif $menu == 'faq'}
-							4
-						{elseif $menu == 'links'}
-							5
-						{elseif $menu == 'documents'}
-							6
-						{elseif $menu == 'testimonials'}
-							7
-						{elseif $menu == 'galleries'}
-							8
-						{elseif $menu == 'promos'}
-							9
-						{elseif $menu == 'directory'}
-							10
-						{elseif $menu == 'users'}
-							11
-						{else}
-							0
-						{/if}
+						active: {$sActiveMenu}
 					{rdelim});
 				{rdelim});
 				</script>

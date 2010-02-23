@@ -24,6 +24,34 @@ class adminController extends appController
 			
 			$this->tplAssign("loggedin", 1);
 			$this->tplAssign("user_details", $aUser);
+			
+			/*## Menu ##*/
+			if($this->_settings->url[1] != "logout")
+			{
+				include($this->_settings->root."inc_menuAdmin.php");
+			
+				if($aUser["id"] != "1")
+				{
+					foreach($aMenuAdmin as $x => $aMenu)
+					{
+						$aMenuItem = $this->dbResults(
+							"SELECT * FROM `users_privlages`"
+								." WHERE `userid` = ".$aUser["id"]
+								." AND `menu` = ".$this->dbQuote($x, "text")
+							,"row"
+						);
+					
+						if(empty($aMenuItem))
+							unset($aMenuAdmin[$x]);
+					}
+				}
+			
+				if(empty($aMenuAdmin))
+					$this->forward("/admin/logout/");
+			
+				$this->tplAssign("aAdminMenu", $aMenuAdmin);
+			}
+			/*## @end ##*/
 		}
 	}
 	### DISPLAY ######################

@@ -45,7 +45,7 @@ $sDir = $site_root."urls";
 $aFiles = scandir($sDir);
 foreach($aFiles as $sFile)
 {
-	if($sFile != "." && $sFile != "..")
+	if($sFile != "." && $sFile != ".." && array_shift(explode("_", $sFile)) == "admin")
 	{
 		require($sDir."/".$sFile);
 		$aUrlPatterns = array_merge($aUrlPatterns, $aUrlPatterns_import);
