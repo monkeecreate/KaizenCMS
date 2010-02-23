@@ -25,7 +25,7 @@
 	<div id="header">
 		<div id="header-userinfo">
 			{if !empty($user_details)}
-				Logged in as <b>{$user_details.fname} {$user_details.lname}</b> <span class="divider">|</span> <a href="/admin/logout/" title="Logout">Logout</a>
+				Logged in as <b>{$user_details.fname} {$user_details.lname}</b> <span class="divider">|</span> <a href="/admin/users/edit/{$user_details.id}/">Edit Profile</a> <span class="divider">|</span> <a href="/admin/logout/" title="Logout">Logout</a>
 			{else}
 				&nbsp;
 			{/if}
