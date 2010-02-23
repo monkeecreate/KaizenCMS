@@ -359,3 +359,9 @@ CREATE TABLE `users` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 INSERT INTO `users` VALUES(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Admin', 'User', 0, 0, 0, 0);
+
+CREATE TABLE `users_privlages` (
+  `userid` int(11) NOT NULL,
+  `menu` varchar(100) NOT NULL,
+  KEY `userid` (`userid`,`menu`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
