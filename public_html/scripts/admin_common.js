@@ -200,6 +200,14 @@ $(document).ready(function() {
 		.find(".portlet-content");
 
 	$(".column").disableSelection();
+	
+	$(".checkAll").click(function(){
+		$("fieldset#fieldset_categories INPUT[type='checkbox']").attr('checked', true);
+	});
+	
+	$(".uncheckAll").click(function(){
+		$("fieldset#fieldset_categories INPUT[type='checkbox']").attr('checked', false);
+	});
 });
 
 function check_fieldset(fieldset)
