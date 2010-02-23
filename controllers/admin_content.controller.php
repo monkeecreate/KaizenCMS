@@ -26,6 +26,7 @@ class admin_content extends adminController
 	}
 	function add()
 	{
+		$this->tplAssign("aTemplates", $this->getTemplates());
 		$this->tplAssign("aPage", $_SESSION["admin"]["admin_content"]);
 		$this->tplDisplay("content/add.tpl");
 	}
@@ -72,6 +73,18 @@ class admin_content extends adminController
 			,"insert"
 		);
 		
+		if($this->superAdmin)
+		{
+			$this->dbResults(
+				"UPDATE `content` SET"
+					." `tag` = ".$this->dbQuote($_POST["tag"], "text")
+					.", `perminate` = ".$this->boolCheck($_POST["perminate"])
+					.", `module` = ".$this->boolCheck($_POST["module"])
+					.", `template` = ".$this->dbQuote($_POST["template"], "text")
+					." WHERE `id` = ".$this->dbQuote($sID, "integer")
+			);
+		}
+		
 		$_SESSION["admin"]["admin_content"] = null;
 		
 		$this->forward("/admin/content/?notice=".urlencode("Page created successfully!"));
@@ -114,6 +127,7 @@ class admin_content extends adminController
 			$this->tplAssign("aPage", $aPage);
 		}
 		
+		$this->tplAssign("aTemplates", $this->getTemplates());
 		$this->tplDisplay("content/edit.tpl");
 	}
 	function edit_s()
@@ -133,6 +147,18 @@ class admin_content extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		
+		if($this->superAdmin)
+		{
+			$this->dbResults(
+				"UPDATE `content` SET"
+					." `tag` = ".$this->dbQuote($_POST["tag"], "text")
+					.", `perminate` = ".$this->boolCheck($_POST["perminate"])
+					.", `module` = ".$this->boolCheck($_POST["module"])
+					.", `template` = ".$this->dbQuote($_POST["template"], "text")
+					." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+			);
+		}
+		
 		$_SESSION["admin"]["admin_content"] = null;
 		
 		$this->forward("/admin/content/?notice=".urlencode("Changes saved successfully!"));
@@ -149,5 +175,17 @@ class admin_content extends adminController
 	##################################
 	
 	### Functions ####################
+	function getTemplates()
+	{
+		$aTemplates = array();
+		$aFiles = scandir($this->_settings->root."views/content/");
+		foreach($aFiles as $sFile)
+		{
+			if($sFile != "." && $sFile != "..")
+				$aTemplates[] = $sFile;
+		}
+		
+		return $aTemplates;
+	}
 	##################################
 }

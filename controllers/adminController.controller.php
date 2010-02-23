@@ -2,6 +2,7 @@
 class adminController extends appController
 {
 	private $_menu;
+	public $superAdmin;
 	
 	function adminController()
 	{
@@ -27,12 +28,21 @@ class adminController extends appController
 			$this->tplAssign("loggedin", 1);
 			$this->tplAssign("user_details", $aUser);
 			
+			/*## Super Admin ##*/
+			if($aUser["id"] == 1)
+				$this->superAdmin = true;
+			else
+				$this->superAdmin = false;
+			
+			$this->tplAssign("sSuperAdmin", $this->superAdmin);
+			/*## @end ##*/
+			
 			/*## Menu ##*/
 			if($this->_settings->url[1] != "logout")
 			{
 				include($this->_settings->root."inc_menuAdmin.php");
 			
-				if($aUser["id"] != "1")
+				if(!$this->superAdmin)
 				{
 					foreach($aMenuAdmin as $x => $aMenu)
 					{
@@ -97,30 +107,10 @@ class adminController extends appController
 		
 		$this->forward("/admin/");
 	}
-	function menuPermission($section)
-	{
-		if(!array_key_exists($section, $this->_menu))
-			$this->error("403");
-		else
-			return true;
-	}
 	function isloggedin()
 	{
-		// Change this secret key so it matches the one in the imagemanager/filemanager config
 		$secretKey = md5($_SERVER["SERVER_NAME"]);
-
-		// Check here if the user is logged in or not
-		/*
-		if (!isset($_SESSION["some_session"]))
-			die("You are not logged in.");
-		*/
-
-		// Override any config values here
 		$config = array();
-		//$config['filesystem.path'] = 'c:/Inetpub/wwwroot/somepath';
-		//$config['filesystem.rootpath'] = 'c:/Inetpub/wwwroot/somepath';
-
-		// Generates a unique key of the config values with the secret key
 		$key = md5(implode('', array_values($config)) . $secretKey);
 
 		echo "<html>\n";
@@ -154,6 +144,20 @@ class adminController extends appController
 		}
 		else
 			return false;
+	}
+	function menuPermission($section)
+	{
+		if(!array_key_exists($section, $this->_menu))
+			$this->error("403");
+		else
+			return true;
+	}
+	function boolCheck($value)
+	{
+		if($value == 1)
+			return 1;
+		else
+			return 0;
 	}
 	##################################
 }
