@@ -59,11 +59,6 @@ class admin_testimonials extends adminController
 			$this->forward("/admin/testimonials/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$sID = $this->dbResults(
 			"INSERT INTO `testimonials`"
 				." (`name`, `sub_name`, `text`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
@@ -72,7 +67,7 @@ class admin_testimonials extends adminController
 					.$this->dbQuote($_POST["name"], "text")
 					.", ".$this->dbQuote($_POST["sub_name"], "text")
 					.", ".$this->dbQuote($_POST["text"], "text")
-					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->boolCheck($_POST["active"])
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 					.", ".$this->dbQuote(time(), "integer")
@@ -236,23 +231,13 @@ class admin_testimonials extends adminController
 			$this->forward("/admin/testimonials/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		if(!empty($_POST["homepage"]))
-			$homepage = 1;
-		else
-			$homepage = 0;
-		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$this->dbResults(
 			"UPDATE `testimonials` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				.", `sub_name` = ".$this->dbQuote($_POST["sub_name"], "text")
 				.", `text` = ".$this->dbQuote($_POST["text"], "text")
-				.", `homepage` = ".$this->dbQuote($homepage, "integer")
-				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `homepage` = ".$this->boolCheck($_POST["homepage"])
+				.", `active` = ".$this->boolCheck($_POST["active"])
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")

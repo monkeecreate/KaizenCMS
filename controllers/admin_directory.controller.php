@@ -51,11 +51,6 @@ class admin_directory extends adminController
 			$this->forward("/admin/directory/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$sID = $this->dbResults(
 			"INSERT INTO `directory`"
 				." (`name`, `address1`, `address2`, `city`, `state`, `zip`, `phone`, `fax`, `website`, `email`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
@@ -71,7 +66,7 @@ class admin_directory extends adminController
 					.", ".$this->dbQuote($_POST["fax"], "text")
 					.", ".$this->dbQuote($_POST["website"], "text")
 					.", ".$this->dbQuote($_POST["email"], "text")
-					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->boolCheck($_POST["active"])
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 					.", ".$this->dbQuote(time(), "integer")
@@ -158,11 +153,6 @@ class admin_directory extends adminController
 			$this->forward("/admin/directory/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$this->dbResults(
 			"UPDATE `directory` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
@@ -175,7 +165,7 @@ class admin_directory extends adminController
 				.", `fax` = ".$this->dbQuote($_POST["fax"], "text")
 				.", `website` = ".$this->dbQuote($_POST["website"], "text")
 				.", `email` = ".$this->dbQuote($_POST["email"], "text")
-				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `active` = ".$this->boolCheck($_POST["active"])
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")

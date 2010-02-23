@@ -57,11 +57,6 @@ class admin_links extends adminController
 			$this->forward("/admin/links/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$sID = $this->dbResults(
 			"INSERT INTO `links`"
 				." (`name`, `description`, `link`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
@@ -70,7 +65,7 @@ class admin_links extends adminController
 					.$this->dbQuote($_POST["name"], "text")
 					.", ".$this->dbQuote($_POST["description"], "text")
 					.", ".$this->dbQuote($_POST["link"], "text")
-					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->boolCheck($_POST["active"])
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 					.", ".$this->dbQuote(time(), "integer")
@@ -151,17 +146,12 @@ class admin_links extends adminController
 			$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$this->dbResults(
 			"UPDATE `links` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				.", `description` = ".$this->dbQuote($_POST["description"], "text")
 				.", `link` = ".$this->dbQuote($_POST["link"], "text")
-				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `active` = ".$this->boolCheck($_POST["active"])
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")

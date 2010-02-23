@@ -49,11 +49,6 @@ class admin_documents extends adminController
 			$this->forward("/admin/documents/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$sID = $this->dbResults(
 			"INSERT INTO `documents`"
 				." (`name`, `description`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
@@ -61,7 +56,7 @@ class admin_documents extends adminController
 				." ("
 					.$this->dbQuote($_POST["name"], "text")
 					.", ".$this->dbQuote($_POST["description"], "text")
-					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->boolCheck($_POST["active"])
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 					.", ".$this->dbQuote(time(), "integer")

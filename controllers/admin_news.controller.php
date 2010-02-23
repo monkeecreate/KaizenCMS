@@ -70,21 +70,6 @@ class admin_news extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		if(!empty($_POST["use_kill"]))
-			$use_kill = 1;
-		else
-			$use_kill = 0;
-		
-		if(!empty($_POST["sticky"]))
-			$sticky = 1;
-		else
-			$sticky = 0;
-		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$sID = $this->dbResults(
 			"INSERT INTO `news`"
 				." (`title`, `short_content`, `content`, `datetime_show`, `datetime_kill`, `use_kill`, `sticky`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
@@ -95,9 +80,9 @@ class admin_news extends adminController
 					.", ".$this->dbQuote($_POST["content"], "text")
 					.", ".$this->dbQuote($datetime_show, "integer")
 					.", ".$this->dbQuote($datetime_kill, "integer")
-					.", ".$this->dbQuote($use_kill, "integer")
-					.", ".$this->dbQuote($sticky, "integer")
-					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->boolCheck($_POST["use_kill"])
+					.", ".$this->boolCheck($_POST["sticky"])
+					.", ".$this->boolCheck($_POST["active"])
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 					.", ".$this->dbQuote(time(), "integer")
@@ -198,21 +183,6 @@ class admin_news extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		if(!empty($_POST["use_kill"]))
-			$use_kill = 1;
-		else
-			$use_kill = 0;
-		
-		if(!empty($_POST["sticky"]))
-			$sticky = 1;
-		else
-			$sticky = 0;
-		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$this->dbResults(
 			"UPDATE `news` SET"
 				." `title` = ".$this->dbQuote($_POST["title"], "text")
@@ -220,9 +190,9 @@ class admin_news extends adminController
 				.", `content` = ".$this->dbQuote($_POST["content"], "text")
 				.", `datetime_show` = ".$this->dbQuote($datetime_show, "integer")
 				.", `datetime_kill` = ".$this->dbQuote($datetime_kill, "integer")
-				.", `use_kill` = ".$this->dbQuote($use_kill, "integer")
-				.", `sticky` = ".$this->dbQuote($sticky, "integer")
-				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `use_kill` = ".$this->boolCheck($_POST["use_kill"])
+				.", `sticky` = ".$this->boolCheck($_POST["sticky"])
+				.", `active` = ".$this->boolCheck($_POST["active"])
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")

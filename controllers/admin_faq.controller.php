@@ -70,11 +70,6 @@ class admin_faq extends adminController
 		if(empty($sOrder))
 			$sOrder = 1;
 		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$sID = $this->dbResults(
 			"INSERT INTO `faq`"
 				." (`question`, `answer`, `sort_order`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
@@ -83,7 +78,7 @@ class admin_faq extends adminController
 					.$this->dbQuote($_POST["question"], "text")
 					.", ".$this->dbQuote($_POST["answer"], "text")
 					.", ".$this->dbQuote($sOrder, "integer")
-					.", ".$this->dbQuote($active, "integer")
+					.", ".$this->boolCheck($_POST["active"])
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 					.", ".$this->dbQuote(time(), "integer")
@@ -217,16 +212,11 @@ class admin_faq extends adminController
 			$this->forward("/admin/faq/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$this->dbResults(
 			"UPDATE `faq` SET"
 				." `question` = ".$this->dbQuote($_POST["question"], "text")
 				.", `answer` = ".$this->dbQuote($_POST["answer"], "text")
-				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `active` = ".$this->boolCheck($_POST["active"])
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
