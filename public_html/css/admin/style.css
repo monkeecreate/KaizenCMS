@@ -24,13 +24,15 @@ h2 {
 	border-bottom:1px solid #CFCFCF;
 }
 
-#content a:link, #content a:visited, #content a:active {
+/* TEMP CSS */
+#fieldset_categories a:link, #fieldset_categories a:visited, #fieldset_categories a:active {
 	color: #337EEC;
 }
 
-#content a:hover {
+#fieldset_categories a:hover {
 	text-decoration: underline;
 }
+/* END TEMP */
 
 /* @group Regular Table */
 
