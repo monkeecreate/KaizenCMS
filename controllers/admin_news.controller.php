@@ -1,6 +1,13 @@
 <?php
 class admin_news extends adminController
 {
+	function admin_news()
+	{
+		parent::adminController();
+		
+		$this->menuPermission("news");
+	}
+	
 	### DISPLAY ######################
 	function index()
 	{

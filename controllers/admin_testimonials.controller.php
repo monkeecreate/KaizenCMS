@@ -1,6 +1,14 @@
 <?php
 class admin_testimonials extends adminController
 {
+	function admin_testimonials()
+	{
+		parent::adminController();
+		
+		$this->menuPermission("testimonials");
+	}
+	
+	
 	### DISPLAY ######################
 	function index()
 	{

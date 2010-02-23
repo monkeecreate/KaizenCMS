@@ -1,6 +1,13 @@
 <?php
 class admin_links extends adminController
 {
+	function admin_links()
+	{
+		parent::adminController();
+		
+		$this->menuPermission("links");
+	}
+	
 	### DISPLAY ######################
 	function index()
 	{

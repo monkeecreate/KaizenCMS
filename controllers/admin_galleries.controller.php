@@ -1,6 +1,13 @@
 <?php
 class admin_galleries extends adminController
 {
+	function admin_galleries()
+	{
+		parent::adminController();
+		
+		$this->menuPermission("galleries");
+	}
+	
 	### DISPLAY ######################
 	function index()
 	{

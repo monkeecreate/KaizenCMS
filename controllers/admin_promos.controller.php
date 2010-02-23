@@ -1,6 +1,13 @@
 <?php
 class admin_promos extends adminController
 {
+	function admin_promos()
+	{
+		parent::adminController();
+		
+		$this->menuPermission("promos");
+	}
+	
 	### DISPLAY ######################
 	function index()
 	{

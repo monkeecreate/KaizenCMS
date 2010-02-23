@@ -1,6 +1,13 @@
 <?php
 class admin_faq extends adminController
 {
+	function admin_faq()
+	{
+		parent::adminController();
+		
+		$this->menuPermission("faq");
+	}
+	
 	### DISPLAY ######################
 	function index()
 	{

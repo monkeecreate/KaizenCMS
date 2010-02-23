@@ -1,6 +1,13 @@
 <?php
 class admin_documents extends adminController
 {
+	function admin_documents()
+	{
+		parent::adminController();
+		
+		$this->menuPermission("documents");
+	}
+	
 	### DISPLAY ######################
 	function index()
 	{

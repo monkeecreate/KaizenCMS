@@ -1,6 +1,13 @@
 <?php
 class admin_users extends adminController
 {
+	function admin_users()
+	{
+		parent::adminController();
+		
+		$this->menuPermission("users");
+	}
+	
 	### DISPLAY ######################
 	function index()
 	{
