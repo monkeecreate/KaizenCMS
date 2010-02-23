@@ -1,6 +1,8 @@
 <?php
 class adminController extends appController
 {
+	private $_menu;
+	
 	function adminController()
 	{
 		parent::appController();
@@ -48,6 +50,8 @@ class adminController extends appController
 			
 				if(empty($aMenuAdmin))
 					$this->forward("/admin/logout/");
+				
+				$this->_menu = $aMenuAdmin;
 			
 				$this->tplAssign("aAdminMenu", $aMenuAdmin);
 			}
@@ -92,6 +96,13 @@ class adminController extends appController
 		$_SESSION["admin"] = array();
 		
 		$this->forward("/admin/");
+	}
+	function menuPermission($section)
+	{
+		if(!array_key_exists($section, $this->_menu))
+			$this->error("403");
+		else
+			return true;
 	}
 	function isloggedin()
 	{

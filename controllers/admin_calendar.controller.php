@@ -1,6 +1,13 @@
 <?php
 class admin_calendar extends adminController
 {
+	function admin_calendar()
+	{
+		parent::adminController();
+		
+		$this->menuPermission("calendar");
+	}
+	
 	### DISPLAY ######################
 	function index()
 	{

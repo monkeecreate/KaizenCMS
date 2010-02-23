@@ -1,6 +1,13 @@
 <?php
 class admin_events extends adminController
 {
+	function admin_events()
+	{
+		parent::adminController();
+		
+		$this->menuPermission("faq");
+	}
+	
 	### DISPLAY ######################
 	function index()
 	{

@@ -1,6 +1,13 @@
 <?php
 class admin_directory extends adminController
 {
+	function admin_directory()
+	{
+		parent::adminController();
+		
+		$this->menuPermission("directory");
+	}
+	
 	### DISPLAY ######################
 	function index()
 	{
