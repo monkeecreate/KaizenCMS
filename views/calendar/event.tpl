@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="Calendar" menu="calendar"}
+{include file="inc_header.tpl" page_title=$aEvent.title|clean_html menu="calendar"}
 
 	<section id="content" class="content column">
 		

@@ -3,7 +3,12 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>{if !empty($page_title)}{$page_title} - {/if}CMS Demo</title>
+	<meta name="title" content="Kaizen CMS | Content Management System Made Awesome!">
+	<meta name="description" content="nclud is a creative web design agency comprised of talented and experienced industry consultants.">
+	<meta name="keywords" content="web design, design agency, user experience, creative strategy, web designer, studio, web standards, web 2.0, nclud">
+	<meta name="robots" content="index, follow">
+	
+	<title>{if !empty($page_title)}{$page_title} | {/if}CMS Demo</title>
 	<link href="/css/generic.css" rel="stylesheet" type="text/css" />
 	<link href="/css/style.css" media="screen, projection" rel="stylesheet" type="text/css" />
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
