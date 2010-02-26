@@ -8,7 +8,7 @@
 	<meta name="keywords" content="web design, design agency, user experience, creative strategy, web designer, studio, web standards, web 2.0, nclud">
 	<meta name="robots" content="index, follow">
 	
-	<title>{if !empty($page_title)}{$page_title} | {/if}CMS Demo</title>
+	<title>{if !empty($page_title)}{$page_title} | {/if}Kaizen CMS</title>
 	<link href="/css/generic.css" rel="stylesheet" type="text/css" />
 	<link href="/css/style.css" media="screen, projection" rel="stylesheet" type="text/css" />
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
