@@ -11,7 +11,7 @@
 	<div class="clear"></div>
 	<fieldset id="fieldset_categories">
 		<p class="selectOptions">Select: <a href="#" class="checkAll">All</a>, <a href="#" class="uncheckAll">None</a></p>
-		<legend>Privlages:</legend>
+		<legend>Privilege:</legend>
 		<ul>
 			{foreach from=$aAdminMenu item=aMenu key=x}
 				<li>

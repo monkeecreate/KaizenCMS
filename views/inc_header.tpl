@@ -20,7 +20,6 @@
 <body>
 <div id="wrapper">
 	<header>
-		
 		<h1><a href="/" title="Kaizen CMS">Kaizen CMS</a></h1>
 
 		<nav>
