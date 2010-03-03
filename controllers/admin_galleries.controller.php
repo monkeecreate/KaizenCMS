@@ -11,44 +11,21 @@ class admin_galleries extends adminController
 	### DISPLAY ######################
 	function index()
 	{
+		$oGalleries = $this->loadModel("galleries");
+		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_gallery"] = null;
 		
-		if(!empty($_GET["category"]))
-		{
-			$sSQLCategory = " INNER JOIN `galleries_categories_assign` AS `assign` ON `galleries`.`id` = `assign`.`galleryid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
-		}
-		
-		$aGalleries = $this->dbResults(
-			"SELECT `galleries`.* FROM `galleries`"
-				.$sSQLCategory
-				." ORDER BY `galleries`.`sort_order`"
-			,"all"
-		);
-		
-		$sMaxSort = $this->dbResults(
-			"SELECT MAX(`sort_order`) FROM `galleries`"
-			,"one"
-		);
-		
-		foreach($aGalleries as $x => $aGallery)
-		{
-			$aGalleries[$x]["photos"] = $this->dbResults(
-				"SELECT COUNT(*) FROM `galleries_photos`"
-					." WHERE `galleryid` = ".$aGallery["id"]
-				,"one"
-			);
-		}
-		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oGalleries->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aGalleries", $aGalleries);
-		$this->tplAssign("maxsort", $sMaxSort);
+		$this->tplAssign("aGalleries", $oGalleries->getGalleries());
+		$this->tplAssign("maxsort", $oGalleries->getMaxSort());
 		$this->tplDisplay("galleries/index.tpl");
 	}
 	function add()
 	{
+		$oGalleries = $this->loadModel("galleries");
+		
 		if(!empty($_SESSION["admin"]["admin_gallery"]))
 			$this->tplAssign("aGallery", $_SESSION["admin"]["admin_gallery"]);
 		else
@@ -59,7 +36,7 @@ class admin_galleries extends adminController
 				)
 			);
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oGalleries->getCategories());
 		$this->tplDisplay("galleries/add.tpl");
 	}
 	function add_s()
@@ -166,6 +143,8 @@ class admin_galleries extends adminController
 	}
 	function edit()
 	{
+		$oGalleries = $this->loadModel("galleries");
+		
 		if(!empty($_SESSION["admin"]["admin_galleries"]))
 		{
 			$aGalleryRow = $this->dbResults(
@@ -211,7 +190,7 @@ class admin_galleries extends adminController
 			$this->tplAssign("aGallery", $aGallery);
 		}
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oGalleries->getCategories());
 		$this->tplDisplay("galleries/edit.tpl");
 	}
 	function edit_s()
@@ -278,15 +257,11 @@ class admin_galleries extends adminController
 	}
 	function categories_index()
 	{
+		$oGalleries = $this->loadModel("galleries");
+		
 		$_SESSION["admin"]["admin_galleries_categories"] = null;
 		
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `galleries_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $aCategories);
+		$this->tplAssign("aCategories", $oGalleries->getCategories());
 		$this->tplDisplay("galleries/categories.tpl");
 	}
 	function categories_add_s()
@@ -489,19 +464,6 @@ class admin_galleries extends adminController
 		);
 		
 		$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/?notice=".urlencode("Photo removed successfully!"));
-	}
-	##################################
-	
-	### Functions ####################
-	private function get_categories()
-	{
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `galleries_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		return $aCategories;
 	}
 	##################################
 }

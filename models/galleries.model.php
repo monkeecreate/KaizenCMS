@@ -3,7 +3,7 @@ class galleries_model extends appModel
 {
 	public $perPage = 5;
 	
-	function getGalleries($sCategory)
+	function getGalleries($sCategory = null)
 	{
 		$sWhere = " WHERE `galleries`.`id` > 0";
 		if(!empty($sCategory))
@@ -82,5 +82,14 @@ class galleries_model extends appModel
 		);
 		
 		return $aCategories;
+	}
+	function getMaxSort()
+	{
+		$sMaxSort = $this->dbResults(
+			"SELECT MAX(`sort_order`) FROM `galleries`"
+			,"one"
+		);
+		
+		return $sMaxSort;
 	}
 }
