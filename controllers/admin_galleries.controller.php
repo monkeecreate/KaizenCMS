@@ -90,11 +90,9 @@ class admin_galleries extends adminController
 	}
 	function sort()
 	{
-		$aGallery = $this->dbResults(
-			"SELECT * FROM `galleries`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"row"
-		);
+		$oGalleries = $this->loadModel("galleries");
+		
+		$aGallery = $oGalleries->getGallery($this->_urlVars->dynamic["id"]);
 		
 		if($this->_urlVars->dynamic["sort"] == "up")
 		{
@@ -147,11 +145,8 @@ class admin_galleries extends adminController
 		
 		if(!empty($_SESSION["admin"]["admin_galleries"]))
 		{
-			$aGalleryRow = $this->dbResults(
-				"SELECT * FROM `galleries`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			
+			$aGalleryRow = $oGalleries->getGallery($this->_urlVars->dynamic["id"]);
 			
 			$aGallery = $_SESSION["admin"]["admin_galleries"];
 			
@@ -166,11 +161,7 @@ class admin_galleries extends adminController
 		}
 		else
 		{
-			$aGallery = $this->dbResults(
-				"SELECT * FROM `galleries`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aGallery = $oGalleries->getGallery($this->_urlVars->dynamic["id"]);
 			
 			$aGallery["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `galleries_categories` AS `categories`"
@@ -303,32 +294,17 @@ class admin_galleries extends adminController
 	}
 	function photos_index()
 	{
-		$aPhotos = $this->dbResults(
-			"SELECT * FROM `galleries_photos`"
-				." WHERE `galleryid` = ".$this->_urlVars->dynamic["gallery"]
-				." ORDER BY `sort_order`"
-			,"all"
-		);
-		
-		$aGallery = $this->dbResults(
-			"SELECT * FROM `galleries`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
-			,"row"
-		);
-		
-		$this->tplAssign("aPhotos", $aPhotos);
-		$this->tplAssign("aGallery", $aGallery);
+		$oGalleries = $this->loadModel("galleries");
+				
+		$this->tplAssign("aPhotos", $oGalleries->getPhotos($this->_urlVars->dynamic["gallery"]));
+		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
 		$this->tplDisplay("galleries/photos/index.tpl");
 	}
 	function photos_add()
 	{
-		$aGallery = $this->dbResults(
-			"SELECT * FROM `galleries`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
-			,"row"
-		);
+		$oGalleries = $this->loadModel("galleries");
 		
-		$this->tplAssign("aGallery", $aGallery);
+		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
 		$this->tplDisplay("galleries/photos/add.tpl");
 	}
 	function photos_add_s()
@@ -421,20 +397,10 @@ class admin_galleries extends adminController
 	}
 	function photos_edit()
 	{
-		$aPhoto = $this->dbResults(
-			"SELECT * FROM `galleries_photos`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"row"
-		);
+		$oGalleries = $this->loadModel("galleries");
 		
-		$aGallery = $this->dbResults(
-			"SELECT * FROM `galleries`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
-			,"row"
-		);
-		
-		$this->tplAssign("aGallery", $aGallery);
-		$this->tplAssign("aPhoto", $aPhoto);
+		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
+		$this->tplAssign("aPhoto", $oGalleries->getPhoto($this->_urlVars->dynamic["id"]));
 		$this->tplDisplay("galleries/photos/edit.tpl");
 	}
 	function photos_edit_s()
@@ -450,11 +416,9 @@ class admin_galleries extends adminController
 	}
 	function photos_delete()
 	{
-		$aPhoto = $this->dbResults(
-			"SELECT * FROM `galleries_photos`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"row"
-		);
+		$oGalleries = $this->loadModel("galleries");
+		
+		$aPhoto = $oGalleries->getPhoto($this->_urlVars->dynamic["id"]);
 		
 		@unlink($this->_settings->rootPublic."uploads/galleries/".$this->_urlVars->dynamic["gallery"]."/".$aPhoto["photo"]);
 		

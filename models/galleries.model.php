@@ -68,10 +68,21 @@ class galleries_model extends appModel
 		$aPhotos = $this->dbResults(
 			"SELECT * FROM `galleries_photos`"
 				." WHERE `galleryid` = ".$this->dbQuote($sId, "integer")
+				." ORDER BY `sort_order`"
 			,"all"
 		);
 		
 		return $aPhotos;
+	}
+	function getPhoto($sId)
+	{
+		$aPhoto = $this->dbResults(
+			"SELECT * FROM `galleries_photos`"
+				." WHERE `id` = ".$this->dbQuote($sId, "integer")
+			,"row"
+		);
+		
+		return $aPhoto;
 	}
 	function getCategories()
 	{
