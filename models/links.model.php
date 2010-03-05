@@ -33,6 +33,16 @@ class links_model extends appModel
 		
 		return $aLinks;
 	}
+	function getLink($sId)
+	{
+		$aLink = $this->dbResults(
+			"SELECT * FROM `links`"
+				." WHERE `id` = ".$this->dbQuote($sId, "integer")
+			,"row"
+		);
+		
+		return $aLink;
+	}
 	function getCategories()
 	{
 		$aCategories = $this->dbResults(

@@ -11,30 +11,20 @@ class admin_links extends adminController
 	### DISPLAY ######################
 	function index()
 	{
+		$oLinks = $this->loadModel("links");
+		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_links"] = null;
 		
-		if(!empty($_GET["category"]))
-		{
-			$sSQLCategory = " INNER JOIN `links_categories_assign` AS `assign` ON `links`.`id` = `assign`.`linkid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
-		}
-		
-		$aLinks = $this->dbResults(
-			"SELECT `links`.* FROM `links`"
-				.$sSQLCategory
-				." GROUP BY `links`.`id`"
-				." ORDER BY `links`.`name` DESC"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oLinks->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aLinks", $aLinks);
+		$this->tplAssign("aLinks", $oLinks->getLinks($_GET["category"]));
 		$this->tplDisplay("links/index.tpl");
 	}
 	function add()
 	{
+		$oLinks = $this->loadModel("links");
+		
 		if(!empty($_SESSION["admin"]["admin_links"]))
 			$this->tplAssign("aLink", $_SESSION["admin"]["admin_links"]);
 		
@@ -46,7 +36,7 @@ class admin_links extends adminController
 				)
 			);
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oLinks->getCategories());
 		$this->tplDisplay("links/add.tpl");
 	}
 	function add_s()
@@ -90,13 +80,11 @@ class admin_links extends adminController
 	}
 	function edit()
 	{
+		$oLinks = $this->loadModel("links");
+		
 		if(!empty($_SESSION["admin"]["admin_links"]))
 		{
-			$aLinkRow = $this->dbResults(
-				"SELECT * FROM `links`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aLinkRow = $oLinks->getLink($this->_urlVars->dynamic["id"]);
 			
 			$aLink = $_SESSION["admin"]["admin_links"];
 			
@@ -111,11 +99,7 @@ class admin_links extends adminController
 		}
 		else
 		{
-			$aLink = $this->dbResults(
-				"SELECT * FROM `links`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aLink = $oLinks->getLink($this->_urlVars->dynamic["id"]);
 			
 			$aLink["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `links_categories` AS `categories`"
@@ -135,7 +119,7 @@ class admin_links extends adminController
 			$this->tplAssign("aLink", $aLink);
 		}
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oLinks->getCategories());
 		$this->tplDisplay("links/edit.tpl");
 	}
 	function edit_s()
@@ -177,12 +161,9 @@ class admin_links extends adminController
 	}
 	function delete()
 	{
-		$aLink = $this->dbResults(
-			"SELECT * FROM `links`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"row"
-		);
-		@unlink($this->_settings->rootPublic."uploads/links/".$aLink["link"]);
+		$oLinks = $this->loadModel("links");
+		
+		$aLink = $oLinks->getLink($this->_urlVars->dynamic["id"]);
 		
 		$this->dbResults(
 			"DELETE FROM `links`"
@@ -197,15 +178,11 @@ class admin_links extends adminController
 	}
 	function categories_index()
 	{
+		$oLinks = $this->loadModel("links");
+		
 		$_SESSION["admin"]["admin_links_categories"] = null;
 		
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `links_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $aCategories);
+		$this->tplAssign("aCategories", $oLinks->getCategories());
 		$this->tplDisplay("links/categories.tpl");
 	}
 	function categories_add_s()
@@ -244,19 +221,6 @@ class admin_links extends adminController
 		);
 
 		$this->forward("/admin/links/categories/?notice=".urlencode("Category removed successfully!"));
-	}
-	##################################
-	
-	### Functions ####################
-	private function get_categories()
-	{
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `links_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		return $aCategories;
 	}
 	##################################
 }

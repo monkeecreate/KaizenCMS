@@ -18,7 +18,7 @@ class admin_galleries extends adminController
 		
 		$this->tplAssign("aCategories", $oGalleries->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aGalleries", $oGalleries->getGalleries());
+		$this->tplAssign("aGalleries", $oGalleries->getGalleries($_GET["category"]));
 		$this->tplAssign("maxsort", $oGalleries->getMaxSort());
 		$this->tplDisplay("galleries/index.tpl");
 	}
