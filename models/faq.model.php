@@ -33,6 +33,16 @@ class faq_model extends appModel
 		
 		return $aQuestions;
 	}
+	function getQuestion($sId)
+	{
+		$aQuestion = $this->dbResults(
+			"SELECT * FROM `faq`"
+				." WHERE `id` = ".$this->dbQuote($sId, "integer")
+			,"row"
+		);
+		
+		return $aQuestion;
+	}
 	function getCategories()
 	{
 		$aCategories = $this->dbResults(

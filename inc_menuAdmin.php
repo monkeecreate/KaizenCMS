@@ -87,7 +87,7 @@ $aMenuAdmin = array(
 		"title" => "FAQ",
 		"menu" => array(
 			array(
-				"text" => "Add Question &amp; Answer",
+				"text" => "Add Question & Answer",
 				"link" => "/admin/faq/add/",
 				"icon" => "circle-plus"
 			),

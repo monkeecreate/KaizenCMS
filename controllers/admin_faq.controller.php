@@ -11,36 +11,26 @@ class admin_faq extends adminController
 	### DISPLAY ######################
 	function index()
 	{
+		$oQuestions = $this->loadModel("faq");
+		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_faq"] = null;
-		
-		if(!empty($_GET["category"]))
-		{
-			$sSQLCategory = " INNER JOIN `faq_categories_assign` AS `assign` ON `faq`.`id` = `assign`.`faqid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
-		}
-		
-		$aQuestions = $this->dbResults(
-			"SELECT `faq`.* FROM `faq`"
-				.$sSQLCategory
-				." GROUP BY `faq`.`id`"
-				." ORDER BY `faq`.`sort_order`"
-			,"all"
-		);
 		
 		$sMaxSort = $this->dbResults(
 			"SELECT MAX(`sort_order`) FROM `faq`"
 			,"one"
 		);
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oQuestions->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aQuestions", $aQuestions);
+		$this->tplAssign("aQuestions", $oQuestions->getQuestions($_GET["category"]));
 		$this->tplAssign("maxsort", $sMaxSort);
 		$this->tplDisplay("faq/index.tpl");
 	}
 	function add()
 	{
+		$oQuestions = $this->loadModel("faq");
+		
 		if(!empty($_SESSION["admin"]["admin_faq"]))
 			$this->tplAssign("aQuestion", $_SESSION["admin"]["admin_faq"]);
 		else
@@ -51,7 +41,7 @@ class admin_faq extends adminController
 				)
 			);
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oQuestions->getCategories());
 		$this->tplDisplay("faq/add.tpl");
 	}
 	function add_s()
@@ -103,17 +93,15 @@ class admin_faq extends adminController
 	}
 	function sort()
 	{
-		$aGallery = $this->dbResults(
-			"SELECT * FROM `faq`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"row"
-		);
+		$oQuestions = $this->loadModel("faq");
+		
+		$aQuestion = $oQuestions->getQuestion($this->_urlVars->dynamic["id"], "integer");
 		
 		if($this->_urlVars->dynamic["sort"] == "up")
 		{
 			$aOld = $this->dbResults(
 				"SELECT * FROM `faq`"
-					." WHERE `sort_order` < ".$aGallery["sort_order"]
+					." WHERE `sort_order` < ".$aQuestion["sort_order"]
 					." ORDER BY `sort_order` DESC"
 				,"row"
 			);
@@ -121,12 +109,12 @@ class admin_faq extends adminController
 			$this->dbResults(
 				"UPDATE `faq` SET"
 					." `sort_order` = ".$this->dbQuote($aOld["sort_order"], "text")
-					." WHERE `id` = ".$this->dbQuote($aGallery["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aQuestion["id"], "integer")
 			);
 			
 			$this->dbResults(
 				"UPDATE `faq` SET"
-					." `sort_order` = ".$this->dbQuote($aGallery["sort_order"], "text")
+					." `sort_order` = ".$this->dbQuote($aQuestion["sort_order"], "text")
 					." WHERE `id` = ".$this->dbQuote($aOld["id"], "integer")
 			);
 		}
@@ -134,7 +122,7 @@ class admin_faq extends adminController
 		{
 			$aOld = $this->dbResults(
 				"SELECT * FROM `faq`"
-					." WHERE `sort_order` > ".$aGallery["sort_order"]
+					." WHERE `sort_order` > ".$aQuestion["sort_order"]
 					." ORDER BY `sort_order` ASC"
 				,"row"
 			);
@@ -142,12 +130,12 @@ class admin_faq extends adminController
 			$this->dbResults(
 				"UPDATE `faq` SET"
 					." `sort_order` = ".$this->dbQuote($aOld["sort_order"], "text")
-					." WHERE `id` = ".$this->dbQuote($aGallery["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($aQuestion["id"], "integer")
 			);
 			
 			$this->dbResults(
 				"UPDATE `faq` SET"
-					." `sort_order` = ".$this->dbQuote($aGallery["sort_order"], "text")
+					." `sort_order` = ".$this->dbQuote($aQuestion["sort_order"], "text")
 					." WHERE `id` = ".$this->dbQuote($aOld["id"], "integer")
 			);
 		}
@@ -156,13 +144,11 @@ class admin_faq extends adminController
 	}
 	function edit()
 	{
+		$oQuestions = $this->loadModel("faq");
+		
 		if(!empty($_SESSION["admin"]["admin_faq"]))
 		{
-			$aQuestionRow = $this->dbResults(
-				"SELECT * FROM `faq`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aQuestionRow = $oQuestions->getQuestion($this->_urlVars->dynamic["id"]);
 			
 			$aQuestion = $_SESSION["admin"]["admin_faq"];
 			
@@ -177,11 +163,7 @@ class admin_faq extends adminController
 		}
 		else
 		{
-			$aQuestion = $this->dbResults(
-				"SELECT * FROM `faq`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aQuestion = $oQuestions->getQuestion($this->_urlVars->dynamic["id"], "integer");
 			
 			$aQuestion["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `faq_categories` AS `categories`"
@@ -201,7 +183,7 @@ class admin_faq extends adminController
 			$this->tplAssign("aQuestion", $aQuestion);
 		}
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $oQuestions->getCategories());
 		$this->tplDisplay("faq/edit.tpl");
 	}
 	function edit_s()
@@ -255,15 +237,11 @@ class admin_faq extends adminController
 	}
 	function categories_index()
 	{
+		$oQuestions = $this->loadModel("faq");
+		
 		$_SESSION["admin"]["admin_faq_categories"] = null;
 		
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `faq_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $aCategories);
+		$this->tplAssign("aCategories", $oQuestions->getCategories());
 		$this->tplDisplay("faq/categories.tpl");
 	}
 	function categories_add_s()
@@ -302,19 +280,6 @@ class admin_faq extends adminController
 		);
 
 		$this->forward("/admin/faq/categories/?notice=".urlencode("Category removed successfully!"));
-	}
-	##################################
-	
-	### Functions ####################
-	private function get_categories()
-	{
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `faq_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		return $aCategories;
 	}
 	##################################
 }
