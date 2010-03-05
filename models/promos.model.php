@@ -1,6 +1,23 @@
 <?php
 class promos_model extends appModel
 {
+	function getPromos($sPosition = null)
+	{
+		if(!empty($sPosition))
+		{
+			$sSQLPosition = " INNER JOIN `promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`";
+			$sSQLPosition .= " WHERE `assign`.`positionid` = ".$this->dbQuote($sPosition, "integer");
+		}
+		
+		$aPromos = $this->dbResults(
+			"SELECT `promos`.* FROM `promos`"
+				.$sSQLPosition
+				." ORDER BY `promos`.`datetime_show` DESC"
+			,"all"
+		);
+		
+		return $aPromos;
+	}	
 	function getPromo($sTag, $sId = null, $sUsed = null)
 	{
 		if(!empty($sTag))
@@ -38,6 +55,16 @@ class promos_model extends appModel
 		}
 		
 		return $aPromo;
+	}
+	function getPositions()
+	{
+		$aPositions = $this->dbResults(
+			"SELECT * FROM `promos_positions`"
+				." ORDER BY `name`" 
+			,"all"
+		);
+		
+		return $aPositions;
 	}
 	function getPosition($sTag)
 	{

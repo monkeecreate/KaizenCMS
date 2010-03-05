@@ -11,36 +11,20 @@ class admin_promos extends adminController
 	### DISPLAY ######################
 	function index()
 	{
+		$oPromos = $this->loadModel("promos");
+		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_promos"] = null;
 		
-		$aPositions = $this->dbResults(
-			"SELECT * FROM `promos_positions`"
-				." ORDER BY `name`"
-			,"admin->promos->index->positions"
-			,"all"
-		);
-		
-		if(!empty($_GET["position"]))
-		{
-			$sSQLPosition = " INNER JOIN `promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`";
-			$sSQLPosition .= " WHERE `assign`.`positionid` = ".$this->dbQuote($_GET["position"], "integer");
-		}
-		
-		$aPromos = $this->dbResults(
-			"SELECT `promos`.* FROM `promos`"
-				.$sSQLPosition
-				." ORDER BY `promos`.`datetime_show` DESC"
-			,"all"
-		);
-		
-		$this->tplAssign("aPositions", $aPositions);
+		$this->tplAssign("aPositions", $oPromos->getPositions());
 		$this->tplAssign("sPosition", $_GET["position"]);
-		$this->tplAssign("aPromos", $aPromos);
+		$this->tplAssign("aPromos", $oPromos->getPromos($_GET["position"]));
 		$this->tplDisplay("promos/index.tpl");
 	}
 	function add()
 	{
+		$oPromos = $this->loadModel("promos");
+		
 		if(!empty($_SESSION["admin"]["admin_promos"]))
 		{
 			$aPromo = $_SESSION["admin"]["admin_promos"];
@@ -59,7 +43,7 @@ class admin_promos extends adminController
 				)
 			);
 		
-		$this->tplAssign("aPositions", $this->get_positions());
+		$this->tplAssign("aPositions", $oPromos->getPositions());
 		$this->tplDisplay("promos/add.tpl");
 	}
 	function add_s()
@@ -155,6 +139,8 @@ class admin_promos extends adminController
 	}
 	function edit()
 	{
+		$oPromos = $this->loadModel("promos");
+		
 		if(!empty($_SESSION["admin"]["admin_promos"]))
 		{
 			$aPromoRow = $this->dbResults(
@@ -203,7 +189,7 @@ class admin_promos extends adminController
 			$this->tplAssign("aPromo", $aPromo);
 		}
 		
-		$this->tplAssign("aPositions", $this->get_positions());
+		$this->tplAssign("aPositions", $oPromos->getPositions());
 		$this->tplDisplay("promos/edit.tpl");
 	}
 	function edit_s()
@@ -320,12 +306,12 @@ class admin_promos extends adminController
 	}
 	function positions_index()
 	{
+		$oPromos = $this->loadModel("promos");
+		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_promo_positions"] = null;
 		
-		$aPositions = $this->get_positions();
-		
-		$this->tplAssign("aPositions", $aPositions);
+		$this->tplAssign("aPositions", $oPromos->getPositions());
 		$this->tplDisplay("promos/positions/index.tpl");
 	}
 	function positions_add()
@@ -418,19 +404,6 @@ class admin_promos extends adminController
 		);
 		
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Position removed successfully!"));
-	}
-	##################################
-	
-	### Functions ####################
-	private function get_positions()
-	{
-		$aPositions = $this->dbResults(
-			"SELECT * FROM `promos_positions`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		return $aPositions;
 	}
 	##################################
 }
