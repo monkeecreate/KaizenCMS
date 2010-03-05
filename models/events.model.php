@@ -38,20 +38,25 @@ class events_model extends appModel
 		
 		return $aEvents;
 	}
-	function getEvent($sId)
+	function getEvent($sId, $sAll = false)
 	{
+		if($sAll == false)
+		{
+			$sWhere .= " AND `events`.`active` = 1";
+			$sWhere .= " AND `events`.`datetime_show` < ".time();
+			$sWhere .= " AND (`events`.`use_kill` = 0 OR `events`.`datetime_kill` > ".time().")";
+		}
+		
 		$aEvent = $this->dbResults(
 			"SELECT `events`.* FROM `events` AS `events`"
 				." WHERE `events`.`id` = ".$this->dbQuote($sId, "integer")
-				." AND `events`.`active` = 1"
-				." AND `events`.`datetime_show` < ".time()
-				." AND (`events`.`use_kill` = 0 OR `events`.`datetime_kill` > ".time().")"
+				.$sWhere
 			,"row"
 		);
 		
 		if(!empty($aEvent))
 			$aEvent = $this->getEventInfo($aEvent);
-		
+			
 		return $aEvent;
 	}
 	function getEventInfo($aEvent)
@@ -64,6 +69,11 @@ class events_model extends appModel
 		);
 	
 		$aEvent["categories"] = implode(", ", $aCategories);
+		
+		$aEvent["datetime_start_date"] = date("m/d/Y", $aEvent["datetime_start"]);
+		$aEvent["datetime_end_date"] = date("m/d/Y", $aEvent["datetime_end"]);
+		$aEvent["datetime_show_date"] = date("m/d/Y", $aEvent["datetime_show"]);
+		$aEvent["datetime_kill_date"] = date("m/d/Y", $aEvent["datetime_kill"]);
 		
 		if(file_exists($this->_settings->rootPublic.substr($this->imageFolder, 1).$aEvent["id"].".jpg")
 		 && $aEvent["photo_x2"] > 0

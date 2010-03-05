@@ -11,20 +11,20 @@ class admin_events extends adminController
 	### DISPLAY ######################
 	function index()
 	{
-		$oEvent = $this->loadModel("events");
+		$oEvents = $this->loadModel("events");
 		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_events"] = null;
 		
-		$this->tplAssign("aCategories", $oEvent->getCategories());
+		$this->tplAssign("aCategories", $oEvents->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aEvents", $oEvent->getEvents($_GET["category"], true));
+		$this->tplAssign("aEvents", $oEvents->getEvents($_GET["category"], true));
 		$this->tplAssign("sUseImage", $oCalendar->useImage);
 		$this->tplDisplay("events/index.tpl");
 	}
 	function add()
 	{
-		$oEvent = $this->loadModel("events");
+		$oEvents = $this->loadModel("events");
 		
 		if(!empty($_SESSION["admin"]["admin_events"]))
 		{
@@ -48,13 +48,13 @@ class admin_events extends adminController
 				)
 			);
 		
-		$this->tplAssign("aCategories", $oEvent->getCategories());
+		$this->tplAssign("aCategories", $oEvents->getCategories());
 		$this->tplAssign("sUseImage", $oCalendar->useImage);
 		$this->tplDisplay("events/add.tpl");
 	}
 	function add_s()
 	{
-		$oEvent = $this->loadModel("events");
+		$oEvents = $this->loadModel("events");
 		
 		if(empty($_POST["title"]) || count($_POST["categories"]) == 0)
 		{
@@ -125,15 +125,11 @@ class admin_events extends adminController
 	}
 	function edit()
 	{
-		$oEvent = $this->loadModel("events");
+		$oEvents = $this->loadModel("events");
 		
 		if(!empty($_SESSION["admin"]["admin_events"]))
 		{
-			$aEventRow = $this->dbResults(
-				"SELECT * FROM `events`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aEventRow = $oEvents->getEvent($this->_urlVars->dynamic["id"]);
 			
 			$aEvent = $_SESSION["admin"]["admin_events"];
 			
@@ -146,11 +142,7 @@ class admin_events extends adminController
 		}
 		else
 		{
-			$aEvent = $this->dbResults(
-				"SELECT * FROM `events`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aEvent = $oEvents->getEvent($this->_urlVars->dynamic["id"]);
 			
 			$aEvent["categories"] = $this->dbResults(
 				"SELECT `categories`.`id` FROM `events_categories` AS `categories`"
@@ -161,11 +153,6 @@ class admin_events extends adminController
 				,"col"
 			);
 			
-			$aEvent["datetime_start_date"] = date("m/d/Y", $aEvent["datetime_start"]);
-			$aEvent["datetime_end_date"] = date("m/d/Y", $aEvent["datetime_end"]);
-			$aEvent["datetime_show_date"] = date("m/d/Y", $aEvent["datetime_show"]);
-			$aEvent["datetime_kill_date"] = date("m/d/Y", $aEvent["datetime_kill"]);
-			
 			$aEvent["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aEvent["updated_by"]
@@ -174,7 +161,7 @@ class admin_events extends adminController
 		}
 		
 		$this->tplAssign("aEvent", $aEvent);
-		$this->tplAssign("aCategories", $oEvent->getCategories());
+		$this->tplAssign("aCategories", $oEvents->getCategories());
 		$this->tplDisplay("events/edit.tpl");
 	}
 	function edit_s()
@@ -257,14 +244,8 @@ class admin_events extends adminController
 	function image_upload()
 	{
 		$oEvents = $this->loadModel("events");
-		
-		$aEvent = $this->dbResults(
-			"SELECT * FROM `events`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"row"
-		);
 
-		$this->tplAssign("aEvent", $aEvent);
+		$this->tplAssign("aEvent", $oEvents->getEvent($this->_urlVars->dynamic["id"]));
 		$this->tplAssign("minWidth", $oEvents->imageMinWidth);
 		$this->tplAssign("minHeight", $oEvents->imageMinHeight);
 		$this->tplDisplay("events/image/upload.tpl");
@@ -317,13 +298,7 @@ class admin_events extends adminController
 		if(!is_file($this->_settings->rootPublic.substr($oEvents->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg"))
 			$this->forward("/admin/events/image/".$this->_urlVars->dynamic["id"]."/upload/");
 
-		$aEvent = $this->dbResults(
-			"SELECT * FROM `events`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"row"
-		);
-
-		$this->tplAssign("aEvent", $aEvent);
+		$this->tplAssign("aEvent", $oEvents->getEvent($this->_urlVars->dynamic["id"]));
 		$this->tplAssign("sFolder", $oEvents->imageFolder);
 
 		$this->tplDisplay("events/image/edit.tpl");
@@ -366,15 +341,11 @@ class admin_events extends adminController
 	}
 	function categories_index()
 	{
+		$oEvents = $this->loadModel("events");
+		
 		$_SESSION["admin"]["admin_events_categories"] = null;
 		
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `events_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $aCategories);
+		$this->tplAssign("aCategories", $oEvents->getCategories());
 		$this->tplDisplay("events/categories.tpl");
 	}
 	function categories_add_s()
@@ -413,19 +384,6 @@ class admin_events extends adminController
 		);
 
 		$this->forward("/admin/events/categories/?notice=".urlencode("Category removed successfully!"));
-	}
-	##################################
-	
-	### Functions ####################
-	private function get_categories()
-	{
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `events_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		return $aCategories;
 	}
 	##################################
 }
