@@ -69,7 +69,7 @@ $errors = 0;
 		if(empty($aConfig["encryption"]["key"]))
 			createBox("error", "Config - Set an encryption key.");
 		if(empty($aConfig["encryption"]["salt"]))
-			createBox("error", "Config - Sen an encryption salt.");
+			createBox("error", "Config - Set an encryption salt.");
 	}
 	if($error == 0)
 		createBox("ok", "You may now delete '".$site_public_root."install.php'.");
