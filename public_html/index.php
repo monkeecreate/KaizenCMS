@@ -168,8 +168,8 @@ $objMail = Mail::factory($aConfig["mail"]["type"], $aConfig["mail"]["params"]);
 ### START TEMPLATE ###########################
 require($aConfig["smarty"]["dir"]["smarty"]);
 $oSmarty = new Smarty();
-$oSmarty->template_dir = $aConfig["smarty"]["dir"]["tpl"];
-$oSmarty->compile_dir = $aConfig["smarty"]["dir"]["tplc"];
+$oSmarty->template_dir = $aConfig["smarty"]["dir"]["templates"];
+$oSmarty->compile_dir = $aConfig["smarty"]["dir"]["compile"];
 
 if(!is_dir($oSmarty->compile_dir))
 {
