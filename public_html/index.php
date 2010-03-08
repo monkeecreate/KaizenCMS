@@ -1,6 +1,7 @@
 <?php
 ini_set("display_errors", 1);
 error_reporting(E_ALL ^ E_NOTICE);
+session_start();
 
 ### AUTO CONFIG ##############################
 $site_public_root = dirname(__FILE__)."/";
@@ -8,12 +9,10 @@ $site_root = dirname($site_public_root)."/";
 ##############################################
 
 ##############################################
-session_start();
-
-if(!is_file("../inc_config.php"))
-	die("Please setup your inc_config.php file using inc_config_example.php.");
-
 require("../inc_config.php");
+
+if(is_file("install.php"))
+	die(require("install.php"));
 
 if($aConfig["options"]["pear"] == "folder")
 	ini_set("include_path", ini_get("include_path").":".$site_root.".pear");

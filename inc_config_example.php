@@ -1,20 +1,20 @@
 <?php
 ###############################################
-$aConfig["encryption"]["key"] = sha1("domain.com");
-$aConfig["encryption"]["salt"] = sha1("6%54d68732#@13546f54*65adsf798");
+$aConfig["encryption"]["key"] = ""; // example: sha1("domain.com")
+$aConfig["encryption"]["salt"] = ""; // example: sha1("random string")
 ###############################################
 
 ### ADMIN INFO ################################
 // Info used to send when an error happens when debug is off
 $aConfig["admin_info"] = array(
-	"name" => "John Hoover",
-	"email" => "john@crane-west.com"
+	"name" => "",
+	"email" => ""
 );
 ###############################################
 
 ### OPTIONS ###################################
 $aConfig["options"]["pear"] = "server"; //PEAR file locations; server = packages installed on server, folder = packages sit with site in .pear
-$aConfig["options"]["urlcache"] = 30; //Time memcache stores patter found for url; (int) = time in minutes, (false) = turns off url cache
+$aConfig["options"]["urlcache"] = 30; //Time memcache stores pattern found for url; (int) = time in minutes, (false) = turns off url cache
 $aConfig["options"]["debug"] = true;
 ###############################################
 
