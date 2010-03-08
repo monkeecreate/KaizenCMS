@@ -165,12 +165,15 @@ class appController
 		// Add attachments to message
 		foreach($aAttachment as $aFile)
 			$oMime->addAttachment($aFile[0], $aFile[1]);
+			
+		$sBody = $oMime->get();
+		$aHeaders = $oMime->headers($aHeaders);
 		
 		// Send message
-		$oMail = $this->_mail->send($sRecipients, $oMime->headers($aHeaders), $oMime->get());
+		$oMail = $this->_mail->send($sRecipients, $aHeaders, $sBody);
 		
 		if(PEAR::iserror($oMail))
-			$this->error("Mail - ".$headers["Subject"], $oMail->message);
+			$this->error("Mail - ".$aHeaders["Subject"], $oMail->message);
 		else
 			return true;
 	}
