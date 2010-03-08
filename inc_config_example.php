@@ -27,7 +27,7 @@ $aConfig["software"]["firephp"] = true; // Set if you want to use/have FirePHP
 # http://us.php.net/memcache
 $aConfig["memcache"]["server"] = "localhost";
 $aConfig["memcache"]["port"] = "11210";
-$aCongig["memcache"]["salt"] = md5("cms"); //Encrypt data sent to memcache server
+$aCongig["memcache"]["salt"] = ""; //Encrypt data sent to memcache server; exmpale: sha1("site name")
 ###############################################
 
 ### PEAR ######################################
@@ -47,38 +47,24 @@ $aConfig["database"]["options"] = array(
 
 # PEAR MAIL
 # http://pear.php.net/mail/
-//SMTP
-/*$aConfig["mail"] = array(
-	"type" => "smtp",
-	"params" => array(
-		"host" => "smtp.digimedia.com",
-		//"port" => "25",
-		"auth" => true,
-		"username" => "formadresponse@digimedia.com",
-		"password" => "stats818"
-	)
-);*/
-//sendmail
-/*$aConfig["mail"] = array(
-	"type" => "sendmail",
-	"params" => array(
-		"sendmail_path" => "",
-		"sendmail_args" => ""
-	)
-);*/
-//mail
-$aConfig["mail"] = array(
-	"type" => "mail",
-	"params" => array()
-);
+$aConfig["mail"]["type"] = "mail"; // mail, sendmail, smtp
+$aConfig["mail"]["params"] = array(); //mail
+/*$aConfig["mail"]["params"] = array("sendmail_path" => "", "sendmail_args" => "") // sendmail */
+/*$aConfig["mail"]["params"] = array(
+	"host" => "",
+	//"port" => "25",
+	"auth" => true,
+	"username" => "",
+	"password" => "")
+); //smtp */
 ###############################################
 
 ### TEMPLATES #################################
 # PHP Smarty Template Engine
 # http://smarty.php.net/
 $aConfig["smarty"]["dir"]["smarty"] = $site_root.".smarty/Smarty.class.php";
-$aConfig["smarty"]["dir"]["tpl"] = $site_root."views";
-$aConfig["smarty"]["dir"]["tplc"] = $site_root.".compiled";
+$aConfig["smarty"]["dir"]["templates"] = $site_root."views";
+$aConfig["smarty"]["dir"]["compile"] = $site_root.".compiled";
 $aConfig["smarty"]["dir"]["cache"] = $site_root.".cache";
 $aConfig["smarty"]["dir"]["plugins"] = array(
 	$site_root."components"

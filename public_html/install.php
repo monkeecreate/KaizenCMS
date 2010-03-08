@@ -46,6 +46,8 @@ $errors = 0;
 	if(!is_file("../inc_config.php"))
 		createBox("error", "Create your config file before continueing.");
 	else {
+		
+		/*## SMARTY ##*/
 		if(!is_dir($aConfig["smarty"]["dir"]["tplc"]))
 			createBox("error", "Create Smarty compile directory at '".$aConfig["smarty"]["dir"]["tplc"]."'");
 		else {
@@ -58,18 +60,23 @@ $errors = 0;
 			if(!is_writable($aConfig["smarty"]["dir"]["cache"]))
 				createBox("error", "Make the Smarty cache directory writable.");
 		}
+		/*## SMARTY ##*/
+		
 		if(!is_dir("uploads/"))
 			createBox("error", "Create upload directory at '".$site_public_root."'");
 		else {
 			if(!is_writable("uploads/"))
 				createBox("error", "Make the uploads direcotyr writable.");
 		}
+		
+		/*## CONFIG ##*/
 		if(empty($aConfig["admin_info"]["email"]))
 			createBox("error", "Config - Insert your admin info.");
 		if(empty($aConfig["encryption"]["key"]))
 			createBox("error", "Config - Set an encryption key.");
 		if(empty($aConfig["encryption"]["salt"]))
 			createBox("error", "Config - Set an encryption salt.");
+		/*## CONFIG ##*/
 	}
 	if($error == 0)
 		createBox("ok", "You may now delete '".$site_public_root."install.php'.");
