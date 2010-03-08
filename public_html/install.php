@@ -48,10 +48,10 @@ $errors = 0;
 	else {
 		
 		/*## SMARTY ##*/
-		if(!is_dir($aConfig["smarty"]["dir"]["tplc"]))
-			createBox("error", "Create Smarty compile directory at '".$aConfig["smarty"]["dir"]["tplc"]."'");
+		if(!is_dir($aConfig["smarty"]["dir"]["compile"]))
+			createBox("error", "Create Smarty compile directory at '".$aConfig["smarty"]["dir"]["compile"]."'");
 		else {
-			if(!is_writable($aConfig["smarty"]["dir"]["tplc"]))
+			if(!is_writable($aConfig["smarty"]["dir"]["compile"]))
 				createBox("error", "Make the Smarty compile directory writable.");
 		}
 		if(!is_dir($aConfig["smarty"]["dir"]["cache"]) && $aConfig["smarty"]["cache"]["type"] != false)

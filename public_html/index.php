@@ -9,7 +9,7 @@ $site_root = dirname($site_public_root)."/";
 ##############################################
 
 ##############################################
-require("../inc_config.php");
+include("../inc_config.php");
 
 if(is_file("install.php") && $aConfig["installer"] != 0)
 	die(require("install.php"));
