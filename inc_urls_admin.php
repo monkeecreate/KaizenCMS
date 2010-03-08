@@ -12,14 +12,8 @@
  #   /{tag:[a-z]+}/
 */
 
-$aConfig["smarty"]["dir"]["tpl"] = $site_root."views/admin";
-$aConfig["smarty"]["dir"]["tplc"] = $site_root.".compiled/admin";
-
-if(!is_dir($aConfig["smarty"]["dir"]["tplc"]))
-{
-	if(!mkdir($aConfig["smarty"]["dir"]["tplc"], 0777))
-		die("Please create `".$aConfig["smarty"]["dir"]["tplc"]."`. Unable to create automatically.");
-}
+$aConfig["smarty"]["dir"]["templates"] = $site_root."views/admin";
+$aConfig["smarty"]["dir"]["compile"] = $site_root.".compiled/admin";
 
 $aUrlPatterns = array(
 	"/admin/" => array(
