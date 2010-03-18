@@ -43,22 +43,9 @@ array_shift($aUrl);
 array_pop($aUrl);
 ##############################################
 
-### AUTO CLASS CALL ##########################
-function __autoload($class_name) {
-	global $site_root;
-	
-	if(!class_exists($class_name))
-	{
-		if($class_name == "appController")
-			require($site_root."appController.php");
-		elseif($class_name == "appModel")
-			require($site_root."appModel.php");
-		elseif(is_file($site_root."controllers/".$class_name.".controller.php"))
-			require($site_root."controllers/".$class_name.".controller.php");
-		elseif(is_file($site_root."helpers/".$class_name.".helper.php"))
-			require($site_root."helpers/".$class_name.".helper.php");
-	}
-}
+### AUTO CLASSES #############################
+require($site_root."appController.php");
+require($site_root."appModel.php");
 ##############################################
 
 ### MEMCACHE #################################
@@ -78,10 +65,14 @@ if($aConfig["software"]["memcache"] == true)
 	}
 }
 else
-	$oMemcache = new Memcache_empty;
+{
+	include($site_root."helpers/emptyMemcache.php");
+	$oMemcache = new emptyMemcache;
+}
 ##############################################
 
 ### ENCRYPTION ###############################
+include($site_root."helpers/hash_crypt.php");
 $oEnc = new hash_crypt($aConfig["encryption"]["key"]);
 $oEnc->set_salt($aConfig["encryption"]["salt"]);
 ##############################################
@@ -93,7 +84,10 @@ if($aConfig["options"]["debug"] == true && $aConfig["software"]["firephp"] == tr
 	$oFirePHP = FirePHP::getInstance(true);
 }
 else
-	$oFirePHP = new FirePHP_empty;
+{
+	include($site_root."helpers/emptyFirePHP.php");
+	$oFirePHP = new emptyFirePHP;
+}
 ##############################################
 
 ### PAGE CACHED ##############################
@@ -104,7 +98,10 @@ if($sPage != false)
 
 ### PREPARE URL PATTERN ######################
 if($aUrl[0] == "admin")
+{
+	require($site_root."controllers/adminController.php");
 	require("../inc_urls_admin.php");
+}
 else
 	require("../inc_urls.php");
 
@@ -212,7 +209,7 @@ if(count($aUrlPatterns[$pattern]) > 0)
 		"manual" => $aUrlPatterns[$pattern]["params"]
 	);
 	
-	$oClass = new $aUrlPatterns[$pattern]["cmd"];
+	$oClass = $oApp->loadController($aUrlPatterns[$pattern]["cmd"]);
 	$oClass->$aUrlPatterns[$pattern]["action"]($urlParams, $aUrlPatterns[$pattern]["params"]);
 }
 /* Complete failure, throw 404 */

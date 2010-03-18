@@ -1,5 +1,5 @@
 <?php
-class galleries_model extends appModel
+class galleries extends appModel
 {
 	public $perPage = 5;
 	

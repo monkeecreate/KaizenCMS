@@ -1,5 +1,5 @@
 <?php
-class links_model extends appModel
+class links extends appModel
 {
 	public $perPage = 5;
 	

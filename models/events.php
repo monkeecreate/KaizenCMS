@@ -1,5 +1,5 @@
 <?php
-class events_model extends appModel
+class events extends appModel
 {
 	public $useImage = true;
 	public $imageMinWidth = 320;

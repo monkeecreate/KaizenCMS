@@ -1,5 +1,5 @@
 <?php
-class news_model extends appModel
+class news extends appModel
 {
 	public $useImage = true;
 	public $imageMinWidth = 140;

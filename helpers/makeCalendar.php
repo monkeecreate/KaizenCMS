@@ -1,5 +1,5 @@
 <?php
-class calendar
+class makeCalendar
 {
 	private $_cal = Array();
 	private $_time;

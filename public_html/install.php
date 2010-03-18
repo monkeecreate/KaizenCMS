@@ -49,13 +49,13 @@ $errors = 0;
 		
 		/*## SMARTY ##*/
 		if(!is_dir($aConfig["smarty"]["dir"]["compile"]))
-			createBox("error", "Create Smarty compile directory at '".$aConfig["smarty"]["dir"]["compile"]."'");
+			createBox("error", "Create Smarty compile directory at '".$aConfig["smarty"]["dir"]["compile"]."' and make it writable.");
 		else {
 			if(!is_writable($aConfig["smarty"]["dir"]["compile"]))
 				createBox("error", "Make the Smarty compile directory writable.");
 		}
 		if(!is_dir($aConfig["smarty"]["dir"]["cache"]) && $aConfig["smarty"]["cache"]["type"] != false)
-			createBox("error", "Create Smarty cache directory at '".$aConfig["smarty"]["dir"]["tplc"]."', or turn caching off.");
+			createBox("error", "Create Smarty cache directory at '".$aConfig["smarty"]["dir"]["tplc"]."' and make it writable., or turn caching off.");
 		elseif($aConfig["smarty"]["cache"]["type"] != false) {
 			if(!is_writable($aConfig["smarty"]["dir"]["cache"]))
 				createBox("error", "Make the Smarty cache directory writable.");
@@ -63,10 +63,10 @@ $errors = 0;
 		/*## SMARTY ##*/
 		
 		if(!is_dir("uploads/"))
-			createBox("error", "Create upload directory at '".$site_public_root."'");
+			createBox("error", "Create upload directory at '".$site_public_root."' and make it writable.");
 		else {
 			if(!is_writable("uploads/"))
-				createBox("error", "Make the uploads direcotyr writable.");
+				createBox("error", "Make the uploads directory writable.");
 		}
 		
 		/*## CONFIG ##*/

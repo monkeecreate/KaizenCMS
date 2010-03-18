@@ -56,21 +56,46 @@ class appController
 		echo "<pre>";
 		print_r($this->_settings);
 		print_r($this->_db);
-		print_r($this->SMARTY);
+		print_r($this->_smarty);
 		echo "</pre>";
 		
 		phpinfo();
 	}
+	function loadController($sController)
+	{
+		if(!class_exists($sController))
+			require($this->_settings->root."controllers/".str_replace("_","/", $sController).".php");
+		
+		$oController = new $sController;
+		
+		return $oController;
+	}
 	function loadModel($sModel)
 	{
-		if(!class_exists($sModel."_model"))
-			require($this->_settings->root."models/".$sModel.".model.php");
-			
-		$sModel = $sModel."_model";
+		if(!class_exists($sModel))
+			require($this->_settings->root."models/".$sModel.".php");
 		
 		$sModel = new $sModel;
 		
 		return $sModel;
+	}
+	function getSetting($sTag)
+	{
+		if(empty($sTag))
+			$this->error("getSetting", "Setting tag not passed", null, debug_backtrace());
+		
+		$aSetting = $this->dbResults(
+			"SELECT * FROM `settings`"
+				." WHERE `tag` = ".$this->dbQuote($sTag, "text")
+			,"row"
+		);
+		
+		if(empty($aSetting))
+			$this->error("getSetting", "Could not find setting", null, debug_backtrace());
+		
+		$oField = new Form($aSetting);
+		
+		return $oField->setting->value();
 	}
 	##################################
 	

@@ -1,5 +1,5 @@
 <?php
-class documents_model extends appModel
+class documents extends appModel
 {
 	public $allowedExt = array();//array("pdf","doc");
 	public $documentFolder = "/uploads/documents/";

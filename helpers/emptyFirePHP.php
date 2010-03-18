@@ -1,5 +1,5 @@
 <?php
-class FirePHP_empty
+class emptyFirePHP
 {
 	function log()
 	{

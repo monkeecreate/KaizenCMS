@@ -1,5 +1,5 @@
 <?php
-class promos_model extends appModel
+class promos extends appModel
 {
 	function getPromos($sPosition = null)
 	{
