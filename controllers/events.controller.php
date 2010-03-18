@@ -35,7 +35,12 @@ class events extends appController
 		$this->tplAssign("aEvents", $aEvents);
 		$this->tplAssign("aPaging", $aPaging);
 		
-		$this->tplDisplay("events/index.tpl");
+		if(!empty($_GET["category"]) && $this->tplExists("events/category-".$_GET["category"]."tpl"))
+			$this->tplDisplay("events/category-".$_GET["category"].".tpl");
+		elseif(!empty($_GET["category"]) && $this->tplExists("events/category.tpl"))
+			$this->tplDisplay("events/category.tpl");
+		else
+			$this->tplDisplay("events/index.tpl");
 	}
 	function event()
 	{
@@ -50,6 +55,8 @@ class events extends appController
 		
 		if(!empty($aEvent["template"]))
 			$this->tplDisplay("events/tpl/".$aEvent["template"]);
+		elseif($this->tplExists("events/event-".$aEvent["id"].".tpl"))
+			$this->tplDisplay("events/event-".$aEvent["id"].".tpl");
 		else
 			$this->tplDisplay("events/event.tpl");
 	}

@@ -35,7 +35,12 @@ class news extends appController
 		$this->tplAssign("aArticles", $aArticles);
 		$this->tplAssign("aPaging", $aPaging);
 		
-		$this->tplDisplay("news/index.tpl");
+		if(!empty($_GET["category"]) && $this->tplExists("news/category-".$_GET["category"]."tpl"))
+			$this->tplDisplay("news/category-".$_GET["category"].".tpl");
+		elseif(!empty($_GET["category"]) && $this->tplExists("news/category.tpl"))
+			$this->tplDisplay("news/category.tpl");
+		else
+			$this->tplDisplay("news/index.tpl");
 	}
 	function rss()
 	{
@@ -60,6 +65,9 @@ class news extends appController
 
 		$this->tplAssign("aArticle", $aArticle);
 		
-		$this->tplDisplay("news/article.tpl");
+		if($this->tplExists("news/article-".$aArticle["id"].".tpl"))
+			$this->tplDisplay("news/article-".$aArticle["id"].".tpl");
+		else
+			$this->tplDisplay("news/article.tpl");
 	}
 }

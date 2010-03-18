@@ -35,7 +35,12 @@ class galleries extends appController
 		$this->tplAssign("aGalleries", $aGalleries);
 		$this->tplAssign("aPaging", $aPaging);
 		
-		$this->tplDisplay("galleries/index.tpl");
+		if(!empty($_GET["category"]) && $this->tplExists("galleries/category-".$_GET["category"]."tpl"))
+			$this->tplDisplay("galleries/category-".$_GET["category"].".tpl");
+		elseif(!empty($_GET["category"]) && $this->tplExists("galleries/category.tpl"))
+			$this->tplDisplay("galleries/category.tpl");
+		else
+			$this->tplDisplay("galleries/index.tpl");
 	}
 	function gallery()
 	{
@@ -49,6 +54,10 @@ class galleries extends appController
 		$aGallery["photos"] = $oGalleries->getPhotos($this->_urlVars->dynamic["id"]);
 		
 		$this->tplAssign("aGallery", $aGallery);
-		$this->tplDisplay("galleries/gallery.tpl");
+	
+		if($this->tplExists("galleries/gallery-".$aGallery["id"].".tpl"))
+			$this->tplDisplay("galleries/gallery-".$aGallery["id"].".tpl");
+		else
+			$this->tplDisplay("galleries/gallery.tpl");
 	}
 }

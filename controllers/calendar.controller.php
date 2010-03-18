@@ -36,7 +36,12 @@ class calendar extends appController
 		$this->tplAssign("aEvents", $aEvents);
 		$this->tplAssign("aPaging", $aPaging);
 		
-		$this->tplDisplay("calendar/index.tpl");
+		if(!empty($_GET["category"]) && $this->tplExists("calendar/category-".$_GET["category"]."tpl"))
+			$this->tplDisplay("calendar/category-".$_GET["category"].".tpl");
+		elseif(!empty($_GET["category"]) && $this->tplExists("calendar/category.tpl"))
+			$this->tplDisplay("calendar/category.tpl");
+		else
+			$this->tplDisplay("calendar/index.tpl");
 	}
 	function ics()
 	{
@@ -60,7 +65,11 @@ class calendar extends appController
 			$this->error('404');
 		
 		$this->tplAssign("aEvent", $aEvent);
-		$this->tplDisplay("calendar/event.tpl");
+		
+		if($this->tplExists("calendar/event-".$aEvent["id"].".tpl"))
+			$this->tplDisplay("calendar/event-".$aEvent["id"].".tpl");
+		else
+			$this->tplDisplay("calendar/event.tpl");
 	}
 	function event_ics()
 	{
