@@ -210,7 +210,7 @@ if(count($aUrlPatterns[$pattern]) > 0)
 	);
 	
 	$oClass = $oApp->loadController($aUrlPatterns[$pattern]["cmd"]);
-	$oClass->$aUrlPatterns[$pattern]["action"]($urlParams, $aUrlPatterns[$pattern]["params"]);
+	$oClass->$aUrlPatterns[$pattern]["action"]();
 }
 /* Complete failure, throw 404 */
 else

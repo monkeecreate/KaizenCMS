@@ -64,7 +64,14 @@ class appController
 	function loadController($sController)
 	{
 		if(!class_exists($sController))
-			require($this->_settings->root."controllers/".str_replace("_","/", $sController).".php");
+		{
+			$sFile = str_replace("_","/", $sController);
+			
+			if(substr($sFile, -1) == "/")
+				$sFile = substr($sFile, 0, -1);
+			
+			require($this->_settings->root."controllers/".$sFile.".php");
+		}
 		
 		$oController = new $sController;
 		
@@ -72,8 +79,10 @@ class appController
 	}
 	function loadModel($sModel)
 	{
-		if(!class_exists($sModel))
+		if(!class_exists($sModel."_model"))
 			require($this->_settings->root."models/".$sModel.".php");
+		
+		$sModel = $sModel."_model";
 		
 		$sModel = new $sModel;
 		

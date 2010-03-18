@@ -1,5 +1,5 @@
 <?php
-class faq extends appModel
+class faq_model extends appModel
 {
 	public $perPage = 5;
 	

@@ -1,5 +1,5 @@
 <?php
-class directory extends appModel
+class directory_model extends appModel
 {
 	public $useImage = true;
 	public $imageFolder = "/uploads/directory/";
