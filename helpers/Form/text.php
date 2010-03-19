@@ -12,12 +12,12 @@ class Form_text extends Form_Field
 	
 	public function html() {
 		$sHTML = $this->getLabel($this->_setting["title"])."\n";
-		$sHTML .= "<input type=\"text\" name=\"".$this->_setting["tag"]."\" value=\"".$this->value()."\"";
+		$sHTML .= "<input type=\"text\" name=\"settings[".$this->_setting["tag"]."]\" value=\"".$this->value()."\"";
 		
 		if(!empty($_options["max"]))
 			$sHTML .= " maxlength=\"".$_options["max"]."\"";
 		
-		$sHTML .= " />\n";
+		$sHTML .= " /><br>\n";
 		
 		return $sHTML;
 	}

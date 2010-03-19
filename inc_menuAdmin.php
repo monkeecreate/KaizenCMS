@@ -246,6 +246,20 @@ $aMenuAdmin = array(
 			)
 		)
 	),
+	"settings" => array(
+		"title" => "Settings",
+		"menu" => array(
+			array(
+				"text" => "Settings",
+				"link" => "/admin/settings/"
+			),
+			array(
+				"text" => "Manage Settings",
+				"link" => "/admin/settings/manage/",
+				"type" => "super"
+			)
+		)
+	),
 	"users" => array(
 		"title" => "Users",
 		"menu" => array(

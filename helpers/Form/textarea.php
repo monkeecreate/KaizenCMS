@@ -5,15 +5,15 @@ class Form_textarea extends Form_Field
 	private $_setting;
 	
 	/* __constructor */
-	public function Form_text($aSetting) {
+	public function Form_textarea($aSetting) {
 		$this->_setting = $aSetting;
 		$this->_options = $this->getOptions($aSetting["type"]);
 	}
 	
 	public function html() {
 		$sHTML = $this->getLabel($this->_setting["title"])."\n";
-		$sHTML .= "<textarea name=\"".$this->_setting["tag"]."\"";
-		$sHTML .= ">".$this->value()."</textarea>\n";
+		$sHTML .= "<textarea name=\"settings[".$this->_setting["tag"]."]\"";
+		$sHTML .= ">".$this->value()."</textarea><br>\n";
 		
 		return $sHTML;
 	}

@@ -102,6 +102,7 @@ class appController
 		if(empty($aSetting))
 			$this->error("getSetting", "Could not find setting", null, debug_backtrace());
 		
+		include($this->_settings->root."helpers/Form.php");
 		$oField = new Form($aSetting);
 		
 		return $oField->setting->value();

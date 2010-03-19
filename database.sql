@@ -317,6 +317,28 @@ CREATE TABLE `promos_positions_assign` (
   KEY `promoid` (`promoid`,`positionid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `settings` (
+  `id` int(11) NOT NULL auto_increment,
+  `group` varchar(100) default NULL,
+  `tag` varchar(50) default NULL,
+  `title` varchar(100) default NULL,
+  `text` longtext,
+  `value` longtext,
+  `type` varchar(50) default NULL,
+  `sortOrder` int(11) default '0',
+  PRIMARY KEY  (`id`),
+  KEY `group` (`group`,`tag`),
+  KEY `sortOrder` (`sortOrder`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+
+INSERT INTO `settings` (`id`, `group`, `tag`, `title`, `text`, `value`, `type`, `sortOrder`) VALUES
+(1, 'SEO', 'keywords', 'Keywords', NULL, '', 'textarea', 3),
+(2, 'SEO', 'description', 'Description', NULL, '', 'textarea', 2),
+(3, 'Analytics', 'analytics_google', 'Google Analytics', NULL, '', 'text', 1),
+(4, 'Analytics', 'analytics_woopra', 'Woopra', NULL, 0, 'bool', 2),
+(5, 'SEO', 'title', 'Site Title', NULL, '', 'text', 1);
+
 CREATE TABLE `testimonials` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) default NULL,
