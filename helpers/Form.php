@@ -3,15 +3,16 @@ class Form
 {
 	public function Form($aSetting) {
 		$sType = preg_replace("/(\[.*)/", "", $aSetting["type"]);
+		$site_root = dirname(__FILE__);
 		
 		if(!class_exists("Form_Field"))
-			include("Form/Form_Field.php");
-			
-		if(!is_file("Form/".$sType.".php"))
+			include($site_root."/Form/Form_Field.php");
+		
+		if(!is_file($site_root."/Form/".$sType.".php"))
 			$sType = "text";
 		
 		if(!class_exists("Form_".$sType))
-			include("Form/".$sType.".php");
+			include($site_root."/Form/".$sType.".php");
 			
 		$sType = "Form_".$sType;
 		
