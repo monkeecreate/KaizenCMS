@@ -24,4 +24,7 @@ class Form_text extends Form_Field
 	public function value() {
 		return htmlspecialchars(stripslashes($this->_setting["value"]));
 	}
+	public function save($value) {
+		return addslashes(trim($value));
+	}
 }

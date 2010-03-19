@@ -12,10 +12,13 @@ class Form_bool extends Form_Field
 	
 	public function html() {
 		$sHTML = $this->getLabel($this->_setting["title"])."\n";
-		$sHTML .= "<input type=\"text\" name=\"settings[".$this->_setting["tag"]."]\" value=\"".$this->value()."\"";
+		$sHTML .= "<input type=\"checkbox\" name=\"settings[".$this->_setting["tag"]."]\" value=\"1\"";
 		
 		if(!empty($_options["max"]))
 			$sHTML .= " maxlength=\"".$_options["max"]."\"";
+		
+		if($this->value() == 1)
+			$sHTML .= " checked=\"checked\"";
 		
 		$sHTML .= " /><br>\n";
 		
@@ -23,5 +26,11 @@ class Form_bool extends Form_Field
 	}
 	public function value() {
 		return htmlspecialchars(stripslashes($this->_setting["value"]));
+	}
+	public function save($value) {
+		if($value == 1)
+			return 1;
+		else
+			return 0;
 	}
 }

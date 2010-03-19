@@ -20,4 +20,7 @@ class Form_textarea extends Form_Field
 	public function value() {
 		return stripslashes($this->_setting["value"]);
 	}
+	public function save($value) {
+		return addslashes(trim($value));
+	}
 }

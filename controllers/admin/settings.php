@@ -32,12 +32,20 @@ class admin_settings extends adminController
 	}
 	function save()
 	{
-		foreach($_POST["settings"] as $sTag => $sValue)
+		$aSettings = $this->dbResults(
+			"SELECT * FROM `settings`"
+				." ORDER BY `group`, `sortOrder`, `title`"
+			,"all"
+		);
+		
+		include($this->_settings->root."helpers/Form.php");
+		foreach($aSettings as $aSetting)
 		{
+			$oField = new Form($aSetting);	
 			$this->dbResults(
 				"UPDATE `settings` SET"
-					." `value` = ".$this->dbQuote($sValue, "text")
-					." WHERE `tag` = ".$this->dbQuote($sTag, "text")
+					." `value` = '".$oField->setting->save($_POST["settings"][$aSetting["tag"]])."'"
+					." WHERE `tag` = ".$this->dbQuote($aSetting["tag"], "text")
 			);
 		}
 		
