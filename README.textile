@@ -21,9 +21,4 @@ Both directories should be writeable.
 h2. Developers
 
 John Hoover, "http://defvayne23.com":http://defvayne23.com
-James Fleeting, "http://paperkilledrock.com":http://paperkilledrock.com
-
-
-h2. License
-
-...
+James Fleeting, "http://jamesfleeting.com":http://jamesfleeting.com
