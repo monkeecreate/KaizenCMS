@@ -30,6 +30,8 @@ class appController
 			,"memcacheSalt" => $aConfig["memcache"]["salt"]
 		);
 		$this->_urlVars = $aURLVars;
+		
+		unset($objDB, $oMemcache, $objMail, $oFirePHP, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl, $aURLVars);
 	}
 	
 	### Functions ####################
@@ -79,6 +81,9 @@ class appController
 	}
 	function loadModel($sModel)
 	{
+		if(!class_exists("appModel"))
+			require($this->_settings->root."appModel.php");
+		
 		if(!class_exists($sModel."_model"))
 			require($this->_settings->root."models/".$sModel.".php");
 		
@@ -162,7 +167,7 @@ class appController
 	function tplExists($template_file)
 	{
 		$template_file = $this->_smarty->template_dir."/".$template_file;
-
+		
 		return is_file($template_file);
 	}
 	function tplAssign($sVariable, $sValue)
@@ -212,7 +217,10 @@ class appController
 		if(PEAR::iserror($oMail))
 			$this->error("Mail - ".$aHeaders["Subject"], $oMail->message);
 		else
+		{
+			unset($oMime, $sBody, $sHeaders, $oMail);
 			return true;
+		}
 	}
 	###################################
 	

@@ -302,10 +302,8 @@ class admin_galleries extends adminController
 	}
 	function photos_add()
 	{
-		$oGalleries = $this->loadModel("galleries");
-		
-		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
-		$this->tplDisplay("galleries/photos/add.tpl");
+		$this->mail("defvayne23@gmail.com", array("To" => "defvayne23@gmail.com", "From" => "john@crane-west.com", "Subject" => "Test"), "test");
+		echo "1";
 	}
 	function photos_add_s()
 	{

@@ -107,6 +107,9 @@ table.dataTable tbody tr td.center {
 table.dataTable tbody tr td.border-end {
 	border-right: 1px solid #8F8F8F;
 }
+table.dataTable tfoot tr td {
+	background: #DCDCDC;
+}
 .jTPS tfoot tr td {
 	border-top: 1px solid #8F8F8F;
 }

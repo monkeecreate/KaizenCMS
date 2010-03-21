@@ -1,4 +1,5 @@
 <?php
+$runtimeStart = microtime(true);
 ini_set("display_errors", 1);
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
@@ -45,7 +46,6 @@ array_pop($aUrl);
 
 ### AUTO CLASSES #############################
 require($site_root."appController.php");
-require($site_root."appModel.php");
 ##############################################
 
 ### MEMCACHE #################################
@@ -140,7 +140,7 @@ if(!$oMemcache->get($sURLid) || $aConfig["options"]["urlcache"] == false || $aCo
 	}
 	
 	if($aConfig["options"]["debug"] == true)
-		$oFirePHP->log($pattern);
+		$oFirePHP->log("URL Pattern: ".$pattern);
 	
 	if($aConfig["options"]["urlcache"] && $aConfig["options"]["debug"] == false)
 		$oMemcache->set($sURLid, $pattern, false, strtotime("+".$aConfig["options"]["urlcache"]." minutes"));
@@ -192,6 +192,7 @@ $oSmarty->register_object("appController", $oApp);
 
 ### INCLUDE CLASS WITH CMD NAME ##############
 /* Check Url Pattern for usable pattern */
+ob_start();
 if(count($aUrlPatterns[$pattern]) > 0)
 {
 	$pattern_tmp = preg_replace("/\{([a-z]+):([^}]+)\}/i", "(?P<$1>$2)", $pattern);
@@ -225,3 +226,23 @@ else
 ##############################################
 
 $objDB->disconnect();
+
+if($aConfig["options"]["debug"] == true) {
+	//Ready extra header info
+	$output = ob_get_contents();
+	ob_end_clean();
+	
+	//Send execution time
+	$runtimeEnd = microtime(true);
+	$oFirePHP->log("Runtime: ".($runtimeEnd - $runtimeStart)." sec");
+	
+	//Get memory usage
+	function convert($size)
+	{
+		$unit=array('b','kb','mb','gb','tb','pb');
+		return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+	}
+	$oFirePHP->log("Memory: ".convert(memory_get_usage()));
+	
+	echo $output;
+}
