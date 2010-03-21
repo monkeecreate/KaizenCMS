@@ -298,11 +298,11 @@ class admin_galleries extends adminController
 				
 		$this->tplAssign("aPhotos", $oGalleries->getPhotos($this->_urlVars->dynamic["gallery"]));
 		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
+		$this->tplAssign("sessionID", session_id());
 		$this->tplDisplay("galleries/photos/index.tpl");
 	}
 	function photos_add()
 	{
-		$this->mail("defvayne23@gmail.com", array("To" => "defvayne23@gmail.com", "From" => "john@crane-west.com", "Subject" => "Test"), "test");
 		echo "1";
 	}
 	function photos_add_s()

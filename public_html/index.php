@@ -1,4 +1,7 @@
 <?php
+if(!empty($_POST["session_name"]))
+	session_id($_POST["session_name"]);
+
 $runtimeStart = microtime(true);
 ini_set("display_errors", 1);
 error_reporting(E_ALL ^ E_NOTICE);

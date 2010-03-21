@@ -36,7 +36,7 @@ $(function() {
 		autoOpen: false,
 		bgiframe: true,
 		modal: true,
-		width: 420,
+		width: 425,
 		resizable: false,
 		buttons: {
 			'Upload Photos': function() {				
@@ -60,9 +60,10 @@ $(function() {
 		'multi': true,
 		'buttonText': 'Add Files for Upload',
 		'displayData': 'speed',
-		'simUploadLimit': 2,
+		'simUploadLimit': 1,
 		'queueID': 'uploadPhotosFilesQueue',
 		'scriptAccess': 'always',
+		'scriptData': {'session_name': '{/literal}{$sessionID}{literal}'},
 		onSelect: function(){
 			files = $('#uploadPhotosFilesCount').text();
 			$('#uploadPhotosFilesCount').text(parseInt(files) + 1);
