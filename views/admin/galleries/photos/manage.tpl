@@ -6,9 +6,9 @@
 		<div style="float:left;margin-right:10px;width:300px;margin-right:10px;">
 			<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=300&height=300" class="image">
 			<label>Title:</label>
-			<input type="text" name="title" maxlength="100" value="{$aPhoto.title|clean_html}" style="width:300px;"><br>
+			<input type="text" name="photo[{$aPhoto.id}][title]" maxlength="100" value="{$aPhoto.title|clean_html}" style="width:300px;"><br>
 			<label>Description:</label>
-			<textarea name="description" style="width:300px;">{$aPhoto.description|clean_html}</textarea>
+			<textarea name="photo[{$aPhoto.id}][description]" style="width:300px;">{$aPhoto.description|clean_html}</textarea>
 		</div>
 	{/foreach}
 	<div class="clear">&nbsp;</div>

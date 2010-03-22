@@ -380,7 +380,17 @@ class admin_galleries extends adminController
 	}
 	function photos_manage_s()
 	{
+		foreach($_POST["photo"] as $id => $aPhoto)
+		{
+			$this->dbResults(
+				"UPDATE `galleries_photos` SET"
+					." `title` = ".$this->dbQuote($aPhoto["title"], "text")
+					.", `description` = ".$this->dbQuote($aPhoto["description"], "text")
+					." WHERE `id` = ".$this->dbQuote($id, "integer")
+			);
+		}
 		
+		$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function photos_sort()
 	{
@@ -426,7 +436,7 @@ class admin_galleries extends adminController
 		$this->dbResults(
 			"UPDATE `galleries_photos` SET"
 				." `title` = ".$this->dbQuote($_POST["title"], "text")
-				.", `description` = ".$this->dbQuote($_POST["title"], "text")
+				.", `description` = ".$this->dbQuote($_POST["description"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		
