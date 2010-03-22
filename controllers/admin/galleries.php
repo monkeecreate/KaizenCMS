@@ -303,18 +303,15 @@ class admin_galleries extends adminController
 	}
 	function photos_add()
 	{
-		echo "1";
-	}
-	function photos_add_s()
-	{
 		if(!empty($_FILES["photo"]["name"]))
 		{
 			if($_FILES["photo"]["error"] == 1)
-				$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/add/?notice=".urlencode("Photo file size was too large!"));
+				die("Error: File too large!");
 			else
 			{
 				$sOrder = $this->dbResults(
 					"SELECT MAX(`sort_order`) + 1 FROM `galleries_photos`"
+						." WHERE `galleryid` = ".$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
 					,"one"
 				);
 		
@@ -354,13 +351,13 @@ class admin_galleries extends adminController
 						"DELETE FROM `galleries_photos`"
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
 					);
-					echo $upload_dir.$upload_file;die;
-					$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/add/?notice=".urlencode("Failed to upload file!"));
+					die("Error: Failed to upload file.");
 				}
+				die("1");
 			}
 		}
-		
-		$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/?notice=".urlencode("Photo added successfully!"));
+		else
+			die("Error: File info not sent");
 	}
 	function photos_sort()
 	{

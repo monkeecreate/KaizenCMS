@@ -58,6 +58,7 @@ $(function() {
 		'folder': 'files',
 		'wmode': 'transparent',
 		'multi': true,
+		'fileDataName': 'photo',
 		'buttonText': 'Add Files for Upload',
 		'displayData': 'speed',
 		'simUploadLimit': 1,
@@ -75,8 +76,8 @@ $(function() {
 		onClearQueue: function(){
 			$('#uploadPhotosFilesCount').text('0');
 		},
-		onError: function(){
-			alert("Error");
+		onError: function(event, queueID, fileObj, errorObj){
+			alert(errorObj.info);
 		},
 		onAllComplete: function(){
 			location.refresh(true);
