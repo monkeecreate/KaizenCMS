@@ -348,6 +348,24 @@ fieldset ul li ul li {
 	float:right;
 }
 
+/* @end */
+
+/* @group: Photo Upload */
+
+#uploadPhotosFilesQueue {
+	height:200px;
+	overflow:auto;
+	background:#FFF;
+	border: 1px solid #8F8F8F;
+}
+#uploadPhotosDialogFooter {
+	background: #DCDCDC;
+	border: 1px solid #8F8F8F;
+	border-top-width: 0;
+	padding: 5px;
+}
+
+/* @end */
 
 /* @group: Form */
 

@@ -51,9 +51,13 @@ $(function() {
 		uploadPhotosDialog.dialog('open');
 		return false;
 	});
+	var images = new Array;
 	$("#uploadPhotosFiles").uploadify({
 		'uploader': '/scripts/jquery/uploadify/uploadify.swf',
-		'cancelImg': '/scripts/jquery/uploadify/cancel.png',
+		'buttonImg': '/images/admin/b_images_upload.jpg',
+		'width': 158,
+		'height': 28,
+		'cancelImg': '/images/admin/icons/delete.png',
 		'script': '/admin/galleries/{/literal}{$aGallery.id}{literal}/photos/add/',
 		'folder': 'files',
 		'wmode': 'transparent',
@@ -79,8 +83,12 @@ $(function() {
 		onError: function(event, queueID, fileObj, errorObj){
 			alert(errorObj.info);
 		},
+		onComplete: function(event, queueID, fileObj, response){
+			images[images.length] = response;
+		},
 		onAllComplete: function(){
-			location.refresh(true);
+			images = images.join(',');
+			window.location.href = '/admin/galleries/{/literal}{$aGallery.id}{literal}/photos/manage/?images='+images;
 		}
 	});
 	$("#uploadPhotosClear").click(function(){
@@ -96,11 +104,15 @@ $(function() {
 		<input type="radio" checked="checked"> = Default photo
 	</div>
 </div>
+
 <h2>{$aGallery.name|stripslashes}</h2>
+
 <form name="sort" class="photo_sort" method="post" action="/admin/galleries/{$aGallery.id}/photos/sort/">
 	<input type="submit" value="Save Sort Changes">
 	<input type="hidden" name="sort" value="">
 </form>
+
+<!--### IMAGE UPLOAD ###-->
 <div id="uploadPhotosBtn" style="margin-bottom:10px;">
 	<a href="#" id="dialogbtn" class="btn ui-button ui-corner-all ui-state-default">
 		<span class="icon ui-icon ui-icon-circle-plus"></span> Upload Photos
@@ -108,27 +120,17 @@ $(function() {
 </div>
 <div id="uploadPhotos" style="display:none;" title="Upload Photos">
 	<input id="uploadPhotosFiles" name="fileInput4" type="file" />
-	<table id="uploadFiles" class="dataTable" border="0" cellpadding="0" cellspacing="0" style="width:400px;">
-		<thead>
-			<tr>
-				<td>
-					<div id="uploadPhotosFilesQueue" style="width:100%;height:200px;overflow:auto;background:#FFF;"></div>
-				</td>
-			</tr>
-		</thead>
-		<tfoot>
-			<tr>
-				<td>
-					<div class="float-right">
-						<a href="#" id="uploadPhotosClear">Clear</a>
-					</div>
-					<span id="uploadPhotosFilesCount">0</span> Files
-				</td>
-			</tR>
-		</tfoot>
-	</table>	
+	<div id="uploadPhotosFilesQueue"></div>
+	<div id="uploadPhotosDialogFooter">
+		<div class="float-right">
+			<a href="#" id="uploadPhotosClear">Clear</a>
+		</div>
+		<span id="uploadPhotosFilesCount">0</span> Files
+	</div>
 </div>
+<!--### IMAGE UPLOAD ###-->
 <div class="clear">&nbsp;</div>
+
 <div id="photos">
 	{foreach from=$aPhotos item=aPhoto}
 		<div id="photo_{$aPhoto.id}" class="photo">
@@ -150,7 +152,7 @@ $(function() {
 				<a href="/admin/galleries/{$aGallery.id}/photos/edit/{$aPhoto.id}/"><img src="/images/admin/icons/pencil.png"></a>
 				<a href="/admin/galleries/{$aGallery.id}/photos/delete/{$aPhoto.id}/"
 					onclick="return confirm_('Are you sure you would like to remove this photo?');">
-					<img src="/images/admin/icons/bin_closed.png"></a>
+				<img src="/images/admin/icons/bin_closed.png"></a>
 			</div>
 		</div>
 	{foreachelse}
@@ -158,6 +160,7 @@ $(function() {
 	{/foreach}
 </div>
 <div class="clear"></div>
+
 <form name="sort" class="photo_sort" style="margin-bottom:10px;" method="post" action="/admin/galleries/{$aGallery.id}/photos/sort/">
 	<input type="submit" value="Save Sort Changes">
 	<input type="hidden" name="sort" value="">

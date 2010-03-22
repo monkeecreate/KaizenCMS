@@ -353,11 +353,34 @@ class admin_galleries extends adminController
 					);
 					die("Error: Failed to upload file.");
 				}
-				die("1");
+				echo $sID;
 			}
 		}
 		else
 			die("Error: File info not sent");
+	}
+	function photos_manage()
+	{
+		$oGalleries = $this->loadModel("galleries");
+		
+		if(!empty($_GET["images"]))
+			$images = " AND `id` IN (".$_GET["images"].")";
+		
+		$aPhotos = $this->dbResults(
+			"SELECT * FROM `galleries_photos`"
+				." WHERE `galleryid` = ".$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
+				.$images
+				." ORDER BY `sort_order`"
+			,"all"
+		);
+		
+		$this->tplAssign("aPhotos", $aPhotos);
+		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
+		$this->tplDisplay("galleries/photos/manage.tpl");
+	}
+	function photos_manage_s()
+	{
+		
 	}
 	function photos_sort()
 	{
