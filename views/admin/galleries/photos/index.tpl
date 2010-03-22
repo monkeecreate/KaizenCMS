@@ -128,6 +128,11 @@ $(function() {
 		<span id="uploadPhotosFilesCount">0</span> Files
 	</div>
 </div>
+<div style="float:left;margin-bottom:10px;">
+	<a href="/admin/galleries/{$aGallery.id}/photos/manage/" class="btn ui-button ui-corner-all ui-state-default ui-priority-secondary">
+		Manage All Photos
+	</a>
+</div>
 <!--### IMAGE UPLOAD ###-->
 <div class="clear">&nbsp;</div>
 
