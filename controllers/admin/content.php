@@ -152,7 +152,6 @@ class admin_content extends adminController
 		
 		if($this->superAdmin)
 		{
-			
 			if(!empty($_POST["tag"]))
 				$sTag = $_POST["tag"];
 			else
