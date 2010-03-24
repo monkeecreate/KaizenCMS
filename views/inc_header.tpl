@@ -24,18 +24,18 @@
 
 		<nav>
 			<ul>
-				<li><a href="/"{currentMenu var="home"}>Home</a></li>
-				<li><a href="/news/"{currentMenu var="news"}>News</a></li>
-				<li><a href="/calendar/"{currentMenu var="calendar"}>Calendar</a></li>
-				<li><a href="/events/"{currentMenu var="events"}>Events</a></li>
-				<li><a href="/faq/"{currentMenu var="faq"}>FAQ</a></li>
-				<li><a href="/links/"{currentMenu var="links"}>Links</a></li>
-				<li><a href="/documents/"{currentMenu var="documents"}>Documents</a></li>
-				<li><a href="/testimonials/"{currentMenu var="testimonials"}>Testimonials</a></li>
-				<li><a href="/galleries/"{currentMenu var="galleries"}>Photo Gallery</a></li>
-				<li><a href="/directory/"{currentMenu var="directory"}>Directory</a></li>
-				<li><a href="/social/"{currentMenu var="social"}>Social</a></li>
-				<li><a href="/test-content/"{currentMenu var="test-content"}>Test Menu</a></li>
+				<li><a href="/" class="{currentMenu var="home"}">Home</a></li>
+				<li><a href="/news/" class="{currentMenu var="news"}">News</a></li>
+				<li><a href="/calendar/" class="{currentMenu var="calendar"}">Calendar</a></li>
+				<li><a href="/events/" class="{currentMenu var="events"}">Events</a></li>
+				<li><a href="/faq/" class="{currentMenu var="faq"}">FAQ</a></li>
+				<li><a href="/links/" class="{currentMenu var="links"}">Links</a></li>
+				<li><a href="/documents/" class="{currentMenu var="documents"}">Documents</a></li>
+				<li><a href="/testimonials/" class="{currentMenu var="testimonials"}">Testimonials</a></li>
+				<li><a href="/galleries/" class="{currentMenu var="galleries"}">Photo Gallery</a></li>
+				<li><a href="/directory/" class="{currentMenu var="directory"}">Directory</a></li>
+				<li><a href="/social/" class="{currentMenu var="social"}">Social</a></li>
+				<li><a href="/test-content/" class="{currentMenu var="test-content"}">Test Menu</a></li>
 			</ul>
 		</nav>
 	</header>
