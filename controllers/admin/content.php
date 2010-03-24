@@ -38,7 +38,10 @@ class admin_content extends adminController
 			$this->forward("/admin/content/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,30);
+		if($this->superAdmin && !empty($_POST["tag"]))
+			$sTag = $_POST["tag"];
+		else
+			$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,30);
 		
 		$aPages = $this->dbResults(
 			"SELECT `tag` FROM `content`"
@@ -77,7 +80,7 @@ class admin_content extends adminController
 		{
 			$this->dbResults(
 				"UPDATE `content` SET"
-					." `tag` = ".$this->dbQuote($_POST["tag"], "text")
+					." `tag` = ".$this->dbQuote($sTag, "text")
 					.", `perminate` = ".$this->boolCheck($_POST["perminate"])
 					.", `module` = ".$this->boolCheck($_POST["module"])
 					.", `template` = ".$this->dbQuote($_POST["template"], "text")
@@ -149,9 +152,15 @@ class admin_content extends adminController
 		
 		if($this->superAdmin)
 		{
+			
+			if(!empty($_POST["tag"]))
+				$sTag = $_POST["tag"];
+			else
+				$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,30);
+			
 			$this->dbResults(
 				"UPDATE `content` SET"
-					." `tag` = ".$this->dbQuote($_POST["tag"], "text")
+					." `tag` = ".$this->dbQuote($sTag, "text")
 					.", `perminate` = ".$this->boolCheck($_POST["perminate"])
 					.", `module` = ".$this->boolCheck($_POST["module"])
 					.", `template` = ".$this->dbQuote($_POST["template"], "text")
