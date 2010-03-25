@@ -381,7 +381,7 @@ CREATE TABLE `users` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-INSERT INTO `users` VALUES(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Admin', 'User', 0, 0, 0, 0);
+INSERT INTO `users` VALUES(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Admin', 'User', 'admin@domain.com', 0, 0, 0, 0);
 
 CREATE TABLE `users_privlages` (
   `userid` int(11) NOT NULL,
