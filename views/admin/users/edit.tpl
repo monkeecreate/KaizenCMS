@@ -4,6 +4,8 @@
 	<input type="text" name="username" maxlength="100" value="{$aUser.username|stripslashes}"><br>
 	<label>Password: (New password)</label>
 	<input type="text" name="password" maxlength="100"><br>
+	<label>*Email:</label>
+	<input type="text" name="email_address" maxlength="100" value="{$aUser.email_address|stripslashes}"><br>
 	<label>First Name:</label>
 	<input type="text" name="fname" maxlength="100" value="{$aUser.fname|stripslashes}"><br>
 	<label>Last Name:</label>

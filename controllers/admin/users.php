@@ -45,21 +45,28 @@ class admin_users extends adminController
 	}
 	function add_s()
 	{
-		if(empty($_POST["username"]) || empty($_POST["password"]))
+		if(empty($_POST["username"]) || empty($_POST["password"]) || empty($_POST["email_address"]))
 		{
 			$_SESSION["admin"]["admin_users"] = $_POST;
 			$this->forward("/admin/users/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		if(!filter_var($_POST["email_address"], FILTER_VALIDATE_EMAIL))
+		{
+			$_SESSION["admin"]["admin_users"] = $_POST;
+			$this->forward("/admin/users/add/?error=".urlencode("Please enter a valid email address."));
+		}
+		
 		$sID = $this->dbResults(
 			"INSERT INTO `users`"
-				." (`username`, `password`, `fname`, `lname`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
+				." (`username`, `password`, `fname`, `lname`, `email_address`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->dbQuote($_POST["username"], "text")
 					.", ".$this->dbQuote(md5($_POST["password"]), "text")
 					.", ".$this->dbQuote($_POST["fname"], "text")
 					.", ".$this->dbQuote($_POST["lname"], "text")
+					.", ".$this->dbQuote($_POST["email_address"], "text")
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 					.", ".$this->dbQuote(time(), "integer")
@@ -137,10 +144,16 @@ class admin_users extends adminController
 	}
 	function edit_s()
 	{
-		if(empty($_POST["username"]))
+		if(empty($_POST["username"]) || empty($_POST["email_address"]))
 		{
 			$_SESSION["admin"]["admin_users"] = $_POST;
 			$this->forward("/admin/users/edit/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		if(!filter_var($_POST["email_address"], FILTER_VALIDATE_EMAIL))
+		{
+			$_SESSION["admin"]["admin_users"] = $_POST;
+			$this->forward("/admin/users/edit/?error=".urlencode("Please enter a valid email address."));
 		}
 		
 		$aRes = $this->dbResults(
@@ -148,6 +161,7 @@ class admin_users extends adminController
 				." `username` = ".$this->dbQuote($_POST["username"], "text")
 				.", `fname` = ".$this->dbQuote($_POST["fname"], "text")
 				.", `lname` = ".$this->dbQuote($_POST["lname"], "text")
+				.", `email_address` = ".$this->dbQuote($_POST["email_address"], "text")
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")

@@ -373,6 +373,7 @@ CREATE TABLE `users` (
   `password` varchar(100) NOT NULL,
   `fname` varchar(100) default NULL,
   `lname` varchar(100) default NULL,
+  `email_address` varchar(100) NOT NULL,
   `created_datetime` int(11) NOT NULL default '0',
   `created_by` int(11) NOT NULL default '0',
   `updated_datetime` int(11) NOT NULL default '0',
