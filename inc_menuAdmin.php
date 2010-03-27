@@ -28,7 +28,7 @@ $aMenuAdmin = array(
 			),
 			array(
 				"text" => "Add Category",
-				"link" => "/admin/news/categories/add/",
+				"link" => "/admin/news/categories/?addcategory=1",
 				"icon" => "circle-plus"
 			),
 			array(

@@ -186,16 +186,11 @@ class admin_documents extends adminController
 			$this->forward("/admin/documents/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		if(!empty($_POST["active"]))
-			$active = 1;
-		else
-			$active = 0;
-		
 		$this->dbResults(
 			"UPDATE `documents` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				.", `description` = ".$this->dbQuote($_POST["description"], "text")
-				.", `active` = ".$this->dbQuote($active, "integer")
+				.", `active` = ".$this->boolCheck($_POST["active"], "integer")
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -278,11 +273,7 @@ class admin_documents extends adminController
 	{
 		$oDocument = $this->loadModel("documents");
 		
-		$aDocument = $this->dbResults(
-			"SELECT * FROM `documents`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"row"
-		);
+		$aDocument = $oDocument->getDocument($this->_urlVars->dynamic["id"], "integer"));
 		
 		@unlink($this->_settings->rootPublic.substr($oDocument->documentFolder, 1).$aDocument["document"]);
 		
