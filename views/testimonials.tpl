@@ -4,7 +4,7 @@
 
 	<section id="content" class="content column">
 
-		<h2>{$aContent.title|stripslashes}</h2>
+		<h2>{$aContent.title|clean_html}</h2>
 		<p id="testiContent">
 			{$aContent.content|stripslashes}
 		</p>

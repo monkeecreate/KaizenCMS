@@ -4,6 +4,8 @@
 	<input type="text" name="username" maxlength="100" value="{$aUser.username}"><br>
 	<label>*Password:</label>
 	<input type="text" name="password" maxlength="100" value="{$aUser.password}"><br>
+	<label>*Email:</label>
+	<input type="text" name="email_address" maxlength="100" value="{$aUser.email_address}"><br>
 	<label>First Name:</label>
 	<input type="text" name="fname" maxlength="100" value="{$aUser.fname}"><br>
 	<label>Last Name:</label>

@@ -107,6 +107,10 @@ class adminController extends appController
 		
 		$this->forward("/admin/");
 	}
+	function password_reset()
+	{
+		
+	}
 	function isloggedin()
 	{
 		$secretKey = md5($_SERVER["SERVER_NAME"]);

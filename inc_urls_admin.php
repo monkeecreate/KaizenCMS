@@ -31,6 +31,10 @@ $aUrlPatterns = array(
 	"/admin/logout/" => array(
         "cmd" => "adminController",
         "action" => "logout"
+    ),
+	"/admin/password-reset/" => array(
+        "cmd" => "adminController",
+        "action" => "password_reset"
     )
 );
 
