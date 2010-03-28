@@ -55,7 +55,7 @@ $aConfig["mail"]["params"] = array(); //mail
 	//"port" => "25",
 	"auth" => true,
 	"username" => "",
-	"password" => "")
+	"password" => ""
 ); //smtp */
 ###############################################
 

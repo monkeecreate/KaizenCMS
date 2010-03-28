@@ -209,8 +209,8 @@ CREATE TABLE `galleries_categories_assign` (
 CREATE TABLE `galleries_photos` (
   `id` int(11) NOT NULL auto_increment,
   `galleryid` int(11) NOT NULL,
-  `photo` varchar(100) NOT NULL,
-  `title` varchar(20) NOT NULL,
+  `photo` varchar(100) default NULL,
+  `title` varchar(20) NULL,
   `description` longtext,
   `gallery_default` tinyint(1) NOT NULL default '0',
   `sort_order` int(11) NOT NULL default '1',
