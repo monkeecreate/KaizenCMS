@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title=$aContent.name|clean_html menu=$aContent.tag}
+{include file="inc_header.tpl" page_title=$aContent.title|clean_html menu=$aContent.tag}
 
 	<section id="content" class="content column">
 
