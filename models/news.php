@@ -78,8 +78,8 @@ class news_model extends appModel
 		{		
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `news_categories`"
-				." ORDER BY `name`"
-			,"all"
+					." ORDER BY `name`"
+				,"all"
 			);
 		}
 		else {
