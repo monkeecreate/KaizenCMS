@@ -11,6 +11,7 @@
 	<label>Last Name:</label>
 	<input type="text" name="lname" maxlength="100" value="{$aUser.lname|stripslashes}"><br>
 	<div class="clear"></div>
+	{if $aUser.id != 1}
 	<fieldset id="fieldset_categories">
 		<p class="selectOptions">Select: <a href="#" class="checkAll">All</a>, <a href="#" class="uncheckAll">None</a></p>
 		<legend>Privileges:</legend>
@@ -24,6 +25,7 @@
 			{/foreach}
 		</ul>
 	</fieldset><br />
+	{/if}
 	<input type="submit" value="Save Changes"> <input type="button" value="Cancel" onclick="location.href = '/admin/users/';">
 	<input type="hidden" name="id" value="{$aUser.id}">
 </form>
