@@ -3,7 +3,6 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="title" content="Kaizen CMS | Content Management System Made Awesome!">
 	<meta name="description" content="{getSetting tag="description"}">
 	<meta name="keywords" content="{getSetting tag="keywords"}">
 	<meta name="robots" content="index, follow">
@@ -15,7 +14,7 @@
 	<script type="text/javascript" src="/scripts/jquery/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery/jquery.scrollTo-min.js"></script>
 	<script type="text/javascript" src="/scripts/common.js"></script>
-	<!--[if IE]><script type="text/javascript" src="scripts/html5.js"></script><![endif]-->
+	<!--[if IE]><script type="text/javascript" src="/scripts/html5.js"></script><![endif]-->
 </head>
 <body>
 <div id="wrapper">

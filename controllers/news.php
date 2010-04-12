@@ -31,7 +31,7 @@ class news extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tplAssign("aCategories", $oNews->getCategories());
+		$this->tplAssign("aCategories", $oNews->getCategories(false));
 		$this->tplAssign("aArticles", $aArticles);
 		$this->tplAssign("aPaging", $aPaging);
 		

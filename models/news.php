@@ -72,13 +72,26 @@ class news_model extends appModel
 			
 		return $aArticle;
 	}
-	function getCategories()
+	function getCategories($sEmpty = true)
 	{
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `news_categories`"
+		if($sEmpty == true)
+		{		
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `news_categories`"
 				." ORDER BY `name`"
 			,"all"
-		);
+			);
+		}
+		else {
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `news_categories_assign`"
+					." GROUP BY `categoryid`"
+				,"all"
+			);
+			
+			foreach($aCategories as $x => $aCategory)
+				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+		}
 		
 		return $aCategories;
 	}
@@ -94,8 +107,7 @@ class news_model extends appModel
 		$aCategory = $this->dbResults(
 			"SELECT * FROM `news_categories`"
 				.$sWhere
-				." LIMIT 1"
-			,"all"
+			,"row"
 		);
 		
 		return $aCategory;
