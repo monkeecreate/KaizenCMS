@@ -298,25 +298,20 @@ class admin_galleries extends adminController
 				
 		$this->tplAssign("aPhotos", $oGalleries->getPhotos($this->_urlVars->dynamic["gallery"]));
 		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
+		$this->tplAssign("sessionID", session_id());
 		$this->tplDisplay("galleries/photos/index.tpl");
 	}
 	function photos_add()
 	{
-		$oGalleries = $this->loadModel("galleries");
-		
-		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
-		$this->tplDisplay("galleries/photos/add.tpl");
-	}
-	function photos_add_s()
-	{
 		if(!empty($_FILES["photo"]["name"]))
 		{
 			if($_FILES["photo"]["error"] == 1)
-				$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/add/?notice=".urlencode("Photo file size was too large!"));
+				die("Error: File too large!");
 			else
 			{
 				$sOrder = $this->dbResults(
 					"SELECT MAX(`sort_order`) + 1 FROM `galleries_photos`"
+						." WHERE `galleryid` = ".$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
 					,"one"
 				);
 		
@@ -356,13 +351,46 @@ class admin_galleries extends adminController
 						"DELETE FROM `galleries_photos`"
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
 					);
-					echo $upload_dir.$upload_file;die;
-					$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/add/?notice=".urlencode("Failed to upload file!"));
+					die("Error: Failed to upload file.");
 				}
+				echo $sID;
 			}
 		}
+		else
+			die("Error: File info not sent");
+	}
+	function photos_manage()
+	{
+		$oGalleries = $this->loadModel("galleries");
 		
-		$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/?notice=".urlencode("Photo added successfully!"));
+		if(!empty($_GET["images"]))
+			$images = " AND `id` IN (".$_GET["images"].")";
+		
+		$aPhotos = $this->dbResults(
+			"SELECT * FROM `galleries_photos`"
+				." WHERE `galleryid` = ".$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
+				.$images
+				." ORDER BY `sort_order`"
+			,"all"
+		);
+		
+		$this->tplAssign("aPhotos", $aPhotos);
+		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
+		$this->tplDisplay("galleries/photos/manage.tpl");
+	}
+	function photos_manage_s()
+	{
+		foreach($_POST["photo"] as $id => $aPhoto)
+		{
+			$this->dbResults(
+				"UPDATE `galleries_photos` SET"
+					." `title` = ".$this->dbQuote($aPhoto["title"], "text")
+					.", `description` = ".$this->dbQuote($aPhoto["description"], "text")
+					." WHERE `id` = ".$this->dbQuote($id, "integer")
+			);
+		}
+		
+		$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function photos_sort()
 	{
@@ -408,7 +436,7 @@ class admin_galleries extends adminController
 		$this->dbResults(
 			"UPDATE `galleries_photos` SET"
 				." `title` = ".$this->dbQuote($_POST["title"], "text")
-				.", `description` = ".$this->dbQuote($_POST["title"], "text")
+				.", `description` = ".$this->dbQuote($_POST["description"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		

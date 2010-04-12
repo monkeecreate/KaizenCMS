@@ -52,9 +52,13 @@ $aUrlPatterns_import = array(
         "cmd" => "admin_galleries",
         "action" => "photos_add"
     ),
-	"/admin/galleries/{gallery:[0-9]+}/photos/add/s/" => array(
+	"/admin/galleries/{gallery:[0-9]+}/photos/manage/" => array(
         "cmd" => "admin_galleries",
-        "action" => "photos_add_s"
+        "action" => "photos_manage"
+    ),
+	"/admin/galleries/{gallery:[0-9]+}/photos/manage/s/" => array(
+        "cmd" => "admin_galleries",
+        "action" => "photos_manage_s"
     ),
 	"/admin/galleries/{gallery:[0-9]+}/photos/sort/" => array(
         "cmd" => "admin_galleries",

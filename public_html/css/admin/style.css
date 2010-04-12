@@ -107,6 +107,9 @@ table.dataTable tbody tr td.center {
 table.dataTable tbody tr td.border-end {
 	border-right: 1px solid #8F8F8F;
 }
+table.dataTable tfoot tr td {
+	background: #DCDCDC;
+}
 .jTPS tfoot tr td {
 	border-top: 1px solid #8F8F8F;
 }
@@ -345,6 +348,24 @@ fieldset ul li ul li {
 	float:right;
 }
 
+/* @end */
+
+/* @group: Photo Upload */
+
+#uploadPhotosFilesQueue {
+	height:200px;
+	overflow:auto;
+	background:#FFF;
+	border: 1px solid #8F8F8F;
+}
+#uploadPhotosDialogFooter {
+	background: #DCDCDC;
+	border: 1px solid #8F8F8F;
+	border-top-width: 0;
+	padding: 5px;
+}
+
+/* @end */
 
 /* @group: Form */
 

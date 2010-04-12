@@ -25,7 +25,6 @@ class galleries_model extends appModel
 				"SELECT `photo` FROM `galleries_photos`"
 					." WHERE `galleryid` = ".$aGallery["id"]
 					." AND `gallery_default` = 1"
-				,"model->galleries->getGalleries->gallery_default_photo"
 				,"one"
 			);
 			
