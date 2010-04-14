@@ -3,7 +3,7 @@ function smarty_function_getNewsArticle($aParams, &$oSmarty)
 {
 	$oApp = $oSmarty->get_registered_object("appController");
 	
-	$oNews = $this->loadModel("news");
+	$oNews = $oApp->loadModel("news");
 	
 	$aArticle = $oNews->getArticle($aParams["id"]);
 	
