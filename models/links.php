@@ -43,14 +43,44 @@ class links_model extends appModel
 		
 		return $aLink;
 	}
-	function getCategories()
+	function getCategories($sEmpty = true)
 	{
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `links_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
+		if($sEmpty == true)
+		{		
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `links_categories`"
+					." ORDER BY `name`"
+				,"all"
+			);
+		}
+		else {
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `links_categories_assign`"
+					." GROUP BY `categoryid`"
+				,"all"
+			);
+			
+			foreach($aCategories as $x => $aCategory)
+				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+		}
 		
 		return $aCategories;
+	}
+	function getCategory($sId = null, $sName = null)
+	{
+		if(!empty($sId))
+			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
+		elseif(!empty($sName))
+			$sWhere = " WHERE `name` LIKE ".$this->dbQuote($sName, "text");
+		else
+			return false;
+		
+		$aCategory = $this->dbResults(
+			"SELECT * FROM `links_categories`"
+				.$sWhere
+			,"row"
+		);
+		
+		return $aCategory;
 	}
 }
