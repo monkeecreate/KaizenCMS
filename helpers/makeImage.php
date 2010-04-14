@@ -63,6 +63,32 @@ class makeImage
 		else
 			return false;
 	}
+	public function cropCenter($sWidth, $sHeight)
+	{
+		if($this->_width < $this->_height) {
+			$sPhotoX1 = 0;
+			$sPhotoY1 = ($this->_height - $sHeight) / 2;
+		} else {
+			$sPhotoX1 = ($this->_width - $sWidth) / 2;
+			$sPhotoY1 = 0;
+		}
+		
+		// Load end canvas for cropping
+		$oImage = imagecreatetruecolor($sWidth, $sHeight);
+		imagefill($oImage, 0, 0, imagecolorallocate($oImage, 255, 255, 255));
+		
+		// Crop image onto canvas
+		imagecopyresized($oImage, $this->_image, 0, 0, $sPhotoX1, $sPhotoY1, $this->_width, $this->_height, $this->_width, $this->_height);
+		
+		// Save info
+		$this->_image = $oImage;
+		$this->_width = imageSX($this->_image);
+		$this->_height = imageSY($this->_image);
+		
+		unset($oImage);
+		
+		return true;
+	}
 	public function resize($sWidth, $sHeight, $sKeep = false)
 	{
 		if(!empty($this->_info) && !empty($this->_image))
@@ -76,14 +102,14 @@ class makeImage
 					$sNewWidth = $this->_width;
 					$sNewHeight = $this->_height;
 				}
-				elseif($this->_width > $this->_height)
-				{
-					$sNewWidth = $sWidth;
-					$sNewHeight = $this->_height * ($sHeight / $this->_width);
-				}
 				elseif($this->_width < $this->_height)
 				{
-					$sNewWidth = $this->_width * ($sWidth / $this->_height);
+					$sNewWidth = $sWidth;
+					$sNewHeight = $this->_height * ($sWidth / $this->_width);
+				}
+				elseif($this->_width > $this->_height)
+				{
+					$sNewWidth = $this->_width * ($sHeight / $this->_height);
 					$sNewHeight = $sHeight;
 				}
 				elseif($this->_width == $this->_height)
