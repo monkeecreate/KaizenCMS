@@ -2,23 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
 	<title>{if !empty($page_title)}{$page_title} - {/if}Site Admin</title>
+	
 	<link rel="stylesheet" href="/css/admin/generic.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="/css/admin/style.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
-	<link type="text/css" href="/scripts/jquery-ui/themes/crane-west/crane-west.css" rel="stylesheet" />
-	<script type="text/javascript" src="/scripts/jquery/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="/scripts/jquery-ui/ui.core.js"></script>
-	<script type="text/javascript" src="/scripts/jquery-ui/ui.accordion.js"></script>
-	<script type="text/javascript" src="/scripts/jquery-ui/ui.datepicker.js"></script>
-	<script type="text/javascript" src="/scripts/jquery-ui/ui.dialog.js"></script>
-	<script type="text/javascript" src="/scripts/jquery-ui/ui.draggable.js"></script>
-	<script type="text/javascript" src="/scripts/jquery-ui/ui.resizable.js"></script>
-	<script type="text/javascript" src="/scripts/jquery-ui/ui.slider.js"></script>
-	<script type="text/javascript" src="/scripts/jquery-ui/effects.core.js"></script>	
-	<script type="text/javascript" src="/scripts/jquery-ui/effects.shake.js"></script>
-	<script type="text/javascript" src="/scripts/jquery/qtip/jquery.qtip-1.0.0-rc3.js"></script>
-	<script type="text/javascript" src="/scripts/admin_common.js"></script>
+	<link type="text/css" href="/scripts/ui-themes/crane-west/crane-west.css" rel="stylesheet" />
+	
+	<script type="text/javascript" src="/scripts/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="/scripts/jquery-ui-1.8.custom.min.js"></script>
+	<script type="text/javascript" src="/scripts/jTPS/jquery.qtip-1.0.0-rc3.js"></script>
+	<script type="text/javascript" src="/scripts/common_admin.js"></script>
 </head>
 <body>
 <div id="site-container">

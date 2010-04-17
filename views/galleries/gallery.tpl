@@ -1,13 +1,11 @@
 {include file="inc_header.tpl" page_title=$aGallery.name|clean_html menu="galleries"}
 
 {head}
-<link rel="stylesheet" href="/scripts/jquery/prettyphoto/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
-<script src="/scripts/jquery/prettyphoto/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+<link type="text/css" media="screen" rel="stylesheet" href="/scripts/colorbox/themes/3/colorbox.css" />
+<script src="/scripts/colorbox/jquery.colorbox-min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function(){ldelim}
-	$("a[rel^='prettyPhoto']").prettyPhoto({ldelim}
-		theme: 'dark_rounded'
-	{rdelim});
+	$("a[rel^='prettyPhoto']").colorbox();
 {rdelim});
 </script>
 {/head}

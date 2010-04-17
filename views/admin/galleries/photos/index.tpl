@@ -1,10 +1,9 @@
 {include file="inc_header.tpl" page_title="Gallery :: Photos" menu="galleries"}
 {head}
-<link rel="stylesheet" href="/scripts/jquery/uploadify/uploadify.css" type="text/css" />
+<link rel="stylesheet" href="/scripts/uploadify/uploadify.css" type="text/css" />
 <link rel="stylesheet" href="/css/admin/uploadify.css" type="text/css" />
-<script type="text/javascript" src="/scripts/jquery-ui/ui.sortable.js"></script>
-<script type="text/javascript" src="/scripts/jquery/uploadify/jquery.uploadify.v2.1.0.min.js"></script>
-<script type="text/javascript" src="/scripts/jquery/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="/scripts/uploadify/jquery.uploadify.v2.1.0.min.js"></script>
+<script type="text/javascript" src="/scripts/uploadify/swfobject.js"></script>
 <script type="text/javascript">
 {literal}
 $(function() {
@@ -53,7 +52,7 @@ $(function() {
 	});
 	var images = new Array;
 	$("#uploadPhotosFiles").uploadify({
-		'uploader': '/scripts/jquery/uploadify/uploadify.swf',
+		'uploader': '/scripts/uploadify/uploadify.swf',
 		'buttonImg': '/images/admin/b_images_upload.jpg',
 		'width': 158,
 		'height': 28,

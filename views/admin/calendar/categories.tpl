@@ -1,7 +1,7 @@
 {include file="inc_header.tpl" page_title="Calendar Categories" menu="calendar"}
 {head}
-<script language="JavaScript" type="text/javascript" src="/scripts/jquery/jTPS/jTPS.js"></script>
-<link rel="stylesheet" type="text/css" href="/scripts/jquery/jTPS/jTPS.css">
+<script language="JavaScript" type="text/javascript" src="/scripts/jTPS/jTPS.js"></script>
+<link rel="stylesheet" type="text/css" href="/scripts/jTPS/jTPS.css">
 <script type="text/javascript">
 	$(function(){ldelim}
 		$('.dataTable').jTPS({ldelim}

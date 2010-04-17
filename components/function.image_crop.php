@@ -3,11 +3,9 @@ function smarty_function_image_crop($aParams, &$oSmarty)
 {
 	if($aParams["load"] == "cropper")
 	{
-		$html = "<script src=\"/scripts/jquery/jcrop/jquery.Jcrop.min.js\"></script>\n";
-		$html .= "<link rel=\"stylesheet\" href=\"/scripts/jquery/jcrop/jquery.Jcrop.css\" type=\"text/css\" />\n";
+		$html = "<script src=\"/scripts/jcrop/jquery.Jcrop.min.js\"></script>\n";
+		$html .= "<link rel=\"stylesheet\" href=\"/scripts/jcrop/jquery.Jcrop.css\" type=\"text/css\" />\n";
 		$html .= "<script language=\"Javascript\">\n";
-		$html .= "// Remember to invoke within jQuery(window).load(...)\n";
-		$html .= "// If you don't, Jcrop may not initialize properly\n";
 		$html .= "$(document).ready(function(){\n";
 		$html .= "	$('#".$aParams["img"]."').Jcrop({\n";
 		$html .= "		onChange: showCoords,\n";
