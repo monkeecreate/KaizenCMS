@@ -10,7 +10,8 @@
 	<title>{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="title"}</title>
 	
 	<link href="/css/generic.css" rel="stylesheet" type="text/css" />
-	<link href="/css/style.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<link href="/css/style.css" media="screen, projection, print" rel="stylesheet" type="text/css" />
+	<link href="/css/print.css" media="print" rel="stylesheet" type="text/css" />
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
 	
 	<script type="text/javascript" src="/scripts/jquery-1.4.2.min.js"></script>
