@@ -5,7 +5,9 @@
 <script src="/scripts/colorbox/jquery.colorbox-min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function(){ldelim}
-	$("a[rel^='prettyPhoto']").colorbox();
+	$("a[rel^='prettyPhoto']").colorbox({ldelim}
+		photo: true
+	{rdelim});
 {rdelim});
 </script>
 {/head}
