@@ -1,7 +1,7 @@
 {include file="inc_header.tpl" page_title="FAQ" menu="faq"}
 {head}
-<script language="JavaScript" type="text/javascript" src="/scripts/jquery/jTPS/jTPS.js"></script>
-<link rel="stylesheet" type="text/css" href="/scripts/jquery/jTPS/jTPS.css">
+<script language="JavaScript" type="text/javascript" src="/scripts/jTPS/jTPS.js"></script>
+<link rel="stylesheet" type="text/css" href="/scripts/jTPS/jTPS.css">
 <script type="text/javascript">
 	$(function(){ldelim}
 		$('.dataTable').jTPS({ldelim}
@@ -44,12 +44,12 @@
 				<td>{$aQuestion.question|clean_html|substr:0:80}{if strlen($aQuestion.question) > 80}...{/if}</td>
 				{if empty($sCategory)}
 					<td class="small center">
-						{if $aQuestion.sort_order != 1}
+						{if $aQuestion.sort_order != $minSort}
 							<a href="/admin/faq/sort/{$aQuestion.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png"></a>
 						{else}
 							<img src="/images/blank.gif" style="width:16px;height:16px;">
 						{/if}
-						{if $aQuestion.sort_order != $maxsort && count($aQuestions) > 1}
+						{if $aQuestion.sort_order != $maxSort && count($aQuestions) > 1}
 							<a href="/admin/faq/sort/{$aQuestion.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png"></a>
 						{else}
 							<img src="/images/blank.gif" style="width:16px;height:16px;">

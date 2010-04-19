@@ -16,6 +16,10 @@ class admin_faq extends adminController
 		// Clear saved form info
 		$_SESSION["admin"]["admin_faq"] = null;
 		
+		$sMinSort = $this->dbResults(
+			"SELECT MIN(`sort_order`) FROM `faq`"
+			,"one"
+		);
 		$sMaxSort = $this->dbResults(
 			"SELECT MAX(`sort_order`) FROM `faq`"
 			,"one"
@@ -24,7 +28,8 @@ class admin_faq extends adminController
 		$this->tplAssign("aCategories", $oQuestions->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
 		$this->tplAssign("aQuestions", $oQuestions->getQuestions($_GET["category"]));
-		$this->tplAssign("maxsort", $sMaxSort);
+		$this->tplAssign("minSort", $sMinSort);
+		$this->tplAssign("maxSort", $sMaxSort);
 		$this->tplDisplay("faq/index.tpl");
 	}
 	function add()
