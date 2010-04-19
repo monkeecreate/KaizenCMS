@@ -56,7 +56,7 @@
 			{/foreach}
 		</ul>
 	</fieldset><br />
-	<input type="submit" value="Add Listing"> <input type="button" value="Cancel" onclick="location.href = '/admin/directory/';">
+	<input type="submit" value="Add Listing" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/directory/';" class="btn ui-button ui-corner-all ui-state-default">
 </form>
 <script type="text/javascript">
 {literal}

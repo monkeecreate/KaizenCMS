@@ -32,6 +32,11 @@ h2 {
 #fieldset_categories a:hover {
 	text-decoration: underline;
 }
+
+a.cancelAnchor:link, a.cancelAnchor:active, a.cancelAnchor:visited {
+	color: #cc0000;
+	vertical-align: baseline;
+}
 /* END TEMP */
 
 /* @group Regular Table */
@@ -168,6 +173,7 @@ fieldset ul li ul li {
 }
 .clear {
 	clear:both;
+	height: 0;
 }
 .clear-right {
 	clear: right;

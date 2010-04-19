@@ -30,7 +30,7 @@
 			{/foreach}
 		</ul>
 	</fieldset><br />
-	<input type="submit" value="Save Changes"> <input type="button" value="Cancel" onclick="location.href = '/admin/faq/';">
+	<input type="submit" value="Save Changes" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/faq/';" class="btn ui-button ui-corner-all ui-state-default">
 	<input type="hidden" name="id" value="{$aQuestion.id}">
 </form>
 <script type="text/javascript">

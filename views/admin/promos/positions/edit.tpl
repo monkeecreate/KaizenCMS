@@ -9,7 +9,7 @@
 	<label>Height: (pixels)</label>
 	<input type="text" class="xsmall" name="promo_height" maxlength="100" value="{$aPosition.promo_height}"><br>
 
-	<input type="submit" value="Save Changes"> <input type="button" value="Cancel" onclick="location.href = '/admin/promos/positions/';">
+	<input type="submit" value="Save Changes" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/promos/positions/';" class="btn ui-button ui-corner-all ui-state-default">
 	<input type="hidden" name="id" value="{$aPosition.id}">
 </form>
 <script type="text/javascript">

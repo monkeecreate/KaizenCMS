@@ -10,7 +10,7 @@
 	<input type="text" name="fname" maxlength="100" value="{$aUser.fname}"><br>
 	<label>Last Name:</label>
 	<input type="text" name="lname" maxlength="100" value="{$aUser.lname}"><br>
-	<div class="clear"></div>
+	<div class="clear">&nbsp;</div>
 	<fieldset id="fieldset_categories">
 		<p class="selectOptions">Select: <a href="#" class="checkAll">All</a>, <a href="#" class="uncheckAll">None</a></p>
 		<legend>Privileges:</legend>
@@ -23,7 +23,8 @@
 				</li>
 			{/foreach}
 		</ul>
-	</fieldset><br />
-	<input type="submit" value="Add User"> <input type="button" value="Cancel" onclick="location.href = '/admin/users/';">
+		<div class="clear">&nbsp;</div>
+	</fieldset>
+	<input type="submit" value="Add User" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/users/';" class="btn ui-button ui-corner-all ui-state-default">
 </form>
 {include file="inc_footer.tpl"}

@@ -79,7 +79,7 @@
 			{/foreach}
 		</ul>
 	</fieldset><br />
-	<input type="submit" name="next" value="Add Event"> {if $sUseImage == true}<input type="submit" name="next" value="Add Event & Add Image"> {/if}<input type="button" value="Cancel" onclick="location.href = '/admin/calendar/';">
+	<input type="submit" name="next" value="Add Event" class="btn ui-button ui-corner-all ui-state-default"> {if $sUseImage == true}<input type="submit" name="next" value="Add Event & Add Image" class="btn ui-button ui-corner-all ui-state-default"> {/if}<input type="button" value="Cancel" onclick="location.href = '/admin/calendar/';" class="btn ui-button ui-corner-all ui-state-default">
 </form>
 <script type="text/javascript">
 {literal}

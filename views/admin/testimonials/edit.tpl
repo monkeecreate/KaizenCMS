@@ -40,7 +40,7 @@
 			{/foreach}
 		</ul>
 	</fieldset><br />
-	<input type="submit" value="Save Changes"> <input type="button" value="Cancel" onclick="location.href = '/admin/testimonials/';">
+	<input type="submit" value="Save" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/testimonials/';" class="btn ui-button ui-corner-all ui-state-default">
 	<input type="hidden" name="id" value="{$aTestimonial.id}">
 </form>
 <script type="text/javascript">

@@ -25,7 +25,7 @@
 			{/foreach}
 		</ul>
 	</fieldset><br />
-	<input type="submit" value="Add Question"> <input type="button" value="Cancel" onclick="location.href = '/admin/faq/';">
+	<input type="submit" value="Add Question" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/faq/';" class="btn ui-button ui-corner-all ui-state-default">
 </form>
 <script type="text/javascript">
 {literal}

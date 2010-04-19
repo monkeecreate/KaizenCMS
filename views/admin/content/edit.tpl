@@ -32,7 +32,7 @@
 		</select><br><br>
 	{/if}
 	
-	<input type="submit" value="Save Changes"> <input type="button" value="Cancel" onclick="location.href = '/admin/content/';">
+	<input type="submit" value="Save Changes" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/content/';" class="btn ui-button ui-corner-all ui-state-default">
 </form>
 
 <script type="text/javascript">

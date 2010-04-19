@@ -18,7 +18,7 @@
 	<input type="text" name="type" maxlength="100" value="{$aSetting.type|clean_html}"><br>
 	<label>Order:</label>
 	<input type="text" name="sortorder" maxlength="100" value="{$aSetting.sortorder}" style="width: 50px"><br>
-	<input type="submit" name="next" value="Add Setting"> <input type="button" value="Cancel" onclick="location.href = '/admin/settings/manage/';">
+	<input type="submit" name="next" value="Add Setting" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/settings/manage/';" class="btn ui-button ui-corner-all ui-state-default">
 </form>
 <script type="text/javascript">
 {literal}

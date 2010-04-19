@@ -79,7 +79,7 @@
 			{/foreach}
 		</ul>
 	</fieldset><br />
-	<input type="submit" name="next" value="Add Event"> <input type="submit" name="next" value="Add Event & Add Image"> <input type="button" value="Cancel" onclick="location.href = '/admin/news/';">
+	<input type="submit" name="next" value="Add Event" class="btn ui-button ui-corner-all ui-state-default"> <input type="submit" name="next" value="Add Event & Add Image"> <input type="button" value="Cancel" onclick="location.href = '/admin/news/';" class="btn ui-button ui-corner-all ui-state-default">
 </form>
 <script type="text/javascript">
 {literal}
