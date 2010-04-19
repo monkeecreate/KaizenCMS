@@ -1,7 +1,8 @@
 {include file="inc_header.tpl" page_title="Links" menu="links"}
 
 	<section id="content" class="content column">
-
+		
+		{if !empty($aCategories)}
 		<form name="category" method="get" action="/links/" class="sortCat">
 			Category: 
 			<select name="category">
@@ -18,6 +19,7 @@
 			{rdelim});
 			</script>
 		</form>
+		{/if}
 
 		<h2>Links</h2>
 		<div class="clear">&nbsp;</div>

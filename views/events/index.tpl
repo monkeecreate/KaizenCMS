@@ -2,6 +2,7 @@
 
 	<section id="content" class="content column">
 
+		{if !empty($aCategories)}
 		<form name="category" method="get" action="/events/" class="sortCat">
 			Category: 
 			<select name="category">
@@ -18,6 +19,7 @@
 			{rdelim});
 			</script>
 		</form>
+		{/if}
 
 		<h2>Events</h2>
 		<div class="clear">&nbsp;</div>

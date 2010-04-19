@@ -5,7 +5,8 @@
 {/head}
 
 	<section id="content" class="content column">
-
+		
+		{if !empty($aCategories)}
 		<form name="category" method="get" action="/news/" class="sortCat">
 			Category:
 			<select name="category">
@@ -22,6 +23,7 @@
 			{rdelim});
 			</script>
 		</form>
+		{/if}
 
 		<h2>News</h2>
 		<div class="clear">&nbsp;</div>
