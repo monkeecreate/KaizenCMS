@@ -215,7 +215,7 @@ $(document).ready(function() {
 });
 
 /**
- * Forse 1 checkbox
+ * Force 1 checkbox
  *
  * Traverse given element for atleast 1
  * checkbox that is checked.

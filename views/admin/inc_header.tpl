@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	
-	<title>{if !empty($page_title)}{$page_title} - {/if}Site Admin</title>
+	<title>{if !empty($page_title)}{$page_title} - {/if}{getSetting tag="title"} Admin</title>
 	
 	<link rel="stylesheet" href="/css/admin/generic.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="/css/admin/style.css" type="text/css" media="screen" title="no title" charset="utf-8">
@@ -25,7 +25,7 @@
 				&nbsp;
 			{/if}
 		</div>
-		<h1>Site Admin</h1>
+		<h1>{getSetting tag="title"} Admin</h1>
 	</div>
 	<div id="content-container">
 		<div id="menu">
