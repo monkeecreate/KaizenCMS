@@ -32,7 +32,7 @@ class calendar extends appController
 		#########################
 
 		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
-		$this->tplAssign("aCategories", $oCalendar->getCategories());
+		$this->tplAssign("aCategories", $oCalendar->getCategories(false));
 		$this->tplAssign("aEvents", $aEvents);
 		$this->tplAssign("aPaging", $aPaging);
 		

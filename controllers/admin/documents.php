@@ -273,7 +273,7 @@ class admin_documents extends adminController
 	{
 		$oDocument = $this->loadModel("documents");
 		
-		$aDocument = $oDocument->getDocument($this->_urlVars->dynamic["id"], "integer"));
+		$aDocument = $oDocument->getDocument($this->_urlVars->dynamic["id"], "integer");
 		
 		@unlink($this->_settings->rootPublic.substr($oDocument->documentFolder, 1).$aDocument["document"]);
 		

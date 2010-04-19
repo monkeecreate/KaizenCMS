@@ -31,7 +31,7 @@ class events extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tplAssign("aCategories", $oEvents->getCategories());
+		$this->tplAssign("aCategories", $oEvents->getCategories(false));
 		$this->tplAssign("aEvents", $aEvents);
 		$this->tplAssign("aPaging", $aPaging);
 		

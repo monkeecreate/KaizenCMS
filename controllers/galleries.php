@@ -31,7 +31,7 @@ class galleries extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tplAssign("aCategories", $oGalleries->getCategories());
+		$this->tplAssign("aCategories", $oGalleries->getCategories(false));
 		$this->tplAssign("aGalleries", $aGalleries);
 		$this->tplAssign("aPaging", $aPaging);
 		

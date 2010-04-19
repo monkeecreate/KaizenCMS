@@ -31,7 +31,7 @@ class faq extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tplAssign("aCategories", $oFAQ->getCategories());
+		$this->tplAssign("aCategories", $oFAQ->getCategories(false));
 		$this->tplAssign("aQuestions", $aQuestions);
 		$this->tplAssign("aPaging", $aPaging);
 		

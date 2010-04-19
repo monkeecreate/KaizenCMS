@@ -53,13 +53,27 @@ class documents_model extends appModel
 		
 		return $aDocument;
 	}
-	function getCategories()
-	{
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `documents_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
+	function getCategories($sEmpty = true)
+	{		
+		if($sEmpty == true)
+		{		
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `documents_categories`"
+					." ORDER BY `name`"
+				,"all"
+			);
+		}
+		else
+		{
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `documents_categories_assign`"
+					." GROUP BY `categoryid`"
+				,"all"
+			);
+			
+			foreach($aCategories as $x => $aCategory)
+				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+		}
 		
 		return $aCategories;
 	}
@@ -75,8 +89,7 @@ class documents_model extends appModel
 		$aCategory = $this->dbResults(
 			"SELECT * FROM `documents_categories`"
 				.$sWhere
-				." LIMIT 1"
-			,"all"
+			,"row"
 		);
 		
 		return $aCategory;

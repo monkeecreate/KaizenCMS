@@ -82,7 +82,8 @@ class news_model extends appModel
 				,"all"
 			);
 		}
-		else {
+		else
+		{
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `news_categories_assign`"
 					." GROUP BY `categoryid`"

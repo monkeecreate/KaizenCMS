@@ -84,13 +84,27 @@ class events_model extends appModel
 		
 		return $aEvent;
 	}
-	function getCategories()
+	function getCategories($sEmpty = true)
 	{
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `events_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
+		if($sEmpty == true)
+		{		
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `events_categories`"
+					." ORDER BY `name`"
+				,"all"
+			);
+		}
+		else
+		{
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `events_categories_assign`"
+					." GROUP BY `categoryid`"
+				,"all"
+			);
+			
+			foreach($aCategories as $x => $aCategory)
+				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+		}
 		
 		return $aCategories;
 	}
@@ -106,8 +120,7 @@ class events_model extends appModel
 		$aCategory = $this->dbResults(
 			"SELECT * FROM `events_categories`"
 				.$sWhere
-				." LIMIT 1"
-			,"all"
+			,"row"
 		);
 		
 		return $aCategory;

@@ -31,7 +31,7 @@ class directory_ extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 		
-		$this->tplAssign("aCategories", $oDirectory->getCategories());
+		$this->tplAssign("aCategories", $oDirectory->getCategories(false));
 		$this->tplAssign("aListings", $aListings);
 		$this->tplAssign("aPaging", $aPaging);
 		$this->tplDisplay("directory.tpl");

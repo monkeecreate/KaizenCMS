@@ -50,14 +50,45 @@ class directory_model extends appModel
 			
 		return $aListing;
 	}
-	function getCategories()
-	{
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `directory_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
+	function getCategories($sEmpty = true)
+	{		
+		if($sEmpty == true)
+		{		
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `directory_categories`"
+					." ORDER BY `name`"
+				,"all"
+			);
+		}
+		else
+		{
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `directory_categories_assign`"
+					." GROUP BY `categoryid`"
+				,"all"
+			);
+			
+			foreach($aCategories as $x => $aCategory)
+				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+		}
 		
 		return $aCategories;
+	}
+	function getCategory($sId = null, $sName = null)
+	{
+		if(!empty($sId))
+			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
+		elseif(!empty($sName))
+			$sWhere = " WHERE `name` LIKE ".$this->dbQuote($sName, "text");
+		else
+			return false;
+		
+		$aCategory = $this->dbResults(
+			"SELECT * FROM `directory_categories`"
+				.$sWhere
+			,"row"
+		);
+		
+		return $aCategory;
 	}
 }

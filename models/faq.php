@@ -43,14 +43,45 @@ class faq_model extends appModel
 		
 		return $aQuestion;
 	}
-	function getCategories()
+	function getCategories($sEmpty = true)
 	{
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `faq_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
+		if($sEmpty == true)
+		{		
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `faq_categories`"
+					." ORDER BY `name`"
+				,"all"
+			);
+		}
+		else
+		{
+			$aCategories = $this->dbResults(
+				"SELECT * FROM `faq_categories_assign`"
+					." GROUP BY `categoryid`"
+				,"all"
+			);
+			
+			foreach($aCategories as $x => $aCategory)
+				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+		}
 		
 		return $aCategories;
+	}
+	function getCategory($sId = null, $sName = null)
+	{
+		if(!empty($sId))
+			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
+		elseif(!empty($sName))
+			$sWhere = " WHERE `name` LIKE ".$this->dbQuote($sName, "text");
+		else
+			return false;
+		
+		$aCategory = $this->dbResults(
+			"SELECT * FROM `faq_categories`"
+				.$sWhere
+			,"row"
+		);
+		
+		return $aCategory;
 	}
 }

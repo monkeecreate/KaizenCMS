@@ -53,7 +53,8 @@ class links_model extends appModel
 				,"all"
 			);
 		}
-		else {
+		else
+		{
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `links_categories_assign`"
 					." GROUP BY `categoryid`"
