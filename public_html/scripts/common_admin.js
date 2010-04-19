@@ -55,7 +55,7 @@ $(document).ready(function() {
 	});
 	
 	/**
-	 * ADd Category Dialog
+	 * Add Category Dialog
 	 *
 	 * Change add category form into dialog.
 	 * Unify ok and submit events.

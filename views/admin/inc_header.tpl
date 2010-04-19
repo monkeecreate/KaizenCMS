@@ -12,7 +12,7 @@
 	
 	<script type="text/javascript" src="/scripts/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui-1.8.custom.min.js"></script>
-	<script type="text/javascript" src="/scripts/jTPS/jquery.qtip-1.0.0-rc3.js"></script>
+	<script type="text/javascript" src="/scripts/jquery.qtip-1.0.0-rc3.min.js"></script>
 	<script type="text/javascript" src="/scripts/common_admin.js"></script>
 </head>
 <body>
