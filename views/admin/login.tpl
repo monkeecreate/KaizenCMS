@@ -11,6 +11,6 @@
 	<input type="text" class="text" name="username" maxlength="100"><br>
 	<label>Password:</label>
 	<input type="password" class="text" name="password" maxlength="100"><br>
-	<input type="submit" value="Login" class="btn ui-button ui-corner-all ui-state-default">
+	<input type="submit" value="Login">
 </form>
 {include file="inc_footer.tpl"}

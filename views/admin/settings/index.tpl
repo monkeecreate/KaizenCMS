@@ -17,7 +17,7 @@
 		</fieldset>
 	{/if}
 	<br />
-	<input type="submit" value="Save Changes" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/settings/';" class="btn ui-button ui-corner-all ui-state-default">
+	<input type="submit" value="Save Changes"> <input type="button" value="Cancel" onclick="location.href = '/admin/settings/';">
 </form>
 <script type="text/javascript">
 {literal}

@@ -26,7 +26,7 @@
 		</ul>
 	</fieldset><br />
 	{/if}
-	<input type="submit" value="Save" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/users/';" class="btn ui-button ui-corner-all ui-state-default">
+	<input type="submit" value="Save Changes"> <input type="button" value="Cancel" onclick="location.href = '/admin/users/';">
 	<input type="hidden" name="id" value="{$aUser.id}">
 </form>
 {include file="inc_footer.tpl"}

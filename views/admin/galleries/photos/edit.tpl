@@ -6,7 +6,7 @@
 	<input type="text" name="title" maxlength="100" value="{$aPhoto.title|clean_html}"><br>
 	<label>Description:</label>
 	<textarea name="description" class="elastic">{$aPhoto.description|clean_html}</textarea><br>
-	<input type="submit" value="Save Changes" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/galleries/{$aGallery.id}/photos/';" class="btn ui-button ui-corner-all ui-state-default">
+	<input type="submit" value="Save Changes"> <input type="button" value="Cancel" onclick="location.href = '/admin/galleries/{$aGallery.id}/photos/';">
 	<input type="hidden" name="id" value="{$aPhoto.id}">
 </form>
 {include file="inc_footer.tpl"}

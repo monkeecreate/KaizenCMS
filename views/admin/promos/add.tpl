@@ -65,7 +65,7 @@
 			</tbody>
 		</table>
 	</fieldset><br />
-	<input type="submit" value="Add Promo" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/promos/';" class="btn ui-button ui-corner-all ui-state-default">
+	<input type="submit" value="Add Promo"> <input type="button" value="Cancel" onclick="location.href = '/admin/promos/';">
 </form>
 <script type="text/javascript">
 {literal}

@@ -23,7 +23,7 @@
 					<img src="{$sFolder}{$aArticle.id}.jpg?{$randnum}" id="preview" />
 				</div>
 				<input type="hidden" name="id" value="{$aArticle.id}" />
-				<input type="submit" value="Save Changes" class="btn ui-button ui-corner-all ui-state-default"> - <input type="button" value="Upload new photo" onclick="location.href = '/admin/news/image/{$aArticle.id}/upload/';" /> - <input type="button" value="Remove Photo" onclick="location.href = '/admin/news/image/{$aArticle.id}/delete/';" / class="btn ui-button ui-corner-all ui-state-default">
+				<input type="submit" value="Save Changes"> - <input type="button" value="Upload new photo" onclick="location.href = '/admin/news/image/{$aArticle.id}/upload/';" /> - <input type="button" value="Remove Photo" onclick="location.href = '/admin/news/image/{$aArticle.id}/delete/';" />
 			</td>
 		</tr>
 	</table>

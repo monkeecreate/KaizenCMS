@@ -13,7 +13,7 @@
 <form name="upload" action="/admin/news/image/upload/s/" method="post" enctype="multipart/form-data">
 	<label>Choose File:</label>
 	<input type="file" name="image" /><br />
-	<input type="submit" value="Upload File" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="history.back(-1);" class="btn ui-button ui-corner-all ui-state-default">
+	<input type="submit" value="Upload File" /> <input type="button" value="Cancel" onclick="history.back(-1);" />
 	<input type="hidden" name="id" value="{$aArticle.id}">
 </form>
 {include file="inc_footer.tpl"}

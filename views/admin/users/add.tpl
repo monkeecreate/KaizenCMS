@@ -23,8 +23,7 @@
 				</li>
 			{/foreach}
 		</ul>
-		<div class="clear">&nbsp;</div>
 	</fieldset>
-	<input type="submit" value="Add User" class="btn ui-button ui-corner-all ui-state-default"> <input type="button" value="Cancel" onclick="location.href = '/admin/users/';" class="btn ui-button ui-corner-all ui-state-default">
+	<input type="submit" value="Add User"> <input type="button" value="Cancel" onclick="location.href = '/admin/users/';">
 </form>
 {include file="inc_footer.tpl"}

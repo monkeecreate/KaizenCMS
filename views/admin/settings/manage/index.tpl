@@ -16,7 +16,6 @@
 		<span class="icon ui-icon ui-icon-circle-plus"></span> Add Setting
 	</a>
 </div>
-<div class="clear">&nbsp;</div>
 <table class="dataTable">
 	<thead>
 		<tr>

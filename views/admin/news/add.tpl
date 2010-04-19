@@ -58,7 +58,7 @@
 			{/foreach}
 		</ul>
 	</fieldset><br />
-	<input type="submit" name="next" value="Add Article" class="btn ui-button ui-corner-all ui-state-default"> {if $sUseImage == true}<input type="submit" name="next" value="Add Article & Add Image" class="btn ui-button ui-corner-all ui-state-default"> {/if}<input type="button" value="Cancel" onclick="location.href = '/admin/news/';" class="btn ui-button ui-corner-all ui-state-default">
+	<input type="submit" name="next" value="Add Article"> {if $sUseImage == true}<input type="submit" name="next" value="Add Article & Add Image"> {/if}<input type="button" value="Cancel" onclick="location.href = '/admin/news/';">
 </form>
 <script type="text/javascript">
 {literal}
