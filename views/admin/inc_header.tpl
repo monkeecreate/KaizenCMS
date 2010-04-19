@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="/css/admin/generic.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="/css/admin/style.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
-	<link type="text/css" href="/scripts/ui-themes/crane-west/crane-west.css" rel="stylesheet" />
+	<link type="text/css" href="/scripts/ui-themes/smoothness/jquery-ui-1.8.custom.css" rel="stylesheet" />
 	
 	<script type="text/javascript" src="/scripts/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui-1.8.custom.min.js"></script>
