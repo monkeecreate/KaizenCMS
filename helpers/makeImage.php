@@ -18,7 +18,7 @@ class makeImage
 		// Die if cached
 		if($this->_cache == true)
 		{
-			$aHeaders = getallheaders();
+			$aHeaders = apache_request_headers();
 			if (isset($aHeaders['If-Modified-Since'])
 			 && !empty($aHeaders['If-Modified-Since'])
 			 && $aHeaders["If-Modified-Since"] == gmdate("D, d M Y H:i:s", filemtime($sFile))." GMT") {
