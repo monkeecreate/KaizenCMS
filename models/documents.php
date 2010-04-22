@@ -39,6 +39,11 @@ class documents_model extends appModel
 				." AND `documents`.`active` = 1"
 			,"row"
 		);
+		
+		if(!empty($aDocument))
+			$aDocument = $this->getDocumentInfo($aDocument);
+		
+		return $aDocument;
 	}
 	function getDocumentInfo($aDocument)
 	{
