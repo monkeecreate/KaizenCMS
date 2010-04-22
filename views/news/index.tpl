@@ -6,7 +6,7 @@
 
 	<section id="content" class="content column">
 		
-		{if !empty($aCategories)}
+		{if $aCategories|@count gt 1}
 		<form name="category" method="get" action="/news/" class="sortCat">
 			Category:
 			<select name="category">
