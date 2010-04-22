@@ -182,6 +182,8 @@ $(document).ready(function() {
 	 *
 	 * Apply default styles to elements
 	 */
+	$('form input:submit').addClass('btn ui-button ui-corner-all ui-state-default');
+	$('form input:button').addClass('btn ui-button ui-corner-all ui-state-default');
 	$('form input:text').addClass('text ui-widget-content ui-corner-all');
 	$('form input:password').addClass('text ui-widget-content ui-corner-all');
 	$('form input:checkbox').addClass('checkbox ui-widget-content ui-corner-all');
@@ -213,7 +215,7 @@ $(document).ready(function() {
 });
 
 /**
- * Forse 1 checkbox
+ * Force 1 checkbox
  *
  * Traverse given element for atleast 1
  * checkbox that is checked.

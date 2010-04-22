@@ -1,14 +1,14 @@
 <?php
 function smarty_function_colorPicker($aParams, &$oSmarty)
 {
-	$html = "<link rel=\"stylesheet\" media=\"screen\" type=\"text/css\" href=\"/scripts/jquery-colorpicker/css/colorpicker.css\" />\n";
-	$html .= "<script type=\"text/javascript\" src=\"/scripts/jquery-colorpicker/colorpicker.js\"></script>\n";
+	$html = "<link rel=\"stylesheet\" media=\"screen\" type=\"text/css\" href=\"/scripts/colorpicker/css/colorpicker.css\" />\n";
+	$html .= "<script type=\"text/javascript\" src=\"/scripts/colorpicker/colorpicker.js\"></script>\n";
 	$html .= "<style type=\"text/css\">\n";
 	$html .= ".colorSelector {\n";
 	$html .= "	position: relative;\n";
 	$html .= "	width: 36px;\n";
 	$html .= "	height: 36px;\n";
-	$html .= "	background: url('/scripts/jquery-colorpicker/images/select.png');\n";
+	$html .= "	background: url('/scripts/colorpicker/images/select.png');\n";
 	$html .= "}\n";
 	$html .= ".colorSelector div {\n";
 	$html .= "	position: absolute;\n";
@@ -16,7 +16,7 @@ function smarty_function_colorPicker($aParams, &$oSmarty)
 	$html .= "	left: 3px;\n";
 	$html .= "	width: 30px;\n";
 	$html .= "	height: 30px;\n";
-	$html .= "	background: url('/scripts/jquery-colorpicker/images/select.png') center;\n";
+	$html .= "	background: url('/scripts/colorpicker/images/select.png') center;\n";
 	$html .= "}\n";
 	$html .= "</style>\n";
 	$html .= "<div class=\"colorSelector\"><div id=\"selector-".$aParams["name"]."\" style=\"background-color:".$aParams["color"].";\"></div></div>\n";

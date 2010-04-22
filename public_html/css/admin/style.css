@@ -168,6 +168,7 @@ fieldset ul li ul li {
 }
 .clear {
 	clear:both;
+	height: 0;
 }
 .clear-right {
 	clear: right;
