@@ -3,7 +3,7 @@ class documents extends appController
 {
 	function __construct() {
 		// Load model when creating appController
-		parent::__construct("document");
+		parent::__construct("documents");
 	}
 	
 	function index() {
