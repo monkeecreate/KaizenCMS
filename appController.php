@@ -75,9 +75,12 @@ class appController
 		if(!class_exists("appModel"))
 			require($this->_settings->root."appModel.php");
 		
-		if(!class_exists($sModel."_model"))
-			require($this->_settings->root."models/".$sModel.".php");
-		
+		if(!class_exists($sModel."_model")) {
+			if(is_file($this->_settings->root."models/".$sModel.".php"))
+				require($this->_settings->root."models/".$sModel.".php");
+			else
+				return false;
+		}
 		$sModel = $sModel."_model";
 		
 		$sModel = new $sModel;
