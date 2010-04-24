@@ -1,8 +1,7 @@
 <?php
 class directory_ extends appController
 {
-	function index()
-	{
+	function index() {
 		$oDirectory = $this->loadModel('directory');
 		
 		## GET CURRENT PAGE NEWS

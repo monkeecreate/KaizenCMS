@@ -1,6 +1,5 @@
 <?php
-function smarty_function_getPromo($aParams, &$oSmarty)
-{
+function smarty_function_getPromo($aParams, &$oSmarty) {
 	$oApp = $oSmarty->get_registered_object("appController");
 	$aDisplayedPromos = $oSmarty->get_template_vars("aDisplayedPromos");
 	
@@ -10,8 +9,7 @@ function smarty_function_getPromo($aParams, &$oSmarty)
 	$oPromo = $oApp->loadModel("promos");
 	$aPromo = $oPromo->getPromo($aParams["tag"], null, implode(",", $aDisplayedPromos));
 	
-	if(!empty($aPromo))
-	{
+	if(!empty($aPromo)) {
 		$aDisplayedPromos[] = $aPromo["id"];
 		$oSmarty->assign("aDisplayedPromos", $aDisplayedPromos);
 		

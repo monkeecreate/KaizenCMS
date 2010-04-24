@@ -1,8 +1,7 @@
 <?php
 class faq extends appController
 {
-	function index()
-	{
+	function index() {
 		$oFAQ = $this->loadModel("faq");
 		
 		## GET CURRENT PAGE QUESTIONS

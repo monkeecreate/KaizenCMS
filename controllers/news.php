@@ -1,8 +1,7 @@
 <?php
 class news extends appController
 {
-	function index()
-	{
+	function index() {
 		$oNews = $this->loadModel("news");
 		
 		## GET CURRENT PAGE NEWS
@@ -42,8 +41,7 @@ class news extends appController
 		else
 			$this->tplDisplay("news/index.tpl");
 	}
-	function rss()
-	{
+	function rss() {
 		$oNews = $this->loadModel("news");
 		
 		$aArticles = array_slice($oNews->getArticles($_GET["category"]), 0, 15);
@@ -54,8 +52,7 @@ class news extends appController
 		header("Content-Type: application/rss+xml");
 		$this->tplDisplay("news/rss.tpl");
 	}
-	function article()
-	{
+	function article() {
 		$oNews = $this->loadModel("news");
 		
 		$aArticle = $oNews->getArticle($this->_urlVars->dynamic["id"]);

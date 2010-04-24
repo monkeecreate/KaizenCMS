@@ -1,16 +1,14 @@
 <?php
 class admin_settings extends adminController
 {
-	function admin_news()
-	{
+	function admin_news() {
 		parent::adminController();
 		
 		$this->menuPermission("settings");
 	}
 	
 	### DISPLAY ######################
-	function index()
-	{
+	function index() {
 		$aSettingsFull = $this->dbResults(
 			"SELECT * FROM `settings`"
 				." ORDER BY `group`, `sortOrder`, `title`"
@@ -19,8 +17,7 @@ class admin_settings extends adminController
 		
 		$aSettings = array();
 		include($this->_settings->root."helpers/Form.php");
-		foreach($aSettingsFull as $aSetting)
-		{
+		foreach($aSettingsFull as $aSetting) {
 			$oField = new Form($aSetting);
 			
 			$aSettings[$aSetting["group"]][]["html"] = $oField->setting->html();
@@ -30,8 +27,7 @@ class admin_settings extends adminController
 		$this->tplAssign("curGroup", "");
 		$this->tplDisplay("settings/index.tpl");
 	}
-	function save()
-	{
+	function save() {
 		$aSettings = $this->dbResults(
 			"SELECT * FROM `settings`"
 				." ORDER BY `group`, `sortOrder`, `title`"
@@ -39,8 +35,7 @@ class admin_settings extends adminController
 		);
 		
 		include($this->_settings->root."helpers/Form.php");
-		foreach($aSettings as $aSetting)
-		{
+		foreach($aSettings as $aSetting) {
 			$oField = new Form($aSetting);	
 			$this->dbResults(
 				"UPDATE `settings` SET"
@@ -51,8 +46,7 @@ class admin_settings extends adminController
 		
 		$this->forward("/admin/settings/?notice=".urlencode("Settings saved successfully!"));
 	}
-	function manageIndex()
-	{
+	function manageIndex() {
 		// Clear saved form info
 		$_SESSION["admin"]["admin_settings"] = null;
 		
@@ -65,17 +59,14 @@ class admin_settings extends adminController
 		$this->tplAssign("aSettings", $aSettings);
 		$this->tplDisplay("settings/manage/index.tpl");
 	}
-	function manageAdd()
-	{
+	function manageAdd() {
 		if(!empty($_SESSION["admin"]["admin_settings"]))
 			$this->tplAssign("aSetting", $_SESSION["admin"]["admin_settings"]);
 		
 		$this->tplDisplay("settings/manage/add.tpl");
 	}
-	function manageAdd_s()
-	{
-		if(empty($_POST["tag"]) || empty($_POST["title"]))
-		{
+	function manageAdd_s() {
+		if(empty($_POST["tag"]) || empty($_POST["title"])) {
 			$_SESSION["admin"]["admin_settings"] = $_POST;
 			$this->forward("/admin/settings/manage/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -99,16 +90,12 @@ class admin_settings extends adminController
 		
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting created successfully!"));
 	}
-	function manageEdit()
-	{
-		if(!empty($_SESSION["admin"]["admin_settings"]))
-		{
+	function manageEdit() {
+		if(!empty($_SESSION["admin"]["admin_settings"])) {
 			$aSetting = $_SESSION["admin"]["admin_settings"];
 			
 			$this->tplAssign("aSetting", $aSetting);
-		}
-		else
-		{
+		} else {
 			$aSetting = $this->dbResults(
 				"SELECT * FROM `settings`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -120,10 +107,8 @@ class admin_settings extends adminController
 		
 		$this->tplDisplay("settings/manage/edit.tpl");
 	}
-	function manageEdit_s()
-	{
-		if(empty($_POST["tag"]) || empty($_POST["title"]))
-		{
+	function manageEdit_s() {
+		if(empty($_POST["tag"]) || empty($_POST["title"])) {
 			$_SESSION["admin"]["admin_settings"] = $_POST;
 			$this->forward("/admin/settings/manage/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -142,8 +127,7 @@ class admin_settings extends adminController
 		
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function manageDelete()
-	{
+	function manageDelete() {
 		$this->dbResults(
 			"DELETE FROM `settings`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")

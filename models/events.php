@@ -7,13 +7,11 @@ class events_model extends appModel
 	public $imageFolder = "/uploads/events/";
 	public $perPage = 5;
 	
-	function getEvents($sCategory, $sAll = false)
-	{
+	function getEvents($sCategory, $sAll = false) {
 		// Start the WHERE
 		$sWhere = " WHERE `events`.`id` > 0";// Allways true
 		
-		if($sAll == false)
-		{
+		if($sAll == false) {
 			$sWhere .= " AND `events`.`datetime_show` < ".time();
 			$sWhere .= " AND (`events`.`use_kill` = 0 OR `events`.`datetime_kill` > ".time().")";
 			$sWhere .= " AND `events`.`datetime_end` > ".time();
@@ -38,10 +36,8 @@ class events_model extends appModel
 		
 		return $aEvents;
 	}
-	function getEvent($sId, $sAll = false)
-	{
-		if($sAll == false)
-		{
+	function getEvent($sId, $sAll = false) {
+		if($sAll == false) {
 			$sWhere .= " AND `events`.`active` = 1";
 			$sWhere .= " AND `events`.`datetime_show` < ".time();
 			$sWhere .= " AND (`events`.`use_kill` = 0 OR `events`.`datetime_kill` > ".time().")";
@@ -59,8 +55,7 @@ class events_model extends appModel
 			
 		return $aEvent;
 	}
-	function getEventInfo($aEvent)
-	{
+	function getEventInfo($aEvent) {
 		$aCategories = $this->dbResults(
 			"SELECT `name` FROM `events_categories` AS `categories`"
 				." INNER JOIN `events_categories_assign` AS `events_assign` ON `events_assign`.`categoryid` = `categories`.`id`"
@@ -84,18 +79,14 @@ class events_model extends appModel
 		
 		return $aEvent;
 	}
-	function getCategories($sEmpty = true)
-	{
-		if($sEmpty == true)
-		{		
+	function getCategories($sEmpty = true) {
+		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `events_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
-		}
-		else
-		{
+		} else {
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `events_categories_assign`"
 					." GROUP BY `categoryid`"
@@ -108,8 +99,7 @@ class events_model extends appModel
 		
 		return $aCategories;
 	}
-	function getCategory($sId = null, $sName = null)
-	{
+	function getCategory($sId = null, $sName = null) {
 		if(!empty($sId))
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
 		elseif(!empty($sName))
@@ -125,8 +115,7 @@ class events_model extends appModel
 		
 		return $aCategory;
 	}
-	function getImage($sId)
-	{
+	function getImage($sId) {
 		$aEvent = $this->getEvent($sId);
 		
 		$sFile = $this->_settings->root_public.substr($this->imageFolder, 1).$sId.".jpg";

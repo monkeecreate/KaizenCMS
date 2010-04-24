@@ -1,6 +1,5 @@
 <?php
-function smarty_function_getContent($aParams, &$oSmarty)
-{
+function smarty_function_getContent($aParams, &$oSmarty) {
 	$oApp = $oSmarty->get_registered_object("appController");
 	
 	if(!empty($aParams["tag"]))

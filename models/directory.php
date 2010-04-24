@@ -5,8 +5,7 @@ class directory_model extends appModel
 	public $imageFolder = "/uploads/directory/";
 	public $perPage = 5;
 	
-	function getListings($sCategory, $sAll = false)
-	{
+	function getListings($sCategory, $sAll = false) {
 		// Start the WHERE
 		$sWhere = " WHERE `directory`.`id` > 0";// Allways true
 		
@@ -31,8 +30,7 @@ class directory_model extends appModel
 		
 		return $aListings;
 	}
-	function getListingInfo($aListing)
-	{
+	function getListingInfo($aListing) {
 		$aCategories = $this->dbResults(
 			"SELECT `name` FROM `directory_categories` AS `categories`"
 				." INNER JOIN `directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
@@ -50,18 +48,14 @@ class directory_model extends appModel
 			
 		return $aListing;
 	}
-	function getCategories($sEmpty = true)
-	{		
-		if($sEmpty == true)
-		{		
+	function getCategories($sEmpty = true) {		
+		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `directory_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
-		}
-		else
-		{
+		} else {
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `directory_categories_assign`"
 					." GROUP BY `categoryid`"
@@ -74,8 +68,7 @@ class directory_model extends appModel
 		
 		return $aCategories;
 	}
-	function getCategory($sId = null, $sName = null)
-	{
+	function getCategory($sId = null, $sName = null) {
 		if(!empty($sId))
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
 		elseif(!empty($sName))

@@ -1,6 +1,5 @@
 <?php
-function smarty_function_re_captcha($aParams, &$oSmarty)
-{
+function smarty_function_re_captcha($aParams, &$oSmarty) {
 	$oApp = $oSmarty->get_registered_object("appController");
 	
 	require_once($oApp->_settings->root.'helpers/recaptchalib.php');

@@ -1,16 +1,14 @@
 <?php
 class admin_directory extends adminController
 {
-	function admin_directory()
-	{
+	function admin_directory() {
 		parent::adminController();
 		
 		$this->menuPermission("directory");
 	}
 	
 	### DISPLAY ######################
-	function index()
-	{
+	function index() {
 		$oDirectory = $this->loadModel("directory");
 		
 		// Clear saved form info
@@ -23,8 +21,7 @@ class admin_directory extends adminController
 		
 		$this->tplDisplay("directory/index.tpl");
 	}
-	function add()
-	{
+	function add() {
 		$oDirectory = $this->loadModel("directory");
 		
 		if(!empty($_SESSION["admin"]["admin_directory"]))
@@ -41,12 +38,10 @@ class admin_directory extends adminController
 		$this->tplAssign("sUseImage", $oDirectory->useImage);
 		$this->tplDisplay("directory/add.tpl");
 	}
-	function add_s()
-	{
+	function add_s() {
 		$oDirectory = $this->loadModel("directory");
 		
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0)
-		{
+		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_directory"] = $_POST;
 			$this->forward("/admin/directory/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -75,8 +70,7 @@ class admin_directory extends adminController
 			,"insert"
 		);
 		
-		foreach($_POST["categories"] as $sCategory)
-		{
+		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
 				"INSERT INTO `directory_categories_assign`"
 					." (`listingid`, `categoryid`)"
@@ -89,12 +83,10 @@ class admin_directory extends adminController
 		
 		$this->forward("/admin/directory/?notice=".urlencode("Listing created successfully!"));
 	}
-	function edit()
-	{
+	function edit() {
 		$oDirectory = $this->loadModel("directory");
 		
-		if(!empty($_SESSION["admin"]["admin_directory"]))
-		{
+		if(!empty($_SESSION["admin"]["admin_directory"])) {
 			$aListingRow = $this->dbResults(
 				"SELECT * FROM `directory`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -111,9 +103,7 @@ class admin_directory extends adminController
 			);
 			
 			$this->tplAssign("aListing", $aListing);
-		}
-		else
-		{
+		} else {
 			$aListing = $this->dbResults(
 				"SELECT * FROM `directory`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -145,10 +135,8 @@ class admin_directory extends adminController
 		$this->tplAssign("sUseImage", $oDirectory->useImage);
 		$this->tplDisplay("directory/edit.tpl");
 	}
-	function edit_s()
-	{
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0)
-		{
+	function edit_s() {
+		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_directory"] = $_POST;
 			$this->forward("/admin/directory/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -175,8 +163,7 @@ class admin_directory extends adminController
 			"DELETE FROM `directory_categories_assign`"
 				." WHERE `listingid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
-		foreach($_POST["categories"] as $sCategory)
-		{
+		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
 				"INSERT INTO `directory_categories_assign`"
 					." (`listingid`, `categoryid`)"
@@ -189,8 +176,7 @@ class admin_directory extends adminController
 		
 		$this->forward("/admin/directory/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete()
-	{
+	function delete() {
 		$this->dbResults(
 			"DELETE FROM `directory`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -202,8 +188,7 @@ class admin_directory extends adminController
 		
 		$this->forward("/admin/directory/?notice=".urlencode("Listing removed successfully!"));
 	}
-	function categories_index()
-	{
+	function categories_index() {
 		$_SESSION["admin"]["admin_directory_categories"] = null;
 		
 		$aCategories = $this->dbResults(
@@ -215,8 +200,7 @@ class admin_directory extends adminController
 		$this->tplAssign("aCategories", $aCategories);
 		$this->tplDisplay("directory/categories.tpl");
 	}
-	function categories_add_s()
-	{
+	function categories_add_s() {
 		$this->dbResults(
 			"INSERT INTO `directory_categories`"
 				." (`name`)"
@@ -229,8 +213,7 @@ class admin_directory extends adminController
 
 		echo "/admin/directory/categories/?notice=".urlencode("Category added successfully!");
 	}
-	function categories_edit_s()
-	{
+	function categories_edit_s() {
 		$this->dbResults(
 			"UPDATE `directory_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
@@ -239,8 +222,7 @@ class admin_directory extends adminController
 
 		echo "/admin/directory/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete()
-	{
+	function categories_delete() {
 		$this->dbResults(
 			"DELETE FROM `directory_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")

@@ -3,8 +3,7 @@ class faq_model extends appModel
 {
 	public $perPage = 5;
 	
-	function getQuestions($sCategory)
-	{
+	function getQuestions($sCategory) {
 		$sWhere = " WHERE `faq`.`active` = 1";
 		if(!empty($_GET["category"]))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($_GET["category"], "integer");
@@ -19,8 +18,7 @@ class faq_model extends appModel
 			,"all"
 		);
 	
-		foreach($aQuestions as $x => $aQuestion)
-		{
+		foreach($aQuestions as $x => $aQuestion) {
 			$aQuestionCategories = $this->dbResults(
 				"SELECT `name` FROM `faq_categories` AS `categories`"
 					." INNER JOIN `faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
@@ -33,8 +31,7 @@ class faq_model extends appModel
 		
 		return $aQuestions;
 	}
-	function getQuestion($sId)
-	{
+	function getQuestion($sId) {
 		$aQuestion = $this->dbResults(
 			"SELECT * FROM `faq`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
@@ -43,18 +40,14 @@ class faq_model extends appModel
 		
 		return $aQuestion;
 	}
-	function getCategories($sEmpty = true)
-	{
-		if($sEmpty == true)
-		{		
+	function getCategories($sEmpty = true) {
+		if($sEmpty == true) {
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `faq_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
-		}
-		else
-		{
+		} else {
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `faq_categories_assign`"
 					." GROUP BY `categoryid`"
@@ -67,8 +60,7 @@ class faq_model extends appModel
 		
 		return $aCategories;
 	}
-	function getCategory($sId = null, $sName = null)
-	{
+	function getCategory($sId = null, $sName = null) {
 		if(!empty($sId))
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
 		elseif(!empty($sName))

@@ -3,8 +3,7 @@ class links_model extends appModel
 {
 	public $perPage = 5;
 	
-	function getLinks($sCategory)
-	{
+	function getLinks($sCategory) {
 		$sWhere = " WHERE `links`.`active` = 1";
 		if(!empty($_GET["category"]))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($_GET["category"], "integer");
@@ -19,8 +18,7 @@ class links_model extends appModel
 			,"all"
 		);
 	
-		foreach($aLinks as $x => $aLink)
-		{
+		foreach($aLinks as $x => $aLink) {
 			$aLinkCategories = $this->dbResults(
 				"SELECT `name` FROM `links_categories` AS `categories`"
 					." INNER JOIN `links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
@@ -33,8 +31,7 @@ class links_model extends appModel
 		
 		return $aLinks;
 	}
-	function getLink($sId)
-	{
+	function getLink($sId) {
 		$aLink = $this->dbResults(
 			"SELECT * FROM `links`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
@@ -43,18 +40,14 @@ class links_model extends appModel
 		
 		return $aLink;
 	}
-	function getCategories($sEmpty = true)
-	{
-		if($sEmpty == true)
-		{		
+	function getCategories($sEmpty = true) {
+		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `links_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
-		}
-		else
-		{
+		} else {
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `links_categories_assign`"
 					." GROUP BY `categoryid`"
@@ -67,8 +60,7 @@ class links_model extends appModel
 		
 		return $aCategories;
 	}
-	function getCategory($sId = null, $sName = null)
-	{
+	function getCategory($sId = null, $sName = null) {
 		if(!empty($sId))
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
 		elseif(!empty($sName))

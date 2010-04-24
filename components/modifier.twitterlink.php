@@ -1,6 +1,5 @@
 <?php
-function smarty_modifier_twitterlink($string, $format = false)
-{
+function smarty_modifier_twitterlink($string, $format = false) {
 	/* HTTP LINKS */
 	$string = preg_replace('@(http?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@', '<a href="\0" target="_blank">\0</a>', $string);
 	/* HTTP LINKS */

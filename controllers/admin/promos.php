@@ -1,16 +1,14 @@
 <?php
 class admin_promos extends adminController
 {
-	function admin_promos()
-	{
+	function admin_promos() {
 		parent::adminController();
 		
 		$this->menuPermission("promos");
 	}
 	
 	### DISPLAY ######################
-	function index()
-	{
+	function index() {
 		$oPromos = $this->loadModel("promos");
 		
 		// Clear saved form info
@@ -21,19 +19,16 @@ class admin_promos extends adminController
 		$this->tplAssign("aPromos", $oPromos->getPromos($_GET["position"]));
 		$this->tplDisplay("promos/index.tpl");
 	}
-	function add()
-	{
+	function add() {
 		$oPromos = $this->loadModel("promos");
 		
-		if(!empty($_SESSION["admin"]["admin_promos"]))
-		{
+		if(!empty($_SESSION["admin"]["admin_promos"])) {
 			$aPromo = $_SESSION["admin"]["admin_promos"];
 			$aPromo["datetime_show"] = strtotime($aPromo["datetime_show_date"]." ".$aPromo["datetime_show_Hour"].":".$aPromo["datetime_show_Minute"]." ".$aPromo["datetime_show_Meridian"]);
 			$aPromo["datetime_kill"] = strtotime($aPromo["datetime_kill_date"]." ".$aPromo["datetime_kill_Hour"].":".$aPromo["datetime_kill_Minute"]." ".$aPromo["datetime_kill_Meridian"]);
 			
 			$this->tplAssign("aPromo", $aPromo);
-		}
-		else
+		} else
 			$this->tplAssign("aPromo",
 				array(
 					"datetime_show_date" => date("m/d/Y")
@@ -46,10 +41,8 @@ class admin_promos extends adminController
 		$this->tplAssign("aPositions", $oPromos->getPositions());
 		$this->tplDisplay("promos/add.tpl");
 	}
-	function add_s()
-	{
-		if(empty($_POST["name"]) || empty($_FILES["promo"]["name"]) || empty($_POST["positions"]))
-		{
+	function add_s() {
+		if(empty($_POST["name"]) || empty($_FILES["promo"]["name"]) || empty($_POST["positions"])) {
 			$_SESSION["admin"]["admin_promos"] = $_POST;
 			$this->forward("/admin/promos/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -84,8 +77,7 @@ class admin_promos extends adminController
 			,"insert"
 		);
 		
-		foreach($_POST["positions"] as $sPosition)
-		{
+		foreach($_POST["positions"] as $sPosition) {
 			$this->dbResults(
 				"INSERT INTO `promos_positions_assign`"
 					." (`promoid`, `positionid`)"
@@ -94,8 +86,7 @@ class admin_promos extends adminController
 			);
 		}
 
-		if($_FILES["promo"]["error"] == 1)
-		{
+		if($_FILES["promo"]["error"] == 1) {
 			$this->dbResults(
 				"UPDATE `promos` SET"
 					." `active` = 0"
@@ -104,24 +95,19 @@ class admin_promos extends adminController
 			);
 			
 			$this->forward("/admin/promos/?error=".urlencode("Promo file size was too large!"));
-		}
-		else
-		{
+		} else {
 			$upload_dir = $this->_settings->rootPublic."uploads/promos/";
 			$file_ext = pathinfo($_FILES["promo"]["name"], PATHINFO_EXTENSION);
 			$upload_file = $sID.".".strtolower($file_ext);
 		
-			if(move_uploaded_file($_FILES["promo"]["tmp_name"], $upload_dir.$upload_file))
-			{
+			if(move_uploaded_file($_FILES["promo"]["tmp_name"], $upload_dir.$upload_file)) {
 				$this->dbResults(
 					"UPDATE `promos` SET"
 						." `promo` = ".$this->dbQuote($upload_file, "text")
 						." WHERE `id` = ".$this->dbQuote($sID, "integer")
 					,"update"
 				);
-			}
-			else
-			{
+			} else {
 				$this->dbResults(
 					"UPDATE `promos` SET"
 						." `active` = 0"
@@ -137,12 +123,10 @@ class admin_promos extends adminController
 		
 		$this->forward("/admin/promos/?notice=".urlencode("Promo created successfully!"));
 	}
-	function edit()
-	{
+	function edit() {
 		$oPromos = $this->loadModel("promos");
 		
-		if(!empty($_SESSION["admin"]["admin_promos"]))
-		{
+		if(!empty($_SESSION["admin"]["admin_promos"])) {
 			$aPromoRow = $this->dbResults(
 				"SELECT * FROM `promos`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -159,9 +143,7 @@ class admin_promos extends adminController
 			);
 			
 			$this->tplAssign("aPromo", $aPromo);
-		}
-		else
-		{
+		} else {
 			$aPromo = $this->dbResults(
 				"SELECT * FROM `promos`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -192,10 +174,8 @@ class admin_promos extends adminController
 		$this->tplAssign("aPositions", $oPromos->getPositions());
 		$this->tplDisplay("promos/edit.tpl");
 	}
-	function edit_s()
-	{
-		if(empty($_POST["name"]) || empty($_POST["positions"]))
-		{
+	function edit_s() {
+		if(empty($_POST["name"]) || empty($_POST["positions"])) {
 			$_SESSION["admin"]["admin_promos"] = $_POST;
 			$this->forward("/admin/promos/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -230,8 +210,7 @@ class admin_promos extends adminController
 				." WHERE `promoid` = ".$this->dbQuote($_POST["id"], "integer")
 			,"delete"
 		);
-		foreach($_POST["positions"] as $sPosition)
-		{
+		foreach($_POST["positions"] as $sPosition) {
 			$this->dbResults(
 				"INSERT INTO `promos_positions_assign`"
 					." (`promoid`, `positionid`)"
@@ -240,10 +219,8 @@ class admin_promos extends adminController
 			);
 		}
 		
-		if(!empty($_FILES["promo"]["name"]))
-		{
-			if($_FILES["promo"]["error"] == 1)
-			{
+		if(!empty($_FILES["promo"]["name"])) {
+			if($_FILES["promo"]["error"] == 1) {
 				$this->dbResults(
 					"UPDATE `promos` SET"
 						." `active` = 0"
@@ -252,9 +229,7 @@ class admin_promos extends adminController
 				);
 				
 				$this->forward("/admin/promos/?notice=".urlencode("Promo file size was too large!"));
-			}
-			else
-			{
+			} else {
 				$upload_dir = $this->_settings->rootPublic."uploads/promos/";
 				$file_ext = pathinfo($_FILES["promo"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
@@ -266,16 +241,13 @@ class admin_promos extends adminController
 				);
 				@unlink($upload_dir.$sPromo);
 			
-				if(move_uploaded_file($_FILES["promo"]["tmp_name"], $upload_dir.$upload_file))
-				{
+				if(move_uploaded_file($_FILES["promo"]["tmp_name"], $upload_dir.$upload_file)) {
 					$this->dbResults(
 						"UPDATE `promos` SET"
 							." `promo` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 					);
-				}
-				else
-				{
+				} else {
 					$this->dbResults(
 						"UPDATE `promo` SET"
 							." `active` = 0"
@@ -291,8 +263,7 @@ class admin_promos extends adminController
 		
 		$this->forward("/admin/promos/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete()
-	{
+	function delete() {
 		$this->dbResults(
 			"DELETE FROM `promos`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -304,8 +275,7 @@ class admin_promos extends adminController
 		
 		$this->forward("/admin/promos/?notice=".urlencode("Promo removed successfully!"));
 	}
-	function positions_index()
-	{
+	function positions_index() {
 		$oPromos = $this->loadModel("promos");
 		
 		// Clear saved form info
@@ -314,15 +284,12 @@ class admin_promos extends adminController
 		$this->tplAssign("aPositions", $oPromos->getPositions());
 		$this->tplDisplay("promos/positions/index.tpl");
 	}
-	function positions_add()
-	{	
+	function positions_add() {	
 		$this->tplAssign("aPosition", $_SESSION["admin"]["admin_promo_positions"]);
 		$this->tplDisplay("promos/positions/add.tpl");
 	}
-	function positions_add_s()
-	{
-		if(empty($_POST["name"]))
-		{
+	function positions_add_s() {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_promo_positions"] = $_POST;
 			$this->forward("/admin/promos/positions/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -349,16 +316,12 @@ class admin_promos extends adminController
 		
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Position created successfully!"));
 	}
-	function positions_edit()
-	{
-		if(!empty($_SESSION["admin"]["admin_promo_positions"]))
-		{	
+	function positions_edit() {
+		if(!empty($_SESSION["admin"]["admin_promo_positions"])) {	
 			$aPosition = $_SESSION["admin"]["admin_promo_positions"];
 			
 			$this->tplAssign("aPosition", $aPosition);
-		}
-		else
-		{
+		} else {
 			$aPosition = $this->dbResults(
 				"SELECT * FROM `promos_positions`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -370,10 +333,8 @@ class admin_promos extends adminController
 		
 		$this->tplDisplay("promos/positions/edit.tpl");
 	}
-	function positions_edit_s()
-	{
-		if(empty($_POST["name"]))
-		{
+	function positions_edit_s() {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_promo_positions"] = $_POST;
 			$this->forward("/admin/promos/positions/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -396,8 +357,7 @@ class admin_promos extends adminController
 
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function positions_delete()
-	{
+	function positions_delete() {
 		$this->dbResults(
 			"DELETE FROM `promos_positions`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")

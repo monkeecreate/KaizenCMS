@@ -1,6 +1,5 @@
 <?php
-function smarty_function_html_editor($aParams, &$smarty)
-{
+function smarty_function_html_editor($aParams, &$smarty) {
 	if(empty($params["width"]))
 		$width = "90%";
 	else

@@ -18,9 +18,6 @@
  * @param string
  * @return string
  */
-function smarty_modifier_stripslashes($string)
-{
+function smarty_modifier_stripslashes($string) {
     return stripslashes($string);
 }
-
-?>

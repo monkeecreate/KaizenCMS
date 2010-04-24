@@ -1,8 +1,7 @@
 <?php
 class documents extends appController
 {
-	function index()
-	{
+	function index() {
 		$oDocuments = $this->loadModel("documents");
 		
 		## GET CURRENT PAGE DOCUMENTS

@@ -7,13 +7,11 @@ class calendar_model extends appModel
 	public $imageFolder = "/uploads/calendar/";
 	public $perPage = 5;
 	
-	function getEvents($sCategory = null, $sAll = false)
-	{
+	function getEvents($sCategory = null, $sAll = false) {
 		// Start the WHERE
 		$sWhere = " WHERE `calendar`.`id` > 0";// Allways true
 		
-		if($sAll == false)
-		{
+		if($sAll == false) {
 			$sWhere .= " AND `calendar`.`datetime_show` < ".time();
 			$sWhere .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
 			$sWhere .= " AND `calendar`.`datetime_end` > ".time();
@@ -38,8 +36,7 @@ class calendar_model extends appModel
 		
 		return $aEvents;
 	}
-	function getEvent($sId)
-	{
+	function getEvent($sId) {
 		$aEvent = $this->dbResults(
 			"SELECT `calendar`.* FROM `calendar` AS `calendar`"
 				." WHERE `calendar`.`id` = ".$this->dbQuote($sId, "integer")
@@ -54,8 +51,7 @@ class calendar_model extends appModel
 		
 		return $aEvent;
 	}
-	private function getEventInfo($aEvent)
-	{
+	private function getEventInfo($aEvent) {
 		$aCategories = $this->dbResults(
 			"SELECT `name` FROM `calendar_categories` AS `category`"
 				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
@@ -74,18 +70,14 @@ class calendar_model extends appModel
 			
 		return $aEvent;
 	}
-	function getCategories($sEmpty = true)
-	{
-		if($sEmpty == true)
-		{		
+	function getCategories($sEmpty = true) {
+		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `calendar_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
-		}
-		else
-		{
+		} else {
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `calendar_categories_assign`"
 					." GROUP BY `categoryid`"
@@ -98,8 +90,7 @@ class calendar_model extends appModel
 		
 		return $aCategories;
 	}
-	function getCategory($sId = null, $sName = null)
-	{
+	function getCategory($sId = null, $sName = null) {
 		if(!empty($sId))
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
 		elseif(!empty($sName))
@@ -115,8 +106,7 @@ class calendar_model extends appModel
 		
 		return $aCategory;
 	}
-	function getImage($sId)
-	{
+	function getImage($sId) {
 		$aEvent = $this->getEvent($sId);
 		
 		$sFile = $this->_settings->root_public.substr($this->imageFolder, 1).$sId.".jpg";

@@ -1,10 +1,8 @@
 <?php
-function smarty_function_sec2time($aParams, &$oSmarty)
-{
+function smarty_function_sec2time($aParams, &$oSmarty) {
 	$sTime = $aParams["time"];
 	
-	if(is_numeric($sTime))
-	{
+	if(is_numeric($sTime)) {
 		$aTime = array(
 			"years" => 0, "days" => 0, "hours" => 0,
 			"minutes" => 0, "seconds" => 0,
@@ -33,7 +31,7 @@ function smarty_function_sec2time($aParams, &$oSmarty)
 		$aTime["seconds"] = floor($time);
 		
 		return (array) $aTime;
-	}else{
+	} else {
 		return (bool) FALSE;
 	}
 }

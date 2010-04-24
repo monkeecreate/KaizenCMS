@@ -1,8 +1,7 @@
 <?php
 class testimonials extends appController
 {
-	function index()
-	{
+	function index() {
 		$aTestimonials = $this->dbResults(
 			"SELECT `testimonials`.* FROM `testimonials`"
 				." INNER JOIN `testimonials_categories_assign` AS `assign` ON `testimonials`.`id` = `assign`.`testimonialid`"
@@ -14,8 +13,7 @@ class testimonials extends appController
 		
 		if(empty($this->_urlVars->dynamic["id"]))
 			$this->tplAssign("aCurTestimonial", $aTestimonials[0]);
-		else
-		{
+		else {
 			$aTestimonial = $this->dbResults(
 				"SELECT * FROM `testimonials`"
 					." WHERE `id` = ".$this->_urlVars->dynamic["id"]

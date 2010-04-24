@@ -1,13 +1,11 @@
 <?php
-function smarty_function_rss($params, &$smarty)
-{
+function smarty_function_rss($params, &$smarty) {
 	$oMemcache = $oSmarty->get_registered_object("memcache");
 	
 	$sFeed = $aParams["feed"];
 	$memid = "rss_".md5($sFeed);
 	
-	if(!$aFeed = $oMemcache->get($memid))
-	{
+	if(!$aFeed = $oMemcache->get($memid)) {
 		$feed = file_get_contents($sFeed);
 		$converter = new Xml2Array();
 		$converter->setXml($feed);

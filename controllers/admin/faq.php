@@ -1,16 +1,14 @@
 <?php
 class admin_faq extends adminController
 {
-	function admin_faq()
-	{
+	function admin_faq() {
 		parent::adminController();
 		
 		$this->menuPermission("faq");
 	}
 	
 	### DISPLAY ######################
-	function index()
-	{
+	function index() {
 		$oQuestions = $this->loadModel("faq");
 		
 		// Clear saved form info
@@ -32,8 +30,7 @@ class admin_faq extends adminController
 		$this->tplAssign("maxSort", $sMaxSort);
 		$this->tplDisplay("faq/index.tpl");
 	}
-	function add()
-	{
+	function add() {
 		$oQuestions = $this->loadModel("faq");
 		
 		if(!empty($_SESSION["admin"]["admin_faq"]))
@@ -49,10 +46,8 @@ class admin_faq extends adminController
 		$this->tplAssign("aCategories", $oQuestions->getCategories());
 		$this->tplDisplay("faq/add.tpl");
 	}
-	function add_s()
-	{
-		if(empty($_POST["question"]) || count($_POST["categories"]) == 0)
-		{
+	function add_s() {
+		if(empty($_POST["question"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_faq"] = $_POST;
 			$this->forward("/admin/faq/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -82,8 +77,7 @@ class admin_faq extends adminController
 			,"insert"
 		);
 		
-		foreach($_POST["categories"] as $sCategory)
-		{
+		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
 				"INSERT INTO `faq_categories_assign`"
 					." (`faqid`, `categoryid`)"
@@ -96,14 +90,12 @@ class admin_faq extends adminController
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Question created successfully!"));
 	}
-	function sort()
-	{
+	function sort() {
 		$oQuestions = $this->loadModel("faq");
 		
 		$aQuestion = $oQuestions->getQuestion($this->_urlVars->dynamic["id"], "integer");
 		
-		if($this->_urlVars->dynamic["sort"] == "up")
-		{
+		if($this->_urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbResults(
 				"SELECT * FROM `faq`"
 					." WHERE `sort_order` < ".$aQuestion["sort_order"]
@@ -122,9 +114,7 @@ class admin_faq extends adminController
 					." `sort_order` = ".$this->dbQuote($aQuestion["sort_order"], "text")
 					." WHERE `id` = ".$this->dbQuote($aOld["id"], "integer")
 			);
-		}
-		elseif($this->_urlVars->dynamic["sort"] == "down")
-		{
+		} elseif($this->_urlVars->dynamic["sort"] == "down") {
 			$aOld = $this->dbResults(
 				"SELECT * FROM `faq`"
 					." WHERE `sort_order` > ".$aQuestion["sort_order"]
@@ -147,12 +137,10 @@ class admin_faq extends adminController
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Sort order saved successfully!"));
 	}
-	function edit()
-	{
+	function edit() {
 		$oQuestions = $this->loadModel("faq");
 		
-		if(!empty($_SESSION["admin"]["admin_faq"]))
-		{
+		if(!empty($_SESSION["admin"]["admin_faq"])) {
 			$aQuestionRow = $oQuestions->getQuestion($this->_urlVars->dynamic["id"]);
 			
 			$aQuestion = $_SESSION["admin"]["admin_faq"];
@@ -165,9 +153,7 @@ class admin_faq extends adminController
 			);
 			
 			$this->tplAssign("aQuestion", $aQuestion);
-		}
-		else
-		{
+		} else {
 			$aQuestion = $oQuestions->getQuestion($this->_urlVars->dynamic["id"], "integer");
 			
 			$aQuestion["categories"] = $this->dbResults(
@@ -191,10 +177,8 @@ class admin_faq extends adminController
 		$this->tplAssign("aCategories", $oQuestions->getCategories());
 		$this->tplDisplay("faq/edit.tpl");
 	}
-	function edit_s()
-	{
-		if(empty($_POST["question"]) || count($_POST["categories"]) == 0)
-		{
+	function edit_s() {
+		if(empty($_POST["question"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_faq"] = $_POST;
 			$this->forward("/admin/faq/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -213,8 +197,7 @@ class admin_faq extends adminController
 			"DELETE FROM `faq_categories_assign`"
 				." WHERE `faqid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
-		foreach($_POST["categories"] as $sCategory)
-		{
+		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
 				"INSERT INTO `faq_categories_assign`"
 					." (`faqid`, `categoryid`)"
@@ -227,8 +210,7 @@ class admin_faq extends adminController
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete()
-	{
+	function delete() {
 		$this->dbResults(
 			"DELETE FROM `faq`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -240,8 +222,7 @@ class admin_faq extends adminController
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Question removed successfully!"));
 	}
-	function categories_index()
-	{
+	function categories_index() {
 		$oQuestions = $this->loadModel("faq");
 		
 		$_SESSION["admin"]["admin_faq_categories"] = null;
@@ -249,8 +230,7 @@ class admin_faq extends adminController
 		$this->tplAssign("aCategories", $oQuestions->getCategories());
 		$this->tplDisplay("faq/categories.tpl");
 	}
-	function categories_add_s()
-	{
+	function categories_add_s() {
 		$this->dbResults(
 			"INSERT INTO `faq_categories`"
 				." (`name`)"
@@ -263,8 +243,7 @@ class admin_faq extends adminController
 
 		echo "/admin/faq/categories/?notice=".urlencode("Category added successfully!");
 	}
-	function categories_edit_s()
-	{
+	function categories_edit_s() {
 		$this->dbResults(
 			"UPDATE `faq_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
@@ -273,8 +252,7 @@ class admin_faq extends adminController
 
 		echo "/admin/faq/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete()
-	{
+	function categories_delete() {
 		$this->dbResults(
 			"DELETE FROM `faq_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")

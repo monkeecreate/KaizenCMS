@@ -10,8 +10,7 @@ class appController
 	public $_settings;
 	public $_urlVars;
 	
-	function appController()
-	{
+	function __construct() {
 		global $objDB, $oMemcache, $objMail, $oFirePHP, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl, $aURLVars;
 		
 		$this->_db = $objDB;
@@ -30,15 +29,11 @@ class appController
 			,"memcacheSalt" => $aConfig["memcache"]["salt"]
 		);
 		$this->_urlVars = $aURLVars;
-		
-		unset($objDB, $oMemcache, $objMail, $oFirePHP, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl, $aURLVars);
 	}
 	
 	### Functions ####################
-	function forward($url, $type = "")
-	{
-		switch($type)
-		{
+	function forward($url, $type = "") {
+		switch($type) {
 			case "403":
 				header('HTTP/1.1 403 Forbidden');
 				break;
@@ -53,8 +48,7 @@ class appController
 		header("Location: ".$url);
 		exit;
 	}
-	function siteInfo()
-	{
+	function siteInfo() {
 		echo "<pre>";
 		print_r($this->_settings);
 		print_r($this->_db);
@@ -63,10 +57,8 @@ class appController
 		
 		phpinfo();
 	}
-	function loadController($sController)
-	{
-		if(!class_exists($sController))
-		{
+	function loadController($sController) {
+		if(!class_exists($sController)) {
 			$sFile = str_replace("_","/", $sController);
 			
 			if(substr($sFile, -1) == "/")
@@ -79,8 +71,7 @@ class appController
 		
 		return $oController;
 	}
-	function loadModel($sModel)
-	{
+	function loadModel($sModel) {
 		if(!class_exists("appModel"))
 			require($this->_settings->root."appModel.php");
 		
@@ -93,8 +84,7 @@ class appController
 		
 		return $sModel;
 	}
-	function getSetting($sTag)
-	{
+	function getSetting($sTag) {
 		if(empty($sTag))
 			$this->error("getSetting", "Setting tag not passed", null, debug_backtrace());
 		
@@ -117,15 +107,13 @@ class appController
 	##################################
 	
 	### Database #####################
-	function dbResults($sSQL, $return = null)
-	{
+	function dbResults($sSQL, $return = null) {
 		$oResult = $this->_db->query($sSQL);
 		
 		if(PEAR::isError($oResult))
 			$this->sendError("dbResults", "dberror", $oResult, debug_backtrace());
 			
-		switch($return)
-		{
+		switch($return) {
 			case "all":
 				$aReturn = $oResult->fetchAll();
 				break;
@@ -152,8 +140,7 @@ class appController
 		
 		return $aReturn;
 	}
-	function dbQuote($sValue, $sType)
-	{
+	function dbQuote($sValue, $sType) {
 		$sReturn = $this->_db->quote($sValue, $sType);
 		
 		if(PEAR::isError($sReturn))
@@ -164,36 +151,30 @@ class appController
 	##################################
 	
 	### Template #####################
-	function tplExists($template_file)
-	{
+	function tplExists($template_file) {
 		$template_file = $this->_smarty->template_dir."/".$template_file;
 		
 		return is_file($template_file);
 	}
-	function tplAssign($sVariable, $sValue)
-	{
+	function tplAssign($sVariable, $sValue) {
 		$this->_smarty->assign($sVariable, $sValue);
 	}
-	function tplDisplay($sTemplate)
-	{
+	function tplDisplay($sTemplate) {
 		if($this->tplExists($sTemplate))
 			$this->_smarty->display($sTemplate);
 		else
 			$this->sendError("appController->tplDisplay", "Can't find template - (".$sTemplate.")");
 	}
-	function tplVariableGet($sVariable)
-	{
+	function tplVariableGet($sVariable) {
 		return $this->_smarty->$sVariable;
 	}
-	function tplVariableSet($sVariable, $sValue)
-	{
+	function tplVariableSet($sVariable, $sValue) {
 		$this->_smarty->$sVariable = $sValue;
 	}
 	###################################
 	
 	### Mail ##########################
-	function mail($sRecipients, $aHeaders, $bodyText, $bodyHTML = null, $aAttachment = array())
-	{
+	function mail($sRecipients, $aHeaders, $bodyText, $bodyHTML = null, $aAttachment = array()) {
 		include("Mail/mime.php");
 		$oMime = new Mail_mime("\n");
 		
@@ -216,8 +197,7 @@ class appController
 		
 		if(PEAR::iserror($oMail))
 			$this->error("Mail - ".$aHeaders["Subject"], $oMail->message);
-		else
-		{
+		else {
 			unset($oMime, $sBody, $sHeaders, $oMail);
 			return true;
 		}
@@ -225,19 +205,16 @@ class appController
 	###################################
 	
 	### Encryption ####################
-	function encrypt($text)
-	{
+	function encrypt($text) {
 		return $this->_enc->encrypt($text);
 	}
-	function decrypt($text)
-	{
+	function decrypt($text) {
 		return $this->_enc->decrypt($text);
 	}
 	##################################
 	
 	### Memcache #####################
-	function memcacheGet($key)
-	{
+	function memcacheGet($key) {
 		$value = $this->_memcache->get(md5($this->_settings->memcacheSalt.$key));
 		
 		if($value != false)
@@ -245,21 +222,17 @@ class appController
 		else
 			return false;
 	}
-	function memcacheSet($key, $value, $expire = 0)
-	{
+	function memcacheSet($key, $value, $expire = 0) {
 		return $this->_memcache->set(md5($this->_settings->memcacheSalt.$key), $this->encrypt($value), false, $expire);
 	}
 	##################################
 
 	### Errors #######################
-	function log($log)
-	{
+	function log($log) {
 		$this->_fireftp->log($log);
 	}
-	function error($error = "404")
-	{
-		switch($error)
-		{
+	function error($error = "404") {
+		switch($error) {
 			case "403":
 				header('HTTP/1.1 403 Forbidden');
 				$this->tplDisplay("error/403.tpl");
@@ -275,8 +248,7 @@ class appController
 		}
 		exit;
 	}
-	protected function sendError($section, $error, $db = null, $aTrace = array())
-	{
+	protected function sendError($section, $error, $db = null, $aTrace = array()) {
 		if(empty($aTrace))
 			$aTrace = debug_backtrace();
 		
@@ -286,15 +258,13 @@ class appController
 		$headers["Subject"] = "Website Error - ".$section;
 		
 		$body = "Where: ".$section."\n";
-		if(!empty($db))
-		{
+		if(!empty($db)) {
 			$aUserInfo = preg_split('/\] \[/',str_replace(array("_doQuery: [", "]\n[", "]\n"),array(null, "] [", null),$db->userinfo));
 			$aMessage = preg_split('/: /',$aUserInfo[3]);
 			$body .= "Error: ".$db->message."\n";
 			$body .= $aMessage[1]."\n";
 			$body .= "Query: ".$this->_db->last_query."\n";
-		}
-		else
+		} else
 			$body .= "Error: ".$error."\n";
 		
 		$body .= "File: ".$aTrace[0]["file"]."\n";

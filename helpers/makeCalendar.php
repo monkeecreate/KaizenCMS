@@ -5,29 +5,24 @@ class makeCalendar
 	private $_time;
 	private $_events = Array();
 	
-	function __construct()
-	{
+	function __construct() {
 		$this->_time = time();
 	}
 
 	## Return ##
-	public function cal_days()
-	{
+	public function cal_days() {
 		return cal_days_in_month(CAL_GREGORIAN, date("n", $this->_time), date("Y", $this->_time));
 	}
 	############
 
 	## Public Functions ##
-	public function change_time($hour, $minute, $sec, $month, $day, $year)
-	{
+	public function change_time($hour, $minute, $sec, $month, $day, $year){
 		$this->_time = mktime($hour, $minute, $sec, $month, $day, $year);
 	}
-	public function add_event($event)
-	{
+	public function add_event($event) {
 		$this->_events[] = $event;
 	}
-	public function build()
-	{
+	public function build() {
 		$days_in_month = cal_days_in_month(CAL_GREGORIAN, date("n", $this->_time), date("Y", $this->_time));
 
 		## Empty Start ##
@@ -42,14 +37,12 @@ class makeCalendar
 
 		## First Array Issued ##
 		$empty = 1;
-		for($i=0;$i<$empty_start;$i++)
-		{
+		for($i=0;$i<$empty_start;$i++) {
 			$this->_cal["empty_start_".$empty] = Array();
 			$empty++;
 		}
 
-		for($i=1;$i<=$days_in_month;$i++)
-		{
+		for($i=1;$i<=$days_in_month;$i++) {
 			$aDay = Array();
 
 			$aDay["events"] = Array();
@@ -63,19 +56,16 @@ class makeCalendar
 		}
 
 		$empty = 1;
-		for($i=0;$i<$empty_end;$i++)
-		{
+		for($i=0;$i<$empty_end;$i++) {
 			$this->_cal["empty_end_".$empty] = Array();
 			$empty++;
 		}
 		########################
 		
 		## Add Events To Day ##
-		foreach($this->_events as $event)
-		{
+		foreach($this->_events as $event) {
 			//Check for actualy in this month
-			if(date("n/Y", $this->_time) == date("n/Y", $event["datetime"]))
-			{
+			if(date("n/Y", $this->_time) == date("n/Y", $event["datetime"])) {
 				$day = date("j", $event["datetime"]);
 				$this->_cal[$day]["events"][] = $event;
 			}
@@ -85,10 +75,8 @@ class makeCalendar
 		$week = 1;
 		$aCal = $this->_cal;
 		$this->_cal = Array();
-		foreach($aCal as $key => $day)
-		{
-			if($cDay == 8)
-			{
+		foreach($aCal as $key => $day) {
+			if($cDay == 8) {
 				$cDay = 1;
 				$week++;
 			}

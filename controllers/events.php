@@ -1,8 +1,7 @@
 <?php
 class events extends appController
 {
-	function index()
-	{
+	function index() {
 		$oEvents = $this->loadModel("events");
 		
 		## GET CURRENT PAGE NEWS
@@ -42,8 +41,7 @@ class events extends appController
 		else
 			$this->tplDisplay("events/index.tpl");
 	}
-	function event()
-	{
+	function event() {
 		$oEvents = $this->loadModel("events");
 		
 		$aEvent = $oEvents->getEvent($this->_urlVars->dynamic["id"]);

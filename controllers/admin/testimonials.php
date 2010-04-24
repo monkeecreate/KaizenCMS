@@ -1,22 +1,18 @@
 <?php
 class admin_testimonials extends adminController
 {
-	function admin_testimonials()
-	{
+	function admin_testimonials(){
 		parent::adminController();
 		
 		$this->menuPermission("testimonials");
 	}
 	
-	
 	### DISPLAY ######################
-	function index()
-	{
+	function index() {
 		// Clear saved form info
 		$_SESSION["admin"]["admin_testimonials"] = null;
 		
-		if(!empty($_GET["category"]))
-		{
+		if(!empty($_GET["category"])) {
 			$sSQLCategory = " INNER JOIN `testimonials_categories_assign` AS `assign` ON `testimonials`.`id` = `assign`.`testimonialid`";
 			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
 		}
@@ -33,12 +29,10 @@ class admin_testimonials extends adminController
 		$this->tplAssign("aTestimonials", $aTestimonials);
 		$this->tplDisplay("testimonials/index.tpl");
 	}
-	function add()
-	{
+	function add() {
 		if(!empty($_SESSION["admin"]["admin_testimonials"]))
 			$this->tplAssign("aTestimonial", $_SESSION["admin"]["admin_testimonials"]);
-		else
-		{
+		else {
 			$aTestimonial = array(
 				"menu" => array()
 				,"categories" => array()
@@ -51,10 +45,8 @@ class admin_testimonials extends adminController
 		$this->tplAssign("aCategories", $this->get_categories());
 		$this->tplDisplay("testimonials/add.tpl");
 	}
-	function add_s()
-	{
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0)
-		{
+	function add_s() {
+		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_testimonials"] = $_POST;
 			$this->forward("/admin/testimonials/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -76,8 +68,7 @@ class admin_testimonials extends adminController
 			,"insert"
 		);
 		
-		foreach($_POST["categories"] as $sCategory)
-		{
+		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
 				"INSERT INTO `testimonials_categories_assign`"
 					." (`testimonialid`, `categoryid`)"
@@ -86,10 +77,8 @@ class admin_testimonials extends adminController
 			);
 		}
 		
-		if(!empty($_FILES["video"]["name"]))
-		{
-			if($_FILES["video"]["error"] == 1)
-			{
+		if(!empty($_FILES["video"]["name"])) {
+			if($_FILES["video"]["error"] == 1) {
 				$this->dbResults(
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
@@ -98,24 +87,19 @@ class admin_testimonials extends adminController
 				);
 				
 				$this->forward("/admin/testimonials/?notice=".urlencode("Video file size was too large!"));
-			}
-			else
-			{
+			} else {
 				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/";
 				$file_ext = pathinfo($_FILES["video"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
 			
-				if(move_uploaded_file($_FILES["video"]["tmp_name"], $upload_dir.$upload_file))
-				{
+				if(move_uploaded_file($_FILES["video"]["tmp_name"], $upload_dir.$upload_file)) {
 					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `video` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
 						,"update"
 					);
-				}
-				else
-				{
+				} else {
 					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
@@ -127,10 +111,8 @@ class admin_testimonials extends adminController
 				}
 			}
 		}
-		if(!empty($_FILES["poster"]["name"]))
-		{
-			if($_FILES["poster"]["error"] == 1)
-			{
+		if(!empty($_FILES["poster"]["name"])) {
+			if($_FILES["poster"]["error"] == 1) {
 				$this->dbResults(
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
@@ -139,24 +121,19 @@ class admin_testimonials extends adminController
 				);
 				
 				$this->forward("/admin/testimonials/?notice=".urlencode("Poster file size was too large!"));
-			}
-			else
-			{
+			} else {
 				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/posters/";
 				$file_ext = pathinfo($_FILES["poster"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
 			
-				if(move_uploaded_file($_FILES["poster"]["tmp_name"], $upload_dir.$upload_file))
-				{
+				if(move_uploaded_file($_FILES["poster"]["tmp_name"], $upload_dir.$upload_file)) {
 					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `poster` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
 						,"update"
 					);
-				}
-				else
-				{
+				} else {
 					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
@@ -173,10 +150,8 @@ class admin_testimonials extends adminController
 		
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial created successfully!"));
 	}
-	function edit()
-	{
-		if(!empty($_SESSION["admin"]["admin_testimonials"]))
-		{
+	function edit() {
+		if(!empty($_SESSION["admin"]["admin_testimonials"])) {
 			$aTestimonialRow = $this->dbResults(
 				"SELECT * FROM `testimonials`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -193,9 +168,7 @@ class admin_testimonials extends adminController
 			);
 			
 			$this->tplAssign("aTestimonial", $aTestimonial);
-		}
-		else
-		{
+		} else {
 			$aTestimonial = $this->dbResults(
 				"SELECT * FROM `testimonials`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -223,10 +196,8 @@ class admin_testimonials extends adminController
 		$this->tplAssign("aCategories", $this->get_categories());
 		$this->tplDisplay("testimonials/edit.tpl");
 	}
-	function edit_s()
-	{
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0)
-		{
+	function edit_s() {
+		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_testimonials"] = $_POST;
 			$this->forward("/admin/testimonials/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -249,8 +220,7 @@ class admin_testimonials extends adminController
 				." WHERE `testimonialid` = ".$this->dbQuote($_POST["id"], "integer")
 			,"update"
 		);
-		foreach($_POST["categories"] as $sCategory)
-		{
+		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
 				"INSERT INTO `testimonials_categories_assign`"
 					." (`testimonialid`, `categoryid`)"
@@ -259,10 +229,8 @@ class admin_testimonials extends adminController
 			);
 		}
 		
-		if(!empty($_FILES["video"]["name"]))
-		{
-			if($_FILES["video"]["error"] == 1)
-			{
+		if(!empty($_FILES["video"]["name"])) {
+			if($_FILES["video"]["error"] == 1) {
 				$this->dbResults(
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
@@ -271,9 +239,7 @@ class admin_testimonials extends adminController
 				);
 				
 				$this->forward("/admin/testimonials/?notice=".urlencode("Video file size was too large!"));
-			}
-			else
-			{
+			} else {
 				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/";
 				$file_ext = pathinfo($_FILES["video"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
@@ -285,17 +251,14 @@ class admin_testimonials extends adminController
 				);
 				@unlink($upload_dir.$sVideo);
 			
-				if(move_uploaded_file($_FILES["video"]["tmp_name"], $upload_dir.$upload_file))
-				{
+				if(move_uploaded_file($_FILES["video"]["tmp_name"], $upload_dir.$upload_file)) {
 					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `video` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 						,"update"
 					);
-				}
-				else
-				{
+				} else {
 					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
@@ -307,10 +270,8 @@ class admin_testimonials extends adminController
 				}
 			}
 		}
-		if(!empty($_FILES["poster"]["name"]))
-		{
-			if($_FILES["poster"]["error"] == 1)
-			{
+		if(!empty($_FILES["poster"]["name"])) {
+			if($_FILES["poster"]["error"] == 1) {
 				$this->dbResults(
 					"UPDATE `testimonials` SET"
 						." `active` = 0"
@@ -319,9 +280,7 @@ class admin_testimonials extends adminController
 				);
 				
 				$this->forward("/admin/testimonials/?notice=".urlencode("Poster file size was too large!"));
-			}
-			else
-			{
+			} else {
 				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/posters/";
 				$file_ext = pathinfo($_FILES["poster"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
@@ -333,17 +292,14 @@ class admin_testimonials extends adminController
 				);
 				@unlink($upload_dir.$sPoster);
 			
-				if(move_uploaded_file($_FILES["poster"]["tmp_name"], $upload_dir.$upload_file))
-				{
+				if(move_uploaded_file($_FILES["poster"]["tmp_name"], $upload_dir.$upload_file)) {
 					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `poster` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 						,"update"
 					);
-				}
-				else
-				{
+				} else {
 					$this->dbResults(
 						"UPDATE `testimonials` SET"
 							." `active` = 0"
@@ -360,8 +316,7 @@ class admin_testimonials extends adminController
 		
 		$this->forward("/admin/testimonials/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete()
-	{
+	function delete() {
 		$this->dbResults(
 			"DELETE FROM `testimonials`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -375,8 +330,7 @@ class admin_testimonials extends adminController
 		
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial removed successfully!"));
 	}
-	function categories_index()
-	{
+	function categories_index() {
 		$_SESSION["admin"]["admin_testimonials_categories"] = null;
 		
 		$aCategories = $this->dbResults(
@@ -388,8 +342,7 @@ class admin_testimonials extends adminController
 		$this->tplAssign("aCategories", $aCategories);
 		$this->tplDisplay("testimonials/categories.tpl");
 	}
-	function categories_add_s()
-	{
+	function categories_add_s() {
 		$this->dbResults(
 			"INSERT INTO `testimonials_categories`"
 				." (`name`)"
@@ -402,8 +355,7 @@ class admin_testimonials extends adminController
 
 		echo "/admin/testimonials/categories/?notice=".urlencode("Category added successfully!");
 	}
-	function categories_edit_s()
-	{
+	function categories_edit_s() {
 		$this->dbResults(
 			"UPDATE `testimonials_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
@@ -413,8 +365,7 @@ class admin_testimonials extends adminController
 
 		echo "/admin/testimonials/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete()
-	{
+	function categories_delete() {
 		$this->dbResults(
 			"DELETE FROM `testimonials_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -431,8 +382,7 @@ class admin_testimonials extends adminController
 	##################################
 	
 	### Functions ####################
-	private function get_categories()
-	{
+	private function get_categories() {
 		$aCategories = $this->dbResults(
 			"SELECT * FROM `testimonials_categories`"
 				." ORDER BY `name`"

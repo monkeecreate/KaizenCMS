@@ -5,8 +5,7 @@ class documents_model extends appModel
 	public $documentFolder = "/uploads/documents/";
 	public $perPage = 5;
 	
-	function getDocuments($sCategory, $sAll = false)
-	{
+	function getDocuments($sCategory, $sAll = false) {
 		// Start the WHERE
 		$sWhere = " WHERE `documents`.`id` > 0";// Allways true
 		
@@ -31,8 +30,7 @@ class documents_model extends appModel
 		
 		return $aDocuments;
 	}
-	function getDocument($sId)
-	{
+	function getDocument($sId) {
 		$aDocument = $this->dbResults(
 			"SELECT `documents`.* FROM `documents` AS `documents`"
 				." WHERE `documents`.`id` = ".$this->dbQuote($sId, "integer")
@@ -45,8 +43,7 @@ class documents_model extends appModel
 		
 		return $aDocument;
 	}
-	function getDocumentInfo($aDocument)
-	{
+	function getDocumentInfo($aDocument) {
 		$aCategories = $this->dbResults(
 			"SELECT `name` FROM `documents_categories` AS `categories`"
 				." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
@@ -58,18 +55,14 @@ class documents_model extends appModel
 		
 		return $aDocument;
 	}
-	function getCategories($sEmpty = true)
-	{		
-		if($sEmpty == true)
-		{		
+	function getCategories($sEmpty = true) {		
+		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `documents_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
-		}
-		else
-		{
+		} else {
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `documents_categories_assign`"
 					." GROUP BY `categoryid`"
@@ -82,8 +75,7 @@ class documents_model extends appModel
 		
 		return $aCategories;
 	}
-	function getCategory($sId = null, $sName = null)
-	{
+	function getCategory($sId = null, $sName = null) {
 		if(!empty($sId))
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
 		elseif(!empty($sName))

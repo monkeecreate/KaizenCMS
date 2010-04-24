@@ -1,8 +1,7 @@
 <?php
 class links extends appController
 {
-	function index()
-	{
+	function index() {
 		$oLinks = $this->loadModel("links");
 		
 		## GET CURRENT PAGE NEWS

@@ -2,8 +2,7 @@
 class image extends appController
 {
 	### DISPLAY ######################
-	function resize()
-	{
+	function resize() {
 		$sFile = $this->_settings->root_public.substr($_GET["file"], 1);
 		
 		if(filesize($sFile) == 0 || empty($_GET["width"]) || empty($_GET["height"]))
@@ -20,8 +19,7 @@ class image extends appController
 		$oImage->resize($sNewWidth, $sNewHeight);
 		$oImage->draw(null, 85);
 	}
-	function itemImage()
-	{
+	function itemImage() {
 		$oModel = $this->loadModel($this->_urlVars->dynamic["model"]);
 		
 		if(empty($oModel))

@@ -1,12 +1,10 @@
 <?php
 class emptyMemcache
 {
-	function get()
-	{
+	function get() {
 		return false;
 	}
-	function set()
-	{
+	function set() {
 		return true;
 	}
 }

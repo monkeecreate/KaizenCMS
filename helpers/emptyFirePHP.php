@@ -1,8 +1,7 @@
 <?php
 class emptyFirePHP
 {
-	function log()
-	{
+	function log() {
 		return true;
 	}
 }

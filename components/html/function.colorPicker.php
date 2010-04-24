@@ -1,6 +1,5 @@
 <?php
-function smarty_function_colorPicker($aParams, &$oSmarty)
-{
+function smarty_function_colorPicker($aParams, &$oSmarty) {
 	$html = "<link rel=\"stylesheet\" media=\"screen\" type=\"text/css\" href=\"/scripts/colorpicker/css/colorpicker.css\" />\n";
 	$html .= "<script type=\"text/javascript\" src=\"/scripts/colorpicker/colorpicker.js\"></script>\n";
 	$html .= "<style type=\"text/css\">\n";

@@ -1,8 +1,6 @@
 <?php
-function smarty_function_image_crop($aParams, &$oSmarty)
-{
-	if($aParams["load"] == "cropper")
-	{
+function smarty_function_image_crop($aParams, &$oSmarty) {
+	if($aParams["load"] == "cropper") {
 		$html = "<script src=\"/scripts/jcrop/jquery.Jcrop.min.js\"></script>\n";
 		$html .= "<link rel=\"stylesheet\" href=\"/scripts/jcrop/jquery.Jcrop.css\" type=\"text/css\" />\n";
 		$html .= "<script language=\"Javascript\">\n";
@@ -44,9 +42,7 @@ function smarty_function_image_crop($aParams, &$oSmarty)
 		$html .= "	}\n";
 		$html .= "};\n";
 		$html .= "</script>\n";
-	}
-	elseif($aParams["load"] == "form")
-	{
+	} elseif($aParams["load"] == "form") {
 		$html = "<input type=\"hidden\" name=\"x1\" id=\"x1\" />\r";
 		$html .= "<input type=\"hidden\" name=\"y1\" id=\"y1\" />\r";
 		$html .= "<input type=\"hidden\" name=\"x2\" id=\"x2\" />\r";

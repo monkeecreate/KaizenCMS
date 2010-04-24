@@ -1,16 +1,14 @@
 <?php
 class admin_documents extends adminController
 {
-	function admin_documents()
-	{
+	function admin_documents() {
 		parent::adminController();
 		
 		$this->menuPermission("documents");
 	}
 	
 	### DISPLAY ######################
-	function index()
-	{
+	function index() {
 		$oDocument = $this->loadModel("documents");
 		
 		// Clear saved form info
@@ -21,8 +19,7 @@ class admin_documents extends adminController
 		$this->tplAssign("aDocuments", $oDocument->getDocuments($_GET["category"], true));
 		$this->tplDisplay("documents/index.tpl");
 	}
-	function add()
-	{
+	function add() {
 		$oDocument = $this->loadModel("documents");
 		
 		if(!empty($_SESSION["admin"]["admin_documents"]))
@@ -39,12 +36,10 @@ class admin_documents extends adminController
 		$this->tplAssign("aCategories", $oDocument->getCategories());
 		$this->tplDisplay("documents/add.tpl");
 	}
-	function add_s()
-	{
+	function add_s() {
 		$oDocument = $this->loadModel("documents");
 		
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0)
-		{
+		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_documents"] = $_POST;
 			$this->forward("/admin/documents/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -65,8 +60,7 @@ class admin_documents extends adminController
 			,"insert"
 		);
 		
-		foreach($_POST["categories"] as $sCategory)
-		{
+		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
 				"INSERT INTO `documents_categories_assign`"
 					." (`documentid`, `categoryid`)"
@@ -75,10 +69,8 @@ class admin_documents extends adminController
 			);
 		}
 		
-		if(!empty($_FILES["document"]["name"]))
-		{
-			if($_FILES["document"]["error"] == 1)
-			{
+		if(!empty($_FILES["document"]["name"])) {
+			if($_FILES["document"]["error"] == 1) {
 				$this->dbResults(
 					"UPDATE `documents` SET"
 						." `active` = 0"
@@ -86,9 +78,7 @@ class admin_documents extends adminController
 				);
 				
 				$this->forward("/admin/document/?notice=".urlencode("Document file size was too large!"));
-			}
-			else
-			{
+			} else {
 				$upload_dir = $this->_settings->rootPublic.substr($oDocument->documentFolder, 1);
 				
 				if(!is_dir($upload_dir))
@@ -97,18 +87,14 @@ class admin_documents extends adminController
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
 				
-				if(in_array($file_ext, $oDocument->allowedExt) || empty($oDocument->allowedExt))
-				{
-					if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file))
-					{
+				if(in_array($file_ext, $oDocument->allowedExt) || empty($oDocument->allowedExt)) {
+					if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file)) {
 						$this->dbResults(
 							"UPDATE `documents` SET"
 								." `document` = ".$this->dbQuote($upload_file, "text")
 								." WHERE `id` = ".$this->dbQuote($sID, "integer")
 						);
-					}
-					else
-					{
+					} else {
 						$this->dbResults(
 							"UPDATE `documents` SET"
 								." `active` = 0"
@@ -117,8 +103,7 @@ class admin_documents extends adminController
 						
 						$this->forward("/admin/documents/edit/".$sID."/?error=".urlencode("Failed to upload file!"));
 					}
-				}
-				else
+				} else
 					$this->forward("/admin/documents/edit/".$sID."/?error=".urlencode("File type not allowed for upload!"));
 			}
 		}
@@ -127,12 +112,10 @@ class admin_documents extends adminController
 		
 		$this->forward("/admin/documents/?notice=".urlencode("Document created successfully!"));
 	}
-	function edit()
-	{
+	function edit() {
 		$oDocument = $this->loadModel("documents");
 		
-		if(!empty($_SESSION["admin"]["admin_documents"]))
-		{
+		if(!empty($_SESSION["admin"]["admin_documents"])) {
 			$aDocumentRow = $this->dbResults(
 				"SELECT * FROM `documents`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -147,9 +130,7 @@ class admin_documents extends adminController
 					." WHERE `id` = ".$aDocumentRow["updated_by"]
 				,"row"
 			);
-		}
-		else
-		{
+		} else {
 			$aDocument = $this->dbResults(
 				"SELECT * FROM `documents`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -176,12 +157,10 @@ class admin_documents extends adminController
 		$this->tplAssign("aDocument", $aDocument);
 		$this->tplDisplay("documents/edit.tpl");
 	}
-	function edit_s()
-	{
+	function edit_s() {
 		$oDocument = $this->loadModel("documents");
 		
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0)
-		{
+		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_documents"] = $_POST;
 			$this->forward("/admin/documents/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -200,8 +179,7 @@ class admin_documents extends adminController
 			"DELETE FROM `documents_categories_assign`"
 				." WHERE `documentid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
-		foreach($_POST["categories"] as $sCategory)
-		{
+		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
 				"INSERT INTO `documents_categories_assign`"
 					." (`documentid`, `categoryid`)"
@@ -210,10 +188,8 @@ class admin_documents extends adminController
 			);
 		}
 		
-		if(!empty($_FILES["document"]["name"]))
-		{
-			if($_FILES["document"]["error"] == 1)
-			{
+		if(!empty($_FILES["document"]["name"])) {
+			if($_FILES["document"]["error"] == 1) {
 				$this->dbResults(
 					"UPDATE `documents` SET"
 						." `active` = 0"
@@ -221,9 +197,7 @@ class admin_documents extends adminController
 				);
 				
 				$this->forward("/admin/documents/?notice=".urlencode("Document file size was too large!"));
-			}
-			else
-			{
+			} else {
 				$upload_dir = $this->_settings->rootPublic.substr($oDocument->documentFolder, 1);
 				
 				if(!is_dir($upload_dir))
@@ -232,8 +206,7 @@ class admin_documents extends adminController
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
-				if(in_array($file_ext, $oDocument->allowedExt) || empty($oDocument->allowedExt))
-				{
+				if(in_array($file_ext, $oDocument->allowedExt) || empty($oDocument->allowedExt)) {
 					$sDocument = $this->dbResults(
 						"SELECT `document` FROM `documents`"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -241,16 +214,13 @@ class admin_documents extends adminController
 					);
 					@unlink($upload_dir.$sDocument);
 			
-					if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file))
-					{
+					if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file)) {
 						$this->dbResults(
 							"UPDATE `documents` SET"
 								." `document` = ".$this->dbQuote($upload_file, "text")
 								." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 						);
-					}
-					else
-					{
+					} else {
 						$this->dbResults(
 							"UPDATE `documents` SET"
 								." `active` = 0"
@@ -259,8 +229,7 @@ class admin_documents extends adminController
 					
 						$this->forward("/admin/documents/?notice=".urlencode("Failed to upload file!"));
 					}
-				}
-				else
+				} else
 					$this->forward("/admin/documents/?error=".urlencode("File type not allowed for upload!"));
 			}
 		}
@@ -269,8 +238,7 @@ class admin_documents extends adminController
 		
 		$this->forward("/admin/documents/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete()
-	{
+	function delete() {
 		$oDocument = $this->loadModel("documents");
 		
 		$aDocument = $oDocument->getDocument($this->_urlVars->dynamic["id"], "integer");
@@ -288,8 +256,7 @@ class admin_documents extends adminController
 		
 		$this->forward("/admin/documents/?notice=".urlencode("Document removed successfully!"));
 	}
-	function categories_index()
-	{
+	function categories_index() {
 		$_SESSION["admin"]["admin_documents_categories"] = null;
 		
 		$aCategories = $this->dbResults(
@@ -301,8 +268,7 @@ class admin_documents extends adminController
 		$this->tplAssign("aCategories", $aCategories);
 		$this->tplDisplay("documents/categories.tpl");
 	}
-	function categories_add_s()
-	{
+	function categories_add_s() {
 		$this->dbResults(
 			"INSERT INTO `documents_categories`"
 				." (`name`)"
@@ -315,8 +281,7 @@ class admin_documents extends adminController
 
 		echo "/admin/documents/categories/?notice=".urlencode("Category added successfully!");
 	}
-	function categories_edit_s()
-	{
+	function categories_edit_s() {
 		$this->dbResults(
 			"UPDATE `documents_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
@@ -325,8 +290,7 @@ class admin_documents extends adminController
 
 		echo "/admin/documents/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete()
-	{
+	function categories_delete() {
 		$this->dbResults(
 			"DELETE FROM `documents_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")

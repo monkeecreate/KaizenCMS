@@ -1,6 +1,5 @@
 <?php
-function smarty_modifier_special_urlencode($sURL)
-{
+function smarty_modifier_special_urlencode($sURL) {
 	$sURL = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($sURL)))));
 	
 	if(strlen($sURL) > 50)

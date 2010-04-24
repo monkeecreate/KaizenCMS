@@ -8,16 +8,14 @@ class makeImage
 	private $_height;
 	private $_cache;
 	
-	public function __construct($sFile, $sCache = false)
-	{
+	public function __construct($sFile, $sCache = false) {
 		ini_set("memory_limit", "200m");
 		
 		$this->_file = $sFile;
 		$this->_cache = $sCache;
 		
 		// Die if cached
-		if($this->_cache == true)
-		{
+		if($this->_cache == true) {
 			$aHeaders = apache_request_headers();
 			if (isset($aHeaders['If-Modified-Since'])
 			 && !empty($aHeaders['If-Modified-Since'])
@@ -32,18 +30,15 @@ class makeImage
 		list($this->_width, $this->_height) = $this->_info;
 		
 		// Load image
-		switch($this->_info[2])
-		{
+		switch($this->_info[2]) {
 			case IMAGETYPE_GIF: $this->_image = imagecreatefromgif($sFile); break;
 			case IMAGETYPE_JPEG: $this->_image = imagecreatefromjpeg($sFile); break;
 			case IMAGETYPE_PNG: $this->_image = imagecreatefrompng($sFile); break;
 			default: return false;
 	    }
 	}
-	public function crop($sPhotoWidth, $sPhotoHeight, $sPhotoX1, $sPhotoY1)
-	{
-		if(!empty($this->_info) && !empty($this->_image))
-		{
+	public function crop($sPhotoWidth, $sPhotoHeight, $sPhotoX1, $sPhotoY1) {
+		if(!empty($this->_info) && !empty($this->_image)) {
 			// Load end canvas for cropping
 			$oImage = imagecreatetruecolor($sPhotoWidth, $sPhotoHeight);
 			imagefill($oImage, 0, 0, imagecolorallocate($oImage, 255, 255, 255));
@@ -59,12 +54,10 @@ class makeImage
 			unset($oImage);
 			
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
-	public function cropCenter($sWidth, $sHeight)
-	{
+	public function cropCenter($sWidth, $sHeight) {
 		if($this->_width < $this->_height) {
 			$sPhotoX1 = 0;
 			$sPhotoY1 = ($this->_height - $sHeight) / 2;
@@ -89,37 +82,25 @@ class makeImage
 		
 		return true;
 	}
-	public function resize($sWidth, $sHeight, $sKeep = false)
-	{
-		if(!empty($this->_info) && !empty($this->_image))
-		{
-			if($sKeep == false)
-			{
+	public function resize($sWidth, $sHeight, $sKeep = false) {
+		if(!empty($this->_info) && !empty($this->_image)) {
+			if($sKeep == false) {
 				if($sWidth >= $this->_width && $sHeight >= $this->_height)
 					return true;// Image smaller than size given
-				elseif($this->_width < $sWidth && $this->_height < $sHeight)
-				{
+				elseif($this->_width < $sWidth && $this->_height < $sHeight) {
 					$sNewWidth = $this->_width;
 					$sNewHeight = $this->_height;
-				}
-				elseif($this->_width < $this->_height)
-				{
+				} elseif($this->_width < $this->_height) {
 					$sNewWidth = $sWidth;
 					$sNewHeight = $this->_height * ($sWidth / $this->_width);
-				}
-				elseif($this->_width > $this->_height)
-				{
+				} elseif($this->_width > $this->_height) {
 					$sNewWidth = $this->_width * ($sHeight / $this->_height);
 					$sNewHeight = $sHeight;
-				}
-				elseif($this->_width == $this->_height)
-				{
+				} elseif($this->_width == $this->_height) {
 					$sNewWidth = $sWidth;
 					$sNewHeight = $sHeight;
 				}
-			}
-			else
-			{
+			} else {
 				$sNewWidth = $sWidth;
 				$sNewHeight = $sHeight;
 			}
@@ -139,14 +120,11 @@ class makeImage
 			unset($oResized);
 			
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
-	public function text($sText, $sFont, $sSize = 10, $sAngle = 0, $sX = 0, $sY = 10, $aColor = array(0, 0, 0, 0))
-	{
-		if(!empty($this->_info) && !empty($this->_image))
-		{
+	public function text($sText, $sFont, $sSize = 10, $sAngle = 0, $sX = 0, $sY = 10, $aColor = array(0, 0, 0, 0)) {
+		if(!empty($this->_info) && !empty($this->_image)) {
 			$oColor = imagecolorallocatealpha($this->_image, $aColor[0], $aColor[1], $aColor[2], $aColor[3]);
 			
 			imagettftext($this->_image, $sSize, $sAngle, $sX, $sY, $oColor, $sFont, $sText);
@@ -154,8 +132,7 @@ class makeImage
 			unset($oColor);
 			
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 	public function overlay($sType,
@@ -163,14 +140,11 @@ class makeImage
 		$sX2 = 1, $sY2 = 1,
 		$aColor = array(0, 0, 0, 0),
 		$aPoints = array(0,0,10,10,0,10)
-		)
-	{
-		if(!empty($this->_info) && !empty($this->_image))
-		{
+	) {
+		if(!empty($this->_info) && !empty($this->_image)) {
 			$oColor = imagecolorallocatealpha($this->_image, $aColor[0], $aColor[1], $aColor[2], $aColor[3]);
 			
-			switch($sType)
-			{
+			switch($sType) {
 				case "rectangle":
 					imagerectangle($this->_image, $sX1, $sY1, $sX2, $sY2, $oColor);
 					break;
@@ -190,8 +164,7 @@ class makeImage
 			unset($oColor);
 			
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 	public function overlay_filled($sType,
@@ -199,14 +172,11 @@ class makeImage
 		$sWidth = 1, $sHeight = 1,
 		$aColor = array(0, 0, 0, 0),
 		$aPoints = array(0,0,10,10,0,10)
-		)
-	{
-		if(!empty($this->_info) && !empty($this->_image))
-		{
+	) {
+		if(!empty($this->_info) && !empty($this->_image)) {
 			$oColor = imagecolorallocatealpha($this->_image, $aColor[0], $aColor[1], $aColor[2], $aColor[3]);
 			
-			switch($sType)
-			{
+			switch($sType) {
 				case "rectangle":
 					imagefilledrectangle($this->_image, $sX, $sY, $sWidth, $sHeight, $oColor);
 					break;
@@ -230,18 +200,14 @@ class makeImage
 		else
 			return false;
 	}
-	public function draw($sFile = null, $sQuality = 85)
-	{
-		if(!empty($this->_info) && !empty($this->_image))
-		{
-			if(empty($sFile))
-			{
+	public function draw($sFile = null, $sQuality = 85) {
+		if(!empty($this->_info) && !empty($this->_image)) {
+			if(empty($sFile)) {
 				$mime = image_type_to_mime_type($this->_info[2]);
 				header("Content-type: $mime");
 				header("Last-Modified: ".gmdate("D, d M Y H:i:s", filemtime($this->_file))." GMT");
 				
-				if($this->_cache == true)
-				{
+				if($this->_cache == true) {
 					header("Pragma: public");
 					header("Cache-Control: maxage=".(60*60*24*2));
 					header("Expires: ".gmdate("D, d M Y H:i:s", strtotime("+2 days"))." GMT");
@@ -251,8 +217,7 @@ class makeImage
 			
 			$this->transparency();
 			
-		    switch($this->_info[2])
-			{
+		    switch($this->_info[2]) {
 				case IMAGETYPE_JPEG: imagejpeg($this->_image, $sFile, $sQuality); break;
 				case IMAGETYPE_PNG: imagepng($this->_image, $sFile); break;
 		 		case IMAGETYPE_GIF: imagegif($this->_image, $sFile); break;
@@ -262,27 +227,22 @@ class makeImage
 			imagedestroy($this->_image);
 			
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
-	protected function transparency()
-	{
-		if ( ($this->_info[2] == IMAGETYPE_GIF) || ($this->_info[2] == IMAGETYPE_PNG) )
-		{
+	protected function transparency() {
+		if ( ($this->_info[2] == IMAGETYPE_GIF) || ($this->_info[2] == IMAGETYPE_PNG) ) {
 			$trnprt_indx = imagecolortransparent($this->_image);
  
 			// If we have a specific transparent color
-			if ($trnprt_indx >= 0)
-			{
+			if ($trnprt_indx >= 0) {
 				$trnprt_color    = imagecolorsforindex($this->_image, $trnprt_indx);
 				$trnprt_indx    = imagecolorallocate($this->_image, $trnprt_color['red'], $trnprt_color['green'], $trnprt_color['blue']);
 				imagefill($this->_image, 0, 0, $trnprt_indx);
 				imagecolortransparent($this->_image, $trnprt_indx);
 			}
 			// Always make a transparent background color for PNGs that don't have one allocated already
-			elseif ($this->_info[2] == IMAGETYPE_PNG)
-			{
+			elseif ($this->_info[2] == IMAGETYPE_PNG) {
 				imagealphablending($this->_image, false);
 				$color = imagecolorallocatealpha($this->_image, 0, 0, 0, 127);
 				imagefill($this->_image, 0, 0, $color);

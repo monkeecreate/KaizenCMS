@@ -1,8 +1,7 @@
 <?php
 class galleries extends appController
 {
-	function index()
-	{
+	function index() {
 		$oGalleries = $this->loadModel("galleries");
 		
 		## GET CURRENT PAGE GALLERIES
@@ -42,8 +41,7 @@ class galleries extends appController
 		else
 			$this->tplDisplay("galleries/index.tpl");
 	}
-	function gallery()
-	{
+	function gallery() {
 		$oGalleries = $this->loadModel("galleries");
 		
 		$aGallery = $oGalleries->getGallery($this->_urlVars->dynamic["id"]);

@@ -1,6 +1,5 @@
 <?php
-function smarty_function_getNewsArticle($aParams, &$oSmarty)
-{
+function smarty_function_getNewsArticle($aParams, &$oSmarty) {
 	$oApp = $oSmarty->get_registered_object("appController");
 	
 	$oNews = $oApp->loadModel("news");

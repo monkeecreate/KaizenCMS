@@ -3,8 +3,7 @@ class galleries_model extends appModel
 {
 	public $perPage = 5;
 	
-	function getGalleries($sCategory = null)
-	{
+	function getGalleries($sCategory = null) {
 		$sWhere = " WHERE `galleries`.`id` > 0";
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
@@ -19,8 +18,7 @@ class galleries_model extends appModel
 			,"all"
 		);
 	
-		foreach($aGalleries as $x => $aGallery)
-		{
+		foreach($aGalleries as $x => $aGallery) {
 			$aGalleries[$x]["photo"] = $this->dbResults(
 				"SELECT `photo` FROM `galleries_photos`"
 					." WHERE `galleryid` = ".$aGallery["id"]
@@ -40,16 +38,14 @@ class galleries_model extends appModel
 		
 		return $aGalleries;
 	}
-	function getGallery($sId)
-	{
+	function getGallery($sId) {
 		$aGallery = $this->dbResults(
 			"SELECT * FROM `galleries`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"row"
 		);
 		
-		if(!empty($aGallery))
-		{
+		if(!empty($aGallery)) {
 			$aCategories = $this->dbResults(
 				"SELECT `name` FROM `galleries_categories` AS `category`"
 					." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `category`.`id`"
@@ -62,8 +58,7 @@ class galleries_model extends appModel
 		
 		return $aGallery;
 	}
-	function getPhotos($sId)
-	{
+	function getPhotos($sId) {
 		$aPhotos = $this->dbResults(
 			"SELECT * FROM `galleries_photos`"
 				." WHERE `galleryid` = ".$this->dbQuote($sId, "integer")
@@ -73,8 +68,7 @@ class galleries_model extends appModel
 		
 		return $aPhotos;
 	}
-	function getPhoto($sId)
-	{
+	function getPhoto($sId) {
 		$aPhoto = $this->dbResults(
 			"SELECT * FROM `galleries_photos`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
@@ -83,18 +77,14 @@ class galleries_model extends appModel
 		
 		return $aPhoto;
 	}
-	function getCategories($sEmpty = true)
-	{		
-		if($sEmpty == true)
-		{		
+	function getCategories($sEmpty = true) {		
+		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `galleries_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
-		}
-		else
-		{
+		} else {
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `galleries_categories_assign`"
 					." GROUP BY `categoryid`"
@@ -107,8 +97,7 @@ class galleries_model extends appModel
 		
 		return $aCategories;
 	}
-	function getCategory($sId = null, $sName = null)
-	{
+	function getCategory($sId = null, $sName = null) {
 		if(!empty($sId))
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
 		elseif(!empty($sName))
@@ -124,8 +113,7 @@ class galleries_model extends appModel
 		
 		return $aCategory;
 	}
-	function getMaxSort()
-	{
+	function getMaxSort() {
 		$sMaxSort = $this->dbResults(
 			"SELECT MAX(`sort_order`) FROM `galleries`"
 			,"one"

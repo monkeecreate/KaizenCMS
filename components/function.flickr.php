@@ -1,6 +1,5 @@
 <?php
-function smarty_function_flickr($aParams, &$oSmarty)
-{
+function smarty_function_flickr($aParams, &$oSmarty) {
 	$flickrKey = "69f31081cc7123755564c66ae0af159c";
 	$flickrUser = "32609765@N00"; // move to site settings
 	$flickrAPI = 'http://api.flickr.com/services/rest/?&api_key='.$flickrKey.'&format=php_serial';
@@ -16,8 +15,7 @@ function smarty_function_flickr($aParams, &$oSmarty)
 	## photoStream (Get a list of public photos for the given user.)
 	## params: size, number (optional, per page limit), title (optional, display photo title, true/false)
 	## example: {flickr method=photoStream number=5 size=1 title=false}
-	if ($aParams["method"] == "photoStream")
-	{
+	if ($aParams["method"] == "photoStream") {
 		$flickrAPI .= '&method=flickr.people.getPublicPhotos&user_id='.$flickrUser;
 		if (!empty($aParams["number"]))
 			$flickrAPI .= '&per_page='.$aParams["number"];
@@ -40,8 +38,7 @@ function smarty_function_flickr($aParams, &$oSmarty)
 	## photoSets (Returns the photosets belonging to the specified user.)
 	## params: size, title (optional, display photo title, true/false)
 	## example: {flickr method=photoSets}
-	if ($aParams["method"] == "photoSets")
-	{
+	if ($aParams["method"] == "photoSets") {
 		$flickrAPI .= '&method=flickr.photosets.getList&user_id='.$flickrUser;
 		
 		$rsp = file_get_contents($flickrAPI);
@@ -62,8 +59,7 @@ function smarty_function_flickr($aParams, &$oSmarty)
 	## photoSearch (Return a list of photos matching some criteria.)
 	## params: size, tags (required, to search by), number (optional, per page limit), user (optional, true or false)
 	## example: {flickr method=photoSearch user=true number=6 size=2 tags=snow,winter}
-	if ($aParams["method"] == "photoSearch")
-	{
+	if ($aParams["method"] == "photoSearch") {
 		$flickrAPI .= '&method=flickr.photos.search&tags='.$aParams["tags"];
 		if (!empty($aParams["number"]))
 			$flickrAPI .= '&per_page='.$aParams["number"];

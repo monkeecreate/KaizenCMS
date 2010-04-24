@@ -1,16 +1,14 @@
 <?php
 class admin_links extends adminController
 {
-	function admin_links()
-	{
+	function admin_links() {
 		parent::adminController();
 		
 		$this->menuPermission("links");
 	}
 	
 	### DISPLAY ######################
-	function index()
-	{
+	function index() {
 		$oLinks = $this->loadModel("links");
 		
 		// Clear saved form info
@@ -21,8 +19,7 @@ class admin_links extends adminController
 		$this->tplAssign("aLinks", $oLinks->getLinks($_GET["category"]));
 		$this->tplDisplay("links/index.tpl");
 	}
-	function add()
-	{
+	function add() {
 		$oLinks = $this->loadModel("links");
 		
 		if(!empty($_SESSION["admin"]["admin_links"]))
@@ -39,10 +36,8 @@ class admin_links extends adminController
 		$this->tplAssign("aCategories", $oLinks->getCategories());
 		$this->tplDisplay("links/add.tpl");
 	}
-	function add_s()
-	{
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0)
-		{
+	function add_s() {
+		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_links"] = $_POST;
 			$this->forward("/admin/links/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -64,8 +59,7 @@ class admin_links extends adminController
 			,"insert"
 		);
 		
-		foreach($_POST["categories"] as $sCategory)
-		{
+		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
 				"INSERT INTO `links_categories_assign`"
 					." (`linkid`, `categoryid`)"
@@ -78,12 +72,10 @@ class admin_links extends adminController
 		
 		$this->forward("/admin/links/?notice=".urlencode("Link created successfully!"));
 	}
-	function edit()
-	{
+	function edit() {
 		$oLinks = $this->loadModel("links");
 		
-		if(!empty($_SESSION["admin"]["admin_links"]))
-		{
+		if(!empty($_SESSION["admin"]["admin_links"])) {
 			$aLinkRow = $oLinks->getLink($this->_urlVars->dynamic["id"]);
 			
 			$aLink = $_SESSION["admin"]["admin_links"];
@@ -96,9 +88,7 @@ class admin_links extends adminController
 			);
 			
 			$this->tplAssign("aLink", $aLink);
-		}
-		else
-		{
+		} else {
 			$aLink = $oLinks->getLink($this->_urlVars->dynamic["id"]);
 			
 			$aLink["categories"] = $this->dbResults(
@@ -122,10 +112,8 @@ class admin_links extends adminController
 		$this->tplAssign("aCategories", $oLinks->getCategories());
 		$this->tplDisplay("links/edit.tpl");
 	}
-	function edit_s()
-	{
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0)
-		{
+	function edit_s() {
+		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_links"] = $_POST;
 			$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -145,8 +133,7 @@ class admin_links extends adminController
 			"DELETE FROM `links_categories_assign`"
 				." WHERE `linkid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
-		foreach($_POST["categories"] as $sCategory)
-		{
+		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
 				"INSERT INTO `links_categories_assign`"
 					." (`linkid`, `categoryid`)"
@@ -159,8 +146,7 @@ class admin_links extends adminController
 		
 		$this->forward("/admin/links/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete()
-	{
+	function delete() {
 		$oLinks = $this->loadModel("links");
 		
 		$aLink = $oLinks->getLink($this->_urlVars->dynamic["id"]);
@@ -176,8 +162,7 @@ class admin_links extends adminController
 		
 		$this->forward("/admin/links/?notice=".urlencode("Link removed successfully!"));
 	}
-	function categories_index()
-	{
+	function categories_index() {
 		$oLinks = $this->loadModel("links");
 		
 		$_SESSION["admin"]["admin_links_categories"] = null;
@@ -185,8 +170,7 @@ class admin_links extends adminController
 		$this->tplAssign("aCategories", $oLinks->getCategories());
 		$this->tplDisplay("links/categories.tpl");
 	}
-	function categories_add_s()
-	{
+	function categories_add_s() {
 		$this->dbResults(
 			"INSERT INTO `links_categories`"
 				." (`name`)"
@@ -199,8 +183,7 @@ class admin_links extends adminController
 
 		echo "/admin/links/categories/?notice=".urlencode("Category added successfully!");
 	}
-	function categories_edit_s()
-	{
+	function categories_edit_s() {
 		$this->dbResults(
 			"UPDATE `links_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
@@ -209,8 +192,7 @@ class admin_links extends adminController
 
 		echo "/admin/links/categories/?notice=".urlencode("Changes saved successfully!");
 	}
-	function categories_delete()
-	{
+	function categories_delete() {
 		$this->dbResults(
 			"DELETE FROM `links_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")

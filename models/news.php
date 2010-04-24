@@ -7,13 +7,11 @@ class news_model extends appModel
 	public $imageFolder = "/uploads/news/";
 	public $perPage = 5;
 	
-	function getArticles($sCategory = null)
-	{	
+	function getArticles($sCategory = null) {	
 		// Start the WHERE
 		$sWhere = " WHERE `news`.`id` > 0";// Allways true
 		
-		if($sAll == false)
-		{
+		if($sAll == false) {
 			$sWhere .= " AND `news`.`datetime_show` < ".time()." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
 			$sWhere .= " AND `news`.`active` = 1";
 		}
@@ -36,8 +34,7 @@ class news_model extends appModel
 		
 		return $aArticles;
 	}
-	function getArticle($sId)
-	{
+	function getArticle($sId) {
 		$aArticle = $this->dbResults(
 			"SELECT `news`.* FROM `news` AS `news`"
 				." WHERE `news`.`id` = ".$this->dbQuote($sId, "integer")
@@ -52,8 +49,7 @@ class news_model extends appModel
 		
 		return $aArticle;
 	}
-	private function getArticleInfo($aArticle)
-	{	
+	private function getArticleInfo($aArticle) {	
 		$aCategories = $this->dbResults(
 			"SELECT `name` FROM `news_categories` AS `categories`"
 				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
@@ -72,18 +68,14 @@ class news_model extends appModel
 			
 		return $aArticle;
 	}
-	function getCategories($sEmpty = true)
-	{
-		if($sEmpty == true)
-		{		
+	function getCategories($sEmpty = true) {
+		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `news_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
-		}
-		else
-		{
+		} else {
 			$aCategories = $this->dbResults(
 				"SELECT * FROM `news_categories_assign`"
 					." GROUP BY `categoryid`"
@@ -96,8 +88,7 @@ class news_model extends appModel
 		
 		return $aCategories;
 	}
-	function getCategory($sId = null, $sName = null)
-	{
+	function getCategory($sId = null, $sName = null) {
 		if(!empty($sId))
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
 		elseif(!empty($sName))
@@ -113,8 +104,7 @@ class news_model extends appModel
 		
 		return $aCategory;
 	}
-	function getImage($sId)
-	{
+	function getImage($sId) {
 		$aArticle = $this->getArticle($sId);
 		
 		$sFile = $this->_settings->rootPublic.substr($this->imageFolder, 1).$sId.".jpg";

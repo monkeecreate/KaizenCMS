@@ -4,8 +4,7 @@ class adminController extends appController
 	private $_menu;
 	public $superAdmin;
 	
-	function adminController()
-	{
+	function adminController() {
 		parent::appController();
 		
 		if(!empty($_GET["error"]))
@@ -16,8 +15,7 @@ class adminController extends appController
 		
 		if(!$this->loggedin() && $this->_settings->url[1] != "login" && $this->_settings->surl != "/admin/")
 			$this->forward("/admin/", 401);
-		elseif($this->loggedin())
-		{
+		elseif($this->loggedin()) {
 			$aUser = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$this->dbQuote($_SESSION["admin"]["userid"], "text")
@@ -38,14 +36,11 @@ class adminController extends appController
 			/*## @end ##*/
 			
 			/*## Menu ##*/
-			if($this->_settings->url[1] != "logout")
-			{
+			if($this->_settings->url[1] != "logout") {
 				include($this->_settings->root."inc_menuAdmin.php");
 			
-				if(!$this->superAdmin)
-				{
-					foreach($aMenuAdmin as $x => $aMenu)
-					{
+				if(!$this->superAdmin) {
+					foreach($aMenuAdmin as $x => $aMenu) {
 						$aMenuItem = $this->dbResults(
 							"SELECT * FROM `users_privlages`"
 								." WHERE `userid` = ".$aUser["id"]
@@ -78,8 +73,7 @@ class adminController extends appController
 	}
 	function login()
 	{
-		if(!empty($_POST["username"]) && !empty($_POST["password"]))
-		{
+		if(!empty($_POST["username"]) && !empty($_POST["password"])) {
 			$sUser = $this->dbResults(
 				"SELECT `id` FROM `users`"
 					." WHERE `username` = ".$this->dbQuote($_POST["username"], "text")
@@ -88,31 +82,25 @@ class adminController extends appController
 				,"one"
 			);
 			
-			if(!empty($sUser))
-			{
+			if(!empty($sUser)) {
 				session_regenerate_id();
 				$_SESSION["admin"]["userid"] = $sUser;
 				
 				$this->forward("/admin/");
-			}
-			else
+			} else
 				$this->forward("/admin/?error=".urlencode("Username or password was incorrect!"));
-		}
-		else
+		} else
 			$this->forward("/admin/?error=".urlencode("Please provide both a username and password!"));
 	}
-	function logout()
-	{
+	function logout() {
 		$_SESSION["admin"] = array();
 		
 		$this->forward("/admin/");
 	}
-	function password_reset()
-	{
+	function password_reset() {
 		
 	}
-	function isloggedin()
-	{
+	function isloggedin() {
 		$secretKey = md5($_SERVER["SERVER_NAME"]);
 		$config = array();
 		$key = md5(implode('', array_values($config)) . $secretKey);
@@ -131,10 +119,8 @@ class adminController extends appController
 	##################################
 	
 	### Functions ####################
-	function loggedin()
-	{
-		if(!empty($_SESSION["admin"]["userid"]))
-		{
+	function loggedin() {
+		if(!empty($_SESSION["admin"]["userid"])) {
 			$aUser = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
@@ -145,19 +131,16 @@ class adminController extends appController
 				return true;
 			else
 				return false;
-		}
-		else
+		} else
 			return false;
 	}
-	function menuPermission($section)
-	{
+	function menuPermission($section) {
 		if(!array_key_exists($section, $this->_menu))
 			$this->error("403");
 		else
 			return true;
 	}
-	function boolCheck($value)
-	{
+	function boolCheck($value) {
 		if($value == 1)
 			return 1;
 		else

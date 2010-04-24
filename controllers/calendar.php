@@ -1,8 +1,7 @@
 <?php
 class calendar extends appController
 {
-	function index()
-	{
+	function index() {
 		$oCalendar = $this->loadModel("calendar");
 		
 		## GET CURRENT PAGE EVENTS
@@ -43,8 +42,7 @@ class calendar extends appController
 		else
 			$this->tplDisplay("calendar/index.tpl");
 	}
-	function ics()
-	{
+	function ics() {
 		$oCalendar = $this->loadModel("calendar");
 		
 		$aEventPages = array_chunk($oCalendar->getEvents($_GET["category"]), 15);
@@ -55,8 +53,7 @@ class calendar extends appController
 		
 		$this->tplDisplay("calendar/ics.tpl");
 	}
-	function event()
-	{
+	function event() {
 		$oCalendar = $this->loadModel("calendar");
 		
 		$aEvent = $oCalendar->getEvent($this->_urlVars->dynamic["id"]);
@@ -71,8 +68,7 @@ class calendar extends appController
 		else
 			$this->tplDisplay("calendar/event.tpl");
 	}
-	function event_ics()
-	{
+	function event_ics() {
 		$oCalendar = $this->loadModel("calendar");
 		
 		$aEvent = $oCalendar->getEvent($this->_urlVars->dynamic["id"]);

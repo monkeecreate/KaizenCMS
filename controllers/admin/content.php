@@ -1,16 +1,14 @@
 <?php
 class admin_content extends adminController
 {
-	function admin_content()
-	{
+	function admin_content() {
 		parent::adminController();
 		
 		$this->menuPermission("content");
 	}
 	
 	### DISPLAY ######################
-	function index()
-	{
+	function index() {
 		// Clear saved form info
 		$_SESSION["admin"]["admin_content"] = null;
 		
@@ -24,16 +22,13 @@ class admin_content extends adminController
 		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
 		$this->tplDisplay("content/index.tpl");
 	}
-	function add()
-	{
+	function add() {
 		$this->tplAssign("aTemplates", $this->getTemplates());
 		$this->tplAssign("aPage", $_SESSION["admin"]["admin_content"]);
 		$this->tplDisplay("content/add.tpl");
 	}
-	function add_s()
-	{
-		if(empty($_POST["title"]))
-		{
+	function add_s() {
+		if(empty($_POST["title"])) {
 			$_SESSION["admin"]["admin_content"] = $_POST;
 			$this->forward("/admin/content/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -49,8 +44,7 @@ class admin_content extends adminController
 			,"all"
 		);
 
-		if (in_array(array('tag' => $sTag), $aPages))
-		{
+		if (in_array(array('tag' => $sTag), $aPages)) {
 			$i = 1;
 			do {
 				$sTempTag = substr($sTag, 0, 30-(strlen($i)+1)).'-'.$i;
@@ -76,8 +70,7 @@ class admin_content extends adminController
 			,"insert"
 		);
 		
-		if($this->superAdmin)
-		{
+		if($this->superAdmin) {
 			$this->dbResults(
 				"UPDATE `content` SET"
 					." `tag` = ".$this->dbQuote($sTag, "text")
@@ -92,10 +85,8 @@ class admin_content extends adminController
 		
 		$this->forward("/admin/content/?notice=".urlencode("Page created successfully!"));
 	}
-	function edit()
-	{
-		if(!empty($_SESSION["admin"]["admin_content"]))
-		{
+	function edit() {
+		if(!empty($_SESSION["admin"]["admin_content"])) {
 			$aPage = $this->dbResults(
 				"SELECT * FROM `content`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -112,9 +103,7 @@ class admin_content extends adminController
 			);
 			
 			$this->tplAssign("aPage", $aPage);
-		}
-		else
-		{
+		} else {
 			$aPage = $this->dbResults(
 				"SELECT * FROM `content`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -133,10 +122,8 @@ class admin_content extends adminController
 		$this->tplAssign("aTemplates", $this->getTemplates());
 		$this->tplDisplay("content/edit.tpl");
 	}
-	function edit_s()
-	{
-		if(empty($_POST["title"]))
-		{
+	function edit_s() {
+		if(empty($_POST["title"])) {
 			$_SESSION["admin"]["admin_content"] = $_POST;
 			$this->forward("/admin/content/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -150,8 +137,7 @@ class admin_content extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		
-		if($this->superAdmin)
-		{
+		if($this->superAdmin) {
 			if(!empty($_POST["tag"]))
 				$sTag = $_POST["tag"];
 			else
@@ -171,8 +157,7 @@ class admin_content extends adminController
 		
 		$this->forward("/admin/content/?notice=".urlencode("Changes saved successfully!"));
 	}
-	function delete()
-	{
+	function delete() {
 		$this->dbResults(
 			"DELETE FROM `content`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -183,12 +168,10 @@ class admin_content extends adminController
 	##################################
 	
 	### Functions ####################
-	function getTemplates()
-	{
+	function getTemplates() {
 		$aTemplates = array();
 		$aFiles = scandir($this->_settings->root."views/content/");
-		foreach($aFiles as $sFile)
-		{
+		foreach($aFiles as $sFile) {
 			if($sFile != "." && $sFile != "..")
 				$aTemplates[] = $sFile;
 		}
