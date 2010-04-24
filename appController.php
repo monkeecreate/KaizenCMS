@@ -69,7 +69,10 @@ class appController
 			if(substr($sFile, -1) == "/")
 				$sFile = substr($sFile, 0, -1);
 			
-			require($this->_settings->root."controllers/".$sFile.".php");
+			if(is_file($this->_settings->root."controllers/".$sFile.".php"))
+				require($this->_settings->root."controllers/".$sFile.".php");
+			else
+				return false;
 		}
 		
 		$oController = new $sController;
