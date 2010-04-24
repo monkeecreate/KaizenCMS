@@ -1,15 +1,18 @@
 <?php
 class faq extends appController
 {
+	function __construct() {
+		// Load model when creating appController
+		parent::__construct("faq");
+	}
+	
 	function index() {
-		$oFAQ = $this->loadModel("faq");
-		
 		## GET CURRENT PAGE QUESTIONS
 		$sCurrentPage = $_GET["page"];
 		if(empty($sCurrentPage))
 			$sCurrentPage = 1;
 		
-		$aQuestionPages = array_chunk($oFAQ->getQuestions($_GET["category"]), $oFAQ->perPage);
+		$aQuestionPages = array_chunk($this->model->getQuestions($_GET["category"]), $this->model->perPage);
 		$aQuestions = $aQuestionPages[$sCurrentPage - 1];
 		
 		$aPaging = array(
@@ -30,7 +33,7 @@ class faq extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tplAssign("aCategories", $oFAQ->getCategories(false));
+		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aQuestions", $aQuestions);
 		$this->tplAssign("aPaging", $aPaging);
 		

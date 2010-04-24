@@ -1,15 +1,18 @@
 <?php
 class calendar extends appController
 {
+	function __construct() {
+		// Load model when creating appController
+		parent::__construct("calendar");
+	}
+	
 	function index() {
-		$oCalendar = $this->loadModel("calendar");
-		
 		## GET CURRENT PAGE EVENTS
 		$sCurrentPage = $_GET["page"];
 		if(empty($sCurrentPage))
 			$sCurrentPage = 1;
 		
-		$aEventPages = array_chunk($oCalendar->getEvents($_GET["category"]), $oCalendar->perPage);
+		$aEventPages = array_chunk($this->model->getEvents($_GET["category"]), $this->model->perPage);
 		$aEvents = $aEventPages[$sCurrentPage - 1];
 		
 		$aPaging = array(
@@ -31,7 +34,7 @@ class calendar extends appController
 		#########################
 
 		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
-		$this->tplAssign("aCategories", $oCalendar->getCategories(false));
+		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aEvents", $aEvents);
 		$this->tplAssign("aPaging", $aPaging);
 		
@@ -43,9 +46,7 @@ class calendar extends appController
 			$this->tplDisplay("calendar/index.tpl");
 	}
 	function ics() {
-		$oCalendar = $this->loadModel("calendar");
-		
-		$aEventPages = array_chunk($oCalendar->getEvents($_GET["category"]), 15);
+		$aEventPages = array_chunk($this->model->getEvents($_GET["category"]), 15);
 		$aEvents = $aEventPages[0];
 
 		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
@@ -54,9 +55,7 @@ class calendar extends appController
 		$this->tplDisplay("calendar/ics.tpl");
 	}
 	function event() {
-		$oCalendar = $this->loadModel("calendar");
-		
-		$aEvent = $oCalendar->getEvent($this->_urlVars->dynamic["id"]);
+		$aEvent = $this->model->getEvent($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aEvent))
 			$this->error('404');
@@ -69,9 +68,7 @@ class calendar extends appController
 			$this->tplDisplay("calendar/event.tpl");
 	}
 	function event_ics() {
-		$oCalendar = $this->loadModel("calendar");
-		
-		$aEvent = $oCalendar->getEvent($this->_urlVars->dynamic["id"]);
+		$aEvent = $this->model->getEvent($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aEvent))
 			$this->error('404');

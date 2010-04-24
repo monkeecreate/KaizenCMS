@@ -1,15 +1,18 @@
 <?php
 class events extends appController
 {
+	function __construct() {
+		// Load model when creating appController
+		parent::__construct("events");
+	}
+	
 	function index() {
-		$oEvents = $this->loadModel("events");
-		
 		## GET CURRENT PAGE NEWS
 		$sCurrentPage = $_GET["page"];
 		if(empty($sCurrentPage))
 			$sCurrentPage = 1;
 		
-		$aEventPages = array_chunk($oEvents->getEvents($_GET["category"]), $oEvents->perPage);
+		$aEventPages = array_chunk($this->model->getEvents($_GET["category"]), $this->model->perPage);
 		$aEvents = $aEventPages[$sCurrentPage - 1];
 		
 		$aPaging = array(
@@ -30,7 +33,7 @@ class events extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tplAssign("aCategories", $oEvents->getCategories(false));
+		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aEvents", $aEvents);
 		$this->tplAssign("aPaging", $aPaging);
 		
@@ -42,9 +45,7 @@ class events extends appController
 			$this->tplDisplay("events/index.tpl");
 	}
 	function event() {
-		$oEvents = $this->loadModel("events");
-		
-		$aEvent = $oEvents->getEvent($this->_urlVars->dynamic["id"]);
+		$aEvent = $this->model->getEvent($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aEvent))
 			$this->error('404');

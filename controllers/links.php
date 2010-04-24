@@ -1,15 +1,18 @@
 <?php
 class links extends appController
 {
+	function __construct() {
+		// Load model when creating appController
+		parent::__construct("links");
+	}
+	
 	function index() {
-		$oLinks = $this->loadModel("links");
-		
 		## GET CURRENT PAGE NEWS
 		$sCurrentPage = $_GET["page"];
 		if(empty($sCurrentPage))
 			$sCurrentPage = 1;
 		
-		$aLinkPaging = array_chunk($oLinks->getLinks($_GET["category"]), $oLinks->perPage);
+		$aLinkPaging = array_chunk($this->model->getLinks($_GET["category"]), $this->model->perPage);
 		$aLinks = $aLinkPaging[$sCurrentPage - 1];
 		
 		$aPaging = array(
@@ -30,7 +33,7 @@ class links extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tplAssign("aCategories", $oLinks->getCategories(false));
+		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aLinks", $aLinks);
 		$this->tplAssign("aPaging", $aPaging);
 		

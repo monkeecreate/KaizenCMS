@@ -9,8 +9,9 @@ class appController
 	private $_enc;
 	public $_settings;
 	public $_urlVars;
+	public $model;
 	
-	function __construct() {
+	function __construct($sModel = null) {
 		global $objDB, $oMemcache, $objMail, $oFirePHP, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl, $aURLVars;
 		
 		$this->_db = $objDB;
@@ -29,6 +30,10 @@ class appController
 			,"memcacheSalt" => $aConfig["memcache"]["salt"]
 		);
 		$this->_urlVars = $aURLVars;
+		
+		if(!empty($sModel)) {
+			$this->model = $this->loadModel($sModel);
+		}
 	}
 	
 	### Functions ####################

@@ -1,15 +1,18 @@
 <?php
 class documents extends appController
 {
+	function __construct() {
+		// Load model when creating appController
+		parent::__construct("document");
+	}
+	
 	function index() {
-		$oDocuments = $this->loadModel("documents");
-		
 		## GET CURRENT PAGE DOCUMENTS
 		$sCurrentPage = $_GET["page"];
 		if(empty($sCurrentPage))
 			$sCurrentPage = 1;
 		
-		$aDocumentPages = array_chunk($oDocuments->getDocuments($_GET["category"]), $oDocuments->perPage);
+		$aDocumentPages = array_chunk($this->model->getDocuments($_GET["category"]), $this->model->perPage);
 		$aDocuments = $aDocumentPages[$sCurrentPage - 1];
 		
 		$aPaging = array(
@@ -30,7 +33,7 @@ class documents extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tplAssign("aCategories", $oDocuments->getCategories(false));
+		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aDocuments", $aDocuments);
 		$this->tplAssign("aPaging", $aPaging);
 		

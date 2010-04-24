@@ -1,15 +1,18 @@
 <?php
 class news extends appController
 {
+	function __construct() {
+		// Load model when creating appController
+		parent::__construct("news");
+	}
+	
 	function index() {
-		$oNews = $this->loadModel("news");
-		
 		## GET CURRENT PAGE NEWS
 		$sCurrentPage = $_GET["page"];
 		if(empty($sCurrentPage))
 			$sCurrentPage = 1;
 		
-		$aArticlePages = array_chunk($oNews->getArticles($_GET["category"]), $oNews->perPage);
+		$aArticlePages = array_chunk($this->model->getArticles($_GET["category"]), $this->model->perPage);
 		$aArticles = $aArticlePages[$sCurrentPage - 1];
 		
 		$aPaging = array(
@@ -30,7 +33,7 @@ class news extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tplAssign("aCategories", $oNews->getCategories(false));
+		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aArticles", $aArticles);
 		$this->tplAssign("aPaging", $aPaging);
 		
@@ -42,9 +45,7 @@ class news extends appController
 			$this->tplDisplay("news/index.tpl");
 	}
 	function rss() {
-		$oNews = $this->loadModel("news");
-		
-		$aArticles = array_slice($oNews->getArticles($_GET["category"]), 0, 15);
+		$aArticles = array_slice($this->model->getArticles($_GET["category"]), 0, 15);
 
 		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
 		$this->tplAssign("aArticles", $aArticles);
@@ -53,9 +54,7 @@ class news extends appController
 		$this->tplDisplay("news/rss.tpl");
 	}
 	function article() {
-		$oNews = $this->loadModel("news");
-		
-		$aArticle = $oNews->getArticle($this->_urlVars->dynamic["id"]);
+		$aArticle = $this->model->getArticle($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aArticle))
 			$this->error('404');

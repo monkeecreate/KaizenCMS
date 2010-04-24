@@ -1,15 +1,18 @@
 <?php
 class directory_ extends appController
 {
+	function __construct() {
+		// Load model when creating appController
+		parent::__construct("directory");
+	}
+	
 	function index() {
-		$oDirectory = $this->loadModel('directory');
-		
 		## GET CURRENT PAGE NEWS
 		$sCurrentPage = $_GET["page"];
 		if(empty($sCurrentPage))
 			$sCurrentPage = 1;
 		
-		$aListingPages = array_chunk($oDirectory->getListings($_GET["category"]), $oDirectory->perPage);
+		$aListingPages = array_chunk($this->model->getListings($_GET["category"]), $this->model->perPage);
 		$aListings = $aListingPages[$sCurrentPage - 1];
 		
 		$aPaging = array(
@@ -30,7 +33,7 @@ class directory_ extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 		
-		$this->tplAssign("aCategories", $oDirectory->getCategories(false));
+		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aListings", $aListings);
 		$this->tplAssign("aPaging", $aPaging);
 		$this->tplDisplay("directory.tpl");

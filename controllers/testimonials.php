@@ -1,6 +1,11 @@
 <?php
 class testimonials extends appController
 {
+	function __construct() {
+		// Load model when creating appController
+		parent::__construct("testimonials");
+	}
+	
 	function index() {
 		$aTestimonials = $this->dbResults(
 			"SELECT `testimonials`.* FROM `testimonials`"

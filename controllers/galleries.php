@@ -1,15 +1,18 @@
 <?php
 class galleries extends appController
 {
+	function __construct() {
+		// Load model when creating appController
+		parent::__construct("galleries");
+	}
+	
 	function index() {
-		$oGalleries = $this->loadModel("galleries");
-		
 		## GET CURRENT PAGE GALLERIES
 		$sCurrentPage = $_GET["page"];
 		if(empty($sCurrentPage))
 			$sCurrentPage = 1;
 		
-		$aGalleryPages = array_chunk($oGalleries->getGalleries($_GET["category"]), $oGalleries->perPage);
+		$aGalleryPages = array_chunk($this->model->getGalleries($_GET["category"]), $this->model->perPage);
 		$aGalleries = $aGalleryPages[$sCurrentPage - 1];
 		
 		$aPaging = array(
@@ -30,7 +33,7 @@ class galleries extends appController
 			$aPaging["next"]["use"] = false;
 		#########################
 
-		$this->tplAssign("aCategories", $oGalleries->getCategories(false));
+		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aGalleries", $aGalleries);
 		$this->tplAssign("aPaging", $aPaging);
 		
@@ -42,14 +45,12 @@ class galleries extends appController
 			$this->tplDisplay("galleries/index.tpl");
 	}
 	function gallery() {
-		$oGalleries = $this->loadModel("galleries");
-		
-		$aGallery = $oGalleries->getGallery($this->_urlVars->dynamic["id"]);
+		$aGallery = $this->model->getGallery($this->_urlVars->dynamic["id"]);
 		
 		if(empty($aGallery))
 			$this->error('404');
 		
-		$aGallery["photos"] = $oGalleries->getPhotos($this->_urlVars->dynamic["id"]);
+		$aGallery["photos"] = $this->model->getPhotos($this->_urlVars->dynamic["id"]);
 		
 		$this->tplAssign("aGallery", $aGallery);
 	
