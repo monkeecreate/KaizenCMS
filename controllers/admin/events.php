@@ -1,10 +1,10 @@
 <?php
 class admin_events extends adminController
 {
-	function admin_events() {
-		parent::adminController();
+	function __construct() {
+		parent::__construct("events");
 		
-		$this->menuPermission("faq");
+		$this->menuPermission("events");
 	}
 	
 	### DISPLAY ######################

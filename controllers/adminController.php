@@ -4,8 +4,8 @@ class adminController extends appController
 	private $_menu;
 	public $superAdmin;
 	
-	function adminController() {
-		parent::__construct();
+	function __construct($sModel = null) {
+		parent::__construct($sModel);
 		
 		if(!empty($_GET["error"]))
 			$this->tplAssign("page_error", htmlentities(urldecode($_GET["error"])));

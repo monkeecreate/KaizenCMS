@@ -1,8 +1,8 @@
 <?php
 class admin_galleries extends adminController
 {
-	function admin_galleries() {
-		parent::adminController();
+	function __construct() {
+		parent::__construct("galleries");
 		
 		$this->menuPermission("galleries");
 	}

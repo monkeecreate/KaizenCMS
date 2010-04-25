@@ -1,8 +1,8 @@
 <?php
 class admin_promos extends adminController
 {
-	function admin_promos() {
-		parent::adminController();
+	function __construct() {
+		parent::__construct("promos");
 		
 		$this->menuPermission("promos");
 	}

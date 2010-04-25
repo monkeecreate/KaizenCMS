@@ -1,8 +1,8 @@
 <?php
 class admin_users extends adminController
 {
-	function admin_users() {
-		parent::adminController();
+	function __construct() {
+		parent::__construct("users");
 		
 		$this->menuPermission("users");
 	}

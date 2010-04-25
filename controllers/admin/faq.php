@@ -1,8 +1,8 @@
 <?php
 class admin_faq extends adminController
 {
-	function admin_faq() {
-		parent::adminController();
+	function __construct() {
+		parent::__construct("faq");
 		
 		$this->menuPermission("faq");
 	}

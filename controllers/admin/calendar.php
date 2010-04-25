@@ -1,8 +1,8 @@
 <?php
 class admin_calendar extends adminController
 {
-	function admin_calendar() {
-		parent::adminController();
+	function __construct() {
+		parent::__construct("calendar");
 		
 		$this->menuPermission("calendar");
 	}

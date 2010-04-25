@@ -1,8 +1,8 @@
 <?php
 class admin_news extends adminController
 {
-	function admin_news() {
-		parent::adminController();
+	function __construct() {
+		parent::__construct("news");
 		
 		$this->menuPermission("news");
 	}

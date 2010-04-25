@@ -1,8 +1,8 @@
 <?php
 class admin_links extends adminController
 {
-	function admin_links() {
-		parent::adminController();
+	function __construct() {
+		parent::__construct("links");
 		
 		$this->menuPermission("links");
 	}

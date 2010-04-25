@@ -1,8 +1,8 @@
 <?php
 class admin_directory extends adminController
 {
-	function admin_directory() {
-		parent::adminController();
+	function __construct() {
+		parent::__construct("directory");
 		
 		$this->menuPermission("directory");
 	}

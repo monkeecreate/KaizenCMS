@@ -1,8 +1,8 @@
 <?php
 class admin_content extends adminController
 {
-	function admin_content() {
-		parent::adminController();
+	function __construct() {
+		parent::__construct("content");
 		
 		$this->menuPermission("content");
 	}
