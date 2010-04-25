@@ -16,7 +16,7 @@
 	<thead>
 		<tr>
 			<th sort="name">Name</th>
-			<th sort="type">Type</td>
+			<th sort="subName">Sub-Name
 			<th sort="active">Active</th>
 			<th></th>
 		</tr>
@@ -25,13 +25,7 @@
 		{foreach from=$aTestimonials item=aTestimonial}
 			<tr>
 				<td>{$aTestimonial.name|clean_html}</td>
-				<td class="small center">
-					{if !empty($aTestimonial.video)}
-						Video
-					{else}
-						Text
-					{/if}
-				</td>
+				<td>{$aTestimonial.sub_name|clean_html}</td>
 				<td class="small center">
 					{if $aTestimonial.active == 1}
 						<img src="/images/admin/icons/accept.png">

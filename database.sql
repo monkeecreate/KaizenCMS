@@ -344,8 +344,6 @@ CREATE TABLE `testimonials` (
   `name` varchar(100) default NULL,
   `sub_name` varchar(100) default NULL,
   `text` longtext,
-  `video` varchar(100) default NULL,
-  `poster` varchar(100) default NULL,
   `active` int(11) NOT NULL default '0',
   `created_datetime` int(11) NOT NULL default '0',
   `created_by` int(11) NOT NULL default '0',

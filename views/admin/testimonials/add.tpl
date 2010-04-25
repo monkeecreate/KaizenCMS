@@ -3,10 +3,6 @@
 	<div id="sidebar" class="portlet">
 		<div class="portlet-content">
 			<div class="section">
-				<label>Display on homepage:</label>
-				<input type="checkbox" name="homepage" value="1"{if $aTestimonial.homepage == 1} checked="checked"{/if}> Yes
-			</div><br />
-			<div class="section">
 				<label>Active:</label>
 				<input type="checkbox" name="active" value="1"{if $aTestimonial.active == 1} checked="checked"{/if}> Yes
 			</div>
@@ -16,10 +12,6 @@
 	<input type="text" name="name" maxlength="100" value="{$aTestimonial.name|clean_html}"><br>
 	<label>Sub-Name:</label>
 	<input type="text" name="sub_name" maxlength="100" value="{$aTestimonial.sub_name|clean_html}"><br>
-	<label>Video:</label>
-	<input type="file" name="video"><br>
-	<label>Video Poster:</label>
-	<input type="file" name="poster"><br>
 	<label>Text:</label>
 	<textarea name="text" class="elastic">{$aTestimonial.text|clean_html}</textarea><br>
 	<div class="clear"></div>

@@ -1,8 +1,8 @@
 <?php
 class admin_testimonials extends adminController
 {
-	function admin_testimonials(){
-		parent::adminController();
+	function __construct(){
+		parent::__construct("testimonials");
 		
 		$this->menuPermission("testimonials");
 	}
@@ -24,7 +24,7 @@ class admin_testimonials extends adminController
 			,"all"
 		);
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
 		$this->tplAssign("aTestimonials", $aTestimonials);
 		$this->tplDisplay("testimonials/index.tpl");
@@ -42,7 +42,7 @@ class admin_testimonials extends adminController
 			$this->tplAssign("aTestimonial", $aTestimonial);
 		}
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplDisplay("testimonials/add.tpl");
 	}
 	function add_s() {
@@ -77,75 +77,6 @@ class admin_testimonials extends adminController
 			);
 		}
 		
-		if(!empty($_FILES["video"]["name"])) {
-			if($_FILES["video"]["error"] == 1) {
-				$this->dbResults(
-					"UPDATE `testimonials` SET"
-						." `active` = 0"
-						." WHERE `id` = ".$this->dbQuote($sID, "integer")
-					,"update"
-				);
-				
-				$this->forward("/admin/testimonials/?notice=".urlencode("Video file size was too large!"));
-			} else {
-				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/";
-				$file_ext = pathinfo($_FILES["video"]["name"], PATHINFO_EXTENSION);
-				$upload_file = $sID.".".strtolower($file_ext);
-			
-				if(move_uploaded_file($_FILES["video"]["tmp_name"], $upload_dir.$upload_file)) {
-					$this->dbResults(
-						"UPDATE `testimonials` SET"
-							." `video` = ".$this->dbQuote($upload_file, "text")
-							." WHERE `id` = ".$this->dbQuote($sID, "integer")
-						,"update"
-					);
-				} else {
-					$this->dbResults(
-						"UPDATE `testimonials` SET"
-							." `active` = 0"
-							." WHERE `id` = ".$this->dbQuote($sID, "integer")
-						,"update"
-					);
-					
-					$this->forward("/admin/testimonials/?notice=".urlencode("Failed to upload file!"));
-				}
-			}
-		}
-		if(!empty($_FILES["poster"]["name"])) {
-			if($_FILES["poster"]["error"] == 1) {
-				$this->dbResults(
-					"UPDATE `testimonials` SET"
-						." `active` = 0"
-						." WHERE `id` = ".$this->dbQuote($sID, "integer")
-					,"update"
-				);
-				
-				$this->forward("/admin/testimonials/?notice=".urlencode("Poster file size was too large!"));
-			} else {
-				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/posters/";
-				$file_ext = pathinfo($_FILES["poster"]["name"], PATHINFO_EXTENSION);
-				$upload_file = $sID.".".strtolower($file_ext);
-			
-				if(move_uploaded_file($_FILES["poster"]["tmp_name"], $upload_dir.$upload_file)) {
-					$this->dbResults(
-						"UPDATE `testimonials` SET"
-							." `poster` = ".$this->dbQuote($upload_file, "text")
-							." WHERE `id` = ".$this->dbQuote($sID, "integer")
-						,"update"
-					);
-				} else {
-					$this->dbResults(
-						"UPDATE `testimonials` SET"
-							." `active` = 0"
-							." WHERE `id` = ".$this->dbQuote($sID, "integer")
-						,"update"
-					);
-					
-					$this->forward("/admin/testimonials/?notice=".urlencode("Failed to upload file!"));
-				}
-			}
-		}
-		
 		$_SESSION["admin"]["admin_testimonials"] = null;
 		
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial created successfully!"));
@@ -166,8 +97,6 @@ class admin_testimonials extends adminController
 					." WHERE `id` = ".$aTestimonialRow["updated_by"]
 				,"row"
 			);
-			
-			$this->tplAssign("aTestimonial", $aTestimonial);
 		} else {
 			$aTestimonial = $this->dbResults(
 				"SELECT * FROM `testimonials`"
@@ -189,11 +118,11 @@ class admin_testimonials extends adminController
 					." WHERE `id` = ".$aTestimonial["updated_by"]
 				,"row"
 			);
-		
-			$this->tplAssign("aTestimonial", $aTestimonial);
 		}
 		
-		$this->tplAssign("aCategories", $this->get_categories());
+		$this->tplAssign("aTestimonial", $aTestimonial);
+		
+		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplDisplay("testimonials/edit.tpl");
 	}
 	function edit_s() {
@@ -207,7 +136,6 @@ class admin_testimonials extends adminController
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				.", `sub_name` = ".$this->dbQuote($_POST["sub_name"], "text")
 				.", `text` = ".$this->dbQuote($_POST["text"], "text")
-				.", `homepage` = ".$this->boolCheck($_POST["homepage"])
 				.", `active` = ".$this->boolCheck($_POST["active"])
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
@@ -227,89 +155,6 @@ class admin_testimonials extends adminController
 					." VALUES"
 					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
 			);
-		}
-		
-		if(!empty($_FILES["video"]["name"])) {
-			if($_FILES["video"]["error"] == 1) {
-				$this->dbResults(
-					"UPDATE `testimonials` SET"
-						." `active` = 0"
-						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"update"
-				);
-				
-				$this->forward("/admin/testimonials/?notice=".urlencode("Video file size was too large!"));
-			} else {
-				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/";
-				$file_ext = pathinfo($_FILES["video"]["name"], PATHINFO_EXTENSION);
-				$upload_file = $_POST["id"].".".strtolower($file_ext);
-				
-				$sVideo = $this->dbResults(
-					"SELECT `video` FROM `testimonials`"
-						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"one"
-				);
-				@unlink($upload_dir.$sVideo);
-			
-				if(move_uploaded_file($_FILES["video"]["tmp_name"], $upload_dir.$upload_file)) {
-					$this->dbResults(
-						"UPDATE `testimonials` SET"
-							." `video` = ".$this->dbQuote($upload_file, "text")
-							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						,"update"
-					);
-				} else {
-					$this->dbResults(
-						"UPDATE `testimonials` SET"
-							." `active` = 0"
-							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						,"update"
-					);
-					
-					$this->forward("/admin/testimonials/?notice=".urlencode("Failed to upload file!"));
-				}
-			}
-		}
-		if(!empty($_FILES["poster"]["name"])) {
-			if($_FILES["poster"]["error"] == 1) {
-				$this->dbResults(
-					"UPDATE `testimonials` SET"
-						." `active` = 0"
-						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"update"
-				);
-				
-				$this->forward("/admin/testimonials/?notice=".urlencode("Poster file size was too large!"));
-			} else {
-				$upload_dir = $this->_settings->rootPublic."uploads/testimonials/posters/";
-				$file_ext = pathinfo($_FILES["poster"]["name"], PATHINFO_EXTENSION);
-				$upload_file = $_POST["id"].".".strtolower($file_ext);
-				
-				$sPoster = $this->dbResults(
-					"SELECT `poster` FROM `testimonials`"
-						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"one"
-				);
-				@unlink($upload_dir.$sPoster);
-			
-				if(move_uploaded_file($_FILES["poster"]["tmp_name"], $upload_dir.$upload_file)) {
-					$this->dbResults(
-						"UPDATE `testimonials` SET"
-							." `poster` = ".$this->dbQuote($upload_file, "text")
-							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						,"update"
-					);
-				} else {
-					$this->dbResults(
-						"UPDATE `testimonials` SET"
-							." `active` = 0"
-							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						,"update"
-					);
-					
-					$this->forward("/admin/testimonials/?notice=".urlencode("Failed to upload file!"));
-				}
-			}
 		}
 		
 		$_SESSION["admin"]["admin_testimonials"] = null;
@@ -378,18 +223,6 @@ class admin_testimonials extends adminController
 		);
 
 		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Category removed successfully!"));
-	}
-	##################################
-	
-	### Functions ####################
-	private function get_categories() {
-		$aCategories = $this->dbResults(
-			"SELECT * FROM `testimonials_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		return $aCategories;
 	}
 	##################################
 }
