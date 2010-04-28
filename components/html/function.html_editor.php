@@ -32,7 +32,7 @@ function smarty_function_html_editor($aParams, &$smarty) {
 	$return .= "\ttheme_advanced_toolbar_align : 'left',\n";
 	$return .= "\ttheme_advanced_statusbar_location : 'bottom',\n";
 	$return .= "\ttheme_advanced_resizing : true,\n";
-	$return .= "\ttheme_advanced_blockformats : 'p,h2,h3'\n";
+	$return .= "\ttheme_advanced_blockformats : 'p,h3,h4,h5,h6'\n";
 	$return .= "});\n";
 	$return .= "</script>\n";
 	$return .= "<textarea name='".$aParams["name"]."' class='".$aParams["name"]."_editor'>".$content."</textarea><br>";

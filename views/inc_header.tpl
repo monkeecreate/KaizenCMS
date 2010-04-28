@@ -20,7 +20,7 @@
 	
 	<!--[if IE]><script type="text/javascript" src="/scripts/html5.js"></script><![endif]-->
 </head>
-<body>
+<body class="{$menu}">
 <div id="wrapper">
 	<header>
 		<h1><a href="/" title="Kaizen CMS">Kaizen CMS</a></h1>
