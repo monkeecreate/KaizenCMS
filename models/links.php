@@ -3,10 +3,10 @@ class links_model extends appModel
 {
 	public $perPage = 5;
 	
-	function getLinks($sCategory) {
+	function getLinks($sCategory = null) {
 		$sWhere = " WHERE `links`.`active` = 1";
-		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($_GET["category"], "integer");
+		if(!empty($sCategory))
+			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
 		// Get all links for paging
 		$aLinks = $this->dbResults(
