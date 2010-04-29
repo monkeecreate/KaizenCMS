@@ -1,5 +1,5 @@
 {include file="inc_header.tpl" menu="home"}
-
+	
 	<h2>HTML Ipsum Presents</h2>
        
 	<p>
