@@ -92,11 +92,13 @@ class admin_links extends adminController
 				$upload_file = $sID.".".strtolower($file_ext);
 		
 				if(move_uploaded_file($_FILES["image"]["tmp_name"], $upload_dir.$upload_file)) {
-					$aImageSize = getimagesize($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
-					if($aImageSize[0] < $oLinks->imageMinWidth || $aImageSize[1] < $oLinks->imageMinHeight) {
-						@unlink($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
-						$_SESSION["admin"]["admin_links"] = $_POST;
-						$this->forward("/admin/links/add/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+					if($oLinks->imageMinWidth != 0 && $oLinks->imageMinHeight != 0) {
+						$aImageSize = getimagesize($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
+						if($aImageSize[0] < $oLinks->imageMinWidth || $aImageSize[1] < $oLinks->imageMinHeight) {
+							@unlink($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
+							$_SESSION["admin"]["admin_links"] = $_POST;
+							$this->forward("/admin/links/add/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+						}
 					} else {
 						$this->dbResults(
 							"UPDATE `links` SET"
@@ -219,10 +221,12 @@ class admin_links extends adminController
 				@unlink($upload_dir.$sImage);
 			
 				if(move_uploaded_file($_FILES["image"]["tmp_name"], $upload_dir.$upload_file)) {
-					$aImageSize = getimagesize($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
-					if($aImageSize[0] < $oLinks->imageMinWidth || $aImageSize[1] < $oLinks->imageMinHeight) {
-						@unlink($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
-						$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+					if($oLinks->imageMinWidth != 0 && $oLinks->imageMinHeight != 0) {
+						$aImageSize = getimagesize($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
+						if($aImageSize[0] < $oLinks->imageMinWidth || $aImageSize[1] < $oLinks->imageMinHeight) {
+							@unlink($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
+							$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+						}
 					} else {
 						$this->dbResults(
 							"UPDATE `links` SET"

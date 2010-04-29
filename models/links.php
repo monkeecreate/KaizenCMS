@@ -2,8 +2,9 @@
 class links_model extends appModel
 {
 	public $useImage = true;
-	public $imageMinWidth = 270;
-	public $imageMinHeight = 136;
+	// set MinWidth and MinHeight to 0 to not force min diminsions
+	public $imageMinWidth = 0;
+	public $imageMinHeight = 0;
 	public $imageFolder = "/uploads/links/";
 	public $perPage = 5;
 	
