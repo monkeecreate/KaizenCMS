@@ -44,3 +44,4 @@
 	</header>
 	
 	<div id="wrapper-inner">
+		<section id="content" class="content column">
