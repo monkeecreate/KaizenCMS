@@ -99,14 +99,13 @@ class admin_links extends adminController
 							$_SESSION["admin"]["admin_links"] = $_POST;
 							$this->forward("/admin/links/add/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 						}
-					} else {
-						$this->dbResults(
-							"UPDATE `links` SET"
-								." `image` = ".$this->dbQuote($upload_file, "text")
-								." WHERE `id` = ".$this->dbQuote($sID, "integer")
-							,"update"
-						);
 					}
+					$this->dbResults(
+						"UPDATE `links` SET"
+							." `image` = ".$this->dbQuote($upload_file, "text")
+							." WHERE `id` = ".$this->dbQuote($sID, "integer")
+						,"update"
+					);
 				} else {
 					$this->dbResults(
 						"UPDATE `links` SET"
@@ -227,13 +226,13 @@ class admin_links extends adminController
 							@unlink($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
 							$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 						}
-					} else {
-						$this->dbResults(
-							"UPDATE `links` SET"
-								." `image` = ".$this->dbQuote($upload_file, "text")
-								." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-						);
 					}
+					
+					$this->dbResults(
+						"UPDATE `links` SET"
+							." `image` = ".$this->dbQuote($upload_file, "text")
+							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+					);
 				} else {
 					$this->dbResults(
 						"UPDATE `links` SET"
