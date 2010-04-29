@@ -19,7 +19,8 @@ if($_GET["captcha_error"] != 1)
 	
 	<form name="contact" method="post" action="/sendform/" id="myForm" class="contactForm">
 		{getSetting tag="email" assign="sEmail"}
-		<input type="hidden" name="subject" value="{enc_encrypt value='Website Inquiry'}">
+		{getSetting tag="contact-subject" assign="sSubject"}
+		<input type="hidden" name="subject" value="{enc_encrypt value=$sSubject}">
 		<input type="hidden" name="forward" value="{enc_encrypt value='/thank-you/'}">
 		<input type="hidden" name="return" value="{enc_encrypt value='/contact/?captcha_error=1'}">
 		<input type="hidden" name="from" value="{enc_encrypt value='[$7]'}">

@@ -202,6 +202,8 @@ class admin_news extends adminController
 		$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
+		$oNews = $this->loadModel("news");
+		
 		$this->dbResults(
 			"DELETE FROM `news`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -210,6 +212,8 @@ class admin_news extends adminController
 			"DELETE FROM `news_categories_assign`"
 				." WHERE `articleid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
+		
+		@unlink($this->_settings->rootPublic.substr($oNews->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 		
 		$this->forward("/admin/news/?notice=".urlencode("Article removed successfully!"));
 	}

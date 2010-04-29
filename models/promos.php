@@ -1,6 +1,8 @@
 <?php
 class promos_model extends appModel
 {
+	public $imageFolder = "/uploads/promos/";
+	
 	function getPromos($sPosition = null) {
 		if(!empty($sPosition))
 		{
@@ -17,11 +19,13 @@ class promos_model extends appModel
 		
 		return $aPromos;
 	}	
-	function getPromo($sTag, $sId = null, $sUsed = null) {
+	function getPromo($sTag = null, $sId = null, $sUsed = null, $sPromoId = null) {
 		if(!empty($sTag))
 			$sWhere = " WHERE `positions`.`tag` = ".$this->dbQuote($sTag, "text");
 		elseif(!empty($sId))
-			$sWhere = " WHERE `positions`.`tag` = ".$this->dbQuote($sTag, "text");
+			$sWhere = " WHERE `positions`.`id` = ".$this->dbQuote($sId, "integer");
+		elseif(!empty($sPromoId))
+			$sWhere = " WHERE `promos`.`id` = ".$this->dbQuote($sPromoId, "integer");
 		else
 			return false;
 		

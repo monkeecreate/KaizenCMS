@@ -228,6 +228,8 @@ class admin_calendar extends adminController
 		$this->forward("/admin/calendar/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
+		$oCalendar = $this->loadModel("calendar");
+		
 		$this->dbResults(
 			"DELETE FROM `calendar`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -236,6 +238,8 @@ class admin_calendar extends adminController
 			"DELETE FROM `calendar_categories_assign`"
 				." WHERE `eventid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
+		
+		@unlink($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 		
 		$this->forward("/admin/calendar/?notice=".urlencode("Event removed successfully!"));
 	}

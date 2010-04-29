@@ -214,6 +214,8 @@ class admin_events extends adminController
 		$this->forward("/admin/events/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
+		$oEvents = $this->loadModel("events");
+		
 		$this->dbResults(
 			"DELETE FROM `events`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -222,6 +224,8 @@ class admin_events extends adminController
 			"DELETE FROM `events_categories_assign`"
 				." WHERE `eventid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
+		
+		@unlink($this->_settings->rootPublic.substr($oEvents->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 		
 		$this->forward("/admin/events/?notice=".urlencode("Event removed successfully!"));
 	}

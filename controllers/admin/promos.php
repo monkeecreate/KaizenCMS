@@ -264,6 +264,10 @@ class admin_promos extends adminController
 		$this->forward("/admin/promos/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
+		$oPromos = $this->loadModel("promos");
+		
+		$aPromo = $oPromos->getPromo(null, null, null, $this->_urlVars->dynamic["id"]);
+		
 		$this->dbResults(
 			"DELETE FROM `promos`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
@@ -272,6 +276,8 @@ class admin_promos extends adminController
 			"DELETE FROM `promos_positions_assign`"
 				." WHERE `promoid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
+		
+		@unlink($this->_settings->rootPublic.substr($oPromos->imageFolder, 1).$aPromo["promo"]);
 		
 		$this->forward("/admin/promos/?notice=".urlencode("Promo removed successfully!"));
 	}
