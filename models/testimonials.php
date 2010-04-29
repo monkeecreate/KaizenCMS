@@ -41,6 +41,10 @@ class testimonials_model extends appModel
 		return $aTestimonial;
 	}
 	private function _getTestimonialInfo($aTestimonial) {
+		$aTestimonial["name"] = htmlspecialchars(stripslashes($aTestimonial["name"]));
+		$aTestimonial["sub_name"] = htmlspecialchars(stripslashes($aTestimonial["sub_name"]));
+		$aTestimonial["text"] = strip_tags(stripslashes($aTestimonial["text"]), "<embed><param><object>");
+		
 		return $aTestimonial;
 	}
 	function getCategories($sEmpty = true) {

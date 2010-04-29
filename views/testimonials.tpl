@@ -9,9 +9,9 @@
 
 	<p>
 		{foreach from=$aTestimonials item=aTestimonial}
-			<h3>{$aTestimonial.name|clean_html} - <small>{$aTestimonial.sub_name|clean_html}</small></h3>
+			<h3>{$aTestimonial.name} - <small>{$aTestimonial.sub_name}</small></h3>
 			<blockquote>
-				{$aTestimonial.text|clean_html}
+				{$aTestimonial.text}
 			</blockquote>
 		{/foreach}
 	</p>
