@@ -3,8 +3,13 @@ class faq_model extends appModel
 {
 	public $perPage = 5;
 	
-	function getQuestions($sCategory) {
-		$sWhere = " WHERE `faq`.`active` = 1";
+	function getQuestions($sCategory = null, $sAll = false) {
+		// Start the WHERE
+		$sWhere = " WHERE `faq`.`id` > 0";// Allways true
+		
+		if($sAll == false)		
+			$sWhere = " AND `faq`.`active` = 1";
+			
 		if(!empty($_GET["category"]))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($_GET["category"], "integer");
 		

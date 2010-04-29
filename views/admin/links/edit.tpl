@@ -1,5 +1,5 @@
 {include file="inc_header.tpl" page_title="Links :: Edit Link" menu="links"}
-<form method="post" action="/admin/links/edit/s/">
+<form method="post" action="/admin/links/edit/s/" enctype="multipart/form-data">
 	<div id="sidebar" class="portlet">
 		<div class="portlet-content">
 			<div class="section">
@@ -19,6 +19,10 @@
 	<input type="text" name="link" maxlength="100" value="{$aLink.link|clean_html}"><br>
 	<label>Description:</label>
 	<textarea name="description" class="elastic">{$aLink.description|clean_html}</textarea><br>
+	<label>Image:</label>
+	<input type="file" name="image"><br />
+	<span><strong>&middot;</strong> Minimum width is {$minWidth}px<br />
+	<strong>&middot;</strong> Minimum height is {$minHeight}px<br /><br /></span>
 	<div class="clear"></div>
 	<fieldset id="fieldset_categories">
 		<legend>Assign link to category:</legend>

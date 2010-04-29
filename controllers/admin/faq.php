@@ -25,7 +25,7 @@ class admin_faq extends adminController
 		
 		$this->tplAssign("aCategories", $oQuestions->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aQuestions", $oQuestions->getQuestions($_GET["category"]));
+		$this->tplAssign("aQuestions", $oQuestions->getQuestions($_GET["category"], true));
 		$this->tplAssign("minSort", $sMinSort);
 		$this->tplAssign("maxSort", $sMaxSort);
 		$this->tplDisplay("faq/index.tpl");

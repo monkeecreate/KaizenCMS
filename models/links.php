@@ -1,10 +1,19 @@
 <?php
 class links_model extends appModel
 {
+	public $useImage = true;
+	public $imageMinWidth = 270;
+	public $imageMinHeight = 136;
+	public $imageFolder = "/uploads/links/";
 	public $perPage = 5;
 	
-	function getLinks($sCategory = null) {
-		$sWhere = " WHERE `links`.`active` = 1";
+	function getLinks($sCategory = null, $sAll = false) {
+		// Start the WHERE
+		$sWhere = " WHERE `links`.`id` > 0";// Allways true
+		
+		if($sAll == false)	
+			$sWhere = " AND `links`.`active` = 1";
+			
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
