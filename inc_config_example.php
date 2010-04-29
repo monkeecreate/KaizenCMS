@@ -19,7 +19,7 @@ $aConfig["options"]["debug"] = true;
 ###############################################
 
 ### SOFTWARE ##################################
-$aConfig["software"]["memcache"] = true; // Set if you want to use/have Memcache
+$aConfig["software"]["memcache"] = false; // Set if you want to use/have Memcache
 $aConfig["software"]["firephp"] = true; // Set if you want to use/have FirePHP
 ###############################################
 
