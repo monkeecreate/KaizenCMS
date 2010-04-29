@@ -5,7 +5,7 @@ class documents_model extends appModel
 	public $documentFolder = "/uploads/documents/";
 	public $perPage = 5;
 	
-	function getDocuments($sCategory, $sAll = false) {
+	function getDocuments($sCategory, $sAll = false, $sRandom = false) {
 		// Start the WHERE
 		$sWhere = " WHERE `documents`.`id` > 0";// Allways true
 		
@@ -14,6 +14,11 @@ class documents_model extends appModel
 		
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+			
+		if($sRandom != false)
+			$sOrderBy = " ORDER BY rand()";
+		else
+			$sOrderBy = " ORDER BY `documents`.`created_datetime` DESC";
 		
 		$aDocuments = $this->dbResults(
 			"SELECT `documents`.* FROM `documents` AS `documents`"
@@ -21,7 +26,7 @@ class documents_model extends appModel
 				." INNER JOIN `documents_categories` AS `categories` ON `documents_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `documents`.`id`"
-				." ORDER BY `documents`.`created_datetime` DESC"
+				.$sOrderBy
 			,"all"
 		);
 		
