@@ -1,12 +1,22 @@
 <?php
 class links_model extends appModel
 {
+	public $useImage = true;
+	// set MinWidth and MinHeight to 0 to not force min diminsions
+	public $imageMinWidth = 0;
+	public $imageMinHeight = 0;
+	public $imageFolder = "/uploads/links/";
 	public $perPage = 5;
 	
-	function getLinks($sCategory) {
-		$sWhere = " WHERE `links`.`active` = 1";
-		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($_GET["category"], "integer");
+	function getLinks($sCategory = null, $sAll = false) {
+		// Start the WHERE
+		$sWhere = " WHERE `links`.`id` > 0";// Allways true
+		
+		if($sAll == false)	
+			$sWhere = " AND `links`.`active` = 1";
+			
+		if(!empty($sCategory))
+			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
 		// Get all links for paging
 		$aLinks = $this->dbResults(

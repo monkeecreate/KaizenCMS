@@ -249,7 +249,7 @@ class admin_promos extends adminController
 					);
 				} else {
 					$this->dbResults(
-						"UPDATE `promo` SET"
+						"UPDATE `promos` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 					);

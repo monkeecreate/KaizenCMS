@@ -7,7 +7,7 @@ class events_model extends appModel
 	public $imageFolder = "/uploads/events/";
 	public $perPage = 5;
 	
-	function getEvents($sCategory, $sAll = false) {
+	function getEvents($sCategory = null, $sAll = false) {
 		// Start the WHERE
 		$sWhere = " WHERE `events`.`id` > 0";// Allways true
 		

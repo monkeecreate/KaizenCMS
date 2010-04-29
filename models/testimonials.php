@@ -1,7 +1,7 @@
 <?php
 class testimonials_model extends appModel
 {
-	function getTestimonials() {
+	function getTestimonials($sCategory = null) {
 		$aWhere = array();
 		
 		$aWhere[] = "`active` = 1";

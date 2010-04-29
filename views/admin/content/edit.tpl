@@ -17,7 +17,7 @@
 		<label>Tag:</label>
 		<input type="text" name="tag" maxlength="100" value="{$aPage.tag|clean_html}"><br>
 		
-		<label>Perminate:</label>
+		<label>Permanent:</label>
 		<input type="checkbox" name="perminate" value="1"{if $aPage.perminate == 1} checked="checked"{/if}> Yes<br><br>
 		
 		<label>Module:</label>
