@@ -8,7 +8,7 @@ class links_model extends appModel
 	public $imageFolder = "/uploads/links/";
 	public $perPage = 5;
 	
-	function getLinks($sCategory = null, $sAll = false) {
+	function getLinks($sCategory = null, $sAll = false, $sRandom = false) {
 		// Start the WHERE
 		$sWhere = " WHERE `links`.`id` > 0";// Allways true
 		
@@ -17,6 +17,9 @@ class links_model extends appModel
 			
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+			
+		if($sRandom != false)
+			$sOrderBy = " ORDER BY rand()";
 		
 		// Get all links for paging
 		$aLinks = $this->dbResults(
@@ -25,6 +28,7 @@ class links_model extends appModel
 				." INNER JOIN `links_categories` AS `categories` ON `links_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `links`.`id`"
+				.$sOrderBy
 			,"all"
 		);
 	
