@@ -1,16 +1,25 @@
 <?php
 function smarty_function_getEvents($aParams, &$oSmarty) {
 	$oApp = $oSmarty->get_registered_object("appController");
-	$oEvents = $oApp->loadModel("events");
+	$oCalendar = $oApp->loadModel("calendar");
+	
+	if(empty($aParams["assign"])) {
+		if($aParams["limit"] == 1)
+			$sAssign = "aEvent";
+		else
+			$sAssign = "aEvents";
+	} else
+		$sAssign = $aParams["assign"];
 	
 	if(!empty($aParams["limit"])) {
-		$aEvents = array_chunk($oEvents->getEvents($aParams["category"]), $aParams["limit"]);
+		$aEvents = array_chunk($oCalendar->getEvents($aParams["category"]), $aParams["limit"]);
 		$aEvents = $aEvents[0];
 	} else
-		$aEvents = $oEvents->getEvents($aParams["category"]);
+		$aEvents = $oCalendar->getEvents($aParams["category"]);
 	
-	if(empty($aParams["assign"]))
-		$oApp->tplAssign("aEvents", $aEvents);
-	else
-		$oApp->tplAssign($aParams["assign"], $aEvents);
+	if($aParams["limit"] == 1) {
+		$oApp->tplAssign($sAssign, $aEvents[0]);
+	} else {
+		$oApp->tplAssign($sAssign, $aEvents);
+	}
 }
