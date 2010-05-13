@@ -2,7 +2,23 @@
 
 {head}
 <link rel="alternate" type="application/rss+xml" title="News RSS" href="/news/rss/">
+<meta property="og:site_name" content="{getSetting tag="title"}">
 {/head}
+<div id="fb-root"></div>
+<script>
+{literal}
+  window.fbAsyncInit = function() {
+    FB.init({appId: '127471297263601', status: true, cookie: true,
+             xfbml: true});
+  };
+  (function() {
+    var e = document.createElement('script'); e.async = true;
+    e.src = document.location.protocol +
+      '//connect.facebook.net/en_US/all.js';
+    document.getElementById('fb-root').appendChild(e);
+  }());
+{/literal}
+</script>
 
 	{if $aCategories|@count gt 1}
 	<form name="category" method="get" action="/news/" class="sortCat">
@@ -43,6 +59,7 @@
 					<time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time>
 					 | Categories: {$aArticle.categories|clean_html}
 				</small>
+				<fb:like href="http://{$smarty.server.SERVER_NAME}/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/" show_faces="false"></fb:like>
 				<p class="content">
 					{$aArticle.short_content|clean_html}<br />
 					<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">More Info&raquo;</a>
