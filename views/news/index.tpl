@@ -6,18 +6,16 @@
 {/head}
 <div id="fb-root"></div>
 <script>
-{literal}
-  window.fbAsyncInit = function() {
-    FB.init({appId: '127471297263601', status: true, cookie: true,
-             xfbml: true});
-  };
-  (function() {
+  window.fbAsyncInit = function() {ldelim}
+    FB.init({ldelim}appId: '127471297263601', status: true, cookie: true,
+             xfbml: true{rdelim});
+  {rdelim};
+  (function() {ldelim}
     var e = document.createElement('script'); e.async = true;
     e.src = document.location.protocol +
       '//connect.facebook.net/en_US/all.js';
     document.getElementById('fb-root').appendChild(e);
-  }());
-{/literal}
+  {rdelim}());
 </script>
 
 	{if $aCategories|@count gt 1}
