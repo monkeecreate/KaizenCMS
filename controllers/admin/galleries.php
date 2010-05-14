@@ -277,6 +277,8 @@ class admin_galleries extends adminController
 		$this->tplDisplay("galleries/photos/index.tpl");
 	}
 	function photos_add() {
+		$oGalleries = $this->loadModel("galleries");
+		
 		if(!empty($_FILES["photo"]["name"])) {
 			if($_FILES["photo"]["error"] == 1)
 				die("Error: File too large!");
@@ -289,15 +291,22 @@ class admin_galleries extends adminController
 		
 				if(empty($sOrder))
 					$sOrder = 1;
-			
+				
+				$aPhotos = $oGalleries->getPhotos($this->_urlVars->dynamic["gallery"]);
+				if(empty($aPhotos))
+					$sDefault = 1;
+				else
+					$sDefault = 0;
+				
 				$sID = $this->dbResults(
 					"INSERT INTO `galleries_photos`"
-						." (`galleryid`, `title`, `description`, `sort_order`)"
+						." (`galleryid`, `title`, `description`, `gallery_default`, `sort_order`)"
 						." VALUES"
 						." ("
 						.$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
 						.", ".$this->dbQuote($_POST["title"], "text")
 						.", ".$this->dbQuote($_POST["description"], "text")
+						.", ".$this->dbQuote($sDefault, "integer")
 						.", ".$this->dbQuote($sOrder, "integer")
 						.")"
 					,"insert"
