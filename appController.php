@@ -115,6 +115,21 @@ class appController
 		
 		return $oField->setting->value();
 	}
+	function getUser($sId) {
+		if(empty($sId))
+			$this->error("getUser", "User id missing", null, debug_backtrace());
+			
+		$aUser = $this->dbResults(
+			"SELECT * FROM `users`"
+				." WHERE `id` = ".$this->dbQuote($sId, "integer")
+			,"row"
+		);
+		
+		if(empty($aUser))
+			$this->error("getUser", "Could not find user", null, debug_backtrace());
+			
+		return $aUser;
+	}
 	##################################
 	
 	### Database #####################

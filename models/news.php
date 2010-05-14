@@ -49,7 +49,9 @@ class news_model extends appModel
 		
 		return $aArticle;
 	}
-	private function getArticleInfo($aArticle) {	
+	private function getArticleInfo($aArticle) {
+		$aArticle["user"] = $this->getUser($aArticle["created_by"]);
+			
 		$aCategories = $this->dbResults(
 			"SELECT `name` FROM `news_categories` AS `categories`"
 				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"

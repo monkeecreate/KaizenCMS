@@ -21,7 +21,8 @@
 	<h2>{$aArticle.title|clean_html}</h2>
 	<small class="timeCat">
 		<time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time>
-		 | Categories: {$aArticle.categories|clean_html}
+		| Posted by: {$aArticle.user.fname} {$aArticle.user.lname} 
+		| Categories: {$aArticle.categories|clean_html}
 	</small>
 	<fb:like show_faces="false"></fb:like>
 	<p>

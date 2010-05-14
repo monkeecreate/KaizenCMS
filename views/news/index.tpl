@@ -55,7 +55,8 @@
 				</h3>
 				<small class="timeCat">
 					<time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time>
-					 | Categories: {$aArticle.categories|clean_html}
+					| Posted by: {$aArticle.user.fname} {$aArticle.user.lname} 
+					| Categories: {$aArticle.categories|clean_html}
 				</small>
 				<fb:like href="http://{$smarty.server.SERVER_NAME}/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/" show_faces="false"></fb:like>
 				<p class="content">
