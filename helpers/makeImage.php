@@ -16,11 +16,14 @@ class makeImage
 		
 		// Die if cached
 		if($this->_cache == true) {
-			$aHeaders = apache_request_headers();
-			if (isset($aHeaders['If-Modified-Since'])
-			 && !empty($aHeaders['If-Modified-Since'])
-			 && $aHeaders["If-Modified-Since"] == gmdate("D, d M Y H:i:s", filemtime($sFile))." GMT") {
+			if ($_SERVER["HTTP_IF_MODIFIED_SINCE"] == gmdate("D, d M Y H:i:s", filemtime($sFile))." GMT"
+			 && $_SERVER["HTTP_IF_NONE_MATCH"] == md5($this->_file)) {
 				header('HTTP/1.1 304 Not Modified');
+				header("Last-Modified: ".gmdate("D, d M Y H:i:s", filemtime($this->_file))." GMT");
+				header("Pragma: public");
+				header("Cache-Control: maxage=".(60*60*24*2));
+				header("Expires: ".gmdate("D, d M Y H:i:s", strtotime("+2 days"))." GMT");
+				header("ETag: ".md5($this->_file));
 				exit;
 			}
 		}
@@ -217,10 +220,10 @@ class makeImage
 			
 			$this->transparency();
 			
-		    switch($this->_info[2]) {
+			switch($this->_info[2]) {
 				case IMAGETYPE_JPEG: imagejpeg($this->_image, $sFile, $sQuality); break;
 				case IMAGETYPE_PNG: imagepng($this->_image, $sFile); break;
-		 		case IMAGETYPE_GIF: imagegif($this->_image, $sFile); break;
+					 		case IMAGETYPE_GIF: imagegif($this->_image, $sFile); break;
 				default: return false;
 			}
 			
