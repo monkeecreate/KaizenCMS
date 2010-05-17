@@ -12,8 +12,15 @@ class adminController extends appController
 			
 		if(!empty($_GET["notice"]))
 			$this->tplAssign("page_notice", htmlentities(urldecode($_GET["notice"])));
+			
+		$aAllowedActions = array(
+			"login"
+			,"passwordReset"
+			,"passwordReset_code"
+			,"passwordReset_code_s"
+		);
 		
-		if(!$this->loggedin() && $this->_settings->url[1] != "login" && $this->_settings->surl != "/admin/")
+		if(!$this->loggedin() && !in_array($this->_settings->url[1], $aAllowedActions) && $this->_settings->surl != "/admin/")
 			$this->forward("/admin/", 401);
 		elseif($this->loggedin()) {
 			$aUser = $this->dbResults(
@@ -97,8 +104,60 @@ class adminController extends appController
 		
 		$this->forward("/admin/");
 	}
-	function password_reset() {
+	function passwordReset() {
+		if(!empty($_POST["email"])) {
+			$aUser = $this->dbResults("SELECT * FROM `users`"
+				." WHERE `email_address` = ".$this->dbQuote($_POST["email"], "text")
+				,"row"
+			);
+			
+			if(!empty($aUser)) {
+				$code = sha1($aUser["email"].time());
+				
+				$this->dbResults("UPDATE `users` SET"
+					."`resetCode` = ".$this->dbQuote($this->_settings->encryptSalt."_".$code, "text")
+					." WHERE `id` = ".$aUser["id"]
+				);
+				
+				$aHeaders["To"] = $aUser["email_address"];
+				$aHeaders["From"] = $aUser["email_address"];
+				$aHeaders["Subject"] = $this->getSetting("title")." - Password Reset";
+				
+				$sBody = "Someone has requestion a password resetfrom http://".$_SERVER["SERVER_NAME"]."/. If this was not you, ignore this message. If you requested the password reset, follow the link below to continue.\n\n";
+				$sBody .= "Username: ".$aUser["username"]."\n\n";
+				$sBody .= "http://".$_SERVER["SERVER_NAME"]."/admin/passwordReset/".$code."/";
+				
+				$this->mail($aHeaders["To"], $aHeaders, $sBody);
+			}
+		}
 		
+		$this->forward("/admin/?notice=".urlencode("Password reset email sent!"));
+	}
+	function passwordReset_code() {
+		$aUser = $this->dbResults("SELECT * FROM `users`"
+			." WHERE `resetCode` = ".$this->dbQuote($this->_settings->encryptSalt."_".$this->_urlVars->dynamic["code"], "text")
+			,"row"
+		);
+		
+		if(empty($aUser))
+			$this->forward("/admin/");
+		
+		$this->tplAssign("sCode", $this->_urlVars->dynamic["code"]);
+		$this->tplDisplay("passwordReset.tpl");
+	}
+	function passwordReset_code_s() {
+		if(empty($_POST["password"]))
+			$this->forward("/admin/passwordReset/".$this->_urlVars->dynamic["code"]."/?error=".urlencode("Password can not be empty!"));
+		
+		if($_POST["password"] != $_POST["password2"] || empty($_POST["password"]))
+			$this->forward("/admin/passwordReset/".$this->_urlVars->dynamic["code"]."/?error=".urlencode("Password do not match!"));
+		
+		$this->dbResults("UPDATE `users` SET"
+			." `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
+			." WHERE `resetCode` = ".$this->dbQuote($this->_settings->encryptSalt."_".$this->_urlVars->dynamic["code"], "text")
+		);
+		
+		$this->forward("/admin/?notice=".urlencode("Password successfully reset!"));
 	}
 	function isloggedin() {
 		$secretKey = md5($_SERVER["SERVER_NAME"]);

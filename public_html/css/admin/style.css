@@ -118,6 +118,14 @@ table.dataTable tfoot tr td {
 
 /* @end */
 
+/* @group Forgot Password */
+
+#forgotPassword {
+	display: none;
+}
+
+/* @end */
+
 /* @group Fieldset */
 
 fieldset {
@@ -208,6 +216,10 @@ fieldset ul li ul li {
 }
 .left-margin {
 	margin-left: 15px;
+}
+.forgotPassword {
+	float: right;
+	margin: 10px 10px 0 0;
 }
 
 /* @end */

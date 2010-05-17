@@ -32,9 +32,17 @@ $aUrlPatterns = array(
         "cmd" => "adminController",
         "action" => "logout"
     ),
-	"/admin/password-reset/" => array(
+	"/admin/passwordReset/" => array(
         "cmd" => "adminController",
-        "action" => "password_reset"
+        "action" => "passwordReset"
+    ),
+	"/admin/passwordReset/{code:[a-z0-9]+}/" => array(
+        "cmd" => "adminController",
+        "action" => "passwordReset_code"
+    ),
+	"/admin/passwordReset/{code:[a-z0-9]+}/s/" => array(
+        "cmd" => "adminController",
+        "action" => "passwordReset_code_s"
     )
 );
 

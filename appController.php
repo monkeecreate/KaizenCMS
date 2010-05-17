@@ -28,6 +28,7 @@ class appController
 			,"surl" => $sURL
 			,"url" => $aUrl
 			,"memcacheSalt" => $aConfig["memcache"]["salt"]
+			,"encryptSalt" => $aConfig["encryption"]["salt"]
 		);
 		$this->_urlVars = $aURLVars;
 		
