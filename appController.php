@@ -202,7 +202,8 @@ class appController
 	
 	### Mail ##########################
 	function mail($sRecipients, $aHeaders, $bodyText, $bodyHTML = null, $aAttachment = array()) {
-		include("Mail/mime.php");
+		if(!class_exists("Mail_mime"))
+			include("Mail/mime.php");
 		$oMime = new Mail_mime("\n");
 		
 		// Set text for message body

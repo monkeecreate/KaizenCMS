@@ -10,6 +10,7 @@ class testimonials extends appController
 		$aTestimonials = $this->model->getTestimonials($_GET["category"]);
 		
 		$this->tplAssign("aTestimonials", $aTestimonials);
+		$this->tplAssign("aCategory", $this->model->getCategory($_GET["category"]));
 		$this->tplDisplay("testimonials.tpl");
 	}
 }
