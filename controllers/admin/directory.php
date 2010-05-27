@@ -119,9 +119,6 @@ class admin_directory extends adminController
 				,"col"
 			);
 			
-			$aListing["datetime_show_date"] = date("m/d/Y", $aListing["datetime_show"]);
-			$aListing["datetime_kill_date"] = date("m/d/Y", $aListing["datetime_kill"]);
-			
 			$aListing["updated_by"] = $this->dbResults(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aListing["updated_by"]

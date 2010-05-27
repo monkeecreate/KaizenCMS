@@ -227,12 +227,12 @@ $aMenuAdmin = array(
 		"title" => "Directory",
 		"menu" => array(
 			array(
-				"text" => "Add Directory",
+				"text" => "Add Listing",
 				"link" => "/admin/directory/add/",
 				"icon" => "circle-plus"
 			),
 			array(
-				"text" => "Manage Directories",
+				"text" => "Manage Directory",
 				"link" => "/admin/directory/"
 			),
 			array(
