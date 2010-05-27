@@ -78,7 +78,7 @@
 	</tbody>
 	<tfoot class="nav">
 		<tr>
-			<td colspan="5">
+			<td colspan="{if empty($sCategory)}4{else}3{/if}">
 				<div class="pagination"></div>
 				<div class="paginationTitle">Page</div>
 				<div class="selectPerPage"></div>
