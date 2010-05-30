@@ -1,8 +1,17 @@
 <?php
 function smarty_function_flickr($aParams, &$oSmarty) {
+	$oApp = $oSmarty->get_registered_object("appController");
+	
 	$flickrKey = "69f31081cc7123755564c66ae0af159c";
-	$flickrUser = "32609765@N00"; // move to site settings
+	$flickrUser = $oApp->getSetting("flickrUser");
 	$flickrAPI = 'http://api.flickr.com/services/rest/?&api_key='.$flickrKey.'&format=php_serial';
+	
+	// get the users flickr id to be used by the api
+	$getFlickrId = unserialize(file_get_contents($flickrAPI."&method=flickr.people.findByUsername&username=".$flickrUser));
+	$flickrId = $getFlickrId["user"]["nsid"];
+	if(empty($flickrId)) {
+		echo "Your flickr username is invalid or hasn't been set.<br />";
+	}
 	
 	switch($aParams["size"]):
 		case '1': $flickrSize = "s"; break;
@@ -16,7 +25,7 @@ function smarty_function_flickr($aParams, &$oSmarty) {
 	## params: size, number (optional, per page limit), title (optional, display photo title, true/false)
 	## example: {flickr method=photoStream number=5 size=1 title=false}
 	if ($aParams["method"] == "photoStream") {
-		$flickrAPI .= '&method=flickr.people.getPublicPhotos&user_id='.$flickrUser;
+		$flickrAPI .= '&method=flickr.people.getPublicPhotos&user_id='.$flickrId;
 		if (!empty($aParams["number"]))
 			$flickrAPI .= '&per_page='.$aParams["number"];
 
@@ -25,9 +34,12 @@ function smarty_function_flickr($aParams, &$oSmarty) {
 
 		if ($rsp_obj['stat'] == 'ok') {
 			foreach ($rsp_obj['photos']['photo'] as $flickrPhoto) {
-				if ($aParams["title"] == true)
+				if ($aParams["title"] == true) {
 					echo '<a href="http://www.flickr.com/photos/'.$flickrPhoto['owner'].'/'.$flickrPhoto['id'].'" title="'.$flickrPhoto['title'].'" class="flickrTitle">'.$flickrPhoto['title'].'</a>';
-				echo '<img src="http://farm'.$flickrPhoto['farm'].'.static.flickr.com/'.$flickrPhoto['server'].'/'.$flickrPhoto['id'].'_'.$flickrPhoto['secret'].'_'.$flickrSize.'.jpg" alt="'.$flickrPhoto['title'].'" class="flickrPhoto">';
+					echo '<img src="http://farm'.$flickrPhoto['farm'].'.static.flickr.com/'.$flickrPhoto['server'].'/'.$flickrPhoto['id'].'_'.$flickrPhoto['secret'].'_'.$flickrSize.'.jpg" alt="'.$flickrPhoto['title'].'" class="flickrPhoto">';
+				} else {
+					echo '<a href="http://www.flickr.com/photos/'.$flickrPhoto['owner'].'/'.$flickrPhoto['id'].'" title="'.$flickrPhoto['title'].'"><img src="http://farm'.$flickrPhoto['farm'].'.static.flickr.com/'.$flickrPhoto['server'].'/'.$flickrPhoto['id'].'_'.$flickrPhoto['secret'].'_'.$flickrSize.'.jpg" alt="'.$flickrPhoto['title'].'" class="flickrPhoto"></a>';
+				}
 			}
 		} else {
 
@@ -39,7 +51,7 @@ function smarty_function_flickr($aParams, &$oSmarty) {
 	## params: size, title (optional, display photo title, true/false)
 	## example: {flickr method=photoSets}
 	if ($aParams["method"] == "photoSets") {
-		$flickrAPI .= '&method=flickr.photosets.getList&user_id='.$flickrUser;
+		$flickrAPI .= '&method=flickr.photosets.getList&user_id='.$flickrId;
 		
 		$rsp = file_get_contents($flickrAPI);
 		$rsp_obj = unserialize($rsp);
@@ -64,7 +76,7 @@ function smarty_function_flickr($aParams, &$oSmarty) {
 		if (!empty($aParams["number"]))
 			$flickrAPI .= '&per_page='.$aParams["number"];
 		if ($aParams["user"] == true || $aParams["user"] == t)
-			$flickrAPI .= '&user_id='.$flickrUser;
+			$flickrAPI .= '&user_id='.$flickrId;
 		
 		$rsp = file_get_contents($flickrAPI);
 		$rsp_obj = unserialize($rsp);

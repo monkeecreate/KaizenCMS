@@ -339,7 +339,10 @@ INSERT INTO `settings` (`id`, `group`, `tag`, `title`, `text`, `value`, `type`, 
 (4, 'Analytics', 'analytics_woopra', 'Woopra', NULL, 0, 'bool', 2),
 (5, 'SEO', 'title', 'Site Title', NULL, '', 'text', 1),
 (6, 'Contact Info', 'email', 'Email Address', NULL, '', 'text', 1),
-(7, 'Contact Info', 'contact-subject', 'Contact Form Subject', NULL, '', 'text', 2);
+(7, 'Contact Info', 'contact-subject', 'Contact Form Subject', NULL, '', 'text', 2),
+(8, 'Social', 'twitterUser', 'Twitter Username', NULL, '', 'text', 1),
+(9, 'Social', 'facebookUser', 'Facebook Username', NULL, '', 'text', 2),
+(10, 'Social', 'flickrUser', 'Flickr Username', NULL, '', 'text', 4);
 
 CREATE TABLE `testimonials` (
   `id` int(11) NOT NULL auto_increment,
