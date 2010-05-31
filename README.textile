@@ -12,7 +12,7 @@ The requirements are simple. Apache 2+ and PHP 5+. PEAR and Memcache are recomme
 Then create another directory inside the .compiled/ and name it: admin/
 Both directories should be writeable.
 
-* Open and edit ./inc_config_example.php with your details including database, using the included pear or the pear on your server, turning memcache on or off, etc. Rename this file to ./inc_config.php
+* Open and edit ./inc_config_example.php with your details including database, using the included pear or the pear on your server, etc. Rename this file to ./inc_config.php
 
 * Import the ./database.sql file to your database using phpMyAdmin or your preferred method.
 

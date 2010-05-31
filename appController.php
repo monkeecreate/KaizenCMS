@@ -2,7 +2,6 @@
 class appController
 {
 	private $_db;
-	private $_memcache;
 	private $_mail;
 	private $_smarty;
 	private $_firephp;
@@ -12,10 +11,9 @@ class appController
 	public $model;
 	
 	function __construct($sModel = null) {
-		global $objDB, $oMemcache, $objMail, $oFirePHP, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl, $aURLVars;
+		global $objDB, $objMail, $oFirePHP, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl, $aURLVars;
 		
 		$this->_db = $objDB;
-		$this->_memcache = $oMemcache;
 		$this->_mail = $objMail;
 		$this->_firephp = $oFirePHP;
 		$this->_enc = $oEnc;
@@ -27,7 +25,6 @@ class appController
 			,"debug" => $aConfig["options"]["debug"]
 			,"surl" => $sURL
 			,"url" => $aUrl
-			,"memcacheSalt" => $aConfig["memcache"]["salt"]
 			,"encryptSalt" => $aConfig["encryption"]["salt"]
 		);
 		$this->_urlVars = $aURLVars;
@@ -238,20 +235,6 @@ class appController
 	}
 	function decrypt($text) {
 		return $this->_enc->decrypt($text);
-	}
-	##################################
-	
-	### Memcache #####################
-	function memcacheGet($key) {
-		$value = $this->_memcache->get(md5($this->_settings->memcacheSalt.$key));
-		
-		if($value != false)
-			return $this->decrypt($value);
-		else
-			return false;
-	}
-	function memcacheSet($key, $value, $expire = 0) {
-		return $this->_memcache->set(md5($this->_settings->memcacheSalt.$key), $this->encrypt($value), false, $expire);
 	}
 	##################################
 
