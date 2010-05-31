@@ -12,10 +12,9 @@ class testimonials_model extends appModel
 		if(!empty($aWhere))
 			$sWhere = " WHERE ".implode(" AND ", $aWhere);
 		
-		if($sRandom == true) {
+		if($sRandom == true)
 			$sOrder = " ORDER BY RAND()";
-			echo "<!-- Random -->";
-		} else
+		else
 			$sOrder = " ORDER BY `testimonials`.`name`, `testimonials`.`sub_name`";
 		
 		$aTestimonials = $this->dbResults(
