@@ -1,7 +1,7 @@
 <?php
 class testimonials_model extends appModel
 {
-	function getTestimonials($sCategory = null) {
+	function getTestimonials($sCategory = null, $sRandom = false) {
 		$aWhere = array();
 		
 		$aWhere[] = "`active` = 1";
@@ -12,12 +12,18 @@ class testimonials_model extends appModel
 		if(!empty($aWhere))
 			$sWhere = " WHERE ".implode(" AND ", $aWhere);
 		
+		if($sRandom == true) {
+			$sOrder = " ORDER BY RAND()";
+			echo "<!-- Random -->";
+		} else
+			$sOrder = " ORDER BY `testimonials`.`name`, `testimonials`.`sub_name`";
+		
 		$aTestimonials = $this->dbResults(
 			"SELECT `testimonials`.* FROM `testimonials`"
 				." INNER JOIN `testimonials_categories_assign` AS `testimonials_assign` ON `testimonials`.`id` = `testimonials_assign`.`testimonialid`"
 				." INNER JOIN `testimonials_categories` AS `categories` ON `testimonials_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
-				." ORDER BY `testimonials`.`name`, `testimonials`.`sub_name`"
+				.$sOrder
 			,"all"
 		);
 		
@@ -26,7 +32,7 @@ class testimonials_model extends appModel
 		
 		return $aTestimonials;
 	}
-	function getTestimonial() {
+	function getTestimonial($sId) {
 		$aTestimonial = $this->dbResults(
 			"SELECT * FROM `testimonials`"
 				." WHERE `id` = ".$sId
