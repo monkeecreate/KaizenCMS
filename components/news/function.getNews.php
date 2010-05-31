@@ -9,13 +9,13 @@ function smarty_function_getNews($aParams, &$oSmarty) {
 	
 	if($aParams["limit"] == 1) {
 		if(!empty($aParams["assign"]))
-			$this->SMARTY->assign($aParams["assign"], $aArticles[0]);
+			$oSmarty->assign($aParams["assign"], $aArticles[0]);
 		else
-			$this->SMARTY->assign("aArticle", $aArticles[0]);
+			$oSmarty->assign("aArticle", $aArticles[0]);
 	} else {
 		if(!empty($aParams["assign"]))
-			$this->SMARTY->assign($aParams["assign"], $aArticles);
+			$oSmarty->assign($aParams["assign"], $aArticles);
 		else
-			$this->SMARTY->assign("aArticles", $aArticles);
+			$oSmarty->assign("aArticles", $aArticles);
 	}
 }
