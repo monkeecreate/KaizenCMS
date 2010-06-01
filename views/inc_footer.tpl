@@ -8,7 +8,16 @@
 			   <li>Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer ligula vulputate sem tristique cursus. Nam nulla quam, gravida non, commodo a, sodales sit amet, nisi.</li>
 			   <li>Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.</li>
 			</ul>
-
+			{getTestimonials random=true limit=1}
+			{if !empty($aTestimonial)}
+				<h2>Testimonials</h2>
+				<p>
+					<blockquote>
+						{$aTestimonial.text}
+					</blockquote>
+					{$aTestimonial.name} - <small>{$aTestimonial.sub_name}</small>
+				</p>
+			{/if}
 			<h2>Promos</h2>
 			{getPromo tag="po1"}
 			{getPromo tag="po2"}

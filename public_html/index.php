@@ -51,29 +51,6 @@ array_pop($aUrl);
 require($site_root."appController.php");
 ##############################################
 
-### MEMCACHE #################################
-if($aConfig["software"]["memcache"] == true)
-{
-	$oMemcache = new Memcache;
-	$oMemcache->connect($aConfig["memcache"]["server"], $aConfig["memcache"]["port"]) or die("Could not connect to memcache");
-	if($_GET["FLUSHCACHE"])
-	{
-		$oMemcache->flush();
-		
-		// Wait for memcache to finish flushing
-		$time = time()+1; //one second future
-		while(time() < $time) {
-			//sleep
-		}
-	}
-}
-else
-{
-	include($site_root."helpers/emptyMemcache.php");
-	$oMemcache = new emptyMemcache;
-}
-##############################################
-
 ### ENCRYPTION ###############################
 include($site_root."helpers/hash_crypt.php");
 $oEnc = new hash_crypt($aConfig["encryption"]["key"]);
@@ -93,12 +70,6 @@ else
 }
 ##############################################
 
-### PAGE CACHED ##############################
-$sPage = $oMemcache->get(md5($aConfig["memcache"]["salt"].$sURL));
-if($sPage != false)
-	die($oEnc->decrypt($sPage));
-##############################################
-
 ### PREPARE URL PATTERN ######################
 if($aUrl[0] == "admin")
 {
@@ -108,48 +79,39 @@ if($aUrl[0] == "admin")
 else
 	require("../inc_urls.php");
 
-$sURLid = md5($aConfig["memcache"]["salt"].$sURL."_pattern");
-if(!$oMemcache->get($sURLid) || $aConfig["options"]["urlcache"] == false || $aConfig["options"]["debug"] == true)
+$patterns = array_chunk($aUrlPatterns, 80, TRUE);
+foreach($patterns as $urlPattern)
 {
-	$patterns = array_chunk($aUrlPatterns, 80, TRUE);
-	foreach($patterns as $urlPattern)
+	$aPatterns = Array();
+	$i=0;
+	/* Prepare patterns for matching */
+	foreach($urlPattern as $key => $value)
 	{
-		$aPatterns = Array();
-		$i=0;
-		/* Prepare patterns for matching */
-		foreach($urlPattern as $key => $value)
-		{
-			$aKeys[$i] = $key;
-			$key = preg_replace("/\{([a-z]+):([^}]+)\}/i", "($2)", $key);
-			$aPatterns[] = "(?P<url".$i.">^".$key."$)";
-			$i++;
-		}
-	
-		/* Run all patterns at once */
-		preg_match("/".str_replace("/","\/",implode("|",$aPatterns))."/i", $sURL, $matches);
-	
-		/* See if one of the patterns stuck */
-		foreach(array_reverse($matches) as $x => $value)
-		{
-			if(!is_numeric($x) && !empty($value))
-			{
-				$pattern = str_replace("url",null,$x);
-				$pattern = $aKeys[$pattern];
-				continue;
-			}
-		}
-		if(!empty($pattern))
-			continue;
+		$aKeys[$i] = $key;
+		$key = preg_replace("/\{([a-z]+):([^}]+)\}/i", "($2)", $key);
+		$aPatterns[] = "(?P<url".$i.">^".$key."$)";
+		$i++;
 	}
-	
-	if($aConfig["options"]["debug"] == true)
-		$oFirePHP->log("URL Pattern: ".$pattern);
-	
-	if($aConfig["options"]["urlcache"] && $aConfig["options"]["debug"] == false)
-		$oMemcache->set($sURLid, $pattern, false, strtotime("+".$aConfig["options"]["urlcache"]." minutes"));
+
+	/* Run all patterns at once */
+	preg_match("/".str_replace("/","\/",implode("|",$aPatterns))."/i", $sURL, $matches);
+
+	/* See if one of the patterns stuck */
+	foreach(array_reverse($matches) as $x => $value)
+	{
+		if(!is_numeric($x) && !empty($value))
+		{
+			$pattern = str_replace("url",null,$x);
+			$pattern = $aKeys[$pattern];
+			continue;
+		}
+	}
+	if(!empty($pattern))
+		continue;
 }
-else
-	$pattern = $oMemcache->get($sURLid);
+
+if($aConfig["options"]["debug"] == true)
+	$oFirePHP->log("URL Pattern: ".$pattern);
 ##############################################
 
 ### DB CONNECTION ############################

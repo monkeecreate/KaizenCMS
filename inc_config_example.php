@@ -14,20 +14,11 @@ $aConfig["admin_info"] = array(
 
 ### OPTIONS ###################################
 $aConfig["options"]["pear"] = "server"; //PEAR file locations; server = packages installed on server, folder = packages sit with site in .pear
-$aConfig["options"]["urlcache"] = 30; //Time memcache stores pattern found for url; (int) = time in minutes, (false) = turns off url cache
 $aConfig["options"]["debug"] = true;
 ###############################################
 
 ### SOFTWARE ##################################
-$aConfig["software"]["memcache"] = false; // Set if you want to use/have Memcache
 $aConfig["software"]["firephp"] = true; // Set if you want to use/have FirePHP
-###############################################
-
-### MEMCACHE ##################################
-# http://us.php.net/memcache
-$aConfig["memcache"]["server"] = "localhost";
-$aConfig["memcache"]["port"] = "11210";
-$aCongig["memcache"]["salt"] = ""; //Encrypt data sent to memcache server; exmpale: sha1("site name")
 ###############################################
 
 ### PEAR ######################################
