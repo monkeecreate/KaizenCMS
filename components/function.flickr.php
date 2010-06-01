@@ -3,14 +3,14 @@ function smarty_function_flickr($aParams, &$oSmarty) {
 	$oApp = $oSmarty->get_registered_object("appController");
 	
 	$flickrKey = "69f31081cc7123755564c66ae0af159c";
-	$flickrUser = $oApp->getSetting("flickrUser");
+	$flickrEmail = $oApp->getSetting("flickrEmail");
 	$flickrAPI = 'http://api.flickr.com/services/rest/?&api_key='.$flickrKey.'&format=php_serial';
 	
 	// get the users flickr id to be used by the api
-	$getFlickrId = unserialize(file_get_contents($flickrAPI."&method=flickr.people.findByUsername&username=".$flickrUser));
+	$getFlickrId = unserialize(file_get_contents($flickrAPI."&method=flickr.people.findByEmail&find_email=".$flickrEmail));
 	$flickrId = $getFlickrId["user"]["nsid"];
 	if(empty($flickrId)) {
-		echo "Your flickr username is invalid or hasn't been set.<br />";
+		echo "Your flickr email is invalid or hasn't been set.<br />";
 	}
 	
 	switch($aParams["size"]):
@@ -65,6 +65,32 @@ function smarty_function_flickr($aParams, &$oSmarty) {
 		} else {
 
 			echo "Could not retrieve groups from flickr. Please try again.";
+		}
+	}
+	
+	## photoCollections (Returns the collections belonging to the specified user.)
+	## params: title (optional, display photo title, true/false)
+	## example: {flickr method=photoCollections}
+	if ($aParams["method"] == "photoCollections") {
+		$flickrAPI .= '&method=flickr.collections.getTree&user_id='.$flickrId;
+		
+		$rsp = file_get_contents($flickrAPI);
+		$rsp_obj = unserialize($rsp);
+
+		if ($rsp_obj['stat'] == 'ok') {
+			foreach ($rsp_obj['collections']['collection'] as $flickrCollection) {	
+				$collectionId = explode("-", $flickrCollection['id']);
+				echo '<article>';
+				echo '<figure>';
+				echo '<a href="http://www.flickr.com/photos/'.$flickrId.'/collections/'.$collectionId[1].'/" title="'.$flickrCollection['title'].'" target="_blank"><img src="'.$flickrCollection["iconlarge"].'" alt="'.$flickrCollection['title'].'" class="flickrPhoto"></a>';
+				echo '</figure>';
+				if ($aParams["title"] == true)
+					echo '<h3><a href="http://www.flickr.com/photos/'.$flickrId.'/collections/'.$collectionId[1].'/" title="'.$flickrSet['title'].'" class="flickrTitle" target="_blank">'.$flickrCollection['title'].'</a></h3>';
+				echo '</article>';
+			}
+		} else {
+
+			echo "Could not retrieve collections from flickr. Please try again.";
 		}
 	}
 	
