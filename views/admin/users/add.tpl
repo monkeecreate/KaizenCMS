@@ -16,10 +16,10 @@
 		<legend>Privileges:</legend>
 		<ul>
 			{foreach from=$aAdminMenu item=aMenu key=x}
-				<li>
-					<input type="checkbox" name="privlages[]" value="{$x}"
+				<li>					
+					<input id="menu_{$aMenu.id}" type="checkbox" name="privlages[]" value="{$x}"
 						{if in_array($x, $aUser.privlages)} checked="checked"{/if}>
-					{$aMenu.title|clean_html}
+					<label style="display: inline;" for="menu_{$aMenu.id}">{$aMenu.title|clean_html}</label>
 				</li>
 			{/foreach}
 		</ul>

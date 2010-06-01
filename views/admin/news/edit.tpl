@@ -54,9 +54,9 @@
 		<ul>
 			{foreach from=$aCategories item=aCategory}
 				<li>
-					<input type="checkbox" name="categories[]" value="{$aCategory.id}"
-						{if in_array($aCategory.id, $aArticle.categories)} checked="checked"{/if}>
-					{$aCategory.name|clean_html}
+					<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
+					 {if in_array($aCategory.id, $aArticle.categories)} checked="checked"{/if}>
+					<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
 				</li>
 			{/foreach}
 		</ul>
