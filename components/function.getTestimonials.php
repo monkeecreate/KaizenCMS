@@ -12,7 +12,12 @@ function smarty_function_getTestimonials($aParams, &$oSmarty) {
 		else
 			$oSmarty->assign("aTestimonial", $aTestimonial);
 	} else {
-		$aTestimonials = $oTestimonial->getTestimonials($aParams["category"], $aParams["random"]);
+		
+		if(!empty($aParams["limit"])) {
+			$aTestimonials = array_chunk($oTestimonial->getTestimonials($aParams["category"], $aParams["random"]), $aParams["limit"]);
+			$aTestimonials = $aTestimonials[0];
+		} else
+			$aTestimonials = $oTestimonial->getTestimonials($aParams["category"], $aParams["random"]);
 		
 		if($aParams["limit"] == 1) {
 			if(!empty($aParams["assign"]))
