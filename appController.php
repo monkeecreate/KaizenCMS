@@ -6,6 +6,7 @@ class appController
 	private $_smarty;
 	private $_firephp;
 	private $_enc;
+	private $_plugin;
 	public $_settings;
 	public $_urlVars;
 	public $model;
@@ -30,6 +31,7 @@ class appController
 		$this->_urlVars = $aURLVars;
 		
 		if(!empty($sModel)) {
+			$this->_plugin = $sModel;
 			$this->model = $this->loadModel($sModel);
 		}
 	}
@@ -92,7 +94,7 @@ class appController
 	}
 	function getSetting($sTag) {
 		if(empty($sTag))
-			$this->error("getSetting", "Setting tag not passed", null, debug_backtrace());
+			$this->sendError("getSetting", "Setting tag not passed", null, debug_backtrace());
 		
 		$aSetting = $this->dbResults(
 			"SELECT * FROM `settings`"
@@ -101,7 +103,7 @@ class appController
 		);
 		
 		if(empty($aSetting))
-			$this->error("getSetting", "Could not find setting", null, debug_backtrace());
+			$this->sendError("getSetting", "Could not find setting", null, debug_backtrace());
 		
 		if(!class_exists("Form"))
 			include($this->_settings->root."helpers/Form.php");
@@ -112,7 +114,7 @@ class appController
 	}
 	function getUser($sId) {
 		if(empty($sId))
-			$this->error("getUser", "User id missing", null, debug_backtrace());
+			$this->sendError("getUser", "User id missing", null, debug_backtrace());
 			
 		$aUser = $this->dbResults(
 			"SELECT * FROM `users`"
@@ -121,7 +123,7 @@ class appController
 		);
 		
 		if(empty($aUser))
-			$this->error("getUser", "Could not find user", null, debug_backtrace());
+			$this->sendError("getUser", "Could not find user", null, debug_backtrace());
 			
 		return $aUser;
 	}
@@ -129,6 +131,12 @@ class appController
 	
 	### Database #####################
 	function dbResults($sSQL, $return = null) {
+		// Prefix
+		$sSQL = str_replace("{dbPrefix}", $this->_settings->dbPrefix, $sSQL);
+		
+		// Plugin Prefix
+		$sSQL = str_replace("{dbTable}", $this->_settings->dbPrefix.$this->_plugin, $sSQL);
+		
 		$oResult = $this->_db->query($sSQL);
 		
 		if(PEAR::isError($oResult))
@@ -181,10 +189,19 @@ class appController
 		$this->_smarty->assign($sVariable, $sValue);
 	}
 	function tplDisplay($sTemplate) {
-		if($this->tplExists($sTemplate))
-			$this->_smarty->display($sTemplate);
-		else
-			$this->sendError("appController->tplDisplay", "Can't find template - (".$sTemplate.")");
+		if(!empty($this->_plugin)) {
+			$sTemplate = $this->_settings->root."plugins/".$this->_plugin."/views/".$sTemplate;
+			if(is_file($sTemplate)) {
+				$this->tplAssign("sPluginView", $sTemplate);
+				$this->_smarty->display("plugin.tpl");
+			} else
+				$this->sendError("appController->tplDisplay", "Can't find template - (".$sTemplate.")");
+		} else {	
+			if($this->tplExists($sTemplate))
+				$this->_smarty->display($sTemplate);
+			else
+				$this->sendError("appController->tplDisplay", "Can't find template - (".$sTemplate.")");
+		}
 	}
 	function tplVariableGet($sVariable) {
 		return $this->_smarty->$sVariable;
