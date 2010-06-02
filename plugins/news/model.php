@@ -28,7 +28,7 @@ class news_model extends appModel
 				." ORDER BY `news`.`datetime_show` DESC"
 			,"all"
 		);
-	
+		
 		foreach($aArticles as $x => $aArticle)
 			$aArticles[$x] = $this->getArticleInfo($aArticle);
 		
@@ -50,15 +50,16 @@ class news_model extends appModel
 		return $aArticle;
 	}
 	private function getArticleInfo($aArticle) {
-		$aArticle["user"] = $this->getUser($aArticle["created_by"]);
-			
+		if(!empty($aArticle["created_by"]))
+			$aArticle["user"] = $this->getUser($aArticle["created_by"]);
+		
 		$aCategories = $this->dbResults(
 			"SELECT `name` FROM `news_categories` AS `categories`"
 				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
 			,"col"
 		);
-	
+		
 		$aArticle["categories"] = implode(", ", $aCategories);
 		
 		if(file_exists($this->_settings->rootPublic.substr($this->imageFolder, 1).$aArticle["id"].".jpg")
@@ -67,7 +68,7 @@ class news_model extends appModel
 			$aArticle["image"] = 1;
 		else
 			$aArticle["image"] = 0;
-			
+		
 		return $aArticle;
 	}
 	function getCategories($sEmpty = true) {
