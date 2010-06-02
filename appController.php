@@ -95,7 +95,7 @@ class appController
 	}
 	function getSetting($sTag) {
 		if(empty($sTag))
-			$this->error("getSetting", "Setting tag not passed", null, debug_backtrace());
+			$this->sendError("getSetting", "Setting tag not passed", null, debug_backtrace());
 		
 		$aSetting = $this->dbResults(
 			"SELECT * FROM `settings`"
@@ -104,7 +104,7 @@ class appController
 		);
 		
 		if(empty($aSetting))
-			$this->error("getSetting", "Could not find setting", null, debug_backtrace());
+			$this->sendError("getSetting", "Could not find setting", null, debug_backtrace());
 		
 		if(!class_exists("Form"))
 			include($this->_settings->root."helpers/Form.php");
@@ -115,7 +115,7 @@ class appController
 	}
 	function getUser($sId) {
 		if(empty($sId))
-			$this->error("getUser", "User id missing", null, debug_backtrace());
+			$this->sendError("getUser", "User id missing", null, debug_backtrace());
 			
 		$aUser = $this->dbResults(
 			"SELECT * FROM `users`"
@@ -124,7 +124,7 @@ class appController
 		);
 		
 		if(empty($aUser))
-			$this->error("getUser", "Could not find user", null, debug_backtrace());
+			$this->sendError("getUser", "Could not find user", null, debug_backtrace());
 			
 		return $aUser;
 	}
