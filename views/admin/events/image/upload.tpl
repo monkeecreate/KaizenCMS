@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="News Articles :: Upload Image" menu="news"}
+{include file="inc_header.tpl" page_title="Events :: Upload Image" menu="events"}
 <div id="sidebar" class="portlet">
 	<div class="portlet-content">
 		<b>&middot;</b> File must be a .jpg<br />
