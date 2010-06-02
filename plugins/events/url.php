@@ -1,5 +1,25 @@
 <?php
-$aUrlPatterns_import = array(
+# Custom URL using mod_rewrite
+
+### Url Pattern ###############################
+/*
+ # Function Variable Order:
+ #   1. URL parameters ({name:[a-z]+})
+ #   2. Pattern parameters
+ #
+ # Example URL Patterns:
+ #   /page/{name:[a-z0-9]+}/
+ #   /{tag:[a-z]+}/
+*/
+$aUrlPatterns = array(
+    "/events/" => array(
+		"cmd" => "events",
+		"action" => "index"
+	),
+	"/events/{id:[0-9]+}/{title:[^/]+}/" => array(
+		"cmd" => "events",
+		"action" => "event"
+	),
 	"/admin/events/" => array(
         "cmd" => "admin_events",
         "action" => "index"
@@ -61,3 +81,4 @@ $aUrlPatterns_import = array(
         "action" => "categories_delete"
     )
 );
+###############################################

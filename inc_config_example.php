@@ -59,9 +59,16 @@ $aConfig["smarty"]["dir"]["compile"] = $site_root.".compiled";
 $aConfig["smarty"]["dir"]["cache"] = $site_root.".cache";
 $aConfig["smarty"]["dir"]["plugins"] = array(
 	$site_root."components",
-	$site_root."components/news",
 	$site_root."components/html"
 );
+
+// Add plugin components
+$oPlugins = dir($site_root."plugins");
+while (false !== ($sPlugin = $oPlugins->read())) {
+	if(substr($sPlugin, 0, 1) != "." && is_dir($site_root."plugins/".$sPlugin."/components/"))
+		$aConfig["smarty"]["dir"]["plugins"][] = $site_root."plugins/".$sPlugin."/components/";
+}
+$oPlugins->close();
 
 /* Caching */
 $aConfig["smarty"]["cache"]["type"] = false;// false, 1 = 1 lifetime, 2 = lifetime per template;
