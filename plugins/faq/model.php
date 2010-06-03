@@ -15,9 +15,9 @@ class faq_model extends appModel
 		
 		// Get all faq for paging
 		$aQuestions = $this->dbResults(
-			"SELECT `faq`.* FROM `faq` AS `faq`"
-				." INNER JOIN `faq_categories_assign` AS `faq_assign` ON `faq`.`id` = `faq_assign`.`faqid`"
-				." INNER JOIN `faq_categories` AS `categories` ON `faq_assign`.`categoryid` = `categories`.`id`"
+			"SELECT `faq`.* FROM `{dbPrefix}faq` AS `faq`"
+				." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq`.`id` = `faq_assign`.`faqid`"
+				." INNER JOIN `{dbPrefix}faq_categories` AS `categories` ON `faq_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `faq`.`id`"
 			,"all"
@@ -25,8 +25,8 @@ class faq_model extends appModel
 	
 		foreach($aQuestions as $x => $aQuestion) {
 			$aQuestionCategories = $this->dbResults(
-				"SELECT `name` FROM `faq_categories` AS `categories`"
-					." INNER JOIN `faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
+				"SELECT `name` FROM `{dbPrefix}faq_categories` AS `categories`"
+					." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
 				,"col"
 			);
@@ -38,7 +38,7 @@ class faq_model extends appModel
 	}
 	function getQuestion($sId) {
 		$aQuestion = $this->dbResults(
-			"SELECT * FROM `faq`"
+			"SELECT * FROM `{dbPrefix}faq`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"row"
 		);
@@ -48,13 +48,13 @@ class faq_model extends appModel
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `faq_categories`"
+				"SELECT * FROM `{dbPrefix}faq_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `faq_categories_assign`"
+				"SELECT * FROM `{dbPrefix}faq_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
 			);
@@ -74,7 +74,7 @@ class faq_model extends appModel
 			return false;
 		
 		$aCategory = $this->dbResults(
-			"SELECT * FROM `faq_categories`"
+			"SELECT * FROM `{dbPrefix}faq_categories`"
 				.$sWhere
 			,"row"
 		);

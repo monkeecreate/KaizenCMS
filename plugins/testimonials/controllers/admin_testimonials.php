@@ -13,12 +13,12 @@ class admin_testimonials extends adminController
 		$_SESSION["admin"]["admin_testimonials"] = null;
 		
 		if(!empty($_GET["category"])) {
-			$sSQLCategory = " INNER JOIN `testimonials_categories_assign` AS `assign` ON `testimonials`.`id` = `assign`.`testimonialid`";
+			$sSQLCategory = " INNER JOIN `{dbPrefix}testimonials_categories_assign` AS `assign` ON `testimonials`.`id` = `assign`.`testimonialid`";
 			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
 		}
 		
 		$aTestimonials = $this->dbResults(
-			"SELECT `testimonials`.* FROM `testimonials`"
+			"SELECT `testimonials`.* FROM `{dbPrefix}testimonials` AS `testimonials`"
 				.$sSQLCategory
 				." ORDER BY `testimonials`.`name`"
 			,"all"
@@ -52,7 +52,7 @@ class admin_testimonials extends adminController
 		}
 		
 		$sID = $this->dbResults(
-			"INSERT INTO `testimonials`"
+			"INSERT INTO `{dbPrefix}testimonials`"
 				." (`name`, `sub_name`, `text`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
@@ -70,7 +70,7 @@ class admin_testimonials extends adminController
 		
 		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
-				"INSERT INTO `testimonials_categories_assign`"
+				"INSERT INTO `{dbPrefix}testimonials_categories_assign`"
 					." (`testimonialid`, `categoryid`)"
 					." VALUES"
 					." (".$sID.", ".$sCategory.")"
@@ -84,7 +84,7 @@ class admin_testimonials extends adminController
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_testimonials"])) {
 			$aTestimonialRow = $this->dbResults(
-				"SELECT * FROM `testimonials`"
+				"SELECT * FROM `{dbPrefix}testimonials`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
 			);
@@ -93,19 +93,19 @@ class admin_testimonials extends adminController
 			
 			$aTestimonial["updated_datetime"] = $aTestimonialRow["updated_datetime"];
 			$aTestimonial["updated_by"] = $this->dbResults(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aTestimonialRow["updated_by"]
 				,"row"
 			);
 		} else {
 			$aTestimonial = $this->dbResults(
-				"SELECT * FROM `testimonials`"
+				"SELECT * FROM `{dbPrefix}testimonials`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
 			$aTestimonial["categories"] = $this->dbResults(
-				"SELECT `categories`.`id` FROM `testimonials_categories` AS `categories`"
+				"SELECT `categories`.`id` FROM `{dbPrefix}testimonials_categories` AS `categories`"
 					." INNER JOIN `testimonials_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`"
 					." WHERE `assign`.`testimonialid` = ".$aTestimonial["id"]
 					." GROUP BY `categories`.`id`"
@@ -114,7 +114,7 @@ class admin_testimonials extends adminController
 			);
 			
 			$aTestimonial["updated_by"] = $this->dbResults(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aTestimonial["updated_by"]
 				,"row"
 			);
@@ -132,7 +132,7 @@ class admin_testimonials extends adminController
 		}
 		
 		$this->dbResults(
-			"UPDATE `testimonials` SET"
+			"UPDATE `{dbPrefix}testimonials` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				.", `sub_name` = ".$this->dbQuote($_POST["sub_name"], "text")
 				.", `text` = ".$this->dbQuote($_POST["text"], "text")
@@ -144,13 +144,13 @@ class admin_testimonials extends adminController
 		);
 		
 		$this->dbResults(
-			"DELETE FROM `testimonials_categories_assign`"
+			"DELETE FROM `{dbPrefix}testimonials_categories_assign`"
 				." WHERE `testimonialid` = ".$this->dbQuote($_POST["id"], "integer")
 			,"update"
 		);
 		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
-				"INSERT INTO `testimonials_categories_assign`"
+				"INSERT INTO `{dbPrefix}testimonials_categories_assign`"
 					." (`testimonialid`, `categoryid`)"
 					." VALUES"
 					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
@@ -163,12 +163,12 @@ class admin_testimonials extends adminController
 	}
 	function delete() {
 		$this->dbResults(
-			"DELETE FROM `testimonials`"
+			"DELETE FROM `{dbPrefix}testimonials`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"delete"
 		);
 		$this->dbResults(
-			"DELETE FROM `testimonials_categories_assign`"
+			"DELETE FROM `{dbPrefix}testimonials_categories_assign`"
 				." WHERE `testimonialid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"delete"
 		);
@@ -179,7 +179,7 @@ class admin_testimonials extends adminController
 		$_SESSION["admin"]["admin_testimonials_categories"] = null;
 		
 		$aCategories = $this->dbResults(
-			"SELECT * FROM `testimonials_categories`"
+			"SELECT * FROM `{dbPrefix}testimonials_categories`"
 				." ORDER BY `name`"
 			,"all"
 		);
@@ -189,7 +189,7 @@ class admin_testimonials extends adminController
 	}
 	function categories_add_s() {
 		$this->dbResults(
-			"INSERT INTO `testimonials_categories`"
+			"INSERT INTO `{dbPrefix}testimonials_categories`"
 				." (`name`)"
 				." VALUES"
 				." ("
@@ -202,7 +202,7 @@ class admin_testimonials extends adminController
 	}
 	function categories_edit_s() {
 		$this->dbResults(
-			"UPDATE `testimonials_categories` SET"
+			"UPDATE `{dbPrefix}testimonials_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"update"
@@ -212,12 +212,12 @@ class admin_testimonials extends adminController
 	}
 	function categories_delete() {
 		$this->dbResults(
-			"DELETE FROM `testimonials_categories`"
+			"DELETE FROM `{dbPrefix}testimonials_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"delete"
 		);
 		$this->dbResults(
-			"DELETE FROM `testimonials_categories_assign`"
+			"DELETE FROM `{dbPrefix}testimonials_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"delete"
 		);

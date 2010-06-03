@@ -38,12 +38,12 @@ class calendar extends appController
 		$this->tplAssign("aEvents", $aEvents);
 		$this->tplAssign("aPaging", $aPaging);
 		
-		if(!empty($_GET["category"]) && $this->tplExists("calendar/category-".$_GET["category"]."tpl"))
-			$this->tplDisplay("calendar/category-".$_GET["category"].".tpl");
-		elseif(!empty($_GET["category"]) && $this->tplExists("calendar/category.tpl"))
-			$this->tplDisplay("calendar/category.tpl");
+		if(!empty($_GET["category"]) && $this->tplExists("category-".$_GET["category"]."tpl"))
+			$this->tplDisplay("category-".$_GET["category"].".tpl");
+		elseif(!empty($_GET["category"]) && $this->tplExists("category.tpl"))
+			$this->tplDisplay("category.tpl");
 		else
-			$this->tplDisplay("calendar/index.tpl");
+			$this->tplDisplay("index.tpl");
 	}
 	function ics() {
 		$aEventPages = array_chunk($this->model->getEvents($_GET["category"]), 15);
@@ -52,7 +52,7 @@ class calendar extends appController
 		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
 		$this->tplAssign("aEvents", $aEvents);
 		
-		$this->tplDisplay("calendar/ics.tpl");
+		$this->tplDisplay("ics.tpl");
 	}
 	function event() {
 		$aEvent = $this->model->getEvent($this->_urlVars->dynamic["id"]);
@@ -62,10 +62,10 @@ class calendar extends appController
 		
 		$this->tplAssign("aEvent", $aEvent);
 		
-		if($this->tplExists("calendar/event-".$aEvent["id"].".tpl"))
-			$this->tplDisplay("calendar/event-".$aEvent["id"].".tpl");
+		if($this->tplExists("event-".$aEvent["id"].".tpl"))
+			$this->tplDisplay("event-".$aEvent["id"].".tpl");
 		else
-			$this->tplDisplay("calendar/event.tpl");
+			$this->tplDisplay("event.tpl");
 	}
 	function event_ics() {
 		$aEvent = $this->model->getEvent($this->_urlVars->dynamic["id"]);
@@ -81,6 +81,6 @@ class calendar extends appController
 		header("Content-length: ".strlen($sFile));
 		header("Content-disposition: attachment; filename=\"event.ics\"");
 
-		$this->tplDisplay("calendar/event_ics.tpl");
+		$this->tplDisplay("event_ics.tpl");
 	}
 }

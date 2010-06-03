@@ -1,6 +1,6 @@
 <?php
 $aDatabases = array(
-	"news" => array(
+	"calendar" => array(
 		"fields" => array(
 			"id" => array(
 				"type" => "integer",

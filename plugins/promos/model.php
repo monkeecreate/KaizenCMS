@@ -6,12 +6,12 @@ class promos_model extends appModel
 	function getPromos($sPosition = null) {
 		if(!empty($sPosition))
 		{
-			$sSQLPosition = " INNER JOIN `promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`";
+			$sSQLPosition = " INNER JOIN `{dbPrefix}promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`";
 			$sSQLPosition .= " WHERE `assign`.`positionid` = ".$this->dbQuote($sPosition, "integer");
 		}
 		
 		$aPromos = $this->dbResults(
-			"SELECT `promos`.* FROM `promos`"
+			"SELECT `promos`.* FROM `{dbPrefix}promos` AS `promos`"
 				.$sSQLPosition
 				." ORDER BY `promos`.`datetime_show` DESC"
 			,"all"
@@ -33,9 +33,9 @@ class promos_model extends appModel
 			$sWhere .= " AND `promos`.`id` NOT IN (".$sUsed.")";
 		
 		$aPromo = $this->dbResults(
-			"SELECT `promos`.* FROM `promos`"
-				." INNER JOIN `promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`"
-				." INNER JOIN `promos_positions` AS `positions` ON `assign`.`positionid` = `positions`.`id`"
+			"SELECT `promos`.* FROM `{dbPrefix}promos` AS `promos`"
+				." INNER JOIN `{dbPrefix}promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`"
+				." INNER JOIN `{dbPrefix}promos_positions` AS `positions` ON `assign`.`positionid` = `positions`.`id`"
 				.$sWhere
 				." AND `promos`.`datetime_show` < ".time()
 				." AND (`promos`.`datetime_kill` > ".time()." OR `promos`.`use_kill` = 0)"
@@ -47,7 +47,7 @@ class promos_model extends appModel
 		
 		if(!empty($aPromo)) {
 			$this->dbResults(
-				"UPDATE `promos` SET"
+				"UPDATE `{dbPrefix}promos` SET"
 					." `impressions` = `impressions` + 1"
 					." WHERE `id` = ".$aPromo["id"]
 			);
@@ -59,7 +59,7 @@ class promos_model extends appModel
 	}
 	function getPositions() {
 		$aPositions = $this->dbResults(
-			"SELECT * FROM `promos_positions`"
+			"SELECT * FROM `{dbPrefix}promos_positions`"
 				." ORDER BY `name`" 
 			,"all"
 		);
@@ -68,7 +68,7 @@ class promos_model extends appModel
 	}
 	function getPosition($sTag) {
 		$aPosition = $this->dbResults(
-			"SELECT * FROM `promos_positions`"
+			"SELECT * FROM `{dbPrefix}promos_positions`"
 				." WHERE `tag` = ".$this->dbQuote($sTag, "text")
 			,"row"
 		);

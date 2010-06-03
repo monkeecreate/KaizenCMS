@@ -8,13 +8,13 @@ class promos extends appController
 	
 	function index() {
 		$aPromo = $this->dbResults(
-			"SELECT `promos`.* FROM `promos`"
+			"SELECT `promos`.* FROM `{dbPrefix}promos` AS `promos`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"row"
 		);
 		
 		$this->dbResults(
-			"UPDATE `promos` SET"
+			"UPDATE `{dbPrefix}promos` SET"
 				." `clicks` = `clicks` + 1"
 				." WHERE `id` = ".$aPromo["id"]
 			,"update"

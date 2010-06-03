@@ -173,4 +173,5 @@ $aUrlPattersAfter = array(
 		"action" => "view"
 	)
 );
+$aUrlPatterns = array_merge($aUrlPatterns, $aUrlPattersAfter);
 ###############################################

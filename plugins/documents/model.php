@@ -21,9 +21,9 @@ class documents_model extends appModel
 			$sOrderBy = " ORDER BY `documents`.`created_datetime` DESC";
 		
 		$aDocuments = $this->dbResults(
-			"SELECT `documents`.* FROM `documents` AS `documents`"
-				." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `documents`.`id` = `documents_assign`.`documentid`"
-				." INNER JOIN `documents_categories` AS `categories` ON `documents_assign`.`categoryid` = `categories`.`id`"
+			"SELECT `documents`.* FROM `{dbPrefix}documents` AS `documents`"
+				." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents`.`id` = `documents_assign`.`documentid`"
+				." INNER JOIN `{dbPrefix}documents_categories` AS `categories` ON `documents_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `documents`.`id`"
 				.$sOrderBy
@@ -37,7 +37,7 @@ class documents_model extends appModel
 	}
 	function getDocument($sId) {
 		$aDocument = $this->dbResults(
-			"SELECT `documents`.* FROM `documents` AS `documents`"
+			"SELECT `documents`.* FROM `{dbPrefix}documents` AS `documents`"
 				." WHERE `documents`.`id` = ".$this->dbQuote($sId, "integer")
 				." AND `documents`.`active` = 1"
 			,"row"
@@ -50,8 +50,8 @@ class documents_model extends appModel
 	}
 	function getDocumentInfo($aDocument) {
 		$aCategories = $this->dbResults(
-			"SELECT `name` FROM `documents_categories` AS `categories`"
-				." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
+			"SELECT `name` FROM `{dbPrefix}documents_categories` AS `categories`"
+				." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
 			,"col"
 		);
@@ -63,13 +63,13 @@ class documents_model extends appModel
 	function getCategories($sEmpty = true) {		
 		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `documents_categories`"
+				"SELECT * FROM `{dbPrefix}documents_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `documents_categories_assign`"
+				"SELECT * FROM `{dbPrefix}documents_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
 			);
@@ -89,7 +89,7 @@ class documents_model extends appModel
 			return false;
 		
 		$aCategory = $this->dbResults(
-			"SELECT * FROM `documents_categories`"
+			"SELECT * FROM `{dbPrefix}documents_categories`"
 				.$sWhere
 			,"row"
 		);

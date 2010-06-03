@@ -19,7 +19,7 @@ class admin_calendar extends adminController
 		$this->tplAssign("aEvents", $oCalendar->getEvents($_GET["category"], true));
 		$this->tplAssign("sUseImage", $oCalendar->useImage);
 		
-		$this->tplDisplay("calendar/index.tpl");
+		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
 		$oCalendar = $this->loadModel("calendar");
@@ -46,7 +46,7 @@ class admin_calendar extends adminController
 		
 		$this->tplAssign("aCategories", $oCalendar->getCategories());
 		$this->tplAssign("sUseImage", $oCalendar->useImage);
-		$this->tplDisplay("calendar/add.tpl");
+		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
 		$oCalendar = $this->loadModel("calendar");
@@ -78,7 +78,7 @@ class admin_calendar extends adminController
 		);
 		
 		$sID = $this->dbResults(
-			"INSERT INTO `calendar`"
+			"INSERT INTO `{dbPrefix}calendar`"
 				." (`title`, `short_content`, `content`, `allday`, `datetime_start`, `datetime_end`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
@@ -102,7 +102,7 @@ class admin_calendar extends adminController
 		
 		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
-				"INSERT INTO `calendar_categories_assign`"
+				"INSERT INTO `{dbPrefix}calendar_categories_assign`"
 					." (`eventid`, `categoryid`)"
 					." VALUES"
 					." (".$sID.", ".$sCategory.")"
@@ -121,7 +121,7 @@ class admin_calendar extends adminController
 		
 		if(!empty($_SESSION["admin"]["admin_calendar"])) {
 			$aEventRow = $this->dbResults(
-				"SELECT * FROM `calendar`"
+				"SELECT * FROM `{dbPrefix}calendar`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
 			);
@@ -130,19 +130,19 @@ class admin_calendar extends adminController
 			
 			$aEvent["updated_datetime"] = $aEventRow["updated_datetime"];
 			$aEvent["updated_by"] = $this->dbResults(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aEventRow["updated_by"]
 				,"row"
 			);
 		} else {
 			$aEvent = $this->dbResults(
-				"SELECT * FROM `calendar`"
+				"SELECT * FROM `{dbPrefix}calendar`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
 			$aEvent["categories"] = $this->dbResults(
-				"SELECT `categories`.`id` FROM `calendar_categories` AS `categories`"
+				"SELECT `categories`.`id` FROM `{dbPrefix}calendar_categories` AS `categories`"
 					." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `categories`.`id` = `calendar_assign`.`categoryid`"
 					." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
 					." GROUP BY `categories`.`id`"
@@ -156,7 +156,7 @@ class admin_calendar extends adminController
 			$aEvent["datetime_kill_date"] = date("m/d/Y", $aEvent["datetime_kill"]);
 			
 			$aEvent["updated_by"] = $this->dbResults(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aEvent["updated_by"]
 				,"row"
 			);
@@ -164,7 +164,7 @@ class admin_calendar extends adminController
 		
 		$this->tplAssign("aEvent", $aEvent);
 		$this->tplAssign("aCategories", $oCalendar->getCategories());
-		$this->tplDisplay("calendar/edit.tpl");
+		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
 		if(empty($_POST["title"]) || count($_POST["categories"]) == 0) {
@@ -194,7 +194,7 @@ class admin_calendar extends adminController
 		);
 		
 		$this->dbResults(
-			"UPDATE `calendar` SET"
+			"UPDATE `{dbPrefix}calendar` SET"
 				." `title` = ".$this->dbQuote($_POST["title"], "text")
 				.", `short_content` = ".$this->dbQuote($_POST["short_content"], "text")
 				.", `content` = ".$this->dbQuote($_POST["content"], "text")
@@ -211,12 +211,12 @@ class admin_calendar extends adminController
 		);
 		
 		$this->dbResults(
-			"DELETE FROM `calendar_categories_assign`"
+			"DELETE FROM `{dbPrefix}calendar_categories_assign`"
 				." WHERE `eventid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
-				"INSERT INTO `calendar_categories_assign`"
+				"INSERT INTO `{dbPrefix}calendar_categories_assign`"
 					." (`eventid`, `categoryid`)"
 					." VALUES"
 					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
@@ -231,11 +231,11 @@ class admin_calendar extends adminController
 		$oCalendar = $this->loadModel("calendar");
 		
 		$this->dbResults(
-			"DELETE FROM `calendar`"
+			"DELETE FROM `{dbPrefix}calendar`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
 		$this->dbResults(
-			"DELETE FROM `calendar_categories_assign`"
+			"DELETE FROM `{dbPrefix}calendar_categories_assign`"
 				." WHERE `eventid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
 		
@@ -247,7 +247,7 @@ class admin_calendar extends adminController
 		$oCalendar = $this->loadModel("calendar");
 		
 		$aEvent = $this->dbResults(
-			"SELECT * FROM `calendar`"
+			"SELECT * FROM `{dbPrefix}calendar`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"row"
 		);
@@ -255,7 +255,7 @@ class admin_calendar extends adminController
 		$this->tplAssign("aEvent", $aEvent);
 		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
-		$this->tplDisplay("calendar/image/upload.tpl");
+		$this->tplDisplay("admin/image/upload.tpl");
 	}
 	function image_upload_s() {
 		$oCalendar = $this->loadModel("calendar");
@@ -278,7 +278,7 @@ class admin_calendar extends adminController
 					$this->forward("/admin/calendar/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 				} else {
 					$this->dbResults(
-						"UPDATE `calendar` SET"
+						"UPDATE `{dbPrefix}calendar` SET"
 							." `photo_x1` = 0"
 							.", `photo_y1` = 0"
 							.", `photo_x2` = ".$oCalendar->imageMinWidth
@@ -306,11 +306,11 @@ class admin_calendar extends adminController
 		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
 
-		$this->tplDisplay("calendar/image/edit.tpl");
+		$this->tplDisplay("admin/image/edit.tpl");
 	}
 	function image_edit_s() {
 		$this->dbResults(
-			"UPDATE `calendar` SET"
+			"UPDATE `{dbPrefix}calendar` SET"
 				." photo_x1 = ".$this->dbQuote($_POST["x1"], "integer")
 				.", photo_y1 = ".$this->dbQuote($_POST["y1"], "integer")
 				.", photo_x2 = ".$this->dbQuote($_POST["x2"], "integer")
@@ -326,7 +326,7 @@ class admin_calendar extends adminController
 		$oCalendar = $this->loadModel("calendar");
 		
 		$this->dbResults(
-			"UPDATE `calendar` SET"
+			"UPDATE `{dbPrefix}calendar` SET"
 				." photo_x1 = 0"
 				.", photo_y1 = 0"
 				.", photo_x2 = 0"
@@ -344,17 +344,17 @@ class admin_calendar extends adminController
 		$_SESSION["admin"]["admin_calendar_categories"] = null;
 		
 		$aCategories = $this->dbResults(
-			"SELECT `categories`.* FROM `calendar_categories` AS `categories`"
+			"SELECT `categories`.* FROM `{dbPrefix}calendar_categories` AS `categories`"
 				." ORDER BY `categories`.`name`"
 			,"all"
 		);
 		
 		$this->tplAssign("aCategories", $aCategories);
-		$this->tplDisplay("calendar/categories.tpl");
+		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
 		$this->dbResults(
-			"INSERT INTO `calendar_categories`"
+			"INSERT INTO `{dbPrefix}calendar_categories`"
 				." (`name`)"
 				." VALUES"
 				." ("
@@ -367,7 +367,7 @@ class admin_calendar extends adminController
 	}
 	function categories_edit_s() {
 		$this->dbResults(
-			"UPDATE `calendar_categories` SET"
+			"UPDATE `{dbPrefix}calendar_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
@@ -376,11 +376,11 @@ class admin_calendar extends adminController
 	}
 	function categories_delete() {
 		$this->dbResults(
-			"DELETE FROM `calendar_categories`"
+			"DELETE FROM `{dbPrefix}calendar_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
 		$this->dbResults(
-			"DELETE FROM `calendar_categories_assign`"
+			"DELETE FROM `{dbPrefix}calendar_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
 

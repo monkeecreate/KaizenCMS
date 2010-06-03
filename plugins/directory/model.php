@@ -16,9 +16,9 @@ class directory_model extends appModel
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
 		$aListings = $this->dbResults(
-			"SELECT `directory`.* FROM `directory`"
-				." INNER JOIN `directory_categories_assign` AS `directory_assign` ON `directory`.`id` = `directory_assign`.`listingid`"
-				." INNER JOIN `directory_categories` AS `categories` ON `directory_assign`.`categoryid` = `categories`.`id`"
+			"SELECT `directory`.* FROM `{dbPrefix}directory` AS `directory`"
+				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory`.`id` = `directory_assign`.`listingid`"
+				." INNER JOIN `{dbPrefix}directory_categories` AS `categories` ON `directory_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `directory`.`id`"
 				." ORDER BY `directory`.`name`"
@@ -32,8 +32,8 @@ class directory_model extends appModel
 	}
 	function getListingInfo($aListing) {
 		$aCategories = $this->dbResults(
-			"SELECT `name` FROM `directory_categories` AS `categories`"
-				." INNER JOIN `directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
+			"SELECT `name` FROM `{dbPrefix}directory_categories` AS `categories`"
+				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
 			,"col"
 		);
@@ -51,13 +51,13 @@ class directory_model extends appModel
 	function getCategories($sEmpty = true) {		
 		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `directory_categories`"
+				"SELECT * FROM `{dbPrefix}directory_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `directory_categories_assign`"
+				"SELECT * FROM `{dbPrefix}directory_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
 			);
@@ -77,7 +77,7 @@ class directory_model extends appModel
 			return false;
 		
 		$aCategory = $this->dbResults(
-			"SELECT * FROM `directory_categories`"
+			"SELECT * FROM `{dbPrefix}directory_categories`"
 				.$sWhere
 			,"row"
 		);

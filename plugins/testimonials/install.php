@@ -10,6 +10,7 @@ $aDatabases = array(
 				"auto_increment"
 			),
 			"name" => array("type" => "text","length" => 100),
+			"sub_name" => array("type" => "text","length" => 100),
 			"text" => array("type" => "clob"),
 			"active" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),

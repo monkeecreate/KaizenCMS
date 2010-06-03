@@ -10,9 +10,9 @@ class galleries_model extends appModel
 		
 		// Get all gallerys for paging
 		$aGalleries = $this->dbResults(
-			"SELECT `galleries`.* FROM `galleries` AS `galleries`"
-				." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `galleries`.`id` = `galleries_assign`.`galleryid`"
-				." INNER JOIN `galleries_categories` AS `categories` ON `galleries_assign`.`categoryid` = `categories`.`id`"
+			"SELECT `galleries`.* FROM `{dbPrefix}galleries` AS `galleries`"
+				." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries`.`id` = `galleries_assign`.`galleryid`"
+				." INNER JOIN `{dbPrefix}galleries_categories` AS `categories` ON `galleries_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `galleries`.`id`"
 			,"all"
@@ -20,14 +20,14 @@ class galleries_model extends appModel
 	
 		foreach($aGalleries as $x => $aGallery) {
 			$aGalleries[$x]["photo"] = $this->dbResults(
-				"SELECT `photo` FROM `galleries_photos`"
+				"SELECT `photo` FROM `{dbPrefix}galleries_photos`"
 					." WHERE `galleryid` = ".$aGallery["id"]
 					." AND `gallery_default` = 1"
 				,"one"
 			);
 			
 			$aGalleryCategories = $this->dbResults(
-				"SELECT `name` FROM `galleries_categories` AS `categories`"
+				"SELECT `name` FROM `{dbPrefix}galleries_categories` AS `categories`"
 					." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
 				,"col"
@@ -40,15 +40,15 @@ class galleries_model extends appModel
 	}
 	function getGallery($sId) {
 		$aGallery = $this->dbResults(
-			"SELECT * FROM `galleries`"
+			"SELECT * FROM `{dbPrefix}galleries`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"row"
 		);
 		
 		if(!empty($aGallery)) {
 			$aCategories = $this->dbResults(
-				"SELECT `name` FROM `galleries_categories` AS `category`"
-					." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `category`.`id`"
+				"SELECT `name` FROM `{dbPrefix}galleries_categories` AS `category`"
+					." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `category`.`id`"
 					." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
 				,"col"
 			);
@@ -60,7 +60,7 @@ class galleries_model extends appModel
 	}
 	function getPhotos($sId) {
 		$aPhotos = $this->dbResults(
-			"SELECT * FROM `galleries_photos`"
+			"SELECT * FROM `{dbPrefix}galleries_photos`"
 				." WHERE `galleryid` = ".$this->dbQuote($sId, "integer")
 				." ORDER BY `sort_order`"
 			,"all"
@@ -70,7 +70,7 @@ class galleries_model extends appModel
 	}
 	function getPhoto($sId) {
 		$aPhoto = $this->dbResults(
-			"SELECT * FROM `galleries_photos`"
+			"SELECT * FROM `{dbPrefix}galleries_photos`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"row"
 		);
@@ -80,13 +80,13 @@ class galleries_model extends appModel
 	function getCategories($sEmpty = true) {		
 		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `galleries_categories`"
+				"SELECT * FROM `{dbPrefix}galleries_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `galleries_categories_assign`"
+				"SELECT * FROM `{dbPrefix}galleries_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
 			);
@@ -106,7 +106,7 @@ class galleries_model extends appModel
 			return false;
 		
 		$aCategory = $this->dbResults(
-			"SELECT * FROM `galleries_categories`"
+			"SELECT * FROM `{dbPrefix}galleries_categories`"
 				.$sWhere
 			,"row"
 		);
@@ -115,7 +115,7 @@ class galleries_model extends appModel
 	}
 	function getMaxSort() {
 		$sMaxSort = $this->dbResults(
-			"SELECT MAX(`sort_order`) FROM `galleries`"
+			"SELECT MAX(`sort_order`) FROM `{dbPrefix}galleries`"
 			,"one"
 		);
 		

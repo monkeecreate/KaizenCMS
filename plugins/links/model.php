@@ -23,9 +23,9 @@ class links_model extends appModel
 		
 		// Get all links for paging
 		$aLinks = $this->dbResults(
-			"SELECT `links`.* FROM `links` AS `links`"
-				." INNER JOIN `links_categories_assign` AS `links_assign` ON `links`.`id` = `links_assign`.`linkid`"
-				." INNER JOIN `links_categories` AS `categories` ON `links_assign`.`categoryid` = `categories`.`id`"
+			"SELECT `links`.* FROM `{dbPrefix}links` AS `links`"
+				." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links`.`id` = `links_assign`.`linkid`"
+				." INNER JOIN `{dbPrefix}links_categories` AS `categories` ON `links_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `links`.`id`"
 				.$sOrderBy
@@ -34,8 +34,8 @@ class links_model extends appModel
 	
 		foreach($aLinks as $x => $aLink) {
 			$aLinkCategories = $this->dbResults(
-				"SELECT `name` FROM `links_categories` AS `categories`"
-					." INNER JOIN `links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
+				"SELECT `name` FROM `{dbPrefix}links_categories` AS `categories`"
+					." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `links_assign`.`linkid` = ".$aLink["id"]
 				,"col"
 			);
@@ -47,7 +47,7 @@ class links_model extends appModel
 	}
 	function getLink($sId) {
 		$aLink = $this->dbResults(
-			"SELECT * FROM `links`"
+			"SELECT * FROM `{dbPrefix}links`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"row"
 		);
@@ -57,13 +57,13 @@ class links_model extends appModel
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `links_categories`"
+				"SELECT * FROM `{dbPrefix}links_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `links_categories_assign`"
+				"SELECT * FROM `{dbPrefix}links_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
 			);
@@ -83,7 +83,7 @@ class links_model extends appModel
 			return false;
 		
 		$aCategory = $this->dbResults(
-			"SELECT * FROM `links_categories`"
+			"SELECT * FROM `{dbPrefix}links_categories`"
 				.$sWhere
 			,"row"
 		);

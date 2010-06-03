@@ -22,9 +22,9 @@ class calendar_model extends appModel
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
 		$aEvents = $this->dbResults(
-			"SELECT `calendar`.* FROM `calendar` AS `calendar`"
-				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar`.`id` = `calendar_assign`.`eventid`"
-				." INNER JOIN `calendar_categories` AS `categories` ON `calendar_assign`.`categoryid` = `categories`.`id`"
+			"SELECT `calendar`.* FROM `{dbPrefix}calendar` AS `calendar`"
+				." INNER JOIN `{dbPrefix}calendar_categories_assign` AS `calendar_assign` ON `calendar`.`id` = `calendar_assign`.`eventid`"
+				." INNER JOIN `{dbPrefix}calendar_categories` AS `categories` ON `calendar_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `calendar`.`id`"
 				." ORDER BY `calendar`.`datetime_start`"
@@ -38,7 +38,7 @@ class calendar_model extends appModel
 	}
 	function getEvent($sId) {
 		$aEvent = $this->dbResults(
-			"SELECT `calendar`.* FROM `calendar` AS `calendar`"
+			"SELECT `calendar`.* FROM `{dbPrefix}calendar` AS `calendar`"
 				." WHERE `calendar`.`id` = ".$this->dbQuote($sId, "integer")
 				." AND `calendar`.`active` = 1"
 				." AND `calendar`.`datetime_show` < ".time()
@@ -53,7 +53,7 @@ class calendar_model extends appModel
 	}
 	private function getEventInfo($aEvent) {
 		$aCategories = $this->dbResults(
-			"SELECT `name` FROM `calendar_categories` AS `category`"
+			"SELECT `name` FROM `{dbPrefix}calendar_categories` AS `category`"
 				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
 				." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
 			,"col"
@@ -73,13 +73,13 @@ class calendar_model extends appModel
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `calendar_categories`"
+				"SELECT * FROM `{dbPrefix}calendar_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `calendar_categories_assign`"
+				"SELECT * FROM `{dbPrefix}calendar_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
 			);
@@ -99,7 +99,7 @@ class calendar_model extends appModel
 			return false;
 		
 		$aCategory = $this->dbResults(
-			"SELECT * FROM `calendar_categories`"
+			"SELECT * FROM `{dbPrefix}calendar_categories`"
 				.$sWhere
 			,"row"
 		);

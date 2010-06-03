@@ -18,7 +18,7 @@ class admin_galleries extends adminController
 		$this->tplAssign("sCategory", $_GET["category"]);
 		$this->tplAssign("aGalleries", $oGalleries->getGalleries($_GET["category"]));
 		$this->tplAssign("maxsort", $oGalleries->getMaxSort());
-		$this->tplDisplay("galleries/index.tpl");
+		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
 		$oGalleries = $this->loadModel("galleries");
@@ -34,7 +34,7 @@ class admin_galleries extends adminController
 			);
 		
 		$this->tplAssign("aCategories", $oGalleries->getCategories());
-		$this->tplDisplay("galleries/add.tpl");
+		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
 		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
@@ -43,7 +43,7 @@ class admin_galleries extends adminController
 		}
 		
 		$sOrder = $this->dbResults(
-			"SELECT MAX(`sort_order`) + 1 FROM `galleries`"
+			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}galleries`"
 			,"one"
 		);
 		
@@ -51,7 +51,7 @@ class admin_galleries extends adminController
 			$sOrder = 1;
 		
 		$sID = $this->dbResults(
-			"INSERT INTO `galleries`"
+			"INSERT INTO `{dbPrefix}galleries`"
 				." (`name`, `description`, `sort_order`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
@@ -68,7 +68,7 @@ class admin_galleries extends adminController
 		
 		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
-				"INSERT INTO `galleries_categories_assign`"
+				"INSERT INTO `{dbPrefix}galleries_categories_assign`"
 					." (`galleryid`, `categoryid`)"
 					." VALUES"
 					." (".$sID.", ".$sCategory.")"
@@ -89,39 +89,39 @@ class admin_galleries extends adminController
 		
 		if($this->_urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbResults(
-				"SELECT * FROM `galleries`"
+				"SELECT * FROM `{dbPrefix}galleries`"
 					." WHERE `sort_order` < ".$aGallery["sort_order"]
 					." ORDER BY `sort_order` DESC"
 				,"row"
 			);
 			
 			$this->dbResults(
-				"UPDATE `galleries` SET"
+				"UPDATE `{dbPrefix}galleries` SET"
 					." `sort_order` = ".$this->dbQuote($aOld["sort_order"], "text")
 					." WHERE `id` = ".$this->dbQuote($aGallery["id"], "integer")
 			);
 			
 			$this->dbResults(
-				"UPDATE `galleries` SET"
+				"UPDATE `{dbPrefix}galleries` SET"
 					." `sort_order` = ".$this->dbQuote($aGallery["sort_order"], "text")
 					." WHERE `id` = ".$this->dbQuote($aOld["id"], "integer")
 			);
 		} elseif($this->_urlVars->dynamic["sort"] == "down") {
 			$aOld = $this->dbResults(
-				"SELECT * FROM `galleries`"
+				"SELECT * FROM `{dbPrefix}galleries`"
 					." WHERE `sort_order` > ".$aGallery["sort_order"]
 					." ORDER BY `sort_order` ASC"
 				,"row"
 			);
 			
 			$this->dbResults(
-				"UPDATE `galleries` SET"
+				"UPDATE `{dbPrefix}galleries` SET"
 					." `sort_order` = ".$this->dbQuote($aOld["sort_order"], "text")
 					." WHERE `id` = ".$this->dbQuote($aGallery["id"], "integer")
 			);
 			
 			$this->dbResults(
-				"UPDATE `galleries` SET"
+				"UPDATE `{dbPrefix}galleries` SET"
 					." `sort_order` = ".$this->dbQuote($aGallery["sort_order"], "text")
 					." WHERE `id` = ".$this->dbQuote($aOld["id"], "integer")
 			);
@@ -139,7 +139,7 @@ class admin_galleries extends adminController
 			
 			$aGallery["updated_datetime"] = $aGalleryRow["updated_datetime"];
 			$aGallery["updated_by"] = $this->dbResults(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aGalleryRow["updated_by"]
 				,"row"
 			);
@@ -149,7 +149,7 @@ class admin_galleries extends adminController
 			$aGallery = $oGalleries->getGallery($this->_urlVars->dynamic["id"]);
 			
 			$aGallery["categories"] = $this->dbResults(
-				"SELECT `categories`.`id` FROM `galleries_categories` AS `categories`"
+				"SELECT `categories`.`id` FROM `{dbPrefix}galleries_categories` AS `categories`"
 					." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `categories`.`id` = `galleries_assign`.`categoryid`"
 					." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
 					." GROUP BY `categories`.`id`"
@@ -158,7 +158,7 @@ class admin_galleries extends adminController
 			);
 			
 			$aGallery["updated_by"] = $this->dbResults(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aGallery["updated_by"]
 				,"row"
 			);
@@ -167,7 +167,7 @@ class admin_galleries extends adminController
 		}
 		
 		$this->tplAssign("aCategories", $oGalleries->getCategories());
-		$this->tplDisplay("galleries/edit.tpl");
+		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
 		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
@@ -176,7 +176,7 @@ class admin_galleries extends adminController
 		}
 		
 		$this->dbResults(
-			"UPDATE `galleries` SET"
+			"UPDATE `{dbPrefix}galleries` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				.", `description` = ".$this->dbQuote($_POST["description"], "text")
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
@@ -185,12 +185,12 @@ class admin_galleries extends adminController
 		);
 		
 		$this->dbResults(
-			"DELETE FROM `galleries_categories_assign`"
+			"DELETE FROM `{dbPrefix}galleries_categories_assign`"
 				." WHERE `galleryid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
-				"INSERT INTO `galleries_categories_assign`"
+				"INSERT INTO `{dbPrefix}galleries_categories_assign`"
 					." (`galleryid`, `categoryid`)"
 					." VALUES"
 					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
@@ -203,12 +203,12 @@ class admin_galleries extends adminController
 	}
 	function delete() {
 		$this->dbResults(
-			"DELETE FROM `galleries`"
+			"DELETE FROM `{dbPrefix}galleries`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
 		
 		$aPhotos = $this->dbResults(
-			"SELECT * FROM `galleries_photos`"
+			"SELECT * FROM `{dbPrefix}galleries_photos`"
 				." WHERE `galleryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"all"
 		);
@@ -217,7 +217,7 @@ class admin_galleries extends adminController
 			@unlink($this->_settings->rootPublic."uploads/galleries/".$this->_urlVars->dynamic["id"]."/".$aPhoto["photo"]);
 		
 			$this->dbResults(
-				"DELETE FROM `galleries_photos`"
+				"DELETE FROM `{dbPrefix}galleries_photos`"
 					." WHERE `id` = ".$this->dbQuote($aPhoto["id"], "integer")
 			);
 		}
@@ -232,11 +232,11 @@ class admin_galleries extends adminController
 		$_SESSION["admin"]["admin_galleries_categories"] = null;
 		
 		$this->tplAssign("aCategories", $oGalleries->getCategories());
-		$this->tplDisplay("galleries/categories.tpl");
+		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
 		$this->dbResults(
-			"INSERT INTO `galleries_categories`"
+			"INSERT INTO `{dbPrefix}galleries_categories`"
 				." (`name`)"
 				." VALUES"
 				." ("
@@ -249,7 +249,7 @@ class admin_galleries extends adminController
 	}
 	function categories_edit_s() {
 		$this->dbResults(
-			"UPDATE `galleries_categories` SET"
+			"UPDATE `{dbPrefix}galleries_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
@@ -258,11 +258,11 @@ class admin_galleries extends adminController
 	}
 	function categories_delete() {
 		$this->dbResults(
-			"DELETE FROM `galleries_categories`"
+			"DELETE FROM `{dbPrefix}galleries_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
 		$this->dbResults(
-			"DELETE FROM `galleries_categories_assign`"
+			"DELETE FROM `{dbPrefix}galleries_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
 
@@ -274,7 +274,7 @@ class admin_galleries extends adminController
 		$this->tplAssign("aPhotos", $oGalleries->getPhotos($this->_urlVars->dynamic["gallery"]));
 		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
 		$this->tplAssign("sessionID", session_id());
-		$this->tplDisplay("galleries/photos/index.tpl");
+		$this->tplDisplay("admin/photos/index.tpl");
 	}
 	function photos_add() {
 		$oGalleries = $this->loadModel("galleries");
@@ -284,7 +284,7 @@ class admin_galleries extends adminController
 				die("Error: File too large!");
 			else {
 				$sOrder = $this->dbResults(
-					"SELECT MAX(`sort_order`) + 1 FROM `galleries_photos`"
+					"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}galleries_photos`"
 						." WHERE `galleryid` = ".$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
 					,"one"
 				);
@@ -299,7 +299,7 @@ class admin_galleries extends adminController
 					$sDefault = 0;
 				
 				$sID = $this->dbResults(
-					"INSERT INTO `galleries_photos`"
+					"INSERT INTO `{dbPrefix}galleries_photos`"
 						." (`galleryid`, `title`, `description`, `gallery_default`, `sort_order`)"
 						." VALUES"
 						." ("
@@ -322,13 +322,13 @@ class admin_galleries extends adminController
 				
 				if(move_uploaded_file($_FILES["photo"]["tmp_name"], $upload_dir.$upload_file))
 					$this->dbResults(
-						"UPDATE `galleries_photos` SET"
+						"UPDATE `{dbPrefix}galleries_photos` SET"
 							." `photo` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
 					);
 				else {
 					$this->dbResults(
-						"DELETE FROM `galleries_photos`"
+						"DELETE FROM `{dbPrefix}galleries_photos`"
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
 					);
 					die("Error: Failed to upload file.");
@@ -345,7 +345,7 @@ class admin_galleries extends adminController
 			$images = " AND `id` IN (".$_GET["images"].")";
 		
 		$aPhotos = $this->dbResults(
-			"SELECT * FROM `galleries_photos`"
+			"SELECT * FROM `{dbPrefix}galleries_photos`"
 				." WHERE `galleryid` = ".$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
 				.$images
 				." ORDER BY `sort_order`"
@@ -354,12 +354,12 @@ class admin_galleries extends adminController
 		
 		$this->tplAssign("aPhotos", $aPhotos);
 		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
-		$this->tplDisplay("galleries/photos/manage.tpl");
+		$this->tplDisplay("admin/photos/manage.tpl");
 	}
 	function photos_manage_s() {
 		foreach($_POST["photo"] as $id => $aPhoto) {
 			$this->dbResults(
-				"UPDATE `galleries_photos` SET"
+				"UPDATE `{dbPrefix}galleries_photos` SET"
 					." `title` = ".$this->dbQuote($aPhoto["title"], "text")
 					.", `description` = ".$this->dbQuote($aPhoto["description"], "text")
 					." WHERE `id` = ".$this->dbQuote($id, "integer")
@@ -373,7 +373,7 @@ class admin_galleries extends adminController
 		
 		foreach($aItems as $x => $aItem) {
 			$this->dbResults(
-				"UPDATE `galleries_photos` SET"
+				"UPDATE `{dbPrefix}galleries_photos` SET"
 					." `sort_order` = ".($x +1)
 					." WHERE `id` = ".$this->dbQuote($aItem, "integer")
 			);
@@ -383,13 +383,13 @@ class admin_galleries extends adminController
 	}
 	function photos_default() {
 		$this->dbResults(
-			"UPDATE `galleries_photos` SET"
+			"UPDATE `{dbPrefix}galleries_photos` SET"
 				." `gallery_default` = 0"
 				." WHERE `galleryid` = ".$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
 		);
 		
 		$this->dbResults(
-			"UPDATE `galleries_photos` SET"
+			"UPDATE `{dbPrefix}galleries_photos` SET"
 				." `gallery_default` = 1"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
@@ -401,11 +401,11 @@ class admin_galleries extends adminController
 		
 		$this->tplAssign("aGallery", $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]));
 		$this->tplAssign("aPhoto", $oGalleries->getPhoto($this->_urlVars->dynamic["id"]));
-		$this->tplDisplay("galleries/photos/edit.tpl");
+		$this->tplDisplay("admin/photos/edit.tpl");
 	}
 	function photos_edit_s() {
 		$this->dbResults(
-			"UPDATE `galleries_photos` SET"
+			"UPDATE `{dbPrefix}galleries_photos` SET"
 				." `title` = ".$this->dbQuote($_POST["title"], "text")
 				.", `description` = ".$this->dbQuote($_POST["description"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -421,7 +421,7 @@ class admin_galleries extends adminController
 		@unlink($this->_settings->rootPublic."uploads/galleries/".$this->_urlVars->dynamic["gallery"]."/".$aPhoto["photo"]);
 		
 		$this->dbResults(
-			"DELETE FROM `galleries_photos`"
+			"DELETE FROM `{dbPrefix}galleries_photos`"
 				." WHERE `id` = ".$this->dbQuote($aPhoto["id"], "integer")
 		);
 		

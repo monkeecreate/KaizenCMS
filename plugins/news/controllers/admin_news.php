@@ -64,7 +64,7 @@ class admin_news extends adminController
 		);
 		
 		$sID = $this->dbResults(
-			"INSERT INTO `news`"
+			"INSERT INTO `{dbPrefix}news`"
 				." (`title`, `short_content`, `content`, `datetime_show`, `datetime_kill`, `use_kill`, `sticky`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
@@ -86,7 +86,7 @@ class admin_news extends adminController
 		
 		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
-				"INSERT INTO `news_categories_assign`"
+				"INSERT INTO `{dbPrefix}news_categories_assign`"
 					." (`articleid`, `categoryid`)"
 					." VALUES"
 					." (".$sID.", ".$sCategory.")"
@@ -122,14 +122,14 @@ class admin_news extends adminController
 			$this->tplAssign("aArticle", $aArticle);
 		} else {
 			$aArticle = $this->dbResults(
-				"SELECT * FROM `news`"
+				"SELECT * FROM `{dbPrefix}news`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
 			$aArticle["categories"] = $this->dbResults(
-				"SELECT `categories`.`id` FROM `news_categories` AS `categories`"
-					." INNER JOIN `news_categories_assign` AS `news_assign` ON `categories`.`id` = `news_assign`.`categoryid`"
+				"SELECT `categories`.`id` FROM `{dbPrefix}news_categories` AS `categories`"
+					." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `categories`.`id` = `news_assign`.`categoryid`"
 					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
@@ -140,7 +140,7 @@ class admin_news extends adminController
 			$aArticle["datetime_kill_date"] = date("m/d/Y", $aArticle["datetime_kill"]);
 			
 			$aArticle["updated_by"] = $this->dbResults(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aArticle["updated_by"]
 				,"row"
 			);
@@ -170,7 +170,7 @@ class admin_news extends adminController
 		);
 		
 		$this->dbResults(
-			"UPDATE `news` SET"
+			"UPDATE `{dbPrefix}news` SET"
 				." `title` = ".$this->dbQuote($_POST["title"], "text")
 				.", `short_content` = ".$this->dbQuote($_POST["short_content"], "text")
 				.", `content` = ".$this->dbQuote($_POST["content"], "text")
@@ -185,12 +185,12 @@ class admin_news extends adminController
 		);
 		
 		$this->dbResults(
-			"DELETE FROM `news_categories_assign`"
+			"DELETE FROM `{dbPrefix}news_categories_assign`"
 				." WHERE `articleid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		foreach($_POST["categories"] as $sCategory) {
 			$this->dbResults(
-				"INSERT INTO `news_categories_assign`"
+				"INSERT INTO `{dbPrefix}news_categories_assign`"
 					." (`articleid`, `categoryid`)"
 					." VALUES"
 					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
@@ -205,11 +205,11 @@ class admin_news extends adminController
 		$oNews = $this->loadModel("news");
 		
 		$this->dbResults(
-			"DELETE FROM `news`"
+			"DELETE FROM `{dbPrefix}news`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
 		$this->dbResults(
-			"DELETE FROM `news_categories_assign`"
+			"DELETE FROM `{dbPrefix}news_categories_assign`"
 				." WHERE `articleid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
 		
@@ -221,7 +221,7 @@ class admin_news extends adminController
 		$oNews = $this->loadModel("news");
 		
 		$aArticle = $this->dbResults(
-			"SELECT * FROM `news`"
+			"SELECT * FROM `{dbPrefix}news`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"row"
 		);
@@ -252,7 +252,7 @@ class admin_news extends adminController
 					$this->forward("/admin/news/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 				} else {				
 					$this->dbResults(
-						"UPDATE `news` SET"
+						"UPDATE `{dbPrefix}news` SET"
 							." `photo_x1` = 0"
 							.", `photo_y1` = 0"
 							.", `photo_x2` = ".$oNews->imageMinWidth
@@ -284,7 +284,7 @@ class admin_news extends adminController
 	}
 	function image_edit_s() {
 		$this->dbResults(
-			"UPDATE `news` SET"
+			"UPDATE `{dbPrefix}news` SET"
 				." photo_x1 = ".$this->dbQuote($_POST["x1"], "integer")
 				.", photo_y1 = ".$this->dbQuote($_POST["y1"], "integer")
 				.", photo_x2 = ".$this->dbQuote($_POST["x2"], "integer")
@@ -300,7 +300,7 @@ class admin_news extends adminController
 		$oNews = $this->loadModel("news");
 		
 		$this->dbResults(
-			"UPDATE `news` SET"
+			"UPDATE `{dbPrefix}news` SET"
 				." photo_x1 = 0"
 				.", photo_y1 = 0"
 				.", photo_x2 = 0"
@@ -318,7 +318,7 @@ class admin_news extends adminController
 		$_SESSION["admin"]["admin_news_categories"] = null;
 		
 		$aCategories = $this->dbResults(
-			"SELECT * FROM `news_categories`"
+			"SELECT * FROM `{dbPrefix}news_categories`"
 				." ORDER BY `name`"
 			,"all"
 		);
@@ -328,7 +328,7 @@ class admin_news extends adminController
 	}
 	function categories_add_s() {
 		$this->dbResults(
-			"INSERT INTO `news_categories`"
+			"INSERT INTO `{dbPrefix}news_categories`"
 				." (`name`)"
 				." VALUES"
 				." ("
@@ -342,7 +342,7 @@ class admin_news extends adminController
 	}
 	function categories_edit_s() {
 		$this->dbResults(
-			"UPDATE `news_categories` SET"
+			"UPDATE `{dbPrefix}news_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
@@ -351,11 +351,11 @@ class admin_news extends adminController
 	}
 	function categories_delete() {
 		$this->dbResults(
-			"DELETE FROM `news_categories`"
+			"DELETE FROM `{dbPrefix}news_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
 		$this->dbResults(
-			"DELETE FROM `news_categories_assign`"
+			"DELETE FROM `{dbPrefix}news_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
 

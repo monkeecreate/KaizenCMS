@@ -37,12 +37,12 @@ class galleries extends appController
 		$this->tplAssign("aGalleries", $aGalleries);
 		$this->tplAssign("aPaging", $aPaging);
 		
-		if(!empty($_GET["category"]) && $this->tplExists("galleries/category-".$_GET["category"]."tpl"))
-			$this->tplDisplay("galleries/category-".$_GET["category"].".tpl");
-		elseif(!empty($_GET["category"]) && $this->tplExists("galleries/category.tpl"))
-			$this->tplDisplay("galleries/category.tpl");
+		if(!empty($_GET["category"]) && $this->tplExists("category-".$_GET["category"]."tpl"))
+			$this->tplDisplay("category-".$_GET["category"].".tpl");
+		elseif(!empty($_GET["category"]) && $this->tplExists("category.tpl"))
+			$this->tplDisplay("category.tpl");
 		else
-			$this->tplDisplay("galleries/index.tpl");
+			$this->tplDisplay("index.tpl");
 	}
 	function gallery() {
 		$aGallery = $this->model->getGallery($this->_urlVars->dynamic["id"]);
@@ -54,9 +54,9 @@ class galleries extends appController
 		
 		$this->tplAssign("aGallery", $aGallery);
 	
-		if($this->tplExists("galleries/gallery-".$aGallery["id"].".tpl"))
-			$this->tplDisplay("galleries/gallery-".$aGallery["id"].".tpl");
+		if($this->tplExists("gallery-".$aGallery["id"].".tpl"))
+			$this->tplDisplay("gallery-".$aGallery["id"].".tpl");
 		else
-			$this->tplDisplay("galleries/gallery.tpl");
+			$this->tplDisplay("gallery.tpl");
 	}
 }
