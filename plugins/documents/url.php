@@ -11,7 +11,7 @@
  #   /page/{name:[a-z0-9]+}/
  #   /{tag:[a-z]+}/
 */
-$aUrlPatterns = array(
+$aPluginUrlPatterns = array(
     "/documents/" => array(
 		"cmd" => "documents",
 		"action" => "index"

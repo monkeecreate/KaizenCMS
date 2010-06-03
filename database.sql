@@ -34,7 +34,6 @@ CREATE TABLE IF NOT EXISTS `plugins` (
   KEY `plugin` (`plugin`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
 CREATE TABLE `settings` (
   `id` int(11) NOT NULL auto_increment,
   `group` varchar(100) default NULL,

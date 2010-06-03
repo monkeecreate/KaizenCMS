@@ -51,33 +51,15 @@ $aDatabases = array(
 );
 
 $aSettings = array(
-	array(
-		"group" => "Testimonials",
-		"tag" => "testimonial_tag1",
-		"title" => "Tag 1",
-		"text" => "Test 1",
-		"value" => "Value 1",
-		"type" => "text",
-		"order" => 1
-	)
-	,array(
-		"group" => "Testimonials",
-		"tag" => "testimonial_tag2",
-		"title" => "Tag 2",
-		"text" => "Test 2",
-		"value" => "Value 2",
-		"type" => "text",
-		"order" => 2
-	)
-	,array(
-		"group" => "Testimonials",
-		"tag" => "testimonial_tag3",
-		"title" => "Tag 3",
-		"text" => "Test 3",
-		"value" => "Value 3",
-		"type" => "text",
-		"order" => 3
-	)
+	// array(
+	// 	"group" => "Testimonials",
+	// 	"tag" => "testimonial_tag1",
+	// 	"title" => "Tag 1",
+	// 	"text" => "Test 1",
+	// 	"value" => "Value 1",
+	// 	"type" => "text",
+	// 	"order" => 1
+	// )
 );
 
 $aMenuAdmin = array(

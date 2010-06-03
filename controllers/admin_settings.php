@@ -252,8 +252,6 @@ class admin_settings extends adminController
 			);
 		}
 		
-		// URL's
-		
 		// Plugin Status
 		$this->dbResults(
 			"INSERT INTO `plugins`"
@@ -295,8 +293,6 @@ class admin_settings extends adminController
 		$this->dbResults(
 			"DELETE FROM `menu_admin` WHERE `tag` = ".$this->dbQuote($sPlugin, "text")
 		);
-		
-		// URL's
 		
 		// Plugin status
 		$this->dbResults(

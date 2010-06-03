@@ -54,25 +54,25 @@ $aDatabases = array(
 $aSettings = array();
 
 $aMenuAdmin = array(
-	"title" => "Photo Galleries",
+	"title" => "Links",
 	"menu" => array(
 		array(
-			"text" => "Add Gallery",
-			"link" => "/admin/galleries/add/",
+			"text" => "Add Link",
+			"link" => "/admin/links/add/",
 			"icon" => "circle-plus"
 		),
 		array(
-			"text" => "Manage Galleries",
-			"link" => "/admin/galleries/"
+			"text" => "Manage Links",
+			"link" => "/admin/links/"
 		),
 		array(
 			"text" => "Add Category",
-			"link" => "/admin/galleries/categories/?addcategory=1",
+			"link" => "/admin/links/categories/?addcategory=1",
 			"icon" => "circle-plus"
 		),
 		array(
 			"text" => "Manage Categories",
-			"link" => "/admin/galleries/categories/"
+			"link" => "/admin/links/categories/"
 		)
 	)
 );

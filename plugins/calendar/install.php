@@ -21,7 +21,7 @@ $aDatabases = array(
 			"sticky" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"active" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"photo_x1" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
-			"photo_y1" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
+			"photo_y1" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"photo_x2" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"photo_y2" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"photo_width" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),

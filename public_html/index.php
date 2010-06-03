@@ -71,14 +71,7 @@ else
 ##############################################
 
 ### PREPARE URL PATTERN ######################
-if($aUrl[0] == "admin")
-{
-	require($site_root."controllers/adminController.php");
-	require("../inc_urls_admin.php");
-}
-else
-	require("../inc_urls.php");
-
+require("../inc_urls.php");
 $patterns = array_chunk($aUrlPatterns, 80, TRUE);
 foreach($patterns as $urlPattern)
 {
@@ -128,6 +121,13 @@ $objMail = Mail::factory($aConfig["mail"]["type"], $aConfig["mail"]["params"]);
 ##############################################
 
 ### START TEMPLATE ###########################
+if($aUrl[0] == "admin")
+{
+	require($site_root."controllers/adminController.php");
+	$aConfig["smarty"]["dir"]["templates"] = $site_root."views/admin";
+	$aConfig["smarty"]["dir"]["compile"] = $site_root.".compiled/admin";
+}
+
 require($aConfig["smarty"]["dir"]["smarty"]);
 $oSmarty = new Smarty();
 $oSmarty->template_dir = $aConfig["smarty"]["dir"]["templates"];
