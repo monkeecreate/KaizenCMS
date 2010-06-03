@@ -31,5 +31,17 @@ $aUrlPatterns_import = array(
 	"/admin/settings/manage/delete/{id:[0-9]+}/" => array(
         "cmd" => "admin_settings",
         "action" => "manageDelete"
+    ),
+	"/admin/settings/plugins/" => array(
+        "cmd" => "admin_settings",
+        "action" => "plugins_index"
+    ),
+	"/admin/settings/plugins/install/" => array(
+        "cmd" => "admin_settings",
+        "action" => "plugins_install"
+    ),
+	"/admin/settings/plugins/uninstall/" => array(
+        "cmd" => "admin_settings",
+        "action" => "plugins_uninstall"
     )
 );

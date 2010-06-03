@@ -24,10 +24,6 @@ $aUrlPatterns = array(
 		"cmd" => "content",
 		"action" => "form_submit"
 	),
-	"/news/" => array(
-		"cmd" => "news",
-		"action" => "index"
-	),
 	"/image/resize/" => array(
 		"cmd" => "image",
 		"action" => "resize"

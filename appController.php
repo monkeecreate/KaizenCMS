@@ -134,9 +134,6 @@ class appController
 		// Prefix
 		$sSQL = str_replace("{dbPrefix}", $this->_settings->dbPrefix, $sSQL);
 		
-		// Plugin Prefix
-		$sSQL = str_replace("{dbTable}", $this->_settings->dbPrefix.$this->_plugin, $sSQL);
-		
 		$oResult = $this->_db->query($sSQL);
 		
 		if(PEAR::isError($oResult))

@@ -17,6 +17,19 @@ CREATE TABLE `content` (
   KEY `tag` (`tag`,`perminate`,`has_sub_menu`,`sub_item_of`,`sort_order`,`module`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+CREATE TABLE `menu_admin` (
+  `tag` varchar(30) NOT NULL,
+  `sort_order` int(11) NOT NULL default '0',
+  `info` longtext,
+  KEY `tag` (`tag`,`sort_order`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `menu_admin` (`tag`, `sort_order`, `info`) VALUES
+('content', 1, '{"title":"Content","menu":[{"text":"Add Page","link":"\\/admin\\/content\\/add\\/","icon":"circle-plus"},{"text":"Manage Pages","link":"\\/admin\\/content\\/"}]}'),
+('settings', 2, '{"title":"Settings","menu":[{"text":"Settings","link":"\\/admin\\/settings\\/"},{"text":"Manage Settings","link":"\\/admin\\/settings\\/manage\\/","type":"super"}]}'),
+('users', 3, '{"title":"Users","menu":[{"text":"Add User","link":"\\/admin\\/users\\/add\\/","icon":"circle-plus"},{"text":"Manage Users","link":"\\/admin\\/users\\/"}]}');
+
+
 CREATE TABLE `settings` (
   `id` int(11) NOT NULL auto_increment,
   `group` varchar(100) default NULL,

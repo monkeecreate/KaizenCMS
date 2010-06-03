@@ -44,14 +44,18 @@ class adminController extends appController
 			
 			/*## Menu ##*/
 			if($this->_settings->url[1] != "logout") {
-				include($this->_settings->root."inc_menuAdmin.php");
+				$aMenuAdmin = $this->dbResults(
+					"SELECT * FROM `menu_admin`"
+						." ORDER BY `sort_order`"
+					,"all"
+				);
 			
 				if(!$this->superAdmin) {
 					foreach($aMenuAdmin as $x => $aMenu) {
 						$aMenuItem = $this->dbResults(
 							"SELECT * FROM `users_privlages`"
 								." WHERE `userid` = ".$aUser["id"]
-								." AND `menu` = ".$this->dbQuote($x, "text")
+								." AND `menu` = ".$this->dbQuote($aMenu[tag], "text")
 							,"row"
 						);
 					
@@ -59,13 +63,16 @@ class adminController extends appController
 							unset($aMenuAdmin[$x]);
 					}
 				}
+				
+				$this->_menu = array();
+				foreach($aMenuAdmin as $aMenu) {
+					$this->_menu[$aMenu["tag"]] = json_decode($aMenu["info"], true);
+				}
 			
 				if(empty($aMenuAdmin))
 					$this->forward("/admin/logout/");
-				
-				$this->_menu = $aMenuAdmin;
 			
-				$this->tplAssign("aAdminMenu", $aMenuAdmin);
+				$this->tplAssign("aAdminMenu", $this->_menu);
 			}
 			/*## @end ##*/
 		}

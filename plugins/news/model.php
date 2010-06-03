@@ -20,9 +20,9 @@ class news_model extends appModel
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
 		$aArticles = $this->dbResults(
-			"SELECT `news`.* FROM `news` AS `news`"
-				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
-				." INNER JOIN `news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
+			"SELECT `news`.* FROM `{dbPrefix}news` AS `news`"
+				." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
+				." INNER JOIN `{dbPrefix}news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `news`.`id`"
 				." ORDER BY `news`.`datetime_show` DESC"
@@ -36,7 +36,7 @@ class news_model extends appModel
 	}
 	function getArticle($sId) {
 		$aArticle = $this->dbResults(
-			"SELECT `news`.* FROM `news` AS `news`"
+			"SELECT `news`.* FROM `{dbPrefix}news` AS `news`"
 				." WHERE `news`.`id` = ".$this->dbQuote($sId, "integer")
 				." AND `news`.`active` = 1"
 				." AND `news`.`datetime_show` < ".time()
@@ -54,8 +54,8 @@ class news_model extends appModel
 			$aArticle["user"] = $this->getUser($aArticle["created_by"]);
 		
 		$aCategories = $this->dbResults(
-			"SELECT `name` FROM `news_categories` AS `categories`"
-				." INNER JOIN `news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
+			"SELECT `name` FROM `{dbPrefix}news_categories` AS `categories`"
+				." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
 			,"col"
 		);
@@ -74,13 +74,13 @@ class news_model extends appModel
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `news_categories`"
+				"SELECT * FROM `{dbPrefix}news_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
 			$aCategories = $this->dbResults(
-				"SELECT * FROM `news_categories_assign`"
+				"SELECT * FROM `{dbPrefix}news_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
 			);
@@ -100,7 +100,7 @@ class news_model extends appModel
 			return false;
 		
 		$aCategory = $this->dbResults(
-			"SELECT * FROM `news_categories`"
+			"SELECT * FROM `{dbPrefix}news_categories`"
 				.$sWhere
 			,"row"
 		);

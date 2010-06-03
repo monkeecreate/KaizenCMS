@@ -2,7 +2,7 @@
 class admin_settings extends adminController
 {
 	function __construct() {
-		parent::__construct("settings");
+		parent::__construct();
 		
 		$this->menuPermission("settings");
 	}
@@ -134,6 +134,94 @@ class admin_settings extends adminController
 		);
 		
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting removed successfully!"));
+	}
+	function plugins_index() {
+		// Loop plugins. Find installed, and not installed
+		$aPlugins = array();
+		
+		$oPlugins = dir($this->_settings->root."plugins");
+		while (false !== ($sPlugin = $oPlugins->read())) {
+			if(substr($sPlugin, 0, 1) != ".")
+				$aPlugins[] = $sPlugin;
+		}
+		$oPlugins->close();
+		
+		foreach($aPlugins as &$aPlugin) {
+			$aPluginInstalled = $this->dbResults(
+				"SELECT * FROM `plugins`"
+					." WHERE `plugin` = ".$this->dbQuote($aPlugin, "text")
+				,"row"
+			);
+			
+			// Load config
+			$aPluginInfo = array();
+			if(is_file($this->_settings->root."plugins/".$aPlugin."/config.php"))
+				include($this->_settings->root."plugins/".$aPlugin."/config.php");
+			
+			$aPlugin = array(
+				"tag" => $aPlugin,
+				"version" => $aPluginInfo["version"],
+				"author" => $aPluginInfo["author"],
+				"website" => $aPluginInfo["website"]
+			);
+			
+			if(!empty($aPluginInfo["name"]))
+				$aPlugin["name"] = $aPluginInfo["name"];
+			else
+				$aPlugin["name"] = $aPlugin["tag"];
+			
+			if(!empty($aPluginInstalled))
+				$aPlugin["status"] = 1;
+			else
+				$aPlugin["status"] = 0;
+		}
+		
+		$this->tplAssign("aPlugins", $aPlugins);
+		$this->tplDisplay("settings/plugins/index.tpl");
+	}
+	function plugins_install() {
+		global $objDB;
+		
+		$sPlugin = "";
+		
+		// Database
+		$objDB->loadModule('Manager');
+
+		foreach($aDatabases as $sDatabase => $aDatabase) {
+			// Add database
+			$oDatabase = $objDB->createTable($sDatabase, $aDatabase["fields"]);
+	
+			// Add indexes
+			$aDefinitions = array(
+				"fields" => array(
+				)
+			);
+	
+			foreach($aDatabase["index"] as $x => $sIndex) {
+				if($x == 0)
+					$sName = $sIndex;
+	
+				$aDefinitions["fields"][$sIndex] = array();
+			}
+	
+			if(!empty($sName))
+				$objDB->createIndex($sDatabase, $sName, $aDefinitions);
+		}
+		
+		// Settings
+		
+		// Admin Menu
+		
+		// URL's
+	}
+	function plugins_uninstall() {
+		// Database
+		
+		// Settings
+		
+		// Admin Menu
+		
+		// URL's
 	}
 	##################################
 }
