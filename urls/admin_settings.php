@@ -36,11 +36,11 @@ $aUrlPatterns_import = array(
         "cmd" => "admin_settings",
         "action" => "plugins_index"
     ),
-	"/admin/settings/plugins/install/" => array(
+	"/admin/settings/plugins/install/{plugin:[a-z0-9_-]+}/" => array(
         "cmd" => "admin_settings",
         "action" => "plugins_install"
     ),
-	"/admin/settings/plugins/uninstall/" => array(
+	"/admin/settings/plugins/uninstall/{plugin:[a-z0-9_-]+}/" => array(
         "cmd" => "admin_settings",
         "action" => "plugins_uninstall"
     )

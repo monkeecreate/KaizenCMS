@@ -2,7 +2,7 @@
 class admin_users extends adminController
 {
 	function __construct() {
-		parent::__construct("users");
+		parent::__construct();
 		
 		$this->menuPermission("users");
 	}

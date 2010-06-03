@@ -182,7 +182,14 @@ class admin_settings extends adminController
 	function plugins_install() {
 		global $objDB;
 		
-		$sPlugin = "";
+		$sPlugin = $this->_urlVars->dynamic["plugin"];
+		
+		// Set defaults
+		$aDatabases = $aSettings = $aMenuAdmin = array();
+		
+		// Include isntall
+		if(is_file($this->_settings->root."plugins/".$sPlugin."/install.php"))
+			include($this->_settings->root."plugins/".$sPlugin."/install.php");
 		
 		// Database
 		$objDB->loadModule('Manager');
@@ -190,38 +197,113 @@ class admin_settings extends adminController
 		foreach($aDatabases as $sDatabase => $aDatabase) {
 			// Add database
 			$oDatabase = $objDB->createTable($sDatabase, $aDatabase["fields"]);
-	
+			
 			// Add indexes
 			$aDefinitions = array(
 				"fields" => array(
 				)
 			);
-	
-			foreach($aDatabase["index"] as $x => $sIndex) {
-				if($x == 0)
-					$sName = $sIndex;
-	
-				$aDefinitions["fields"][$sIndex] = array();
+			
+			if(is_array($aDatabase["index"])) {
+				foreach($aDatabase["index"] as $x => $sIndex) {
+					if($x == 0)
+						$sName = $sIndex;
+				
+					$aDefinitions["fields"][$sIndex] = array();
+				}
 			}
-	
+			
 			if(!empty($sName))
 				$objDB->createIndex($sDatabase, $sName, $aDefinitions);
 		}
 		
 		// Settings
+		foreach($aSettings as $aSetting) {
+			$this->dbResults("INSERT INTO `settings`"
+				."(`group`, `tag`, `title`, `text`, `value`, `type`, `sortOrder`)"
+				." VALUES ("
+				.$this->dbQuote($aSetting["group"], "text")
+				.", ".$this->dbQuote($aSetting["tag"], "text")
+				.", ".$this->dbQuote($aSetting["title"], "text")
+				.", ".$this->dbQuote($aSetting["text"], "text")
+				.", ".$this->dbQuote($aSetting["value"], "text")
+				.", ".$this->dbQuote($aSetting["type"], "text")
+				.", ".$this->dbQuote($aSetting["order"], "integer")
+				.")"
+			);
+		}
 		
 		// Admin Menu
+		if(!empty($aMenuAdmin)) {
+			$sOrder = $this->dbResults(
+				"SELECT MAX(`sort_order`) FROM `menu_admin`"
+				,"one"
+			);
+			$sOrder++;
+			
+			$this->dbResults(
+				"INSERT INTO `menu_admin`"
+					."(`tag`, `sort_order`, `info`)"
+					." VALUES ("
+					.$this->dbQuote($sPlugin, "text")
+					.", ".$sOrder
+					.", ".$this->dbQuote(json_encode($aMenuAdmin), "text")
+					.")"
+			);
+		}
 		
 		// URL's
+		
+		// Plugin Status
+		$this->dbResults(
+			"INSERT INTO `plugins`"
+				." (`plugin`)"
+				." VALUES ("
+				.$this->dbQuote($sPlugin, "text")
+				.")"
+		);
+		
+		$this->forward("/admin/settings/plugins/?notice=".urlencode("Plugin installed successfully!"));
 	}
 	function plugins_uninstall() {
+		global $objDB;
+		
+		$sPlugin = $this->_urlVars->dynamic["plugin"];
+		
+		// Set defaults
+		$aDatabases = $aSettings = $aMenuAdmin = array();
+		
+		// Include isntall
+		if(is_file($this->_settings->root."plugins/".$sPlugin."/install.php"))
+			include($this->_settings->root."plugins/".$sPlugin."/install.php");
+			
 		// Database
+		$objDB->loadModule('Manager');
+
+		foreach($aDatabases as $sDatabase => $aDatabase) {
+			$objDB->dropTable($sDatabase);
+		}
 		
 		// Settings
+		foreach($aSettings as $aSetting) {
+			$this->dbResults(
+				"DELETE FROM `settings` WHERE `tag` = ".$this->dbQuote($aSetting["tag"], "text")
+			);
+		}
 		
 		// Admin Menu
+		$this->dbResults(
+			"DELETE FROM `menu_admin` WHERE `tag` = ".$this->dbQuote($sPlugin, "text")
+		);
 		
 		// URL's
+		
+		// Plugin status
+		$this->dbResults(
+			"DELETE FROM `plugins` WHERE `plugin` = ".$this->dbQuote($sPlugin, "text")
+		);
+		
+		$this->forward("/admin/settings/plugins/?notice=".urlencode("Plugin uninstalled successfully!"));
 	}
 	##################################
 }

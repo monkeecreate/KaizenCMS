@@ -29,6 +29,11 @@ INSERT INTO `menu_admin` (`tag`, `sort_order`, `info`) VALUES
 ('settings', 2, '{"title":"Settings","menu":[{"text":"Settings","link":"\\/admin\\/settings\\/"},{"text":"Manage Settings","link":"\\/admin\\/settings\\/manage\\/","type":"super"}]}'),
 ('users', 3, '{"title":"Users","menu":[{"text":"Add User","link":"\\/admin\\/users\\/add\\/","icon":"circle-plus"},{"text":"Manage Users","link":"\\/admin\\/users\\/"}]}');
 
+CREATE TABLE IF NOT EXISTS `plugins` (
+  `plugin` varchar(50) NOT NULL,
+  KEY `plugin` (`plugin`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `settings` (
   `id` int(11) NOT NULL auto_increment,

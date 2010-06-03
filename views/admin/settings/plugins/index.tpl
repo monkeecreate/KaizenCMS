@@ -15,8 +15,8 @@
 	<thead>
 		<tr>
 			<th sort="title">Plugin</th>
-			<th sort="version">Version</th>
 			<th sort="version">Author</th>
+			<th sort="version">Version</th>
 			<th sort="status">Status</th>
 			<th></th>
 		</tr>
@@ -25,9 +25,9 @@
 		{foreach from=$aPlugins item=aPlugin}
 			<tr>
 				<td>{$aPlugin.name|clean_html}</td>
-				<td>{$aPlugin.version|clean_html}</td>
 				<td>{$aPlugin.author|clean_html}</td>
-				<td>
+				<td class="small center">{$aPlugin.version|clean_html}</td>
+				<td class="small center">
 					{if $aPlugin.status == 1}
 						Active
 					{else}
@@ -36,12 +36,12 @@
 				</td>
 				<td class="small center border-end">
 					{if $aPlugin.status == 0}
-						<a href="/admin/settings/manage/edit/{$aSetting.id}/" title="Edit Setting">
-							<img src="/images/admin/icons/pencil.png">
+						<a href="/admin/settings/plugins/install/{$aPlugin.tag}/" title="Install Plugin">
+							<img src="/images/admin/icons/add.png">
 						</a>
 					{else}
-						<a href="/admin/settings/manage/delete/{$aSetting.id}/"
-							onclick="return confirm_('Are you sure you would like to delete this setting?');" title="Delete Setting">
+						<a href="/admin/settings/plugins/uninstall/{$aPlugin.tag}/"
+							onclick="return confirm_('Are you sure you would like to remove this plugin?');" title="Uninstall Plugin">
 							<img src="/images/admin/icons/bin_closed.png">
 						</a>
 					{/if}
