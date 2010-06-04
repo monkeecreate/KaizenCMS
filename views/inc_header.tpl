@@ -30,7 +30,6 @@
 				<li><a href="/" class="{currentMenu var="home"}">Home</a></li>
 				<li><a href="/news/" class="{currentMenu var="news"}">News</a></li>
 				<li><a href="/calendar/" class="{currentMenu var="calendar"}">Calendar</a></li>
-				<li><a href="/events/" class="{currentMenu var="events"}">Events</a></li>
 				<li><a href="/faq/" class="{currentMenu var="faq"}">FAQ</a></li>
 				<li><a href="/links/" class="{currentMenu var="links"}">Links</a></li>
 				<li><a href="/documents/" class="{currentMenu var="documents"}">Documents</a></li>

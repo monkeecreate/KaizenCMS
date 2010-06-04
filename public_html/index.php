@@ -73,6 +73,7 @@ else
 ### PREPARE URL PATTERN ######################
 require("../inc_urls.php");
 $patterns = array_chunk($aUrlPatterns, 80, TRUE);
+
 foreach($patterns as $urlPattern)
 {
 	$aPatterns = Array();
@@ -96,11 +97,11 @@ foreach($patterns as $urlPattern)
 		{
 			$pattern = str_replace("url",null,$x);
 			$pattern = $aKeys[$pattern];
-			continue;
+			break;
 		}
 	}
 	if(!empty($pattern))
-		continue;
+		break;
 }
 
 if($aConfig["options"]["debug"] == true)
