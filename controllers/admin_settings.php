@@ -301,5 +301,32 @@ class admin_settings extends adminController
 		
 		$this->forward("/admin/settings/plugins/?notice=".urlencode("Plugin uninstalled successfully!"));
 	}
+	function admin_menu_index() {
+		$aAdminMenuResult = $this->dbResults(
+			"SELECT * FROM `menu_admin`"
+				." ORDER BY `sort_order`"
+			,"all"
+		);
+		
+		$aAdminMenu = array();
+		foreach($aAdminMenuResult as $aMenu) {
+			$aAdminMenu[$aMenu["tag"]] = json_decode($aMenu["info"], true);
+			$aAdminMenu[$aMenu["tag"]]["sortOrder"] = $aMenu["sort_order"];
+		}
+		
+		$this->tplAssign("aAdminMenu", $aAdminMenu);		
+		$this->tplDisplay("settings/admin_menu/index.tpl");
+	}
+	function admin_menu_s() {
+		foreach($_POST["admin_menu"] as $sSortOrder => $aMenuTag) {
+			$this->dbResults(
+				"UPDATE `menu_admin` SET"
+					." `sort_order` = ".$this->dbQuote($sSortOrder, "integer")
+					." WHERE `tag` = ".$this->dbQuote($aMenuTag, "text")
+			);
+		}
+		
+		$this->forward("/admin/settings/admin-menu/?notice=".urlencode("Menu updated successfully!"));
+	}
 	##################################
 }

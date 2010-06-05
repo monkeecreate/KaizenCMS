@@ -178,6 +178,24 @@ $(document).ready(function() {
 	});
 	
 	/**
+	 * Initiate Draggable Elements
+	 *
+	 * Enable drag and drop to any element
+	 * with class of .draggable
+	 */
+	$(".draggable").draggable({
+	});
+	
+	/**
+	 * Initiate Sortable Elements
+	 *
+	 * Enable sorty to any element
+	 * with class of .sortable
+	 */
+	$(".sortable").sortable({
+	});
+	
+	/**
 	 * Default Styling
 	 *
 	 * Apply default styles to elements

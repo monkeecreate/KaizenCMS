@@ -128,6 +128,14 @@ $aUrlPatterns = array(
         "cmd" => "admin_settings",
         "action" => "plugins_uninstall"
     ),
+	"/admin/settings/admin-menu/" => array(
+		"cmd" => "admin_settings",
+		"action" => "admin_menu_index"
+	),
+	"/admin/settings/admin-menu/s/" => array(
+		"cmd" => "admin_settings",
+		"action" => "admin_menu_s"
+	),
 	"/admin/users/" => array(
         "cmd" => "admin_users",
         "action" => "index"
