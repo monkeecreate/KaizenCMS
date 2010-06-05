@@ -3,7 +3,7 @@
 <p>Customize the order in which the menu items display in the admin below. Just drag and drop the items in the order you want.</p>
 
 <form method="post" action="/admin/settings/admin-menu/s/">
-	<ul class="sortable">
+	<ul id="admin-menu-sort" class="sortable">
 		{foreach from=$aAdminMenu item=aMenu key=sTag}
 			<li>{$aMenu.title|clean_html}<input type="hidden" name="admin_menu[]" value="{$sTag|clean_html}"></li>
 		{/foreach}
