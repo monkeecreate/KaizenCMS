@@ -311,7 +311,6 @@ class admin_settings extends adminController
 		$aAdminMenu = array();
 		foreach($aAdminMenuResult as $aMenu) {
 			$aAdminMenu[$aMenu["tag"]] = json_decode($aMenu["info"], true);
-			$aAdminMenu[$aMenu["tag"]]["sortOrder"] = $aMenu["sort_order"];
 		}
 		
 		$this->tplAssign("aAdminMenu", $aAdminMenu);		
