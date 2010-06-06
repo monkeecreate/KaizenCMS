@@ -1,4 +1,13 @@
 <?php
+$sFolder = $this->_settings->rootPublic."uploads/documents/";
+if($sPluginStatus == 1) {
+	// Install
+	mkdir($sFolder);
+} else {
+	// Uninstall
+	$this->deleteDir($sFolder);
+}
+
 $aDatabases = array(
 	"documents" => array(
 		"fields" => array(

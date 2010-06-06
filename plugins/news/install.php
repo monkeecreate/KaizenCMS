@@ -1,4 +1,13 @@
 <?php
+$sFolder = $this->_settings->rootPublic."uploads/news/";
+if($sPluginStatus == 1) {
+	// Install
+	mkdir($sFolder);
+} else {
+	// Uninstall
+	$this->deleteDir($sFolder);
+}
+
 $aDatabases = array(
 	"news" => array(
 		"fields" => array(

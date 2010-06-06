@@ -1,4 +1,13 @@
 <?php
+$sFolder = $this->_settings->rootPublic."uploads/calendar/";
+if($sPluginStatus == 1) {
+	// Install
+	mkdir($sFolder);
+} else {
+	// Uninstall
+	$this->deleteDir($sFolder);
+}
+
 $aDatabases = array(
 	"calendar" => array(
 		"fields" => array(

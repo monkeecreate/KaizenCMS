@@ -1,4 +1,10 @@
 <?php
+if($sPluginStatus == 1) {
+	// Install
+} else {
+	// Uninstall
+}
+
 $aDatabases = array(
 	"testimonials" => array(
 		"fields" => array(

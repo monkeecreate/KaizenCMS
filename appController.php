@@ -127,6 +127,23 @@ class appController
 			
 		return $aUser;
 	}
+	function deleteDir($sFolder) {
+		if(is_dir($sFolder)) {
+			$oFolder  = opendir($sFolder);
+			while (false !== ($sFile = readdir($oFolder))) {
+				if($sFile != "." && $sFile != "..") {
+					if(is_dir($sFolder."/".$sFile)) {
+						$this->deleteTree($sFolder."/".$sFile);
+					} else {
+						unlink($sFolder."/".$sFile);
+					}
+				}
+			}
+			closedir($oFolder);
+			
+			rmdir($sFolder);
+		}
+	}
 	##################################
 	
 	### Database #####################

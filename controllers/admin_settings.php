@@ -188,6 +188,7 @@ class admin_settings extends adminController
 		$aDatabases = $aSettings = $aMenuAdmin = array();
 		
 		// Include isntall
+		$sPluginStatus = 1;
 		if(is_file($this->_settings->root."plugins/".$sPlugin."/install.php"))
 			include($this->_settings->root."plugins/".$sPlugin."/install.php");
 		
@@ -272,6 +273,7 @@ class admin_settings extends adminController
 		$aDatabases = $aSettings = $aMenuAdmin = array();
 		
 		// Include isntall
+		$sPluginStatus = 0;
 		if(is_file($this->_settings->root."plugins/".$sPlugin."/install.php"))
 			include($this->_settings->root."plugins/".$sPlugin."/install.php");
 			
