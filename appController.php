@@ -65,12 +65,14 @@ class appController
 	function loadController($sController) {
 		if(!class_exists($sController)) {
 			if(substr($sController, -1) == "_")
-				$sController = substr($sController, 0, -1);
+				$sControllerFile = substr($sController, 0, -1);
+			else
+				$sControllerFile = $sController;
 			
-			if(is_file($this->_settings->root."controllers/".$sController.".php"))
-				require($this->_settings->root."controllers/".$sController.".php");
-			elseif(is_file($this->_settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sController)."/controllers/".$sController.".php"))
-				require($this->_settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sController)."/controllers/".$sController.".php");
+			if(is_file($this->_settings->root."controllers/".$sControllerFile.".php"))
+				require($this->_settings->root."controllers/".$sControllerFile.".php");
+			elseif(is_file($this->_settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php"))
+				require($this->_settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php");
 			else
 				return false;
 		}

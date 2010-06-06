@@ -19,7 +19,7 @@ class faq_model extends appModel
 				." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq`.`id` = `faq_assign`.`faqid`"
 				." INNER JOIN `{dbPrefix}faq_categories` AS `categories` ON `faq_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
-				." GROUP BY `faq`.`id`"
+				." GROUP BY `faq`.`sort_order`"
 			,"all"
 		);
 	

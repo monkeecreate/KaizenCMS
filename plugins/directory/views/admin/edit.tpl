@@ -37,16 +37,6 @@
 	<input type="text" name="website" maxlength="100" value="{$aListing.website|clean_html}"><br>
 	<label>Email:</label>
 	<input type="text" name="email" maxlength="100" value="{$aListing.email|clean_html}"><br>
-	{if $sUseImage == true}
-		<div class="upload_block">
-			<label>Logo:</label>
-			{if !empty($aProperty.logo)}
-				<img src="/uploads/directory/{$aListing.file}" style="height:40px;"><br>
-			{/if}
-			<input type="file" name="logo"><br>
-		</div>
-		<div class="clear"></div>
-	{/if}
 	<fieldset id="fieldset_categories">
 		<legend>Assign document to category:</legend>
 		<ul>
