@@ -195,6 +195,8 @@ $(document).ready(function() {
 	$(".sortable").sortable({
 	});
 	
+	$(".button").button();
+		
 	/**
 	 * Default Styling
 	 *

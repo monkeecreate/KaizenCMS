@@ -1,39 +1,47 @@
 {include file="inc_header.tpl" page_title="Manage Settings" menu="settings"}
 {head}
-<script language="JavaScript" type="text/javascript" src="/scripts/jTPS/jTPS.js"></script>
-<link rel="stylesheet" type="text/css" href="/scripts/jTPS/jTPS.css">
+<script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
+<script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
 <script type="text/javascript">
 	$(function(){ldelim}
-		$('.dataTable').jTPS({ldelim}
-			perPages:[10,15,20],
-			scrollStep: 1
+		$('.dataTable').dataTable({ldelim}
+			/* DON'T CHANGE */
+			"sDom": 'rt<"dataTable-footer"flpi<"clear">',
+			"sPaginationType": "scrolling",
+			"bLengthChange": true,
+			/* CAN CHANGE */
+			"bStateSave": true, //whether to save a cookie with the current table state
+			"iDisplayLength": 10, //how many items to display on each page
+			"aoColumns": [ null, null, null, null, {ldelim} "bVisible": false {rdelim}, null ], //hide sortorder column so it can still be sorted by
+			"aaSorting": [[ 1, "asc" ], [4, "asc"]] //which column to sort by (0-X)
 		{rdelim});
 	{rdelim});
 </script>
 {/head}
-<div id="add-category-btn" class="float-right" style="margin-bottom:10px;">
-	<a href="/admin/settings/manage/add/" class="btn ui-button ui-corner-all ui-state-default">
-		<span class="icon ui-icon ui-icon-circle-plus"></span> Add Setting
-	</a>
-</div>
+
+	<a href="/admin/settings/manage/add/" class="button">Add Setting &raquo;</a>
+</header>
+
 <table class="dataTable">
 	<thead>
 		<tr>
-			<th sort="title">Title</th>
-			<th sort="tag">Tag</th>
-			<th sort="group">Group</td>
-			<th sort="order">Order</th>
-			<th></th>
+			<th class="empty">&nbsp;</th>
+			<th>Group</th>
+			<th>Title</th>
+			<th>Tag</th>
+			<th>Order</th>
+			<th class="sorting_disabled center empty">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
 		{foreach from=$aSettings item=aSetting}
 			<tr>
+				<td><img src="/images/admin/icons/bullet_green.png" alt="active"></td>
+				<td>{$aSetting.group|clean_html}</td>
 				<td>{$aSetting.title|clean_html}</td>
 				<td>{$aSetting.tag|clean_html}</td>
-				<td>{$aSetting.group|clean_html}</td>
 				<td>{$aSetting.sortorder}</td>
-				<td class="small center border-end">
+				<td class="center">
 					<a href="/admin/settings/manage/edit/{$aSetting.id}/" title="Edit Setting">
 						<img src="/images/admin/icons/pencil.png">
 					</a>
@@ -45,15 +53,10 @@
 			</tr>
 		{/foreach}
 	</tbody>
-	<tfoot class="nav">
-		<tr>
-			<td colspan="5">
-				<div class="pagination"></div>
-				<div class="paginationTitle">Page</div>
-				<div class="selectPerPage"></div>
-				<div class="status"></div>
-			</td>
-		</tr>
-	</tfoot>
 </table>
+
+<ul class="dataTable-legend">
+	<li class="bullet-green">Active</li>
+	<li class="bullet-red">Inactive</li>
+</ul>
 {include file="inc_footer.tpl"}
