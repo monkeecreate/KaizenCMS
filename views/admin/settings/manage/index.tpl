@@ -19,7 +19,12 @@
 </script>
 {/head}
 
-	<a href="/admin/settings/manage/add/" class="button">Add Setting &raquo;</a>
+	<a href="/admin/settings/manage/add/" title="Add Setting" class="button">Add Setting &raquo;</a>
+	
+	<ul class="pageTabs">
+		<li><a class="active" href="/admin/settings/manage/" title="Manage Settings">Settings</a></li>
+		<li><a href="/admin/settings/plugins/" title="Manage Plugins">Plugins</a></li>
+	</ul>
 </header>
 
 <table class="dataTable">
@@ -43,11 +48,11 @@
 				<td>{$aSetting.sortorder}</td>
 				<td class="center">
 					<a href="/admin/settings/manage/edit/{$aSetting.id}/" title="Edit Setting">
-						<img src="/images/admin/icons/pencil.png">
+						<img src="/images/admin/icons/pencil.png" alt="edit_icon">
 					</a>
 					<a href="/admin/settings/manage/delete/{$aSetting.id}/"
 						onclick="return confirm_('Are you sure you would like to delete this setting?');" title="Delete Setting">
-						<img src="/images/admin/icons/bin_closed.png">
+						<img src="/images/admin/icons/bin_closed.png" alt="delete_icon">
 					</a>
 				</td>
 			</tr>

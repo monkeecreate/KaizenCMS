@@ -18,6 +18,10 @@
 </script>
 {/head}
 
+	<ul class="pageTabs">
+		<li><a href="/admin/settings/manage/" title="Manage Settings">Settings</a></li>
+		<li><a class="active" href="/admin/settings/plugins/" title="Manage Plugins">Plugins</a></li>
+	</ul>
 </header>
 
 <table class="dataTable">

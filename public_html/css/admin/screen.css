@@ -121,6 +121,34 @@ nav a:hover {
 	margin: 0 0 0 15px;
 }
 
+ul.pageTabs {
+	float: right;
+	margin: 12px 0 0;
+}
+
+ul.pageTabs li {
+	float: left;
+	margin: 0 8px 0 0;
+}
+
+ul.pageTabs li a:link, ul.pageTabs li a:active, ul.pageTabs li a:visited {
+	background: #828282;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	font-size: 1.2em;
+	color: #f1f1f1;
+	padding: 8px 10px;
+	text-decoration: none
+}
+
+ul.pageTabs li a.active, ul.pageTabs li a:hover {
+	background: #ececec;
+	color: #333;
+	text-decoration: none;
+}
+
 .notice {
 	margin: 0 0 12px;
 	padding: 8px;
