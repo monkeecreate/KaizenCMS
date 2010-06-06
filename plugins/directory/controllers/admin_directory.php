@@ -19,7 +19,7 @@ class admin_directory extends adminController
 		$this->tplAssign("aListings", $oDirectory->getListings($_GET["category"], true));
 		$this->tplAssign("sUseImage", $oDirectory->useImage);
 		
-		$this->tplDisplay("directory/index.tpl");
+		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
 		$oDirectory = $this->loadModel("directory");
@@ -36,7 +36,7 @@ class admin_directory extends adminController
 		
 		$this->tplAssign("aCategories", $oDirectory->getCategories());
 		$this->tplAssign("sUseImage", $oDirectory->useImage);
-		$this->tplDisplay("directory/add.tpl");
+		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
 		$oDirectory = $this->loadModel("directory");
@@ -130,7 +130,7 @@ class admin_directory extends adminController
 		
 		$this->tplAssign("aCategories", $oDirectory->getCategories());
 		$this->tplAssign("sUseImage", $oDirectory->useImage);
-		$this->tplDisplay("directory/edit.tpl");
+		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
 		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
@@ -195,7 +195,7 @@ class admin_directory extends adminController
 		);
 		
 		$this->tplAssign("aCategories", $aCategories);
-		$this->tplDisplay("directory/categories.tpl");
+		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
 		$this->dbResults(

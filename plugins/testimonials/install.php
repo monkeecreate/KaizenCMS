@@ -1,4 +1,10 @@
 <?php
+if($sPluginStatus == 1) {
+	// Install
+} else {
+	// Uninstall
+}
+
 $aDatabases = array(
 	"testimonials" => array(
 		"fields" => array(
@@ -7,7 +13,7 @@ $aDatabases = array(
 				"unsigned" => 1,
 				"notnull" => 1,
 				"default" => 0,
-				"auto_increment"
+				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 100),
 			"sub_name" => array("type" => "text","length" => 100),
@@ -27,7 +33,7 @@ $aDatabases = array(
 				"unsigned" => 1,
 				"notnull" => 1,
 				"default" => 0,
-				"auto_increment"
+				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 100)
 		)

@@ -1,4 +1,13 @@
 <?php
+$sFolder = $this->_settings->rootPublic."uploads/documents/";
+if($sPluginStatus == 1) {
+	// Install
+	mkdir($sFolder);
+} else {
+	// Uninstall
+	$this->deleteDir($sFolder);
+}
+
 $aDatabases = array(
 	"documents" => array(
 		"fields" => array(
@@ -7,7 +16,7 @@ $aDatabases = array(
 				"unsigned" => 1,
 				"notnull" => 1,
 				"default" => 0,
-				"auto_increment"
+				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 100),
 			"description" => array("type" => "clob"),
@@ -27,7 +36,7 @@ $aDatabases = array(
 				"unsigned" => 1,
 				"notnull" => 1,
 				"default" => 0,
-				"auto_increment"
+				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 100)
 		)

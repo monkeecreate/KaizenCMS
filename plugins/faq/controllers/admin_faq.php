@@ -28,7 +28,7 @@ class admin_faq extends adminController
 		$this->tplAssign("aQuestions", $oQuestions->getQuestions($_GET["category"], true));
 		$this->tplAssign("minSort", $sMinSort);
 		$this->tplAssign("maxSort", $sMaxSort);
-		$this->tplDisplay("faq/index.tpl");
+		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
 		$oQuestions = $this->loadModel("faq");
@@ -44,7 +44,7 @@ class admin_faq extends adminController
 			);
 		
 		$this->tplAssign("aCategories", $oQuestions->getCategories());
-		$this->tplDisplay("faq/add.tpl");
+		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
 		if(empty($_POST["question"]) || count($_POST["categories"]) == 0) {
@@ -175,7 +175,7 @@ class admin_faq extends adminController
 		}
 		
 		$this->tplAssign("aCategories", $oQuestions->getCategories());
-		$this->tplDisplay("faq/edit.tpl");
+		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
 		if(empty($_POST["question"]) || count($_POST["categories"]) == 0) {
@@ -228,7 +228,7 @@ class admin_faq extends adminController
 		$_SESSION["admin"]["admin_faq_categories"] = null;
 		
 		$this->tplAssign("aCategories", $oQuestions->getCategories());
-		$this->tplDisplay("faq/categories.tpl");
+		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
 		$this->dbResults(

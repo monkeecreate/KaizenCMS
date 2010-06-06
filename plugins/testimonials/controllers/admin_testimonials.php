@@ -27,7 +27,7 @@ class admin_testimonials extends adminController
 		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
 		$this->tplAssign("aTestimonials", $aTestimonials);
-		$this->tplDisplay("testimonials/index.tpl");
+		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
 		if(!empty($_SESSION["admin"]["admin_testimonials"]))
@@ -43,7 +43,7 @@ class admin_testimonials extends adminController
 		}
 		
 		$this->tplAssign("aCategories", $this->model->getCategories());
-		$this->tplDisplay("testimonials/add.tpl");
+		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
 		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
@@ -123,7 +123,7 @@ class admin_testimonials extends adminController
 		$this->tplAssign("aTestimonial", $aTestimonial);
 		
 		$this->tplAssign("aCategories", $this->model->getCategories());
-		$this->tplDisplay("testimonials/edit.tpl");
+		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
 		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
@@ -185,7 +185,7 @@ class admin_testimonials extends adminController
 		);
 		
 		$this->tplAssign("aCategories", $aCategories);
-		$this->tplDisplay("testimonials/categories.tpl");
+		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
 		$this->dbResults(

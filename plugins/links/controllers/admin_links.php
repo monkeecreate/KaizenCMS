@@ -17,7 +17,7 @@ class admin_links extends adminController
 		$this->tplAssign("aCategories", $oLinks->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
 		$this->tplAssign("aLinks", $oLinks->getLinks($_GET["category"], true));
-		$this->tplDisplay("links/index.tpl");
+		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
 		$oLinks = $this->loadModel("links");
@@ -36,7 +36,7 @@ class admin_links extends adminController
 		$this->tplAssign("aCategories", $oLinks->getCategories());
 		$this->tplAssign("minWidth", $oLinks->imageMinWidth);
 		$this->tplAssign("minHeight", $oLinks->imageMinHeight);
-		$this->tplDisplay("links/add.tpl");
+		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
 		$oLinks = $this->loadModel("links");
@@ -163,7 +163,7 @@ class admin_links extends adminController
 		$this->tplAssign("aCategories", $oLinks->getCategories());
 		$this->tplAssign("minWidth", $oLinks->imageMinWidth);
 		$this->tplAssign("minHeight", $oLinks->imageMinHeight);
-		$this->tplDisplay("links/edit.tpl");
+		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
 		$oLinks = $this->loadModel("links");
@@ -273,7 +273,7 @@ class admin_links extends adminController
 		$_SESSION["admin"]["admin_links_categories"] = null;
 		
 		$this->tplAssign("aCategories", $oLinks->getCategories());
-		$this->tplDisplay("links/categories.tpl");
+		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
 		$this->dbResults(

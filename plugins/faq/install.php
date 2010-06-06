@@ -1,4 +1,10 @@
 <?php
+if($sPluginStatus == 1) {
+	// Install
+} else {
+	// Uninstall
+}
+
 $aDatabases = array(
 	"faq" => array(
 		"fields" => array(
@@ -7,7 +13,7 @@ $aDatabases = array(
 				"unsigned" => 1,
 				"notnull" => 1,
 				"default" => 0,
-				"auto_increment"
+				"autoincrement" => 1
 			),
 			"question" => array("type" => "text","length" => 100),
 			"answer" => array("type" => "clob"),
@@ -27,7 +33,7 @@ $aDatabases = array(
 				"unsigned" => 1,
 				"notnull" => 1,
 				"default" => 0,
-				"auto_increment"
+				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 100)
 		)

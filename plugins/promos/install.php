@@ -1,4 +1,13 @@
 <?php
+$sFolder = $this->_settings->rootPublic."uploads/promos/";
+if($sPluginStatus == 1) {
+	// Install
+	mkdir($sFolder);
+} else {
+	// Uninstall
+	$this->deleteDir($sFolder);
+}
+
 $aDatabases = array(
 	"promos" => array(
 		"fields" => array(
@@ -7,7 +16,7 @@ $aDatabases = array(
 				"unsigned" => 1,
 				"notnull" => 1,
 				"default" => 0,
-				"auto_increment"
+				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 100),
 			"link" => array("type" => "text","length" => 255),
@@ -32,7 +41,7 @@ $aDatabases = array(
 				"unsigned" => 1,
 				"notnull" => 1,
 				"default" => 0,
-				"auto_increment"
+				"autoincrement" => 1
 			),
 			"tag" => array("type" => "text","length" => 25),
 			"name" => array("type" => "text","length" => 100),

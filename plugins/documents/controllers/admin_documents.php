@@ -17,7 +17,7 @@ class admin_documents extends adminController
 		$this->tplAssign("aCategories", $oDocument->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
 		$this->tplAssign("aDocuments", $oDocument->getDocuments($_GET["category"], true));
-		$this->tplDisplay("documents/index.tpl");
+		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
 		$oDocument = $this->loadModel("documents");
@@ -34,7 +34,7 @@ class admin_documents extends adminController
 			);
 		
 		$this->tplAssign("aCategories", $oDocument->getCategories());
-		$this->tplDisplay("documents/add.tpl");
+		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
 		$oDocument = $this->loadModel("documents");
@@ -155,7 +155,7 @@ class admin_documents extends adminController
 		
 		$this->tplAssign("aCategories", $oDocument->getCategories());
 		$this->tplAssign("aDocument", $aDocument);
-		$this->tplDisplay("documents/edit.tpl");
+		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
 		$oDocument = $this->loadModel("documents");
@@ -266,7 +266,7 @@ class admin_documents extends adminController
 		);
 		
 		$this->tplAssign("aCategories", $aCategories);
-		$this->tplDisplay("documents/categories.tpl");
+		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
 		$this->dbResults(

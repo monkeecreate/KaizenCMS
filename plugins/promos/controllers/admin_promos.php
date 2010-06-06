@@ -17,7 +17,7 @@ class admin_promos extends adminController
 		$this->tplAssign("aPositions", $oPromos->getPositions());
 		$this->tplAssign("sPosition", $_GET["position"]);
 		$this->tplAssign("aPromos", $oPromos->getPromos($_GET["position"]));
-		$this->tplDisplay("promos/index.tpl");
+		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
 		$oPromos = $this->loadModel("promos");
@@ -39,7 +39,7 @@ class admin_promos extends adminController
 			);
 		
 		$this->tplAssign("aPositions", $oPromos->getPositions());
-		$this->tplDisplay("promos/add.tpl");
+		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
 		if(empty($_POST["name"]) || empty($_FILES["promo"]["name"]) || empty($_POST["positions"])) {
@@ -172,7 +172,7 @@ class admin_promos extends adminController
 		}
 		
 		$this->tplAssign("aPositions", $oPromos->getPositions());
-		$this->tplDisplay("promos/edit.tpl");
+		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
 		if(empty($_POST["name"]) || empty($_POST["positions"])) {
@@ -288,11 +288,11 @@ class admin_promos extends adminController
 		$_SESSION["admin"]["admin_promo_positions"] = null;
 		
 		$this->tplAssign("aPositions", $oPromos->getPositions());
-		$this->tplDisplay("promos/positions/index.tpl");
+		$this->tplDisplay("admin/positions/index.tpl");
 	}
 	function positions_add() {	
 		$this->tplAssign("aPosition", $_SESSION["admin"]["admin_promo_positions"]);
-		$this->tplDisplay("promos/positions/add.tpl");
+		$this->tplDisplay("admin/positions/add.tpl");
 	}
 	function positions_add_s() {
 		if(empty($_POST["name"])) {
@@ -337,7 +337,7 @@ class admin_promos extends adminController
 			$this->tplAssign("aPosition", $aPosition);
 		}
 		
-		$this->tplDisplay("promos/positions/edit.tpl");
+		$this->tplDisplay("admin/positions/edit.tpl");
 	}
 	function positions_edit_s() {
 		if(empty($_POST["name"])) {
