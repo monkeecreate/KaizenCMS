@@ -16,7 +16,7 @@ $aDatabases = array(
 				"unsigned" => 1,
 				"notnull" => 1,
 				"default" => 0,
-				"auto_increment"
+				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 100),
 			"description" => array("type" => "clob"),
@@ -36,7 +36,7 @@ $aDatabases = array(
 				"unsigned" => 1,
 				"notnull" => 1,
 				"default" => 0,
-				"auto_increment"
+				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 100)
 		)
