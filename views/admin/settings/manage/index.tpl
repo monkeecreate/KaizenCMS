@@ -38,7 +38,7 @@
 			"bStateSave": true, //whether to save a cookie with the current table state
 			"iDisplayLength": 10, //how many items to display on each page
 			"aaSortingFixed": [[ 0, 'asc' ]],
-			"aaSorting": [[ 0, "asc" ], [4, "asc"]] //which column to sort by (0-X)
+			"aaSorting": [[4, "asc"]] //which column to sort by (0-X)
 		{rdelim});
 	{rdelim});
 </script>
@@ -47,8 +47,15 @@
 	<a href="/admin/settings/manage/add/" title="Add Setting" class="button">Add Setting &raquo;</a>
 	
 	<ul class="pageTabs">
-		<li><a class="active" href="/admin/settings/manage/" title="Manage Settings">Settings</a></li>
-		<li><a href="/admin/settings/plugins/" title="Manage Plugins">Plugins</a></li>
+		{foreach from=$aAdminMenu item=aMenu key=k}
+			{if $k == "settings"}
+				{foreach from=$aMenu.menu item=aItem}
+					<li><a href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+				{/foreach}
+			{/if}
+		{/foreach}
+		<!-- <li><a class="active" href="/admin/settings/manage/" title="Manage Settings">Settings</a></li>
+		<li><a href="/admin/settings/plugins/" title="Manage Plugins">Plugins</a></li> -->
 	</ul>
 </header>
 
