@@ -1,23 +1,32 @@
 {include file="inc_header.tpl" page_title="Manage Plugins" menu="settings"}
 {head}
-<script language="JavaScript" type="text/javascript" src="/scripts/jTPS/jTPS.js"></script>
-<link rel="stylesheet" type="text/css" href="/scripts/jTPS/jTPS.css">
+<script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
+<script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
+<!-- <link rel="stylesheet" href="/scripts/dataTables/css/demo_table_jui.css" type="text/css"> -->
 <script type="text/javascript">
 	$(function(){ldelim}
-		$('.dataTable').jTPS({ldelim}
-			perPages:[10,15,20],
-			scrollStep: 1
+		$('.dataTable').dataTable({ldelim}
+			// "bJQueryUI": true,
+			"iDisplayLength": 4,
+			"bStateSave": true,
+			"bLengthChange": true,
+			"sPaginationType": "full_numbers",
+			"bAutoWidth": false
 		{rdelim});
 	{rdelim});
 </script>
 {/head}
+
+	<a href="#" class="button">Add Article &raquo;</a>
+</header>
+
 <table class="dataTable">
 	<thead>
 		<tr>
-			<th sort="title">Plugin</th>
-			<th sort="version">Author</th>
-			<th sort="version">Version</th>
-			<th sort="status">Status</th>
+			<th >Plugin</th>
+			<th>Author</th>
+			<th>Version</th>
+			<th>Status</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -26,15 +35,15 @@
 			<tr>
 				<td>{$aPlugin.name|clean_html}</td>
 				<td>{$aPlugin.author|clean_html}</td>
-				<td class="small center">{$aPlugin.version|clean_html}</td>
-				<td class="small center">
+				<td>{$aPlugin.version|clean_html}</td>
+				<td>
 					{if $aPlugin.status == 1}
 						Active
 					{else}
 						In-Active
 					{/if}
 				</td>
-				<td class="small center border-end">
+				<td class="center">
 					{if $aPlugin.status == 0}
 						<a href="/admin/settings/plugins/install/{$aPlugin.tag}/" title="Install Plugin">
 							<img src="/images/admin/icons/add.png">
@@ -49,15 +58,5 @@
 			</tr>
 		{/foreach}
 	</tbody>
-	<tfoot class="nav">
-		<tr>
-			<td colspan="5">
-				<div class="pagination"></div>
-				<div class="paginationTitle">Page</div>
-				<div class="selectPerPage"></div>
-				<div class="status"></div>
-			</td>
-		</tr>
-	</tfoot>
 </table>
 {include file="inc_footer.tpl"}
