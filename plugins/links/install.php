@@ -18,6 +18,7 @@ $aDatabases = array(
 			"name" => array("type" => "text","length" => 100),
 			"description" => array("type" => "clob"),
 			"link" => array("type" => "text","length" => 255),
+			"image" => array("type" => "text","length" => 100),
 			"active" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),

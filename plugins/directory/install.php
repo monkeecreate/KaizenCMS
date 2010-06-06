@@ -17,7 +17,7 @@ $aDatabases = array(
 			),
 			"name" => array("type" => "text","length" => 100),
 			"address1" => array("type" => "text","length" => 100),
-			"adress2" => array("type" => "text","length" => 100),
+			"address2" => array("type" => "text","length" => 100),
 			"city" => array("type" => "text","length" => 100),
 			"state" => array("type" => "text","length" => 3),
 			"zip" => array("type" => "text","length" => 12),

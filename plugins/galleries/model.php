@@ -14,7 +14,7 @@ class galleries_model extends appModel
 				." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries`.`id` = `galleries_assign`.`galleryid`"
 				." INNER JOIN `{dbPrefix}galleries_categories` AS `categories` ON `galleries_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
-				." GROUP BY `galleries`.`id`"
+				." GROUP BY `galleries`.`sort_order`"
 			,"all"
 		);
 	

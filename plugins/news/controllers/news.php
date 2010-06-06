@@ -51,7 +51,7 @@ class news extends appController
 		$this->tplAssign("aArticles", $aArticles);
 		
 		header("Content-Type: application/rss+xml");
-		$this->tplDisplay("news/rss.tpl");
+		$this->tplDisplay("rss.tpl");
 	}
 	function article() {
 		$aArticle = $this->model->getArticle($this->_urlVars->dynamic["id"]);
@@ -61,9 +61,9 @@ class news extends appController
 
 		$this->tplAssign("aArticle", $aArticle);
 		
-		if($this->tplExists("news/article-".$aArticle["id"].".tpl"))
-			$this->tplDisplay("news/article-".$aArticle["id"].".tpl");
+		if($this->tplExists("article-".$aArticle["id"].".tpl"))
+			$this->tplDisplay("article-".$aArticle["id"].".tpl");
 		else
-			$this->tplDisplay("news/article.tpl");
+			$this->tplDisplay("article.tpl");
 	}
 }
