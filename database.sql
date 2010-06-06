@@ -25,9 +25,9 @@ CREATE TABLE `menu_admin` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `menu_admin` (`tag`, `sort_order`, `info`) VALUES
-('content', 1, '{"title":"Content","menu":[{"text":"Add Page","link":"\\/admin\\/content\\/add\\/","icon":"circle-plus"},{"text":"Manage Pages","link":"\\/admin\\/content\\/"}]}'),
-('settings', 2, '{"title":"Settings","menu":[{"text":"Settings","link":"\\/admin\\/settings\\/"},{"text":"Manage Settings","link":"\\/admin\\/settings\\/manage\\/","type":"super"},{"text":"Manage Plugins","link":"\\/admin\\/settings\\/plugins\\/","type":"super"},{"text":"Manage Admin Menu","link":"\/admin\/settings\/admin-menu\/","type":"super"}]}'),
-('users', 3, '{"title":"Users","menu":[{"text":"Add User","link":"\\/admin\\/users\\/add\\/","icon":"circle-plus"},{"text":"Manage Users","link":"\\/admin\\/users\\/"}]}');
+('content', 1, '{"title":"Content","menu":[{"text":"Pages","link":"\\/admin\\/content\\/"}]}'),
+('settings', 2, '{"title":"Settings","menu":[{"text":"Settings","link":"\\/admin\\/settings\\/"},{"text":"Manage Settings","link":"\\/admin\\/settings\\/manage\\/","type":"super"},{"text":"Plugins","link":"\\/admin\\/settings\\/plugins\\/","type":"super"},{"text":"Admin Menu","link":"\/admin\/settings\/admin-menu\/","type":"super"}]}'),
+('users', 3, '{"title":"Users","menu":[{"text":"Users","link":"\\/admin\\/users\\/"}]}');
 
 CREATE TABLE IF NOT EXISTS `plugins` (
   `plugin` varchar(50) NOT NULL,
