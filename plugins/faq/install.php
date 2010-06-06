@@ -63,21 +63,11 @@ $aMenuAdmin = array(
 	"title" => "FAQ",
 	"menu" => array(
 		array(
-			"text" => "Add Question & Answer",
-			"link" => "/admin/faq/add/",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Questions",
+			"text" => "Questions",
 			"link" => "/admin/faq/"
 		),
 		array(
-			"text" => "Add Category",
-			"link" => "/admin/faq/categories/?addcategory=1",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Categories",
+			"text" => "Categories",
 			"link" => "/admin/faq/categories/"
 		)
 	)

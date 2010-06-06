@@ -83,21 +83,11 @@ $aMenuAdmin = array(
 	"title" => "Photo Galleries",
 	"menu" => array(
 		array(
-			"text" => "Add Gallery",
-			"link" => "/admin/galleries/add/",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Galleries",
+			"text" => "Photo Galleries",
 			"link" => "/admin/galleries/"
 		),
 		array(
-			"text" => "Add Category",
-			"link" => "/admin/galleries/categories/?addcategory=1",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Categories",
+			"text" => "Categories",
 			"link" => "/admin/galleries/categories/"
 		)
 	)

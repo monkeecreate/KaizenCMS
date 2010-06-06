@@ -64,21 +64,11 @@ $aMenuAdmin = array(
 	"title" => "Links",
 	"menu" => array(
 		array(
-			"text" => "Add Link",
-			"link" => "/admin/links/add/",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Links",
+			"text" => "Links",
 			"link" => "/admin/links/"
 		),
 		array(
-			"text" => "Add Category",
-			"link" => "/admin/links/categories/?addcategory=1",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Categories",
+			"text" => "Categories",
 			"link" => "/admin/links/categories/"
 		)
 	)

@@ -76,21 +76,11 @@ $aMenuAdmin = array(
 	"title" => "News",
 	"menu" => array(
 		array(
-			"text" => "Add Article",
-			"link" => "/admin/news/add/",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Articles",
+			"text" => "News Articles",
 			"link" => "/admin/news/"
 		),
 		array(
-			"text" => "Add Category",
-			"link" => "/admin/news/categories/?addcategory=1",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Categories",
+			"text" => "Categories",
 			"link" => "/admin/news/categories/"
 		)
 	)

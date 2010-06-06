@@ -66,21 +66,11 @@ $aMenuAdmin = array(
 	"title" => "Documents",
 	"menu" => array(
 		array(
-			"text" => "Add Document",
-			"link" => "/admin/documents/add/",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Documents",
+			"text" => "Documents",
 			"link" => "/admin/documents/"
 		),
 		array(
-			"text" => "Add Category",
-			"link" => "/admin/documents/categories/?addcategory=1",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Categories",
+			"text" => "Categories",
 			"link" => "/admin/documents/categories/"
 		)
 	)

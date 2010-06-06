@@ -71,21 +71,11 @@ $aMenuAdmin = array(
 	"title" => "Directory",
 	"menu" => array(
 		array(
-			"text" => "Add Listing",
-			"link" => "/admin/directory/add/",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Directory",
+			"text" => "Directory Listings",
 			"link" => "/admin/directory/"
 		),
 		array(
-			"text" => "Add Category",
-			"link" => "/admin/directory/categories/?addcategory=1",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Categories",
+			"text" => "Categories",
 			"link" => "/admin/directory/categories/"
 		)
 	)
