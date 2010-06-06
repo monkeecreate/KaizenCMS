@@ -240,6 +240,11 @@ table.dataTable td.center {
 	text-align: center;
 }
 
+table.dataTable td.group {
+	background: #ccc;
+	font-size: 1.1em;
+}
+
 .dataTables_empty {
 	text-align: center;
 }
@@ -477,6 +482,10 @@ tr.even td.sorting_3 {
 
 .right {
 	float: right;
+}
+
+.hidden {
+	display: none;
 }
 
 /* @end */
