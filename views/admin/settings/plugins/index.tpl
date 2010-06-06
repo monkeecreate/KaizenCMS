@@ -2,16 +2,17 @@
 {head}
 <script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
 <script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
-<!-- <link rel="stylesheet" href="/scripts/dataTables/css/demo_table_jui.css" type="text/css"> -->
+<!-- <link rel="stylesheet" href="/scripts/dataTables/css/demo_table.css" type="text/css"> -->
 <script type="text/javascript">
 	$(function(){ldelim}
 		$('.dataTable').dataTable({ldelim}
-			// "bJQueryUI": true,
+			//"bJQueryUI": true,
 			"iDisplayLength": 4,
-			"bStateSave": true,
+			"bStateSave": false, //change to true
 			"bLengthChange": true,
-			"sPaginationType": "full_numbers",
-			"bAutoWidth": false
+			"bAutoWidth": false,
+			"sDom": 'rt<"dataTable-footer"flpi<"clear">',
+			"sPaginationType": "scrolling"
 		{rdelim});
 	{rdelim});
 </script>
@@ -23,7 +24,7 @@
 <table class="dataTable">
 	<thead>
 		<tr>
-			<th >Plugin</th>
+			<th>Plugin</th>
 			<th>Author</th>
 			<th>Version</th>
 			<th>Status</th>
@@ -59,4 +60,12 @@
 		{/foreach}
 	</tbody>
 </table>
+<div class="dataTable-legend">
+	<ul>
+		<li class="green">Published</li>
+		<li class="yellow">Active, pending publish</li>
+		<li class="red">Inactive</li>
+		<li class="blue">Sticky</li>
+	</ul>
+</div>
 {include file="inc_footer.tpl"}
