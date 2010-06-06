@@ -73,21 +73,11 @@ $aMenuAdmin = array(
 	"title" => "Testimonials",
 	"menu" => array(
 		array(
-			"text" => "Add Testimonial",
-			"link" => "/admin/testimonials/add/",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Testimonials",
+			"text" => "Testimonials",
 			"link" => "/admin/testimonials/"
 		),
 		array(
-			"text" => "Add Category",
-			"link" => "/admin/testimonials/categories/?addcategory=1",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Categories",
+			"text" => "Categories",
 			"link" => "/admin/testimonials/categories/"
 		)
 	)

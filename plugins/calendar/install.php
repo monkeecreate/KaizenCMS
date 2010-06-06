@@ -79,21 +79,11 @@ $aMenuAdmin = array(
 	"title" => "Calendar",
 	"menu" => array(
 		array(
-			"text" => "Add Calendar Event",
-			"link" => "/admin/calendar/add/",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Calendar Events",
+			"text" => "Calendar Events",
 			"link" => "/admin/calendar/"
 		),
 		array(
-			"text" => "Add Category",
-			"link" => "/admin/calendar/categories/?addcategory=1",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Categories",
+			"text" => "Categories",
 			"link" => "/admin/calendar/categories/"
 		)
 	)

@@ -74,22 +74,11 @@ $aMenuAdmin = array(
 	"title" => "Promos",
 	"menu" => array(
 		array(
-			"text" => "Add Promo",
-			"link" => "/admin/promos/add/",
-			"icon" => "circle-plus"
-		),
-		array(
-			"text" => "Manage Promos",
+			"text" => "Promos",
 			"link" => "/admin/promos/"
 		),
 		array(
-			"text" => "Add Position",
-			"link" => "/admin/promos/positions/add/",
-			"icon" => "circle-plus",
-			"type" => "super"
-		),
-		array(
-			"text" => "Manage Positions",
+			"text" => "Promo Positions",
 			"link" => "/admin/promos/positions/",
 			"type" => "super"
 		)
