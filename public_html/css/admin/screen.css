@@ -154,7 +154,7 @@ nav a:hover {
 
 table.dataTable {
 	margin: 0 auto;
-	width: 960px;
+	width: 960px !important;
 	clear: both;
 	border-left: 1px solid #ddd;
 	border-right: 1px solid #ddd;
@@ -166,12 +166,20 @@ table.dataTable thead {
 }
 
 table.dataTable thead th {
-	padding: 12px 18px 3px 10px;
+	padding: 12px 15px 3px 8px;
 	font-weight: bold;
 	font-size: 1.2em;
 	cursor: pointer;
 	height: 23px;
 	border-left: 1px solid #cacaca;
+}
+
+table.dataTable thead th.center {
+	text-align: center;
+}
+
+table.dataTable thead th.empty {
+	padding: 0;
 }
 
 table.dataTable thead th:first-child {
@@ -261,57 +269,57 @@ table.dataTable td.center {
 	margin: 3px 0 0;
 }
 
-.dataTable-legend {
+ul.dataTable-legend {
 	margin: 8px 0 0 10px;
 	overflow: hidden;
 }
 
-.dataTable-legend ul li {
+ul.dataTable-legend li {
 	float: left;
 	margin: 0 10px 0 0;
 }
 
-.dataTable-legend .green {
+.dataTable-legend .bullet-green {
 	background: url(/images/admin/icons/bullet_green.png) no-repeat center left;
 	padding-left: 18px;
 }
 
-.dataTable-legend .red {
+.dataTable-legend .bullet-red {
 	background: url(/images/admin/icons/bullet_red.png) no-repeat center left;
 	padding-left: 18px;
 }
 
-.dataTable-legend .yellow {
+.dataTable-legend .bullet-yellow {
 	background: url(/images/admin/icons/bullet_yellow.png) no-repeat center left;
 	padding-left: 18px;
 }
 
-.dataTable-legend .blue {
+.dataTable-legend .bullet-blue {
 	background: url(/images/admin/icons/bullet_blue.png) no-repeat center left;
 	padding-left: 18px;
 }
 
-.dataTable-legend .black {
+.dataTable-legend .bullet-black {
 	background: url(/images/admin/icons/bullet_black.png) no-repeat center left;
 	padding-left: 18px;
 }
 
-.dataTable-legend .orange {
+.dataTable-legend .bullet-orange {
 	background: url(/images/admin/icons/bullet_orange.png) no-repeat center left;
 	padding-left: 18px;
 }
 
-.dataTable-legend .purple {
+.dataTable-legend .bullet-purple {
 	background: url(/images/admin/icons/bullet_purple.png) no-repeat center left;
 	padding-left: 18px;
 }
 
-.dataTable-legend .pink {
+.dataTable-legend .bullet-pink {
 	background: url(/images/admin/icons/bullet_pink.png) no-repeat center left;
 	padding-left: 18px;
 }
 
-.dataTable-legend .white {
+.dataTable-legend .bullet-white {
 	background: url(/images/admin/icons/bullet_white.png) no-repeat center left;
 	padding-left: 18px;
 }
@@ -388,11 +396,19 @@ table.display tr.odd.row_selected td {
 }
 
 .sorting {
-	background: url('/images/admin/dataTable-sort-both') no-repeat 95% 50%;
+	background: url('/images/admin/dataTable-sort-both.png') no-repeat 95% 50%;
 }
 
-.sorting_asc_disabled, .sorting_desc_disabled {
+.sorting_asc_disabled, .sorting_desc_disabled, .sorting {
 	opacity: 0.4;
+}
+
+.sorting_disabled {
+	background: none;
+}
+
+table.dataTable thead th.empty.sorting, table.dataTable thead th.empty.sorting_asc, table.dataTable thead th.empty.sorting_asc_disabled, table.dataTable thead th.empty.sorting_desc, table.dataTable thead th.empty.sorting_desc_disabled {
+	background-position: center center;
 }
 
 /*tr.odd td.sorting_1 {

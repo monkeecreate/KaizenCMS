@@ -2,48 +2,47 @@
 {head}
 <script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
 <script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
-<!-- <link rel="stylesheet" href="/scripts/dataTables/css/demo_table.css" type="text/css"> -->
 <script type="text/javascript">
 	$(function(){ldelim}
 		$('.dataTable').dataTable({ldelim}
-			//"bJQueryUI": true,
-			"iDisplayLength": 4,
-			"bStateSave": false, //change to true
-			"bLengthChange": true,
-			"bAutoWidth": false,
+			/* DON'T CHANGE */
 			"sDom": 'rt<"dataTable-footer"flpi<"clear">',
-			"sPaginationType": "scrolling"
+			"sPaginationType": "scrolling",
+			"bLengthChange": true,
+			/* CAN CHANGE */
+			"bStateSave": true, //whether to save a cookie with the current table state
+			"iDisplayLength": 10, //how many items to display on each page
+			"aaSorting": [[ 1, "asc" ]] //which column to sort by (0-X)
 		{rdelim});
 	{rdelim});
 </script>
 {/head}
 
-	<a href="#" class="button">Add Article &raquo;</a>
 </header>
 
 <table class="dataTable">
 	<thead>
 		<tr>
+			<th class="empty">&nbsp;</th>
 			<th>Plugin</th>
 			<th>Author</th>
 			<th>Version</th>
-			<th>Status</th>
-			<th></th>
+			<th class="sorting_disabled empty">&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
 		{foreach from=$aPlugins item=aPlugin}
 			<tr>
+				<td class="center">
+					{if $aPlugin.status == 1}
+						<img src="/images/admin/icons/bullet_green.png" alt="active">
+					{else}
+						<img src="/images/admin/icons/bullet_red.png" alt="inactive">
+					{/if}
+				</td>
 				<td>{$aPlugin.name|clean_html}</td>
 				<td>{$aPlugin.author|clean_html}</td>
 				<td>{$aPlugin.version|clean_html}</td>
-				<td>
-					{if $aPlugin.status == 1}
-						Active
-					{else}
-						In-Active
-					{/if}
-				</td>
 				<td class="center">
 					{if $aPlugin.status == 0}
 						<a href="/admin/settings/plugins/install/{$aPlugin.tag}/" title="Install Plugin">
@@ -52,7 +51,7 @@
 					{else}
 						<a href="/admin/settings/plugins/uninstall/{$aPlugin.tag}/"
 							onclick="return confirm_('Are you sure you would like to remove this plugin?');" title="Uninstall Plugin">
-							<img src="/images/admin/icons/bin_closed.png">
+							<img src="/images/admin/icons/delete.png">
 						</a>
 					{/if}
 				</td>
@@ -60,12 +59,9 @@
 		{/foreach}
 	</tbody>
 </table>
-<div class="dataTable-legend">
-	<ul>
-		<li class="green">Published</li>
-		<li class="yellow">Active, pending publish</li>
-		<li class="red">Inactive</li>
-		<li class="blue">Sticky</li>
-	</ul>
-</div>
+
+<ul class="dataTable-legend">
+	<li class="bullet-green">Active, installed</li>
+	<li class="bullet-red">Inactive, not installed</li>
+</ul>
 {include file="inc_footer.tpl"}
