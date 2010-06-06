@@ -19,7 +19,7 @@ class admin_news extends adminController
 		$this->tplAssign("aArticles", $oNews->getArticles($_GET["category"], true));
 		$this->tplAssign("sUseImage", $oNews->useImage);
 		
-		$this->tplDisplay("news/index.tpl");
+		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
 		$oNews = $this->loadModel("news");
@@ -42,7 +42,7 @@ class admin_news extends adminController
 		
 		$this->tplAssign("aCategories", $oNews->getCategories());
 		$this->tplAssign("sUseImage", $oNews->useImage);
-		$this->tplDisplay("news/add.tpl");
+		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
 		$oNews = $this->loadModel("news");
@@ -150,7 +150,7 @@ class admin_news extends adminController
 		
 		$this->tplAssign("aCategories", $oNews->getCategories());
 		$this->tplAssign("sUseImage", $oNews->useImage);
-		$this->tplDisplay("news/edit.tpl");
+		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
 		if(empty($_POST["title"]) || count($_POST["categories"]) == 0) {
@@ -229,7 +229,7 @@ class admin_news extends adminController
 		$this->tplAssign("aArticle", $aArticle);
 		$this->tplAssign("minWidth", $oNews->imageMinWidth);
 		$this->tplAssign("minHeight", $oNews->imageMinHeight);
-		$this->tplDisplay("news/image/upload.tpl");
+		$this->tplDisplay("admin/image/upload.tpl");
 	}
 	function image_upload_s() {
 		$oNews = $this->loadModel("news");
@@ -280,7 +280,7 @@ class admin_news extends adminController
 		$this->tplAssign("minWidth", $oNews->imageMinWidth);
 		$this->tplAssign("minHeight", $oNews->imageMinHeight);
 
-		$this->tplDisplay("news/image/edit.tpl");
+		$this->tplDisplay("admin/image/edit.tpl");
 	}
 	function image_edit_s() {
 		$this->dbResults(
@@ -324,7 +324,7 @@ class admin_news extends adminController
 		);
 		
 		$this->tplAssign("aCategories", $aCategories);
-		$this->tplDisplay("news/categories.tpl");
+		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
 		$this->dbResults(
