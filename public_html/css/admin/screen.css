@@ -116,6 +116,44 @@ nav a:hover {
 	float: left;
 }
 
+.content p, .content blockquote {
+	margin-bottom: 1.8em;
+	font-size: 1.3em;
+	line-height: 1.4em;
+}
+
+.content ul {
+	margin: 0 0 15px 30px;
+}
+
+.content ul li {
+	list-style-type: square;
+}
+
+.content ol {
+	margin: 0 0 15px 30px;
+	list-style-type: decimal;
+}
+
+.content ol li {
+	list-style-type: decimal;
+}
+
+.content li {
+	margin-bottom: 5px;
+	font-size: 1.3em;
+	line-height: 1.4em;
+}
+
+.content li ul li, .content li ul li ul li {
+	font-size: 1.0em;
+}
+
+.content blockquote {
+	padding: 0 15px;
+	font-style: italic;
+}
+
 .fullContent header a.button {
 	float: left;
 	margin: 0 0 0 15px;
@@ -129,6 +167,7 @@ ul.pageTabs {
 ul.pageTabs li {
 	float: left;
 	margin: 0 8px 0 0;
+	list-style: none;
 }
 
 ul.pageTabs li a:link, ul.pageTabs li a:active, ul.pageTabs li a:visited {
@@ -168,6 +207,24 @@ ul.pageTabs li a.active, ul.pageTabs li a:hover {
 	margin: 0 6px 0 0;
 }
 
+ul#admin-menu-sort {
+	font-size: 1.4em;
+	list-style: none;
+	margin: 0 0 10px 10px;
+	padding: 0;
+}
+
+ul#admin-menu-sort li {
+	margin: 0 0 4px;
+	padding: 0 0 0 20px;
+	list-style: none;
+}
+
+ul#admin-menu-sort li:hover {
+	background: url(/images/admin/icons/arrow-move.png) no-repeat left center;
+	cursor: pointer;
+}
+
 /* @end */
 
 /* @group forms */
@@ -190,32 +247,40 @@ ul.pageTabs li a.active, ul.pageTabs li a:hover {
 	border-bottom: 0;
 }
 
-form.settings label {
+form label {
 	font-size: 1.3em;
 	margin: 3px 0;
 }
 
-form fieldset input {
+form input {
 	margin: 0;
 }
 
-form fieldset input.text {
+form input.text {
 	margin-bottom: 15px;
 	padding: 4px;
 }
 
-form fieldset input.checkbox {
-	margin: 0 !important;
+.fullContent form input.text, .fullContent form textarea {
+	width: 300px;
 }
 
-form fieldset textarea {
+form input.checkbox {
+	margin: 0 0 15px!important;
+}
+
+form textarea {
 	margin-bottom: 15px;
 	padding: 6px;
 }
 
+form select {
+	margin-bottom: 15px;
+}
+
 form span.input-info {
 	display: block;
-	margin: -7px 0 15px 5px;
+	margin: -2px 0 20px 5px;
 }
 
 /* @group settings form */
@@ -292,11 +357,15 @@ table.dataTable tfoot th {
 }
 
 table.dataTable tr.odd {
-	background-color: #fff;
+	background: #fff;
 }
 
 table.dataTable tr.even {
-	background-color: #f4f4f4;
+	background: #f4f4f4;
+}
+
+table.dataTable tr:hover {
+	background: #e3e3e3;
 }
 
 table.dataTable tr.heading2 td {
@@ -376,11 +445,13 @@ table.dataTable td.group {
 ul.dataTable-legend {
 	margin: 8px 0 0 10px;
 	overflow: hidden;
+	font-size: 0.8em;
 }
 
 ul.dataTable-legend li {
 	float: left;
 	margin: 0 10px 0 0;
+	list-style: none;
 }
 
 .dataTable-legend .bullet-green {

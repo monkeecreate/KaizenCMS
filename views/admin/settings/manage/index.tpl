@@ -75,7 +75,13 @@
 		{foreach from=$aSettings item=aSetting}
 			<tr>
 				<td class="hidden">{$aSetting.group|clean_html}</td>
-				<td><img src="/images/admin/icons/bullet_green.png" alt="active"></td>
+				<td>
+					{if $aSetting.active == 1}
+						<span class="hidden">active</span><img src="/images/admin/icons/bullet_green.png" alt="active">
+					{else}
+						<span class="hidden">inactive</span><img src="/images/admin/icons/bullet_red.png" alt="inactive">
+					{/if}
+				</td>
 				<td>{$aSetting.title|clean_html}</td>
 				<td>{$aSetting.tag|clean_html}</td>
 				<td class="hidden">{$aSetting.sortorder}</td>
@@ -84,7 +90,7 @@
 						<img src="/images/admin/icons/pencil.png" alt="edit_icon">
 					</a>
 					<a href="/admin/settings/manage/delete/{$aSetting.id}/"
-						onclick="return confirm_('Are you sure you would like to delete this setting?');" title="Delete Setting">
+						onclick="return confirm_('Are you sure you would like to delete {$aSetting.title|clean_html}?');" title="Delete Setting">
 						<img src="/images/admin/icons/bin_closed.png" alt="delete_icon">
 					</a>
 				</td>

@@ -43,22 +43,23 @@ CREATE TABLE `settings` (
   `value` longtext,
   `type` varchar(50) default NULL,
   `sortOrder` int(11) default '0',
+  `active` tinyint(1) NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `group` (`group`,`tag`),
   KEY `sortOrder` (`sortOrder`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
-INSERT INTO `settings` (`id`, `group`, `tag`, `title`, `text`, `value`, `type`, `sortOrder`) VALUES
-(1, 'SEO', 'keywords', 'Keywords', NULL, '', 'textarea', 3),
-(2, 'SEO', 'description', 'Description', NULL, '', 'textarea', 2),
-(3, 'Analytics', 'analytics_google', 'Google Analytics', NULL, '', 'text', 1),
-(4, 'Analytics', 'analytics_woopra', 'Woopra', NULL, 0, 'bool', 2),
-(5, 'SEO', 'title', 'Site Title', NULL, '', 'text', 1),
-(6, 'Contact Info', 'email', 'Email Address', NULL, '', 'text', 1),
-(7, 'Contact Info', 'contact-subject', 'Contact Form Subject', NULL, '', 'text', 2),
-(8, 'Social', 'twitterUser', 'Twitter Username', NULL, '', 'text', 1),
-(9, 'Social', 'facebookUser', 'Facebook Username', NULL, '', 'text', 2),
-(10, 'Social', 'flickrEmail', 'Flickr Email Address', NULL, '', 'text', 4);
+INSERT INTO `settings` (`id`, `group`, `tag`, `title`, `text`, `value`, `type`, `sortOrder`, `active`) VALUES
+(1, 'SEO', 'keywords', 'Keywords', NULL, '', 'textarea', 3, 1),
+(2, 'SEO', 'description', 'Description', NULL, '', 'textarea', 2, 1),
+(3, 'Analytics', 'analytics_google', 'Google Analytics', NULL, '', 'text', 1, 1),
+(4, 'Analytics', 'analytics_woopra', 'Woopra', NULL, 0, 'bool', 2, 1),
+(5, 'SEO', 'title', 'Site Title', NULL, '', 'text', 1, 1),
+(6, 'Contact Info', 'email', 'Email Address', NULL, '', 'text', 1, 1),
+(7, 'Contact Info', 'contact-subject', 'Contact Form Subject', NULL, '', 'text', 2, 1),
+(8, 'Social', 'twitterUser', 'Twitter Username', NULL, '', 'text', 1, 1),
+(9, 'Social', 'facebookUser', 'Facebook Username', NULL, '', 'text', 2, 1),
+(10, 'Social', 'flickrEmail', 'Flickr Email Address', NULL, '', 'text', 4, 1);
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL auto_increment,

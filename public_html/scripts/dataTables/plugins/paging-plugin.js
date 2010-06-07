@@ -1,5 +1,5 @@
 /* Time between each scrolling frame */
-$.fn.dataTableExt.oPagination.iTweenTime = 100;
+$.fn.dataTableExt.oPagination.iTweenTime = 70;
 
 $.fn.dataTableExt.oPagination.scrolling = {
 	"fnInit": function ( oSettings, nPaging, fnCallbackDraw )

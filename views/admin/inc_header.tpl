@@ -38,7 +38,7 @@
 							{else}
 								{assign var="sActiveFound" value="1"}
 							{/if}
-							<li><a{if $menu == $x} class="active"{/if} href="#" tabindex="-1">{$aMenu.title|clean_html}</a></li>
+							<li><a{if $menu == $x} class="active"{/if} href="{$aMenu.menu[0].link}" tabindex="-1">{$aMenu.title|clean_html}</a></li>
 						{/foreach}
 					</ul>
 				</nav>

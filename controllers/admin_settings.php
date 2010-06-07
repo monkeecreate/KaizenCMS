@@ -11,6 +11,7 @@ class admin_settings extends adminController
 	function index() {
 		$aSettingsFull = $this->dbResults(
 			"SELECT * FROM `settings`"
+				." WHERE `active` = 1"
 				." ORDER BY `group`, `sortOrder`, `title`"
 			,"all"
 		);
@@ -62,7 +63,20 @@ class admin_settings extends adminController
 	function manageAdd() {
 		if(!empty($_SESSION["admin"]["admin_settings"]))
 			$this->tplAssign("aSetting", $_SESSION["admin"]["admin_settings"]);
+		else {
+			$this->tplAssign("aSetting",
+				array(
+					"active" => 1
+				)
+			);
+		}
 		
+		$aSettingGroups = $this->dbResults(
+			"SELECT distinct `group` FROM `settings`"
+			,"all"
+		);
+
+		$this->tplAssign("aSettingGroups", $aSettingGroups);
 		$this->tplDisplay("settings/manage/add.tpl");
 	}
 	function manageAdd_s() {
@@ -73,15 +87,17 @@ class admin_settings extends adminController
 		
 		$sID = $this->dbResults(
 			"INSERT INTO `settings`"
-				." (`group`, `tag`, `title`, `text`, `type`, `sortOrder`)"
+				." (`group`, `tag`, `title`, `text`, `value`, `type`, `sortOrder`, `active`)"
 				." VALUES"
 				." ("
 					.$this->dbQuote($_POST["group"], "text")
 					.", ".$this->dbQuote($_POST["tag"], "text")
 					.", ".$this->dbQuote($_POST["title"], "text")
 					.", ".$this->dbQuote($_POST["text"], "text")
+					.", ".$this->dbQuote($_POST["value"], "text")
 					.", ".$this->dbQuote($_POST["type"], "text")
 					.", ".$this->dbQuote($_POST["sortorder"], "text")
+					.", ".$this->boolCheck($_POST["active"])
 				.")"
 			,"insert"
 		);
@@ -105,6 +121,12 @@ class admin_settings extends adminController
 			$this->tplAssign("aSetting", $aSetting);
 		}
 		
+		$aSettingGroups = $this->dbResults(
+			"SELECT distinct `group` FROM `settings`"
+			,"all"
+		);
+
+		$this->tplAssign("aSettingGroups", $aSettingGroups);		
 		$this->tplDisplay("settings/manage/edit.tpl");
 	}
 	function manageEdit_s() {
@@ -119,7 +141,9 @@ class admin_settings extends adminController
 				.", `tag` = ".$this->dbQuote($_POST["tag"], "text")
 				.", `title` = ".$this->dbQuote($_POST["title"], "text")
 				.", `text` = ".$this->dbQuote($_POST["text"], "text")
+				.", `value` = ".$this->dbQuote($_POST["value"], "text")
 				.", `sortOrder` = ".$this->dbQuote($_POST["sortorder"], "text")
+				.", `active` = ".$this->boolCheck($_POST["active"])
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		

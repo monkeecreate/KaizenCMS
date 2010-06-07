@@ -71,11 +71,7 @@ class adminController extends appController
 			
 				if(empty($aMenuAdmin))
 					$this->forward("/admin/logout/");
-				
-				// echo "<pre>";
-				// print_r($this->_menu);
-				// echo "</pre>";
-				
+									
 				$this->tplAssign("aAdminMenu", $this->_menu);
 			}
 			/*## @end ##*/

@@ -1,4 +1,5 @@
 {include file="inc_header.tpl" page_title="Manage Plugins" menu="settings"}
+{assign var=subMenu value="Plugins"}
 {head}
 <script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
 <script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
@@ -19,8 +20,15 @@
 {/head}
 
 	<ul class="pageTabs">
-		<li><a href="/admin/settings/manage/" title="Manage Settings">Settings</a></li>
-		<li><a class="active" href="/admin/settings/plugins/" title="Manage Plugins">Plugins</a></li>
+		{foreach from=$aAdminMenu item=aMenu key=k}
+			{if $k == "settings"}
+				{if $aMenu.menu|@count gt 1}
+					{foreach from=$aMenu.menu item=aItem}
+						<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+					{/foreach}
+				{/if}
+			{/if}
+		{/foreach}
 	</ul>
 </header>
 
