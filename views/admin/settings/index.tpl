@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="Settings" menu="settings"}
+{include file="inc_header.tpl" page_title="Settings" menu="settings" page_style="fullContent"}
 {assign var=subMenu value="Settings"}
 	
 	<ul class="pageTabs">

@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="Login" page_login=1}
+{include file="inc_header.tpl" page_title="Login" page_login=1 page_style="loginContent"}
 {if $smarty.get.error}
 	<script type="text/javascript">
 	$(document).ready(function(){ldelim}
@@ -18,16 +18,21 @@ $(function(){
 });
 {/literal}
 </script>
-<form name="login" id="login" method="post" action="/admin/login/">
-	<label>Username:</label>
-	<input type="text" class="text" name="username" maxlength="100"><br>
-	<label>Password:</label>
-	<input type="password" class="text" name="password" maxlength="100"><br>
-	<input type="submit" value="Login"> <div class="forgotPassword"><a href="/admin/login/password/">Forgot password?</a></div>
-</form>
-<form name="login" id="forgotPassword" method="post" action="/admin/passwordReset/">
-	<label>Email:</label>
-	<input type="text" class="text" name="email" maxlength="100"><br>
-	<input type="submit" value="Reset Password">
-</form>
+
+</header>
+
+<section class="inner-content">
+	<form name="login" id="login" method="post" action="/admin/login/">
+		<label>Username:</label><br />
+		<input type="text" class="text" name="username" maxlength="100"><br />
+		<label>Password:</label><br />
+		<input type="password" class="text" name="password" maxlength="100"><br />
+		<input type="submit" value="Login"> <div class="forgotPassword right"><a href="/admin/login/password/">Forgot password?</a></div>
+	</form>
+	<form name="login" id="forgotPassword" class="hidden" method="post" action="/admin/passwordReset/">
+		<label>Email:</label><br />
+		<input type="text" class="text" name="email" maxlength="100"><br />
+		<input type="submit" value="Reset Password">
+	</form>
+</section>
 {include file="inc_footer.tpl"}

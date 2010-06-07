@@ -18,7 +18,7 @@
 	
 	<!--[if IE]><script type="text/javascript" src="/scripts/html5.js"></script><![endif]-->
 </head>
-<body>
+<body class="{$page_style}">
 	<div id="wrapper">
 		<header>
 			{if !empty($user_details)}
@@ -64,6 +64,6 @@
 				</div>
 			{/if}
 			
-			<section id="content" class="content fullContent">
+			<section id="content" class="content">
 				<header>
 					<h2>{$page_title}</h2>

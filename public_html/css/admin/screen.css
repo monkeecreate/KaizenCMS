@@ -101,12 +101,17 @@ nav a:hover {
 	
 }
 
-.fullContent header {
+.fullContent .content header {
 	background: url(/images/admin/content-h2.jpg) no-repeat 0 0;
 	overflow: hidden;
 	height: 35px;
 	margin: 0;
 	padding: 9px 0 0 15px;
+}
+
+.fullContent .content header a.button {
+	float: left;
+	margin: 0 0 0 15px;
 }
 
 .content h2 {
@@ -154,11 +159,6 @@ nav a:hover {
 	font-style: italic;
 }
 
-.fullContent header a.button {
-	float: left;
-	margin: 0 0 0 15px;
-}
-
 ul.pageTabs {
 	float: right;
 	margin: 12px 0 0;
@@ -176,7 +176,7 @@ ul.pageTabs li a:link, ul.pageTabs li a:active, ul.pageTabs li a:visited {
 	-moz-border-radius-topright: 3px;
 	-webkit-border-top-left-radius: 3px;
 	-webkit-border-top-right-radius: 3px;
-	font-size: 1.2em;
+	font-size: 0.9em;
 	color: #f1f1f1;
 	padding: 8px 10px;
 	text-decoration: none
@@ -208,22 +208,61 @@ ul.pageTabs li a.active, ul.pageTabs li a:hover {
 }
 
 ul#admin-menu-sort {
-	font-size: 1.4em;
+	font-size: 1.2em;
 	list-style: none;
 	margin: 0 0 10px 10px;
 	padding: 0;
 }
 
 ul#admin-menu-sort li {
-	margin: 0 0 4px;
-	padding: 0 0 0 20px;
+	margin: 0 0 0;
+	padding: 6px 0 6px 20px;
 	list-style: none;
 }
 
 ul#admin-menu-sort li:hover {
-	background: url(/images/admin/icons/arrow-move.png) no-repeat left center;
+	background: #e4e4e4 url(/images/admin/icons/arrow-move.png) no-repeat left center;
 	cursor: pointer;
 }
+
+/* @group login */
+
+.loginContent .content {
+	width: 400px;
+	margin: 85px auto 0;
+}
+
+.loginContent .content header {
+	display: block;
+	background: url(/images/admin/login-content-h2.jpg) no-repeat 0 0;
+	overflow: hidden;
+	height: 35px;
+	margin: 0;
+	padding: 9px 0 0 15px;
+}
+
+form#login label, form#forgotPassword label {
+	font-size: 1.5em;
+}
+
+form#login input.text, form#forgotPassword input.text {
+	width: 350px;
+	font-size: 1.8em;
+	font-family: Georgia, sans-serif;
+	color: #555;
+	margin: 3px 0 15px;
+	padding: 6px 8px;
+}
+
+form#login input:hover, form#login input:focus, form#forgotPassword input:hover, form#forgotPassword input:focus {
+	border: 1px solid #333;
+}
+
+form#login input.btn, form#forgotPassword input.btn {
+	font-size: 1.5em;
+}
+
+/* @end */
 
 /* @end */
 

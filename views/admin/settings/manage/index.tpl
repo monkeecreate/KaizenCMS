@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title="Manage Settings" menu="settings"}
+{include file="inc_header.tpl" page_title="Manage Settings" menu="settings" page_style="fullContent"}
 {assign var=subMenu value="Manage Settings"}
 {head}
 <script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
