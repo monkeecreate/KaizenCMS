@@ -10,6 +10,11 @@ abstract class Form_Field
 		
 		return $sLabel;
 	}
+	protected function getText($sText) {
+		$sText = "<span class=\"input-info\">".stripslashes($sText)."</span>";
+		
+		return $sText;
+	}
 	protected function getOptions($sType) {
 		preg_match_all("/\[([^=]+)=([^\]]+)\]/", $sType, $aValues, PREG_SET_ORDER);
 		

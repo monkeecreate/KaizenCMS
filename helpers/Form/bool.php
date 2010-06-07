@@ -20,7 +20,10 @@ class Form_bool extends Form_Field
 		if($this->value() == 1)
 			$sHTML .= " checked=\"checked\"";
 		
-		$sHTML .= " /><br>\n";
+		$sHTML .= " /><br />\n";
+		
+		if(!empty($this->_setting["text"]))
+			$sHTML .= $this->getText($this->_setting["text"])."\n";
 		
 		return $sHTML;
 	}

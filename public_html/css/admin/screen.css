@@ -149,6 +149,14 @@ ul.pageTabs li a.active, ul.pageTabs li a:hover {
 	text-decoration: none;
 }
 
+.inner-content {
+	background: #fff;
+	margin: 0 0 25px;
+	padding: 15px;
+	border: 1px solid #ddd;
+	border-top: 0;
+}
+
 .notice {
 	margin: 0 0 12px;
 	padding: 8px;
@@ -159,6 +167,69 @@ ul.pageTabs li a.active, ul.pageTabs li a:hover {
 	float: left;
 	margin: 0 6px 0 0;
 }
+
+/* @end */
+
+/* @group forms */
+
+.fullContent form fieldset {
+	background: #f4f4f4;
+	width: 898px;
+	margin: 0 0 20px;
+	padding: 10px 15px 15px;
+}
+
+.fullContent form fieldset legend {
+	background: url(/images/admin/dataTable-column-bg.jpg) repeat-x 0 0;
+	width: 900px;
+	height: 29px;
+	margin: 0 0 10px -15px;
+	padding: 9px 13px 0;
+	font-size: 1.6em;
+	border: 1px solid #e5e5e5;
+	border-bottom: 0;
+}
+
+form.settings label {
+	font-size: 1.3em;
+	margin: 3px 0;
+}
+
+form fieldset input {
+	margin: 0;
+}
+
+form fieldset input.text {
+	margin-bottom: 15px;
+	padding: 4px;
+}
+
+form fieldset input.checkbox {
+	margin: 0 !important;
+}
+
+form fieldset textarea {
+	margin-bottom: 15px;
+	padding: 6px;
+}
+
+form span.input-info {
+	display: block;
+	margin: -7px 0 15px 5px;
+}
+
+/* @group settings form */
+
+form.settings input.text {
+	width: 300px;
+}
+
+form.settings textarea {
+	width: 300px;
+	height: 150px;
+}
+
+/* @end */
 
 /* @end */
 

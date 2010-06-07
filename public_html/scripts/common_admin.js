@@ -189,12 +189,18 @@ $(document).ready(function() {
 	/**
 	 * Initiate Sortable Elements
 	 *
-	 * Enable sorty to any element
+	 * Enable sort to any element
 	 * with class of .sortable
 	 */
 	$(".sortable").sortable({
 	});
 	
+	/**
+	 * Initiate Button Elements
+	 *
+	 * Enable button to any element
+	 * with class of .button
+	 */
 	$(".button").button();
 		
 	/**
