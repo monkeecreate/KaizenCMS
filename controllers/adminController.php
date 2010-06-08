@@ -100,6 +100,12 @@ class adminController extends appController
 				session_regenerate_id();
 				$_SESSION["admin"]["userid"] = $sUser;
 				
+				$this->dbResults(
+					"UPDATE `users` SET"
+						." `last_login` = ".$this->dbQuote(time(), "integer")
+						." WHERE `id` = ".$this->dbQuote($sUser["id"], "integer")
+				);
+				
 				$this->forward("/admin/");
 			} else
 				$this->forward("/admin/?error=".urlencode("Username or password was incorrect!"));

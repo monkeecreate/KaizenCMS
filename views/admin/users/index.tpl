@@ -1,56 +1,68 @@
-{include file="inc_header.tpl" page_title="Users" menu="users"}
+{include file="inc_header.tpl" page_title="Manage Users" menu="users" page_style="fullContent"}
+{assign var=subMenu value="Manage Users"}
 {head}
-<script language="JavaScript" type="text/javascript" src="/scripts/jTPS/jTPS.js"></script>
-<link rel="stylesheet" type="text/css" href="/scripts/jTPS/jTPS.css">
+<script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
+<script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
 <script type="text/javascript">
 	$(function(){ldelim}
-		$('.dataTable').jTPS({ldelim}
-			perPages:[5,10],
-			scrollStep: 1
+		$('.dataTable').dataTable({ldelim}
+			/* DON'T CHANGE */
+			"sDom": 'rt<"dataTable-footer"flpi<"clear">',
+			"sPaginationType": "scrolling",
+			"bLengthChange": true,
+			/* CAN CHANGE */
+			"bStateSave": true, //whether to save a cookie with the current table state
+			"iDisplayLength": 10, //how many items to display on each page
+			"aaSorting": [[0, "asc"]] //which column to sort by (0-X)
 		{rdelim});
 	{rdelim});
 </script>
 {/head}
-<div class="float-right" style="margin-bottom:10px;">
-	<a href="/admin/users/add/" id="dialogbtn" class="btn ui-button ui-corner-all ui-state-default">
-		<span class="icon ui-icon ui-icon-circle-plus"></span> Add User
-	</a>
-</div>
-<div class="clear-right">&nbsp;</div>
-<table class="dataTable">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Username</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach from=$users item=user}
+
+<section id="content" class="content">
+	<header>
+		<h2>Manage Users</h2>
+		<a href="/admin/users/add/" title="Add User" class="button">Add User &raquo;</a>
+	</header>
+
+	<table class="dataTable">
+		<thead>
 			<tr>
-				<td>{$user.fname|clean_html} {$user.lname|clean_html}</td>
-				<td class="center">{$user.username|htmlentities}</td>
-				<td class="small center">
-					<a href="/admin/users/edit/{$user.id}/">
-						<img src="/images/admin/icons/pencil.png">
-					</a>
-					<a href="/admin/users/delete/{$user.id}/"
-					 onclick="return confirm_('Are you sure you would like to delete this user?');">
-						<img src="/images/admin/icons/bin_closed.png">
-					</a>
-				</td>
+				<th>Name</th>
+				<th>Username</th>
+				<th>Email Address</th>
+				<th>Last Login</th>
+				<th></th>
 			</tr>
-		{/foreach}
-	</tbody>
-	<tfoot class="nav">
-		<tr>
-			<td colspan="3">
-				<div class="pagination"></div>
-				<div class="paginationTitle">Page</div>
-				<div class="selectPerPage"></div>
-				<div class="status"></div>
-			</td>
-		</tr>
-	</tfoot>
-</table>
+		</thead>
+		<tbody>
+			{foreach from=$aUsers item=aUser}
+				<tr>
+					<td>{$aUser.fname|clean_html} {$aUser.lname|clean_html}</td>
+					<td>{$aUser.username|htmlentities}</td>
+					<td>{$aUser.email_address|clean_html}</td>
+					<td>{if !empty($aUser.last_login)}
+							{$aUser.last_login|date_format:"%D - %I:%M %p"}
+						{else}
+							Never
+						{/if}
+					</td>
+					<td class="center">
+						<a href="/admin/users/edit/{$aUser.id}/" title="Edit User">
+							<img src="/images/admin/icons/pencil.png" alt="edit icon">
+						</a>
+						{if $user_details.id != $aUser.id}
+							<a href="/admin/users/delete/{$aUser.id}/"
+						 onclick="return confirm_('Are you sure you would like to delete: {$aUser.username|htmlentities}?');" title="Delete User">
+								<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
+							</a>
+						{else}
+							<img src="/images/admin/spacerIcon.png" alt="spacer">
+						{/if}
+					</td>
+				</tr>
+			{/foreach}
+		</tbody>
+	</table>
+</section>
 {include file="inc_footer.tpl"}

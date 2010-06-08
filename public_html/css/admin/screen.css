@@ -143,16 +143,23 @@ nav a:hover {
 }
 
 .content h2 {
-	font: bold 2.2em 'Droid Serif', serif;
+	font: normal 2.2em 'Droid Serif', serif;
 	text-shadow: 1px 1px 1px #333;
 	color: #fff;
 	float: left;
+	padding: 2px 0 0;
 }
 
 .content h3 {
 	font-size: 1.9em;
 	font-weight: bold;
 	margin: 0 0 10px;
+}
+
+.content h4 {
+	font-size: 1.7em;
+	font-weight: bold;
+	margin: 0 0 8px;
 }
 
 .content p, .content blockquote {
@@ -359,6 +366,12 @@ form#login input.text:focus, form#forgotPassword input.text:focus {
 	margin: 0 0 10px;
 }
 
+.sidebar h4 {
+	font-size: 1.7em;
+	font-weight: bold;
+	margin: 0 0 10px;
+}
+
 .sidebar p, .sidebar blockquote {
 	margin-bottom: 1.8em;
 	font-size: 1.3em;
@@ -438,6 +451,17 @@ form#login input.text:focus, form#forgotPassword input.text:focus {
 	border-bottom: 0;
 }
 
+ul.categories {
+	margin: 0;
+	overflow: hidden;
+}
+
+ul.categories li {
+	float: left;
+	list-style: none;
+	margin: 0 20px 8px;
+}
+
 form label {
 	font-size: 1.3em;
 	margin: 3px 0;
@@ -475,6 +499,10 @@ form select {
 
 .mceEditor {
 	margin: 6px 0 15px;
+}
+
+form input.errorField {
+	border: 1px solid #cc0000 !important;
 }
 
 form input.submit {
@@ -832,6 +860,15 @@ tr.even td.sorting_3 {
 /* @end */
 
 /* @group misc */
+
+.ui-state-error ul {
+	list-style: disc inside;
+	margin: 6px 0 0 6px;
+}
+
+.ui-state-error ul li {
+	margin: 0 0 4px;
+}
 
 .clear {
 	clear: both;

@@ -9,7 +9,7 @@
 	<input type="hidden" name="id" value="{$aPage.id}">
 	<section id="content" class="content">
 		<header>
-			<h2>Content Pages</h2>
+			<h2>Content Pages &raquo; Edit Page</h2>
 
 			{foreach from=$aAdminMenu item=aMenu key=k}
 				{if $k == "content"}
@@ -29,13 +29,14 @@
 				<label>*Page Title:</label><br />
 				<input type="text" name="title" maxlength="100" value="{$aPage.title|clean_html}"><br />
 			{else}
+				<h3>{$aPage.title|clean_html}</h3>
 				<input type="hidden" name="title" value="{$aPage.title|clean_html}">
 			{/if}
 	
 			<label>Content:</label><br />
 			{html_editor content=$aPage.content name="content"}
 	
-			<input type="submit" value="Save Changes"> <a class="cancel" href="/admin/content" title="Cancel">Cancel</a>
+			<input type="submit" value="Save Changes"> <a class="cancel" href="/admin/content/" title="Cancel">Cancel</a>
 		</section>
 	</section>
 		

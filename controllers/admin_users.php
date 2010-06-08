@@ -12,8 +12,8 @@ class admin_users extends adminController
 		// Clear saved form info
 		$_SESSION["admin"]["admin_users"] = null;
 		
+		$sWhere = " WHERE `id` > 0";// Allways true
 		if($_SESSION["admin"]["userid"] != 1) {
-			$sWhere = " WHERE `id` != ".$_SESSION["admin"]["userid"];
 			$sWhere .= " AND `id` != 1";
 		}
 		
@@ -24,7 +24,7 @@ class admin_users extends adminController
 			,"all"
 		);
 		
-		$this->tplAssign("users", $aUsers);
+		$this->tplAssign("aUsers", $aUsers);
 		$this->tplDisplay("users/index.tpl");
 	}
 	function add() {
@@ -183,6 +183,9 @@ class admin_users extends adminController
 		$this->forward("/admin/users/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
+		if($_SESSION["admin"]["userid"] == $this->_urlVars->dynamic["id"])
+			$this->forward("/admin/users/?error=".urlencode("You are not allowed to delete yourself."));
+		
 		$aRes = $this->dbResults(
 			"DELETE FROM `users`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")

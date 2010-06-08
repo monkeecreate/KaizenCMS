@@ -67,7 +67,8 @@ $(function(){ldelim}
 				<label>Active:</label>
 				<input type="checkbox" name="active" value="1"{if $aSetting.active == 1} checked="checked"{/if}><br />
 			
-				<input type="submit" name="next" value="Save Changes"> <input type="button" value="Cancel" onclick="location.href = '/admin/settings/manage/';">
+				<input type="submit" name="next" value="Save Changes">
+				<a class="cancel" href="/admin/settings/manage/" title="Cancel">Cancel</a>
 				<input type="hidden" name="id" value="{$aSetting.id}">
 			</fieldset>
 		</form>

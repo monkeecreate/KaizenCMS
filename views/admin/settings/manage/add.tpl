@@ -36,21 +36,21 @@ $(function(){ldelim}
 				<legend>Add New Setting</legend>
 				<label>* Title:</label><br />
 				<input type="text" name="title" maxlength="100" value="{$aSetting.title|clean_html}"><br />
-			
+		
 				<label>* Tag:</label><br />
 				<input type="text" name="tag" maxlength="100" value="{$aSetting.tag|clean_html}"><br />
-			
+		
 				<label>Value:</label><br />
 				<input type="text" name="value" value="{$aSetting.value|clean_html}"><br />
 				{if $aSetting.type == "bool"}<span class="input-info">0: UnChecked, 1: Checked</span>{/if}
-			
+		
 				<label>Group:</label><br />
 				<input type="text" name="group" maxlength="100" value="{$aSetting.group|clean_html}"><br />
-			
+		
 				<label>Text:</label><br />
 				<input type="text" name="text" maxlength="100" value="{$aSetting.text|clean_html}"><br />
 				<span class="input-info">Adds info below the setting label when modifying value.</span>
-			
+		
 				<label>Field Type:</label>
 				<select name="type">
 					<option value="text"{if $aSetting.type == "text"} selected="selected"{/if}>Text Field</option>
@@ -58,14 +58,15 @@ $(function(){ldelim}
 					<option value="bool"{if $aSetting.type == "bool"} selected="selected"{/if}>Checkbox</option>
 					<option value="editor"{if $aSetting.type == "editor"} selected="selected"{/if}>WYSIWYG Editor</option>
 				</select><br />
-			
+		
 				<label>Order:</label><br />
 				<input type="text" name="sortorder" maxlength="100" value="{$aSetting.sortorder}" style="width: 50px"><br />
-			
+		
 				<label>Active:</label>
 				<input type="checkbox" name="active" value="1"{if $aSetting.active == 1} checked="checked"{/if}><br />
-			
-				<input type="submit" name="next" value="Add Setting"> <input type="button" value="Cancel" onclick="location.href = '/admin/settings/manage/';">
+		
+				<input type="submit" name="next" value="Add Setting">
+				<a class="cancel" href="/admin/settings/manage/" title="Cancel">Cancel</a>
 			</fieldset>
 		</form>
 	</section>

@@ -37,7 +37,8 @@
 			{if !empty($curGroup)}
 				</fieldset>
 			{/if}
-			<input type="submit" value="Save Changes"> <input type="button" value="Cancel" onclick="location.href = '/admin/settings/';">
+			<input type="submit" value="Save Changes">
+			<a class="cancel" href="/admin/settings/" title="Cancel">Cancel</a>
 		</form>
 	</section>
 </section>

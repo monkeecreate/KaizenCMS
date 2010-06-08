@@ -8,7 +8,7 @@
 <form method="post" action="/admin/content/add/s/">
 	<section id="content" class="content">
 		<header>
-			<h2>Content Pages</h2>
+			<h2>Content Pages &raquo; Add Page</h2>
 
 			{foreach from=$aAdminMenu item=aMenu key=k}
 				{if $k == "content"}
@@ -24,7 +24,6 @@
 		</header>
 
 		<section class="inner-content">
-			<h3>Add New Page</h3>
 				<label>* Page Title:</label><br />
 				<input type="text" name="title" maxlength="100" value="{$aPage.title|clean_html}" class="required"><br />
 
@@ -32,7 +31,7 @@
 				{html_editor content=$aPage.content name="content"}
 				
 				<input type="submit" value="Add Page">
-				<a class="cancel" href="/admin/content" title="Cancel">Cancel</a>
+				<a class="cancel" href="/admin/content/" title="Cancel">Cancel</a>
 		</section>
 	</section> <!-- #content -->
 	

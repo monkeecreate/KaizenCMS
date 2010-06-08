@@ -56,13 +56,15 @@
 					</td>
 					<td class="center">
 						<a href="/admin/content/edit/{$aPage.id}/" title="Edit Page">
-							<img src="/images/admin/icons/pencil.png">
+							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>
 						{if $aPage.perminate != 1}
 							<a href="/admin/content/delete/{$aPage.id}/"
 							 onclick="return confirm_('Are you sure you would like to delete this page?');" title="Delete Page">
-								<img src="/images/admin/icons/bin_closed.png">
+								<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
 							</a>
+						{else}
+							<img src="/images/admin/spacerIcon.png" alt="spacer">
 						{/if}
 					</td>
 				</tr>
