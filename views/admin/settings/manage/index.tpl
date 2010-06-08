@@ -45,62 +45,66 @@
 </script>
 {/head}
 
-	<a href="/admin/settings/manage/add/" title="Add Setting" class="button">Add Setting &raquo;</a>
+<section id="content" class="content">
+	<header>
+		<h2>Manage Settings</h2>
+		<a href="/admin/settings/manage/add/" title="Add Setting" class="button">Add Setting &raquo;</a>
 	
-	<ul class="pageTabs">
 		{foreach from=$aAdminMenu item=aMenu key=k}
 			{if $k == "settings"}
 				{if $aMenu.menu|@count gt 1}
-					{foreach from=$aMenu.menu item=aItem}
-						<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
-					{/foreach}
+					<ul class="pageTabs">
+						{foreach from=$aMenu.menu item=aItem}
+							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+						{/foreach}
+					</ul>
 				{/if}
 			{/if}
 		{/foreach}
-	</ul>
-</header>
+	</header>
 
-<table class="dataTable">
-	<thead>
-		<tr>
-			<th class="hidden">Group</th>
-			<th class="empty">&nbsp;</th>
-			<th>Title</th>
-			<th>Tag</th>
-			<th class="hidden">Order</th>
-			<th class="sorting_disabled center empty">&nbsp;</th>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach from=$aSettings item=aSetting}
+	<table class="dataTable">
+		<thead>
 			<tr>
-				<td class="hidden">{$aSetting.group|clean_html}</td>
-				<td>
-					{if $aSetting.active == 1}
-						<span class="hidden">active</span><img src="/images/admin/icons/bullet_green.png" alt="active">
-					{else}
-						<span class="hidden">inactive</span><img src="/images/admin/icons/bullet_red.png" alt="inactive">
-					{/if}
-				</td>
-				<td>{$aSetting.title|clean_html}</td>
-				<td>{$aSetting.tag|clean_html}</td>
-				<td class="hidden">{$aSetting.sortorder}</td>
-				<td class="center">
-					<a href="/admin/settings/manage/edit/{$aSetting.id}/" title="Edit Setting">
-						<img src="/images/admin/icons/pencil.png" alt="edit_icon">
-					</a>
-					<a href="/admin/settings/manage/delete/{$aSetting.id}/"
-						onclick="return confirm_('Are you sure you would like to delete {$aSetting.title|clean_html}?');" title="Delete Setting">
-						<img src="/images/admin/icons/bin_closed.png" alt="delete_icon">
-					</a>
-				</td>
+				<th class="hidden">Group</th>
+				<th class="empty">&nbsp;</th>
+				<th>Title</th>
+				<th>Tag</th>
+				<th class="hidden">Order</th>
+				<th class="sorting_disabled center empty">&nbsp;</th>
 			</tr>
-		{/foreach}
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			{foreach from=$aSettings item=aSetting}
+				<tr>
+					<td class="hidden">{$aSetting.group|clean_html}</td>
+					<td>
+						{if $aSetting.active == 1}
+							<span class="hidden">active</span><img src="/images/admin/icons/bullet_green.png" alt="active">
+						{else}
+							<span class="hidden">inactive</span><img src="/images/admin/icons/bullet_red.png" alt="inactive">
+						{/if}
+					</td>
+					<td>{$aSetting.title|clean_html}</td>
+					<td>{$aSetting.tag|clean_html}</td>
+					<td class="hidden">{$aSetting.sortorder}</td>
+					<td class="center">
+						<a href="/admin/settings/manage/edit/{$aSetting.id}/" title="Edit Setting">
+							<img src="/images/admin/icons/pencil.png" alt="edit_icon">
+						</a>
+						<a href="/admin/settings/manage/delete/{$aSetting.id}/"
+							onclick="return confirm_('Are you sure you would like to delete {$aSetting.title|clean_html}?');" title="Delete Setting">
+							<img src="/images/admin/icons/bin_closed.png" alt="delete_icon">
+						</a>
+					</td>
+				</tr>
+			{/foreach}
+		</tbody>
+	</table>
 
-<ul class="dataTable-legend">
-	<li class="bullet-green">Active</li>
-	<li class="bullet-red">Inactive</li>
-</ul>
+	<ul class="dataTable-legend">
+		<li class="bullet-green">Active</li>
+		<li class="bullet-red">Inactive</li>
+	</ul>
+</section>
 {include file="inc_footer.tpl"}

@@ -63,7 +63,3 @@
 					{$page_notice}
 				</div>
 			{/if}
-			
-			<section id="content" class="content">
-				<header>
-					<h2>{$page_title}</h2>

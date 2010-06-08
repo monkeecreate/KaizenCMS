@@ -4,6 +4,10 @@ body {
 	color: #333;
 }
 
+section, header, footer, article, aside, figure {
+	display: block;
+}
+
 a:link, a:active, a:visited {
 	color: #333;
 	text-decoration: none;
@@ -98,18 +102,42 @@ nav a:hover {
 /* @group content */
 
 #content {
-	
+	float: left;
+}
+
+.fullContent .content {
+	width: 960px;
 }
 
 .fullContent .content header {
-	background: url(/images/admin/content-h2.jpg) no-repeat 0 0;
+	background: url(/images/admin/content-h2.jpg) repeat-x 0 0;
 	overflow: hidden;
 	height: 35px;
 	margin: 0;
 	padding: 9px 0 0 15px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
 }
 
-.fullContent .content header a.button {
+.halfContent .content {
+	width: 640px;
+}
+
+.halfContent .content header {
+	background: url(/images/admin/content-h2.jpg) repeat-x 0 0;
+	overflow: hidden;
+	height: 35px;
+	margin: 0;
+	padding: 9px 0 0 15px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 0;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 0;
+}
+
+.content header a.button {
 	float: left;
 	margin: 0 0 0 15px;
 }
@@ -119,6 +147,12 @@ nav a:hover {
 	text-shadow: 1px 1px 1px #333;
 	color: #fff;
 	float: left;
+}
+
+.content h3 {
+	font-size: 1.9em;
+	font-weight: bold;
+	margin: 0 0 10px;
 }
 
 .content p, .content blockquote {
@@ -227,18 +261,27 @@ ul#admin-menu-sort li:hover {
 
 /* @group login */
 
+.loginContent #wrapper-inner {
+	width: 400px;
+	margin: 55px auto 0;
+}
+
 .loginContent .content {
 	width: 400px;
-	margin: 85px auto 0;
+	margin: 0 auto 0;
 }
 
 .loginContent .content header {
 	display: block;
-	background: url(/images/admin/login-content-h2.jpg) no-repeat 0 0;
+	background: url(/images/admin/content-h2.jpg) repeat-x 0 0;
 	overflow: hidden;
 	height: 35px;
 	margin: 0;
 	padding: 9px 0 0 15px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
 }
 
 form#login label, form#forgotPassword label {
@@ -262,7 +305,97 @@ form#login input.btn, form#forgotPassword input.btn {
 	font-size: 1.5em;
 }
 
+form#login input.text:focus, form#forgotPassword input.text:focus {
+	-webkit-box-shadow:0 0 25px #a4a4a4;
+	-moz-box-shadow:0 0 25px #a4a4a4;
+	box-shadow:0 0 25px #a4a4a4;
+	-webkit-transform: scale(1.05);
+	-moz-transform: scale(1.05);
+	transform: scale(1.05);
+}
+
 /* @end */
+
+/* @end */
+
+/* @group sidebar */
+
+.halfContent #sidebar {
+	background: #fff;
+	width: 305px;
+	float: left;
+	margin: 0 0 0 10px;
+}
+
+.halfContent .sidebar header {
+	background: url(/images/admin/sidebar-h2.jpg) repeat-x 0 0;
+	overflow: hidden;
+	height: 35px;
+	margin: 0;
+	padding: 9px 0 0 15px;
+	-moz-border-radius-topleft: 0;
+	-moz-border-radius-topright: 5px;
+	-webkit-border-top-left-radius: 0;
+	-webkit-border-top-right-radius: 5px;
+}
+
+.sidebar section {
+	padding: 15px;
+	border: 1px solid #ddd;
+	border-top: 0;
+}
+
+.sidebar h2 {
+	font-weight: bold;
+	font-size: 1.8em;
+	text-shadow: 1px 1px 1px #333;
+	color: #fff;
+	float: left;
+}
+
+.sidebar h3 {
+	font-size: 1.9em;
+	font-weight: bold;
+	margin: 0 0 10px;
+}
+
+.sidebar p, .sidebar blockquote {
+	margin-bottom: 1.8em;
+	font-size: 1.3em;
+	line-height: 1.4em;
+}
+
+.sidebar ul {
+	margin: 0 0 15px 30px;
+}
+
+.sidebar ul li {
+	list-style-type: square;
+}
+
+.sidebar ol {
+	margin: 0 0 15px 30px;
+	list-style-type: decimal;
+}
+
+.sidebar ol li {
+	list-style-type: decimal;
+}
+
+.sidebar li {
+	margin-bottom: 5px;
+	font-size: 1.3em;
+	line-height: 1.4em;
+}
+
+.sidebar li ul li, .sidebar li ul li ul li {
+	font-size: 1.0em;
+}
+
+.sidebar blockquote {
+	padding: 0 15px;
+	font-style: italic;
+}
 
 /* @end */
 
@@ -286,6 +419,25 @@ form#login input.btn, form#forgotPassword input.btn {
 	border-bottom: 0;
 }
 
+.halfContent form fieldset {
+	background: #f4f4f4;
+	/*width: 898px;*/
+	margin: 0 0 20px;
+	padding: 10px 15px 15px;
+}
+
+.halfContent form fieldset legend {
+	background: url(/images/admin/dataTable-column-bg.jpg) repeat-x 0 0;
+	/*width: 900px;*/
+	width: 100%;
+	height: 29px;
+	margin: 0 0 10px -15px;
+	padding: 9px 13px 0;
+	font-size: 1.6em;
+	border: 1px solid #e5e5e5;
+	border-bottom: 0;
+}
+
 form label {
 	font-size: 1.3em;
 	margin: 3px 0;
@@ -296,25 +448,37 @@ form input {
 }
 
 form input.text {
-	margin-bottom: 15px;
+	margin: 6px 0 15px;
 	padding: 4px;
 }
 
-.fullContent form input.text, .fullContent form textarea {
+.fullContent form input.text, .fullContent form textarea, .halfContent form input.text, .halfContent form textarea {
 	width: 300px;
 }
 
+.halfContent form .sidebar input.text {
+	width: 215px;
+}
+
 form input.checkbox {
-	margin: 0 0 15px!important;
+	margin: 6px 0 15px!important;
 }
 
 form textarea {
-	margin-bottom: 15px;
+	margin: 6px 0 15px;
 	padding: 6px;
 }
 
 form select {
-	margin-bottom: 15px;
+	margin: 6px 0 15px;
+}
+
+.mceEditor {
+	margin: 6px 0 15px;
+}
+
+form input.required {
+	border-right: 10px solid #cc0000;
 }
 
 form span.input-info {
@@ -614,7 +778,7 @@ table.display tr.odd.row_selected td {
 }
 
 .sorting_asc_disabled, .sorting_desc_disabled, .sorting {
-	opacity: 0.4;
+	/*opacity: 0.4;*/
 }
 
 .sorting_disabled {

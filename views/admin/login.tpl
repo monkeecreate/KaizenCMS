@@ -19,20 +19,24 @@ $(function(){
 {/literal}
 </script>
 
-</header>
+<section id="content" class="content">
+	<header>
+		<h2>Login</h2>
+	</header>
 
-<section class="inner-content">
-	<form name="login" id="login" method="post" action="/admin/login/">
-		<label>Username:</label><br />
-		<input type="text" class="text" name="username" maxlength="100"><br />
-		<label>Password:</label><br />
-		<input type="password" class="text" name="password" maxlength="100"><br />
-		<input type="submit" value="Login"> <div class="forgotPassword right"><a href="/admin/login/password/">Forgot password?</a></div>
-	</form>
-	<form name="login" id="forgotPassword" class="hidden" method="post" action="/admin/passwordReset/">
-		<label>Email:</label><br />
-		<input type="text" class="text" name="email" maxlength="100"><br />
-		<input type="submit" value="Reset Password">
-	</form>
+	<section class="inner-content">
+		<form name="login" id="login" method="post" action="/admin/login/">
+			<label>Username:</label><br />
+			<input type="text" class="text" name="username" maxlength="100"><br />
+			<label>Password:</label><br />
+			<input type="password" class="text" name="password" maxlength="100"><br />
+			<input type="submit" value="Login"> <div class="forgotPassword right"><a href="/admin/login/password/">Forgot password?</a></div>
+		</form>
+		<form name="login" id="forgotPassword" class="hidden" method="post" action="/admin/passwordReset/">
+			<label>Email:</label><br />
+			<input type="text" class="text" name="email" maxlength="100"><br />
+			<input type="submit" value="Reset Password">
+		</form>
+	</section>
 </section>
 {include file="inc_footer.tpl"}
