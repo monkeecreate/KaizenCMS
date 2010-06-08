@@ -1,4 +1,8 @@
-{include file="inc_header.tpl" page_title="Content Pages : Add Page" menu="content" page_style="halfContent"}
+{if $sSuperAdmin == true}
+	{include file="inc_header.tpl" page_title="Content Pages : Add Page" menu="content" page_style="halfContent"}
+{else}
+	{include file="inc_header.tpl" page_title="Content Pages : Add Page" menu="content" page_style="fullContent"}
+{/if}
 {assign var=subMenu value="Content Pages"}
 
 <form method="post" action="/admin/content/add/s/">
@@ -21,23 +25,24 @@
 
 		<section class="inner-content">
 			<h3>Add New Page</h3>
-				<label>*Page Title:</label><br />
+				<label>* Page Title:</label><br />
 				<input type="text" name="title" maxlength="100" value="{$aPage.title|clean_html}" class="required"><br />
 
 				<label>Content:</label><br />
 				{html_editor content=$aPage.content name="content"}
-
-				<input type="submit" value="Add Page"> <input type="button" value="Cancel" onclick="location.href = '/admin/content/';">
+				
+				<input type="submit" value="Add Page">
+				<a class="cancel" href="/admin/content" title="Cancel">Cancel</a>
 		</section>
 	</section> <!-- #content -->
 	
-	<section id="sidebar" class="sidebar">
-		<header>
-			<h2>Page Options</h2>
-		</header>
-	
-		<section>
-			{if $sSuperAdmin == true}
+	{if $sSuperAdmin == true}
+		<section id="sidebar" class="sidebar">
+			<header>
+				<h2>Page Options</h2>
+			</header>
+
+			<section>
 				<label>Tag:</label><br />
 				<input type="text" name="tag" maxlength="100" value="{$aPage.tag|clean_html}"><br />
 
@@ -54,23 +59,30 @@
 						<option value="{$template}"{if $aPage.template == $template} selected="selected"{/if}>{$template}</option>
 					{/foreach}
 				</select><br />
-			{/if}
+			</section>
 		</section>
-	</section>
+	{/if}
 </form>
 <script type="text/javascript">
 {literal}
 $(function(){
 	$('form').submit(function(){
 		error = 0;
-		
+		errorHTML = "";
+	
 		if($(this).find('input[name=title]').val() == '')
 		{
-			alert("Please fill in a page title.");
-			return false;
+			errorHTML = errorHTML+"<li>Please fill in page title</li>";
+			error++;
 		}
-		
-		return true;
+	
+		if(error != 0) {
+			$(".ui-state-error").remove();
+			$("#wrapper-inner").prepend('<div class="ui-state-error ui-corner-all notice"><span class="icon ui-icon ui-icon-alert"></span><ul>'+errorHTML+'</ul></div>');
+			return false;
+		} else {
+			return true;
+		}
 	});
 });
 {/literal}
