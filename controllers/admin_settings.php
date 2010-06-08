@@ -48,6 +48,9 @@ class admin_settings extends adminController
 		$this->forward("/admin/settings/?notice=".urlencode("Settings saved successfully!"));
 	}
 	function manageIndex() {
+		if($this->superAdmin == false)
+			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
+		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_settings"] = null;
 		
@@ -61,6 +64,9 @@ class admin_settings extends adminController
 		$this->tplDisplay("settings/manage/index.tpl");
 	}
 	function manageAdd() {
+		if($this->superAdmin == false)
+			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
+		
 		if(!empty($_SESSION["admin"]["admin_settings"]))
 			$this->tplAssign("aSetting", $_SESSION["admin"]["admin_settings"]);
 		else {
@@ -107,6 +113,9 @@ class admin_settings extends adminController
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting created successfully!"));
 	}
 	function manageEdit() {
+		if($this->superAdmin == false)
+			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
+		
 		if(!empty($_SESSION["admin"]["admin_settings"])) {
 			$aSetting = $_SESSION["admin"]["admin_settings"];
 			
@@ -160,6 +169,9 @@ class admin_settings extends adminController
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting removed successfully!"));
 	}
 	function plugins_index() {
+		if($this->superAdmin == false)
+			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
+		
 		// Loop plugins. Find installed, and not installed
 		$aPlugins = array();
 		
@@ -328,6 +340,9 @@ class admin_settings extends adminController
 		$this->forward("/admin/settings/plugins/?notice=".urlencode("Plugin uninstalled successfully!"));
 	}
 	function admin_menu_index() {
+		if($this->superAdmin == false)
+			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
+		
 		$aAdminMenuResult = $this->dbResults(
 			"SELECT * FROM `menu_admin`"
 				." ORDER BY `sort_order`"

@@ -4,17 +4,19 @@
 	<header>
 		<h2>Settings</h2>
 		
-		{foreach from=$aAdminMenu item=aMenu key=k}
-			{if $k == "settings"}
-				{if $aMenu.menu|@count gt 1}
-					<ul class="pageTabs">
-						{foreach from=$aMenu.menu item=aItem}
-							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
-						{/foreach}
-					</ul>
+		{if $sSuperAdmin == true}
+			{foreach from=$aAdminMenu item=aMenu key=k}
+				{if $k == "settings"}
+					{if $aMenu.menu|@count gt 1}
+						<ul class="pageTabs">
+							{foreach from=$aMenu.menu item=aItem}
+								<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+							{/foreach}
+						</ul>
+					{/if}
 				{/if}
-			{/if}
-		{/foreach}
+			{/foreach}
+		{/if}
 	</header>
 
 	<section class="inner-content">
