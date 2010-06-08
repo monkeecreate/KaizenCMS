@@ -777,20 +777,24 @@ table.display tr.odd.row_selected td {
 	background-color: #9FAFD1;
 }
 
-.sorting_asc, .sorting_asc_disabled {
+.sorting_asc {
 	background: url('/images/admin/dataTable-sort-asc.png') no-repeat 95% 50%;
 }
 
-.sorting_desc, .sorting_desc_disabled {
+.sorting_asc_disabled {
+	background: url('/images/admin/dataTable-sort-asc-disabled.png') no-repeat 95% 50%;
+}
+
+.sorting_desc {
 	background: url('/images/admin/dataTable-sort-desc.png') no-repeat 95% 50%;
 }
 
-.sorting {
-	background: url('/images/admin/dataTable-sort-both.png') no-repeat 95% 50%;
+.sorting_desc_disabled {
+	background: url('/images/admin/dataTable-sort-desc-disabled.png') no-repeat 95% 50%;
 }
 
-.sorting_asc_disabled, .sorting_desc_disabled, .sorting {
-	/*opacity: 0.4;*/
+.sorting {
+	background: url('/images/admin/dataTable-sort-both-disabled.png') no-repeat 95% 50%;
 }
 
 .sorting_disabled {

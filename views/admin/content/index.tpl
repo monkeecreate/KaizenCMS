@@ -13,7 +13,7 @@
 			/* CAN CHANGE */
 			"bStateSave": true, //whether to save a cookie with the current table state
 			"iDisplayLength": 10, //how many items to display on each page
-			"aaSorting": [[ 1, "asc" ]] //which column to sort by (0-X)
+			"aaSorting": [[ 0, "asc" ]] //which column to sort by (0-X)
 		{rdelim});
 	{rdelim});
 </script>
