@@ -18,7 +18,7 @@ $aDatabases = array(
 			"question" => array("type" => "text","length" => 100),
 			"answer" => array("type" => "clob"),
 			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
-			"active" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"active" => array("type" => "boolean"),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
