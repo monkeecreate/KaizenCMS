@@ -21,7 +21,7 @@ $aDatabases = array(
 			"name" => array("type" => "text","length" => 100),
 			"description" => array("type" => "clob"),
 			"document" => array("type" => "text","length" => 100),
-			"active" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"active" => array("type" => "boolean"),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),

@@ -138,7 +138,7 @@ class appController
 			while (false !== ($sFile = readdir($oFolder))) {
 				if($sFile != "." && $sFile != "..") {
 					if(is_dir($sFolder."/".$sFile)) {
-						$this->deleteTree($sFolder."/".$sFile);
+						$this->deleteDir($sFolder."/".$sFile);
 					} else {
 						unlink($sFolder."/".$sFile);
 					}
