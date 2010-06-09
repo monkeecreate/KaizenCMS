@@ -25,7 +25,7 @@
 			<fieldset id="fieldset_categories">
 				<legend>Privileges:</legend>
 				<p class="selectOptions">Select: <a href="#" class="checkAll">All</a>, <a href="#" class="uncheckAll">None</a></p>
-				<ul>
+				<ul class="categories">
 					{foreach from=$aAdminMenu item=aMenu key=x}
 						<li>
 							<input id="menu_{$aMenu.id}" type="checkbox" name="privlages[]" value="{$x}"

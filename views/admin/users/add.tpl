@@ -21,8 +21,8 @@
 					<input type="text" name="lname" maxlength="100" value="{$aUser.lname}"><br />
 			</fieldset>
 			<fieldset id="fieldset_categories">
-				<p class="selectOptions">Select: <a href="#" class="checkAll">All</a>, <a href="#" class="uncheckAll">None</a></p>
 				<legend>Privileges:</legend>
+				<p class="selectOptions">Select: <a href="#" class="checkAll">All</a>, <a href="#" class="uncheckAll">None</a></p>
 				<ul class="categories">
 					{foreach from=$aAdminMenu item=aMenu key=x}
 						<li>					
@@ -53,6 +53,7 @@ $(function(){
 				$(errorInfo[i][0]).addClass("errorField");
 		    }
 			errorInfo[0][0].focus();
+			$('html, body').animate({scrollTop:0}, 'slow');
 			return false;
 		},
 		rules: [
