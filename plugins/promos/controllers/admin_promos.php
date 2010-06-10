@@ -356,11 +356,12 @@ class admin_promos extends adminController
 				.", `name` = ".$this->dbQuote($_POST["name"], "text")
 				.", `promo_width` = ".$this->dbQuote($_POST["promo_width"], "integer")
 				.", `promo_height` = ".$this->dbQuote($_POST["promo_height"], "integer")
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 			,"admin->promos->positions->edit"
 		);
 		
 		$_SESSION["admin"]["admin_promo_positions"] = null;
-
+		
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function positions_delete() {
