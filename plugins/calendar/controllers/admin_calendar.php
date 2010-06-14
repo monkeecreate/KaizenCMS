@@ -13,7 +13,7 @@ class admin_calendar extends adminController
 		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_calendar"] = null;
-		
+
 		$this->tplAssign("aCategories", $oCalendar->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
 		$this->tplAssign("aEvents", $oCalendar->getEvents($_GET["category"], true));
@@ -341,15 +341,12 @@ class admin_calendar extends adminController
 		$this->forward("/admin/calendar/?notice=".urlencode("Image removed successfully!"));
 	}
 	function categories_index() {
+		$oCalendar = $this->loadModel("calendar");
+		
 		$_SESSION["admin"]["admin_calendar_categories"] = null;
-		
-		$aCategories = $this->dbResults(
-			"SELECT `categories`.* FROM `{dbPrefix}calendar_categories` AS `categories`"
-				." ORDER BY `categories`.`name`"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $aCategories);
+
+		$this->tplAssign("aCategories", $oCalendar->getCategories());
+		$this->tplAssign("aCategoryEdit", $oCalendar->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
@@ -362,8 +359,8 @@ class admin_calendar extends adminController
 				.")"
 			,"insert"
 		);
-
-		echo "/admin/calendar/categories/?notice=".urlencode("Category created successfully!");
+	
+		$this->forward("/admin/calendar/categories/?notice=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbResults(
@@ -371,8 +368,8 @@ class admin_calendar extends adminController
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
-
-		echo "/admin/calendar/categories/?notice=".urlencode("Changes saved successfully!");
+		
+		$this->forward("/admin/calendar/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbResults(
