@@ -9,6 +9,8 @@ function smarty_function_getDocuments($aParams, &$oSmarty) {
 	} else
 		$aDocuments = $oDocuments->getDocuments($aParams["category"], false, $aParams["random"]);
 	
+	$oApp->tplAssign("documentFolder", $oDocuments->documentFolder);
+	
 	if(empty($aParams["assign"]))
 		$oApp->tplAssign("aDocuments", $aDocuments);
 	else

@@ -36,6 +36,7 @@ class documents extends appController
 		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aDocuments", $aDocuments);
 		$this->tplAssign("aPaging", $aPaging);
+		$this->tplAssign("documentFolder", $this->model->documentFolder);
 		
 		$this->tplDisplay("documents.tpl");
 	}
