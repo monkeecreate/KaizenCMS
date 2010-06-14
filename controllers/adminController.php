@@ -74,7 +74,7 @@ class adminController extends appController
 					$menuLength = $menuLength + strlen($aInfo["title"]);
 					$this->_menu[$aMenu["tag"]] = $aInfo;
 					
-					if($menuLength > 65)
+					if($menuLength > 60)
 						$aSubMenu[$aMenu["tag"]] = $aInfo;
 					else
 						$aMainMenu[$aMenu["tag"]] = $aInfo;
@@ -83,7 +83,7 @@ class adminController extends appController
 				if(empty($aMenuAdmin))
 					$this->forward("/admin/logout/");
 									
-				$this->tplAssign("aAdminMenu", $aMainMenu);
+				$this->tplAssign("aAdminMainMenu", $aMainMenu);
 				$this->tplAssign("aAdminSubMenu", $aSubMenu);
 			}
 			/*## @end ##*/
