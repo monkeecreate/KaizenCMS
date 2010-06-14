@@ -40,30 +40,13 @@
 <script type="text/javascript">
 {literal}
 $(function(){
-	$("form").RSV({
-		onCompleteHandler: function() {
-			return true;
-		},
-		errorFieldClass: "errorField",
-		customErrorHandler: function(f, errorInfo) {
-			$(".ui-state-error").remove();
-			$("#wrapper-inner").prepend('<div class="ui-state-error ui-corner-all notice"><span class="icon ui-icon ui-icon-alert"></span><p>Please fix the errors below before continuing.</p><ul></ul></div>');
-			for (var i=0; i<errorInfo.length; i++) {
-				$('.ui-state-error ul').append('<li>'+errorInfo[i][1]+'</li>');
-				$(errorInfo[i][0]).addClass("errorField");
-		    }
-			errorInfo[0][0].focus();
-			$('html, body').animate({scrollTop:0}, 'slow');
-			return false;
-		},
-		rules: [
-			"required,username,Username is required",
-			"required,password,Password is required",
-			"required,email_address,An email address is required",
-			"valid_email,email_address,A valid email address is required",
-			"required,privleges[],You must select at least one privilege."
-		]
-	});
+	$("form").validateForm([
+		"required,username,Username is required",
+		"required,password,Password is required",
+		"required,email_address,An email address is required",
+		"valid_email,email_address,A valid email address is required",
+		"required,privleges[],You must select at least one privilege."
+	]);
 });
 {/literal}
 </script>
