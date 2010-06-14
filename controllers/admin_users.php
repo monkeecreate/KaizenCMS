@@ -33,7 +33,7 @@ class admin_users extends adminController
 		else
 			$this->tplAssign("aUser",
 				array(
-					"privlages" => array()
+					"privleges" => array()
 				)
 			);
 		
@@ -68,15 +68,15 @@ class admin_users extends adminController
 			,"insert"
 		);
 		
-		if(!empty($_POST["privlages"])) {
-			foreach($_POST["privlages"] as $sPrivlage) {
+		if(!empty($_POST["privleges"])) {
+			foreach($_POST["privleges"] as $sPrivlege) {
 				$this->dbResults(
-					"INSERT INTO `users_privlages`"
+					"INSERT INTO `users_privleges`"
 						." (`userid`, `menu`)"
 						." VALUES"
 						." (".
 						$this->dbQuote($sID, "integer")
-						.", ".$this->dbQuote($sPrivlage, "text").")"
+						.", ".$this->dbQuote($sPrivlege, "text").")"
 				);
 			}
 		}
@@ -110,8 +110,8 @@ class admin_users extends adminController
 				,"row"
 			);
 			
-			$aUser["privlages"] = $this->dbResults(
-				"SELECT `menu` FROM `users_privlages`"
+			$aUser["privleges"] = $this->dbResults(
+				"SELECT `menu` FROM `users_privleges`"
 					." WHERE `userid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"col"
 			);
@@ -153,18 +153,18 @@ class admin_users extends adminController
 		);
 		
 		$this->dbResults(
-			"DELETE FROM `users_privlages`"
+			"DELETE FROM `users_privleges`"
 				." WHERE `userid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
-		if(!empty($_POST["privlages"])) {
-			foreach($_POST["privlages"] as $sPrivlage) {
+		if(!empty($_POST["privleges"])) {
+			foreach($_POST["privleges"] as $sPrivlege) {
 				$this->dbResults(
-					"INSERT INTO `users_privlages`"
+					"INSERT INTO `users_privleges`"
 						." (`userid`, `menu`)"
 						." VALUES"
 						." (".
 						$this->dbQuote($_POST["id"], "integer")
-						.", ".$this->dbQuote($sPrivlage, "text").")"
+						.", ".$this->dbQuote($sPrivlege, "text").")"
 				);
 			}
 		}

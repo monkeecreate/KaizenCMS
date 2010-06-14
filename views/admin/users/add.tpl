@@ -26,7 +26,7 @@
 				<ul class="categories">
 					{foreach from=$aAdminMenu item=aMenu key=x}
 						<li>					
-							<input id="menu_{$aMenu.id}" type="checkbox" name="privlages[]" value="{$x}" {if in_array($x, $aUser.privlages)} checked="checked"{/if}>
+							<input id="menu_{$aMenu.id}" type="checkbox" name="privleges[]" value="{$x}" {if in_array($x, $aUser.privleges)} checked="checked"{/if}>
 							<label style="display: inline;" for="menu_{$aMenu.id}">{$aMenu.title|clean_html}</label>
 						</li>
 					{/foreach}
@@ -60,7 +60,8 @@ $(function(){
 			"required,username,Username is required",
 			"required,password,Password is required",
 			"required,email_address,An email address is required",
-			"valid_email,email_address,A valid email address is required"
+			"valid_email,email_address,A valid email address is required",
+			"required,privleges[],You must select at least one privilege."
 		]
 	});
 });
