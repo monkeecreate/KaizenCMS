@@ -15,9 +15,9 @@
 				<input type="text" name="password" maxlength="100"><br />
 				<label>*Email:</label><br />
 				<input type="text" name="email_address" maxlength="100" value="{$aUser.email_address|clean_html}"><br />
-				<label>First Name:</label><br />
+				<label>*First Name:</label><br />
 				<input type="text" name="fname" maxlength="100" value="{$aUser.fname|clean_html}"><br />
-				<label>Last Name:</label><br />
+				<label>*Last Name:</label><br />
 				<input type="text" name="lname" maxlength="100" value="{$aUser.lname|clean_html}"><br />
 			</fieldset>
 			
@@ -42,4 +42,18 @@
 		</form>
 	</section>
 </section>
+<script type="text/javascript">
+{literal}
+$(function(){
+	$("form").validateForm([
+		"required,username,Username is required",
+		"required,email_address,An email address is required",
+		"valid_email,email_address,A valid email address is required",
+		"required,fname,First Name is required",
+		"required,lname,Last Name is required",
+		"required,privileges[],You must select at least one privilege"
+	]);
+});
+{/literal}
+</script>
 {include file="inc_footer.tpl"}

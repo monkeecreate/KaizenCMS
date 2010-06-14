@@ -61,7 +61,7 @@ $(function(){ldelim}
 					<option value="editor"{if $aSetting.type == "editor"} selected="selected"{/if}>WYSIWYG Editor</option>
 				</select><br />
 			
-				<label>Order:</label><br />
+				<label>Order:</label>
 				<input type="text" name="sortorder" maxlength="100" value="{$aSetting.sortorder}" style="width: 50px"><br>
 			
 				<label>Active:</label>
@@ -73,35 +73,15 @@ $(function(){ldelim}
 			</fieldset>
 		</form>
 	</section>
-	<script type="text/javascript">
-	{literal}
-	$(function(){
-		$('form').submit(function(){
-			error = 0;
-			errorHTML = "";
-		
-			if($(this).find('input[name=title]').val() == '')
-			{
-				errorHTML = errorHTML+"<li>Please fill in setting title</li>";
-				error++;
-			}
-		
-			if($(this).find('input[name=tag]').val() == '')
-			{
-				errorHTML = errorHTML+"<li>Please fill in setting tag</li>";
-				error++;
-			}
-		
-			if(error != 0) {
-				$(".ui-state-error").remove();
-				$("#wrapper-inner").prepend('<div class="ui-state-error ui-corner-all notice"><span class="icon ui-icon ui-icon-alert"></span><ul>'+errorHTML+'</ul></div>');
-				return false;
-			} else {
-				return true;
-			}
-		});
-	});
-	{/literal}
-	</script>
 </section>
+<script type="text/javascript">
+{literal}
+$(function(){
+	$("form").validateForm([
+		"required,title,Title is required",
+		"required,tag,Tag is required"
+	]);
+});
+{/literal}
+</script>
 {include file="inc_footer.tpl"}
