@@ -49,7 +49,7 @@ class adminController extends appController
 						." ORDER BY `sort_order`"
 					,"all"
 				);
-			
+				
 				if(!$this->superAdmin) {
 					foreach($aMenuAdmin as $x => $aMenu) {
 						$aMenuItem = $this->dbResults(
