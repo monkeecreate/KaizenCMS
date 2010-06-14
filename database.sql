@@ -79,7 +79,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` VALUES(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Admin', 'User', 'admin@domain.com', null, null, 0, 0, 0, 0);
 
-CREATE TABLE `users_privleges` (
+CREATE TABLE `users_privileges` (
   `userid` int(11) NOT NULL,
   `menu` varchar(100) NOT NULL,
   KEY `userid` (`userid`,`menu`)

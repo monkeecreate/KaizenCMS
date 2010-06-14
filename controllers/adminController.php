@@ -53,7 +53,7 @@ class adminController extends appController
 				if(!$this->superAdmin) {
 					foreach($aMenuAdmin as $x => $aMenu) {
 						$aMenuItem = $this->dbResults(
-							"SELECT * FROM `users_privlages`"
+							"SELECT * FROM `users_privileges`"
 								." WHERE `userid` = ".$aUser["id"]
 								." AND `menu` = ".$this->dbQuote($aMenu[tag], "text")
 							,"row"
