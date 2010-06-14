@@ -65,14 +65,26 @@ class adminController extends appController
 				}
 				
 				$this->_menu = array();
+				$aMainMenu = array();
+				$aSubMenu = array();
+				$menuLength = 0;
 				foreach($aMenuAdmin as $aMenu) {
-					$this->_menu[$aMenu["tag"]] = json_decode($aMenu["info"], true);
+					$aInfo = json_decode($aMenu["info"], true);
+					
+					$menuLength = $menuLength + strlen($aInfo["title"]);
+					$this->_menu[$aMenu["tag"]] = $aInfo;
+					
+					if($menuLength > 65)
+						$aSubMenu[$aMenu["tag"]] = $aInfo;
+					else
+						$aMainMenu[$aMenu["tag"]] = $aInfo;
 				}
 			
 				if(empty($aMenuAdmin))
 					$this->forward("/admin/logout/");
 									
-				$this->tplAssign("aAdminMenu", $this->_menu);
+				$this->tplAssign("aAdminMenu", $aMainMenu);
+				$this->tplAssign("aAdminSubMenu", $aSubMenu);
 			}
 			/*## @end ##*/
 		}
