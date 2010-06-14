@@ -15,9 +15,9 @@
 					<input type="text" name="password" maxlength="100" value="{$aUser.password}"><br />
 					<label>*Email:</label><br />
 					<input type="text" name="email_address" maxlength="100" value="{$aUser.email_address}"><br />
-					<label>First Name:</label><br />
+					<label>*First Name:</label><br />
 					<input type="text" name="fname" maxlength="100" value="{$aUser.fname}"><br />
-					<label>Last Name:</label><br />
+					<label>*Last Name:</label><br />
 					<input type="text" name="lname" maxlength="100" value="{$aUser.lname}"><br />
 			</fieldset>
 			<fieldset id="fieldset_categories">
@@ -26,7 +26,7 @@
 				<ul class="categories">
 					{foreach from=$aAdminMenu item=aMenu key=x}
 						<li>					
-							<input id="menu_{$aMenu.id}" type="checkbox" name="privlages[]" value="{$x}" {if in_array($x, $aUser.privlages)} checked="checked"{/if}>
+							<input id="menu_{$aMenu.id}" type="checkbox" name="privileges[]" value="{$x}" {if in_array($x, $aUser.privileges)} checked="checked"{/if}>
 							<label style="display: inline;" for="menu_{$aMenu.id}">{$aMenu.title|clean_html}</label>
 						</li>
 					{/foreach}
@@ -44,7 +44,10 @@ $(function(){
 		"required,username,Username is required",
 		"required,password,Password is required",
 		"required,email_address,An email address is required",
-		"valid_email,email_address,A valid email address is required"
+		"valid_email,email_address,A valid email address is required",
+		"required,fname,First Name is required",
+		"required,lname,Last Name is required",
+		"required,privileges[],You must select at least one privilege"
 	]);
 });
 {/literal}

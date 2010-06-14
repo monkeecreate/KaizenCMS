@@ -70,24 +70,9 @@
 <script type="text/javascript">
 {literal}
 $(function(){
-	$('form').submit(function(){
-		error = 0;
-		errorHTML = "";
-	
-		if($(this).find('input[name=title]').val() == '')
-		{
-			errorHTML = errorHTML+"<li>Please fill in page title</li>";
-			error++;
-		}
-	
-		if(error != 0) {
-			$(".ui-state-error").remove();
-			$("#wrapper-inner").prepend('<div class="ui-state-error ui-corner-all notice"><span class="icon ui-icon ui-icon-alert"></span><ul>'+errorHTML+'</ul></div>');
-			return false;
-		} else {
-			return true;
-		}
-	});
+	$("form").validateForm([
+		"required,title,Page Title is required"
+	]);
 });
 {/literal}
 </script>
