@@ -1,7 +1,7 @@
 {include file="inc_header.tpl" page_title="Calendar :: Add Event" menu="calendar" page_style="halfContent"}
 {assign var=subMenu value="Calendar Events"}
 
-<form method="post" action="/admin/caldenar/add/s/">
+<form method="post" action="/admin/calendar/add/s/">
 	<section id="content" class="content">
 		<header>
 			<h2>Manage Calendar &raquo; Add Event</h2>
@@ -17,26 +17,34 @@
 			
 			<fieldset>
 				<legend>Event Dates</legend>
-				<label>Starts On</label><br />
-				<input type="input" name="datetime_start_date" class="xsmall datepicker" value="{$aEvent.datetime_start_date}"> @
-				{html_select_time time=$aEvent.datetime_start prefix="datetime_start_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
-				<label>Ends On:</label><br />
-				<input type="input" name="datetime_end_date" class="xsmall datepicker" value="{$aEvent.datetime_end_date}"> @
-				{html_select_time time=$aEvent.datetime_end prefix="datetime_end_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
+				<span class="left" style="margin-right: 35px;">
+					<label>Starts On</label><br />
+					<input type="input" name="datetime_start_date" class="xsmall datepicker" value="{$aEvent.datetime_start_date}" style="width:90px;"> @
+					{html_select_time time=$aEvent.datetime_start prefix="datetime_start_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
+				</span>
+				<span class="left">
+					<label>Ends On:</label><br />
+					<input type="input" name="datetime_end_date" class="xsmall datepicker" value="{$aEvent.datetime_end_date}" style="width:90px;"> @
+					{html_select_time time=$aEvent.datetime_end prefix="datetime_end_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
+				</span>
+				<div class="clear">&nbsp;</div>
 			</fieldset>
 			
 			<fieldset>
 				<legend>Publish Dates</legend>
-				<label>Publish On</label><br />
-				<input type="input" name="datetime_show_date" class="xsmall datepicker" value="{$aEvent.datetime_show_date}"> @ 
-				{html_select_time time=$aEvent.datetime_show prefix="datetime_show_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
-				<p class="eventExpire" rel="expireDate">Set Expire Date</p>
-				<span class="expireDate hidden">
+				<span class="left" style="margin-right: 35px;">
+					<label>Publish On</label><br />
+					<input type="input" name="datetime_show_date" class="xsmall datepicker" value="{$aEvent.datetime_show_date}" style="width:90px;"> @ 
+					{html_select_time time=$aEvent.datetime_show prefix="datetime_show_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
+				</span>
+				<span class="expireDate left hidden">
 					<label>Expire On</label><br />
-					<input type="input" name="datetime_kill_date" class="xsmall datepicker" value="{$aEvent.datetime_kill_date}"> @
+					<input type="input" name="datetime_kill_date" class="xsmall datepicker" value="{$aEvent.datetime_kill_date}" style="width:90px;"> @
 					{html_select_time time=$aEvent.datetime_kill prefix="datetime_kill_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
 					<input type="checkbox" name="use_kill" value="1" class="hidden">
 				</span>
+				<div class="clear">&nbsp;</div>
+				<p class="eventExpire" rel="expireDate">Set Expire Date</p>
 			</fieldset>
 			
 			<fieldset id="fieldset_categories">
@@ -64,34 +72,28 @@
 		</header>
 
 		<section>
-			<label>All day:</label>
-			<input type="checkbox" name="allday" value="1"{if $aEvent.sticky == 1} checked="checked"{/if}><br />
-			<span class="input_caption">If used, time of event is irrelevant.</span><br />
 			<label>Active:</label>
 			<input type="checkbox" name="active" value="1"{if $aEvent.active == 1} checked="checked"{/if}><br />
+			<label>All day:</label>
+			<input type="checkbox" name="allday" value="1"{if $aEvent.sticky == 1} checked="checked"{/if}>
+			<span class="input-info">If used, time of event is irrelevant.</span>
 		</section>
 	</section>
 </form>
 <script type="text/javascript">
 {literal}
 $(function(){
-	$('form').submit(function(){
-		error = 0;
-
-		if($(this).find('input[name=title]').val() == '')
-		{
-			alert("Please fill in event title.");
-			return false;
-		}
-
-		if(check_fieldset($('#fieldset_categories')) == false)
-		{
-			alert("Please select at least one category.");
-			return false;
-		}
-
-		return true;
+	$(".eventExpire").click(function() {
+		$(this).hide();
+		$('input[name=use_kill]').attr('checked', true);
+		slideBox = '.'+$(this).attr("rel");
+		$(slideBox).slideDown("slow");
 	});
+	
+	$("form").validateForm([
+		"required,title,Event title is required",
+		"required,categories[],You must select at least one category"
+	]);
 });
 {/literal}
 </script>

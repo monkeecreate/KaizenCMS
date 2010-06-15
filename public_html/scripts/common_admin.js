@@ -217,13 +217,6 @@ $(document).ready(function() {
 	 * with class of .button
 	 */
 	$(".button").button();
-	
-	$(".eventExpire").click(function() {
-		$(this).hide();
-		$('input[name=use_kill]').attr('checked', true);
-		slideBox = '.'+$(this).attr("rel");
-		$(slideBox).slideDown("slow");
-	});
 		
 	/**
 	 * Default Styling
