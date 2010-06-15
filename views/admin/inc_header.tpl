@@ -32,21 +32,21 @@
 			{if $loggedin == 1}
 				<nav>
 					<ul>
-						{assign var="sActiveMenu" value="0"}
-						{assign var="sActiveFound" value="0"}
-						{foreach from=$aAdminMenu item=aMenu key=x}
-							{if $x != $menu && $sActiveFound == 0}
-								{math equation="x + y" x=$sActiveMenu y=1 assign="sActiveMenu"}
-							{else}
-								{assign var="sActiveFound" value="1"}
-							{/if}
+						{foreach from=$aAdminMainMenu item=aMenu key=x}
 							<li><a{if $menu == $x} class="active"{/if} href="{$aMenu.menu[0].link}" tabindex="-1">{$aMenu.title|clean_html}</a></li>
 						{/foreach}
+						{if !empty($aAdminSubMenu)}
+							<li>
+								<a href="">^</a>
+								<ul>
+									{foreach from=$aAdminSubMenu item=aMenu}
+										<li><a{if $menu == $x} class="active"{/if} href="{$aMenu.menu[0].link}" tabindex="-1">{$aMenu.title|clean_html}</a></li>
+									{/foreach}
+								</ul>
+							</li>
+						{/if}
 					</ul>
 				</nav>
-				{if $sActiveFound == 0}
-					{assign var="sActiveMenu" value="0"}
-				{/if}
 			{else}
 				&nbsp;
 			{/if}

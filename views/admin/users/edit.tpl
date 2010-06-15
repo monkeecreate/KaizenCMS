@@ -26,7 +26,7 @@
 				<legend>Privileges:</legend>
 				<p class="selectOptions">Select: <a href="#" class="checkAll">All</a>, <a href="#" class="uncheckAll">None</a></p>
 				<ul class="categories">
-					{foreach from=$aAdminMenu item=aMenu key=x}
+					{foreach from=$aAdminFullMenu item=aMenu key=x}
 						<li>
 							<input id="menu_{$aMenu.id}" type="checkbox" name="privileges[]" value="{$x}"
 								{if in_array($x, $aUser.privileges)} checked="checked"{/if}>
