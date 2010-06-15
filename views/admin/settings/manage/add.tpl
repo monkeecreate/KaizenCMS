@@ -17,7 +17,7 @@ $(function(){ldelim}
 	<header>
 		<h2>Manage Settings</h2>
 		
-		{foreach from=$aAdminMenu item=aMenu key=k}
+		{foreach from=$aAdminFullMenu item=aMenu key=k}
 			{if $k == "settings"}
 				{if $aMenu.menu|@count gt 1}
 					<ul class="pageTabs">

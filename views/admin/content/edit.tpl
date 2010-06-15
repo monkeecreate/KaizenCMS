@@ -11,7 +11,7 @@
 		<header>
 			<h2>Content Pages &raquo; Edit Page</h2>
 
-			{foreach from=$aAdminMenu item=aMenu key=k}
+			{foreach from=$aAdminFullMenu item=aMenu key=k}
 				{if $k == "content"}
 					{if $aMenu.menu|@count gt 1}
 						<ul class="pageTabs">

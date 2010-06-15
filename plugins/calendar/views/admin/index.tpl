@@ -24,7 +24,7 @@
 		<h2>Manage Calendar</h2>
 		<a href="/admin/calendar/add/" title="Add Event" class="button">Add Event &raquo;</a>
 		
-		{foreach from=$aAdminMenu item=aMenu key=k}
+		{foreach from=$aAdminFullMenu item=aMenu key=k}
 			{if $k == "calendar"}
 				{if $aMenu.menu|@count gt 1}
 					<ul class="pageTabs">
@@ -43,7 +43,7 @@
 				<th class="hidden">Category</th>
 				<th class="empty">&nbsp;</th>
 				<th>Title</th>
-				<th>Event Date/Time</td>
+				<th>Event Date/Time</th>
 				<th class="sorting_disabled center empty">&nbsp;</th>
 			</tr>
 		</thead>

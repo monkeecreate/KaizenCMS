@@ -50,7 +50,7 @@
 		<h2>Manage Settings</h2>
 		<a href="/admin/settings/manage/add/" title="Add Setting" class="button">Add Setting &raquo;</a>
 	
-		{foreach from=$aAdminMenu item=aMenu key=k}
+		{foreach from=$aAdminFullMenu item=aMenu key=k}
 			{if $k == "settings"}
 				{if $aMenu.menu|@count gt 1}
 					<ul class="pageTabs">

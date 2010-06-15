@@ -5,7 +5,7 @@
 		<h2>Settings</h2>
 		
 		{if $sSuperAdmin == true}
-			{foreach from=$aAdminMenu item=aMenu key=k}
+			{foreach from=$aAdminFullMenu item=aMenu key=k}
 				{if $k == "settings"}
 					{if $aMenu.menu|@count gt 1}
 						<ul class="pageTabs">

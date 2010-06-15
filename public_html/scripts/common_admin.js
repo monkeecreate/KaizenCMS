@@ -17,6 +17,21 @@ $(document).ready(function() {
 	}
 	
 	/**
+	 * Drop Down Navigation
+	 *
+	 * Created a drop down sub navigation.
+	 */
+	$('.dropdown').each(function () {
+		$(this).parent().eq(0).hover(function () {
+			$(this).find("a").addClass("active");
+			$('.dropdown:eq(0)', this).show();
+		}, function () {
+			$(this).find("a").removeClass("active");
+			$('.dropdown:eq(0)', this).hide();
+		});
+	});
+	
+	/**
 	 * Tool Tip
 	 *
 	 * Attach tooltip to any anchor with a

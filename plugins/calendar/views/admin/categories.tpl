@@ -23,7 +23,7 @@
 	<header>
 		<h2>Manage Categories</h2>
 		
-		{foreach from=$aAdminMenu item=aMenu key=k}
+		{foreach from=$aAdminFullMenu item=aMenu key=k}
 			{if $k == "calendar"}
 				{if $aMenu.menu|@count gt 1}
 					<ul class="pageTabs">

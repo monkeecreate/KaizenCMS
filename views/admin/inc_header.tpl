@@ -36,9 +36,9 @@
 							<li><a{if $menu == $x} class="active"{/if} href="{$aMenu.menu[0].link}" tabindex="-1">{$aMenu.title|clean_html}</a></li>
 						{/foreach}
 						{if !empty($aAdminSubMenu)}
-							<li>
+							<li class="adminSubMenu">
 								<a href="">^</a>
-								<ul>
+								<ul class="dropdown">
 									{foreach from=$aAdminSubMenu item=aMenu}
 										<li><a{if $menu == $x} class="active"{/if} href="{$aMenu.menu[0].link}" tabindex="-1">{$aMenu.title|clean_html}</a></li>
 									{/foreach}
