@@ -11,7 +11,7 @@
 			<label>*Title:</label><br />
 			<input type="text" name="title" maxlength="100" value="{$aEvent.title|clean_html}"><br />
 			<label>Short Content:</label><br />
-			<textarea name="short_content" class="enlarge">{$aEvent.short_content|clean_html}</textarea><br />
+			<textarea name="short_content" style="height:135px;">{$aEvent.short_content|clean_html}</textarea><br />
 			<label>Content:</label><br />
 			{html_editor content=$aEvent.content name="content"}<br />
 
@@ -60,7 +60,7 @@
 				</ul>
 			</fieldset>
 			<input type="submit" value="Save Changes">
-			<input type="button" value="Cancel" onclick="location.href = '/admin/calendar/';">
+			<a class="cancel" href="/admin/calendar/" title="Cancel">Cancel</a>
 			<input type="hidden" name="id" value="{$aEvent.id}">
 		</section>
 	</section>
@@ -70,6 +70,13 @@
 		</header>
 
 		<section>
+			{if $aEvent.photo_x2 > 0}
+			<figure class="itemImage">
+				<img src="/image/calendar/{$aEvent.id}/?width=165" alt="{$aEvent.title|clean_html} Image">
+				<a href="/admin/calendar/image/{$aEvent.id}/edit/" title="Edit Image" class="text-right">edit image</a>
+			</figure>
+			{/if}
+			
 			<label>Last Updated:</label><br />
 			<p>{$aEvent.updated_datetime|date_format:"%D - %I:%M %p"} by {$aEvent.updated_by.fname|clean_html} {$aEvent.updated_by.lname|clean_html}</p>
 			
@@ -77,8 +84,7 @@
 			<input type="checkbox" name="active" value="1"{if $aEvent.active == 1} checked="checked"{/if}><br />
 
 			<label>All Day:</label>
-			<input type="checkbox" name="allday" value="1"{if $aEvent.allday == 1} checked="checked"{/if}>
-			<span class="input-info">If used, time of event is irrelevant.</span>
+			<input type="checkbox" name="allday" value="1"{if $aEvent.allday == 1} checked="checked"{/if}> <span class="helpTip" title="If used, time of event is irrelevant.">[?]</span>
 		</section>
 	</section>
 </form>

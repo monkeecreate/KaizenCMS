@@ -1,7 +1,7 @@
 {include file="inc_header.tpl" page_title="Calendar :: Add Event" menu="calendar" page_style="halfContent"}
 {assign var=subMenu value="Calendar Events"}
 
-<form method="post" action="/admin/calendar/add/s/">
+<form method="post" action="/admin/calendar/add/s/" enctype="multipart/form-data">
 	<section id="content" class="content">
 		<header>
 			<h2>Manage Calendar &raquo; Add Event</h2>
@@ -11,7 +11,7 @@
 			<label>* Title:</label><br />
 			<input type="text" name="title" maxlength="100" value="{$aEvent.title|clean_html}"><br />
 			<label>Short Content:</label><br />
-			<textarea name="short_content">{$aEvent.short_content|clean_html}</textarea><br />
+			<textarea name="short_content" style="height:135px;">{$aEvent.short_content|clean_html}</textarea><br />
 			<label>Content:</label><br />
 			{html_editor content=$aEvent.content name="content"}<br />
 			
@@ -75,8 +75,11 @@
 			<label>Active:</label>
 			<input type="checkbox" name="active" value="1"{if $aEvent.active == 1} checked="checked"{/if}><br />
 			<label>All day:</label>
-			<input type="checkbox" name="allday" value="1"{if $aEvent.sticky == 1} checked="checked"{/if}>
-			<span class="input-info">If used, time of event is irrelevant.</span>
+			<input type="checkbox" name="allday" value="1"{if $aEvent.sticky == 1} checked="checked"{/if}> <span class="helpTip" title="If used, time of event is irrelevant.">[?]</span><br />
+			{if $sUseImage}
+			<label>Upload Image:</label><br />
+			<input type="file" name="image"><br />
+			{/if}
 		</section>
 	</section>
 </form>

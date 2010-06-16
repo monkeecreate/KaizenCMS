@@ -463,6 +463,13 @@ form#login input.text:focus, form#forgotPassword input.text:focus {
 	font-style: italic;
 }
 
+figure.itemImage {
+	display: block;
+	width: 265px;
+	margin: 0 0 15px;
+	text-align: right;
+}
+
 /* @end */
 
 /* @group forms */
@@ -948,6 +955,10 @@ tr.even td.sorting_3 {
 
 .ui-state-error ul li {
 	margin: 0 0 4px;
+}
+
+.helpTip {
+
 }
 
 .clear {

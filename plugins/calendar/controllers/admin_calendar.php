@@ -110,10 +110,9 @@ class admin_calendar extends adminController
 		}
 		
 		$_SESSION["admin"]["admin_calendar"] = null;
-		
-		if($_POST["next"] == "Add Event & Add Image" && $oCalendar->useImage == true)
-			$this->forward("/admin/calendar/image/".$sID."/upload/");
-		else
+		if(!empty($_FILES["image"]["type"]) && $oCalendar->useImage == true)
+			$this->image_upload_s($sID);
+		else			
 			$this->forward("/admin/calendar/?notice=".urlencode("Event created successfully!"));
 	}
 	function edit() {
@@ -257,8 +256,11 @@ class admin_calendar extends adminController
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
 		$this->tplDisplay("admin/image/upload.tpl");
 	}
-	function image_upload_s() {
+	function image_upload_s($sId) {			
 		$oCalendar = $this->loadModel("calendar");
+		
+		if(!empty($_POST["id"]))
+			$sId = $_POST["id"];
 		
 		if(!is_dir($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1)))
 			mkdir($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1), 0777);
@@ -267,7 +269,7 @@ class admin_calendar extends adminController
 		 || $_FILES["image"]["type"] == "image/jpg"
 		 || $_FILES["image"]["type"] == "image/pjpeg"
 		) {
-			$sFile = $this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$_POST["id"].".jpg";
+			$sFile = $this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$sId.".jpg";
 			
 			@unlink($sFile);
 
@@ -275,7 +277,7 @@ class admin_calendar extends adminController
 				$aImageSize = getimagesize($sFile);
 				if($aImageSize[0] < $oCalendar->imageMinWidth || $aImageSize[1] < $oCalendar->imageMinHeight) {
 					@unlink($sFile);
-					$this->forward("/admin/calendar/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+					$this->forward("/admin/calendar/image/".$sId."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 				} else {
 					$this->dbResults(
 						"UPDATE `{dbPrefix}calendar` SET"
@@ -285,15 +287,15 @@ class admin_calendar extends adminController
 							.", `photo_y2` = ".$oCalendar->imageMinHeight
 							.", `photo_width` = ".$oCalendar->imageMinWidth
 							.", `photo_height` = ".$oCalendar->imageMinHeight
-							." WHERE `id` = ".$_POST["id"]
+							." WHERE `id` = ".$sId
 					);
 
-					$this->forward("/admin/calendar/image/".$_POST["id"]."/edit/");
+					$this->forward("/admin/calendar/image/".$sId."/edit/");
 				}
 			} else
-				$this->forward("/admin/calendar/image/".$_POST["id"]."/upload/?error=".urlencode("Unable to upload image."));
+				$this->forward("/admin/calendar/image/".$sId."/upload/?error=".urlencode("Unable to upload image."));
 		} else
-			$this->forward("/admin/calendar/image/".$_POST["id"]."/upload/?error=".urlencode("Image not a jpg. Image is (".$_FILES["file"]["type"].")."));
+			$this->forward("/admin/calendar/image/".$sId."/upload/?error=".urlencode("Image not a jpg. Image is (".$_FILES["file"]["type"].")."));
 	}
 	function image_edit() {
 		$oCalendar = $this->loadModel("calendar");
