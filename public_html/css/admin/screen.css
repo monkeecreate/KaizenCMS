@@ -535,7 +535,7 @@ form input {
 	margin: 0;
 }
 
-form input.text {
+form input.text, form input.file {
 	margin: 6px 0 15px;
 	padding: 4px;
 }

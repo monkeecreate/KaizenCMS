@@ -226,6 +226,7 @@ $(document).ready(function() {
 	$('form input:submit').addClass('submit btn ui-button ui-corner-all ui-state-default');
 	$('form input:button').addClass('btn ui-button ui-corner-all ui-state-default');
 	$('form input:text').addClass('text ui-widget-content ui-corner-all');
+	$('form input:file').addClass('file');
 	$('form input:password').addClass('text ui-widget-content ui-corner-all');
 	$('form input:checkbox').addClass('checkbox ui-widget-content ui-corner-all');
 	$('form input:radio').addClass('radio');

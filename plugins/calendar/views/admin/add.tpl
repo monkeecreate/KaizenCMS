@@ -61,7 +61,6 @@
 			</fieldset><br />
 			
 			<input type="submit" name="name" value="Add Event">
-			{if $sUseImage == true}<input type="submit" name="next" value="Add Event & Add Image"> {/if}
 			<a class="cancel" href="/admin/calendar/" title="Cancel">Cancel</a>
 		</section>
 	</section> <!-- #content -->
@@ -79,6 +78,11 @@
 			{if $sUseImage}
 			<label>Upload Image:</label><br />
 			<input type="file" name="image"><br />
+			<ul style="font-size:0.8em;">
+				<li>File must be a .jpg</li>
+				<li>Minimum width is {$minWidth}px</li>
+				<li>Minimum height is {$minHeight}px</li>
+			</ul>
 			{/if}
 		</section>
 	</section>
