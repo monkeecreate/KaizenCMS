@@ -256,10 +256,10 @@ class admin_calendar extends adminController
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
 		$this->tplDisplay("admin/image/upload.tpl");
 	}
-	function image_upload_s($sId) {			
+	function image_upload_s($sId = null) {			
 		$oCalendar = $this->loadModel("calendar");
 		
-		if(!empty($_POST["id"]))
+		if(empty($sId))
 			$sId = $_POST["id"];
 		
 		if(!is_dir($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1)))
