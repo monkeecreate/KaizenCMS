@@ -23,7 +23,7 @@
 					{html_select_time time=$aEvent.datetime_start prefix="datetime_start_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
 				</span>
 				<span class="left">
-					<label>Ends On:</label><br />
+					<label>Ends On</label><br />
 					<input type="input" name="datetime_end_date" class="xsmall datepicker" value="{$aEvent.datetime_end_date}" style="width:90px;"> @
 					{html_select_time time=$aEvent.datetime_end prefix="datetime_end_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
 				</span>
@@ -37,14 +37,14 @@
 					<input type="input" name="datetime_show_date" class="xsmall datepicker" value="{$aEvent.datetime_show_date}" style="width:90px;"> @ 
 					{html_select_time time=$aEvent.datetime_show prefix="datetime_show_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
 				</span>
-				<span class="expireDate left {if $aEvent.use_kill == 1}hidden{/if}">
-					<label>Expire On</label><br />
+				<span class="expireDate left {if $aEvent.use_kill == 0}hidden{/if}">
+					<label>Expire On</label> <span class="cancelExpire right cursor-pointer"><img src="/images/admin/icons/delete.png" width="14px" alt="cancel expire"></span><br />
 					<input type="input" name="datetime_kill_date" class="xsmall datepicker" value="{$aEvent.datetime_kill_date}" style="width:90px;"> @
 					{html_select_time time=$aEvent.datetime_kill prefix="datetime_kill_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
 					<input type="checkbox" name="use_kill" value="1" class="hidden">
 				</span>
 				<div class="clear">&nbsp;</div>
-				{if $aEvent.use_kill == 0}<p class="eventExpire" rel="expireDate">Set Expire Date</p>{/if}
+				<p class="eventExpire cursor-pointer{if $aEvent.use_kill == 1} hidden{/if}">Set Expire Date</p>
 			</fieldset>
 
 			<fieldset id="fieldset_categories">
@@ -70,43 +70,37 @@
 		</header>
 
 		<section>
-			<label>Last Updated:</label>
-			{$aEvent.updated_datetime|date_format:"%D - %I:%M %p"}<br />
-			<small>by {$aEvent.updated_by.fname|clean_html} {$aEvent.update_by.lname|clean_html}</small><br />
-
-			<label>Use Unpublish:</label>
-			<input type="checkbox" name="use_kill" value="1"{if $aEvent.use_kill == 1} checked="checked"{/if}> Yes<br />
-			<span class="input_caption">Controls whether the Unpublish date/time is used.</span>
+			<label>Last Updated:</label><br />
+			<p>{$aEvent.updated_datetime|date_format:"%D - %I:%M %p"} by {$aEvent.updated_by.fname|clean_html} {$aEvent.updated_by.lname|clean_html}</p>
+			
+			<label>Active:</label>
+			<input type="checkbox" name="active" value="1"{if $aEvent.active == 1} checked="checked"{/if}><br />
 
 			<label>All Day:</label>
-			<input type="checkbox" name="allday" value="1"{if $aEvent.allday == 1} checked="checked"{/if}> Yes<br />
-			<span class="input_caption">If used, time of event is irrelevant.</span>
-
-			<label>Active:</label>
-			<input type="checkbox" name="active" value="1"{if $aEvent.active == 1} checked="checked"{/if}> Yes
+			<input type="checkbox" name="allday" value="1"{if $aEvent.allday == 1} checked="checked"{/if}>
+			<span class="input-info">If used, time of event is irrelevant.</span>
 		</section>
 	</section>
 </form>
 <script type="text/javascript">
 {literal}
 $(function(){
-	$('form').submit(function(){
-		error = 0;
-		
-		if($(this).find('input[name=title]').val() == '')
-		{
-			alert("Please fill in event title.");
-			return false;
-		}
-		
-		if(check_fieldset($('#fieldset_categories')) == false)
-		{
-			alert("Please select at least one category.");
-			return false;
-		}
-		
-		return true;
+	$(".eventExpire").click(function() {
+		$(this).hide();
+		$('input[name=use_kill]').attr('checked', true);
+		$(".expireDate").slideDown("slow");
 	});
+	
+	$(".cancelExpire").click(function() {
+		$(".expireDate").slideUp('fast');
+		$("input[name=use_kill]").attr('checked', false);
+		$(".eventExpire").fadeIn('slow');
+	});
+	
+	$("form").validateForm([
+		"required,title,Event title is required",
+		"required,categories[],You must select at least one category"
+	]);
 });
 {/literal}
 </script>
