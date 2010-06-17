@@ -6,6 +6,7 @@ class calendar_model extends appModel
 	public $imageMinHeight = 200;
 	public $imageFolder = "/uploads/calendar/";
 	public $perPage = 5;
+	public $shortContentCharacters = 250; // max characters for short content
 	
 	function getEvents($sCategory = null, $sAll = false) {
 		// Start the WHERE

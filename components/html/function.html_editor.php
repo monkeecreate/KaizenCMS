@@ -1,12 +1,12 @@
 <?php
 function smarty_function_html_editor($aParams, &$smarty) {
 	if(empty($params["width"]))
-		$width = "90%";
+		$width = "100%";
 	else
 		$width = $aParams["width"];
 		
 	if(empty($params["height"]))
-		$height = "300";
+		$height = "500";
 	else
 		$height = $aParams["height"];
 	

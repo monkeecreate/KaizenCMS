@@ -494,22 +494,16 @@ figure.itemImage {
 
 .halfContent form fieldset {
 	background: #f4f4f4;
-	
-
-/*width: 898px;*/
 	margin: 0 0 20px;
 	padding: 10px 15px 15px;
 }
 
 .halfContent form fieldset legend {
 	background: url(/images/admin/dataTable-column-bg.jpg) repeat-x 0 0;
-	
-
-/*width: 900px;*/
 	width: 100%;
 	height: 29px;
 	margin: 0 0 10px -15px;
-	padding: 9px 13px 0;
+	padding: 9px 14px 0;
 	font-size: 1.6em;
 	border: 1px solid #e5e5e5;
 	border-bottom: 0;
@@ -542,6 +536,10 @@ form input.text, form input.file {
 
 .fullContent form input.text, .fullContent form textarea, .halfContent form input.text, .halfContent form textarea {
 	width: 300px;
+}
+
+.halfContent form textarea {
+	width: 587px;
 }
 
 .halfContent form .sidebar input.text, .halfContent .sidebar form input.text {

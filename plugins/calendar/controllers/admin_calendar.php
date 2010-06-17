@@ -170,6 +170,7 @@ class admin_calendar extends adminController
 		$this->tplAssign("sUseImage", $oCalendar->useImage);
 		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
+		$this->tplAssign("sShortContentCount", $oCalendar->shortContentCharacters);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
@@ -204,7 +205,7 @@ class admin_calendar extends adminController
 		$this->dbResults(
 			"UPDATE `{dbPrefix}calendar` SET"
 				." `title` = ".$this->dbQuote($_POST["title"], "text")
-				.", `short_content` = ".$this->dbQuote($_POST["short_content"], "text")
+				.", `short_content` = ".$this->dbQuote(substr($_POST["short_content"], 0, 250), "text")
 				.", `content` = ".$this->dbQuote($_POST["content"], "text")
 				.", `allday` = ".$this->boolCheck($_POST["allday"])
 				.", `datetime_start` = ".$this->dbQuote($datetime_start, "integer")
