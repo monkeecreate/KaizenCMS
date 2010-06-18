@@ -8,6 +8,14 @@ section, header, footer, article, aside, figure {
 	display: block;
 }
 
+@font-face {
+  font-family: 'IconicStroke';
+    src: url("/fonts/admin/iconic_stroke.eot");
+    src: local('IconicStroke'),
+       url("/fonts/admin/iconic_stroke.svg#iconic") format('svg'),
+	   url("/fonts/admin/iconic_stroke.otf") format('opentype');
+}
+
 a:link, a:active, a:visited {
 	color: #333;
 	text-decoration: none;
@@ -101,7 +109,9 @@ nav a:hover {
 }
 
 nav ul li.adminSubMenu a {
-	padding: 10px 10px;
+	font-family: "IconicStroke";
+	font-size: 2.7em;
+	padding: 10px 10px 0px;
 }
 
 nav ul li.adminSubMenu a:hover {
@@ -140,6 +150,7 @@ nav ul li ul.dropdown li a, ul.dropdown li a:link, ul.dropdown li a:visited, ul.
 	font-size: 1.5em;
 	padding: 10px 25px;
 	margin: 0;
+	font-family: "Verdana";
 }
 
 nav ul li ul.dropdown li a:hover {
