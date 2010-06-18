@@ -48,6 +48,7 @@ class admin_calendar extends adminController
 		$this->tplAssign("sUseImage", $oCalendar->useImage);
 		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
+		$this->tplAssign("sShortContentCount", $oCalendar->shortContentCharacters);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
@@ -85,7 +86,7 @@ class admin_calendar extends adminController
 				." VALUES"
 				." ("
 					.$this->dbQuote($_POST["title"], "text")
-					.", ".$this->dbQuote($_POST["short_content"], "text")
+					.", ".$this->dbQuote(substr($_POST["short_content"], 0, 250), "text")
 					.", ".$this->dbQuote($_POST["content"], "text")
 					.", ".$this->boolCheck($_POST["allday"])
 					.", ".$this->dbQuote($datetime_start, "integer")
@@ -332,7 +333,7 @@ class admin_calendar extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		
-		$this->forward("/admin/calendar/edit/".$_POST["id"]."?notice=".urlencode("Image cropped successfully!"));
+		$this->forward("/admin/calendar/?notice=".urlencode("Event successfully saved."));
 	}
 	function image_delete() {
 		$oCalendar = $this->loadModel("calendar");
@@ -350,7 +351,7 @@ class admin_calendar extends adminController
 		
 		@unlink($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 
-		$this->forward("/admin/calendar/edit/".$this->_urlVars->dynamic["id"]."?notice=".urlencode("Image removed successfully!"));
+		$this->forward("/admin/calendar/?notice=".urlencode("Event successfully saved."));
 	}
 	function categories_index() {
 		$oCalendar = $this->loadModel("calendar");

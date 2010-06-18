@@ -46,7 +46,7 @@
 			{if $aEvent.photo_x2 > 0}
 			<figure class="itemImage">
 				<img src="/image/calendar/{$aEvent.id}/?width=165" alt="{$aEvent.title|clean_html} Image">
-				<a href="/admin/calendar/image/{$aEvent.id}/edit/" title="Edit Image" class="text-right">edit image</a> - <a href="/admin/calendar/image/{$aEvent.id}/delete/" title="Delete Image">delete image</a>
+				<a href="/admin/calendar/image/{$aEvent.id}/edit/" title="Edit Image" class="text-right"><img src="/images/admin/icons/pencil.png" alt="edit image"></a> <a href="/admin/calendar/image/{$aEvent.id}/delete/" title="Delete Image"><img src="/images/admin/icons/bin_closed.png" alt="delete image"></a>
 			</figure>
 			{/if}
 			
