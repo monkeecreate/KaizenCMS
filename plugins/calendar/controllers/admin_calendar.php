@@ -234,11 +234,17 @@ class admin_calendar extends adminController
 		}
 		
 		$_SESSION["admin"]["admin_calendar"] = null;
-
+		
 		if(!empty($_FILES["image"]["type"]) && $oCalendar->useImage == true)
 			$this->image_upload_s();
-		else
-			$this->forward("/admin/calendar/?notice=".urlencode("Changes saved successfully!"));
+		else {
+			if($_POST["submit"] == "Save Changes")
+				$this->forward("/admin/calendar/?notice=".urlencode("Changes saved successfully!"));
+			elseif($_POST["submit"] == "edit")
+				$this->forward("/admin/calendar/image/".$_POST["id"]."/edit/");
+			elseif($_POST["submit"] == "delete")
+				$this->forward("/admin/calendar/image/".$_POST["id"]."/delete/");
+		}
 	}
 	function delete() {
 		$oCalendar = $this->loadModel("calendar");
