@@ -14,6 +14,7 @@ a:link, a:active, a:visited {
 }
 
 a:hover {
+	color: #000;
 	text-decoration: underline;
 }
 
@@ -581,6 +582,7 @@ form a.cancel {
 	font-size: 1.1em;
 	color: #cc0000;
 	border-bottom: 1px dashed #cc0000;
+	text-decoration: none;
 }
 
 form a.cancel:hover {

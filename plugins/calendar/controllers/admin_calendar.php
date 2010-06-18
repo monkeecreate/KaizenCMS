@@ -282,37 +282,34 @@ class admin_calendar extends adminController
 		) {
 			$sFile = $this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$_POST["id"].".jpg";
 			
-			@unlink($sFile);
-
+			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
+			if($aImageSize[0] < $oCalendar->imageMinWidth || $aImageSize[1] < $oCalendar->imageMinHeight) {
+				$this->forward("/admin/calendar/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+			}
+			
 			if(move_uploaded_file($_FILES["image"]["tmp_name"], $sFile)) {
-				$aImageSize = getimagesize($sFile);
-				if($aImageSize[0] < $oCalendar->imageMinWidth || $aImageSize[1] < $oCalendar->imageMinHeight) {
-					@unlink($sFile);
-					$this->forward("/admin/calendar/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
-				} else {
-					$this->dbResults(
-						"UPDATE `{dbPrefix}calendar` SET"
-							." `photo_x1` = 0"
-							.", `photo_y1` = 0"
-							.", `photo_x2` = ".$oCalendar->imageMinWidth
-							.", `photo_y2` = ".$oCalendar->imageMinHeight
-							.", `photo_width` = ".$oCalendar->imageMinWidth
-							.", `photo_height` = ".$oCalendar->imageMinHeight
-							." WHERE `id` = ".$_POST["id"]
-					);
+				$this->dbResults(
+					"UPDATE `{dbPrefix}calendar` SET"
+						." `photo_x1` = 0"
+						.", `photo_y1` = 0"
+						.", `photo_x2` = ".$oCalendar->imageMinWidth
+						.", `photo_y2` = ".$oCalendar->imageMinHeight
+						.", `photo_width` = ".$oCalendar->imageMinWidth
+						.", `photo_height` = ".$oCalendar->imageMinHeight
+						." WHERE `id` = ".$_POST["id"]
+				);
 
-					$this->forward("/admin/calendar/image/".$_POST["id"]."/edit/");
-				}
+				$this->forward("/admin/calendar/image/".$_POST["id"]."/edit/");
 			} else
-				$this->forward("/admin/calendar/image/".$_POST["id"]."/upload/?error=".urlencode("Unable to upload image."));
+				$this->forward("/admin/calendar/image/".$_POST["id"]."/edit/?error=".urlencode("Unable to upload image."));
 		} else
-			$this->forward("/admin/calendar/image/".$_POST["id"]."/upload/?error=".urlencode("Image not a jpg. Image is (".$_FILES["file"]["type"].")."));
+			$this->forward("/admin/calendar/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["file"]["type"].")."));
 	}
 	function image_edit() {
 		$oCalendar = $this->loadModel("calendar");
 
-		if(!is_file($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg"))
-			$this->forward("/admin/calendar/image/".$this->_urlVars->dynamic["id"]."/upload/");
+		// if(!is_file($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg"))
+		// 	$this->forward("/admin/calendar/image/".$this->_urlVars->dynamic["id"]."/upload/");
 
 		$this->tplAssign("aEvent", $oCalendar->getEvent($this->_urlVars->dynamic["id"]));
 		$this->tplAssign("sFolder", $oCalendar->imageFolder);

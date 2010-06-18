@@ -22,44 +22,63 @@
 
 	<section class="inner-content">
 		<h3>{$aEvent.title|clean_html}</h3>
-
-		<form name="crop" action="/admin/calendar/image/edit/s/" method="post">
-			<input type="submit" value="Save Changes">
-			<input type="button" value="Upload new photo" onclick="location.href = '/admin/calendar/image/{$aEvent.id}/upload/';" />
-			<input type="button" value="Remove Photo" onclick="location.href = '/admin/calendar/image/{$aEvent.id}/delete/';" />
+		
+		<form name="upload" action="/admin/calendar/image/upload/s/" method="post" enctype="multipart/form-data" {if $aEvent.photo_x2 > 0}style="display:none;"{/if}>
+			<fieldset>
+				{if $aEvent.photo_x2 > 0}
+					<legend>Replace Current Image</legend>				
+					<span class="right">
+						<img src="/image/calendar/{$aEvent.id}/?width=165" alt="{$aEvent.title|clean_html} Image">
+					</span>
+				{else}
+					<legend>Upload Image</legend>
+				{/if}
+				
+				<label>Choose File:</label>
+				<input type="file" name="image" /><br />
+				<ul style="font-size:0.8em;">
+					<li>File must be a .jpg</li>
+					<li>Minimum width is {$minWidth}px</li>
+					<li>Minimum height is {$minHeight}px</li>
+				</ul>
 			
-			<img src="{$sFolder}{$aEvent.id}.jpg?{$randnum}" id="cropimage" />
+				<input type="submit" value="Upload File">
+				<a class="cancel" href="#" title="Cancel">Cancel</a>
+				<input type="hidden" name="id" value="{$aEvent.id}">
+			</fieldset>
+		</form>
+		
+		<form name="crop" action="/admin/calendar/image/edit/s/" method="post" {if $aEvent.photo_x2 == 0}style="display:none;"{/if}>
+			<input type="submit" value="Save Changes">
+			<a href="#" title="Upload New Photo" class="replaceImage">Upload New Photo</a> 
+			<a class="cancel" href="/admin/calendar/image/{$aEvent.id}/delete/" title="Delete Photo">Delete Photo</a>
+			
+			<img src="{$sFolder}{$aEvent.id}.jpg?{$randnum}" id="cropimage">
 			{image_crop load="form"}
 			
 			<h4>Image Preview</h4>
 			<div style="width:300px;height:225px;overflow:hidden;margin-left:5px;margin-bottom:20px;">
-				<img src="{$sFolder}{$aEvent.id}.jpg?{$randnum}" id="preview" />
+				<img src="{$sFolder}{$aEvent.id}.jpg?{$randnum}" id="preview">
 			</div>
 			
-			<input type="hidden" name="id" value="{$aEvent.id}" />
+			<input type="hidden" name="id" value="{$aEvent.id}">
 			<input type="submit" value="Save Changes">
-			<input type="button" value="Upload new photo" onclick="location.href = '/admin/calendar/image/{$aEvent.id}/upload/';" />
-			<input type="button" value="Remove Photo" onclick="location.href = '/admin/calendar/image/{$aEvent.id}/delete/';" />
-			
-			<!-- <table border="0">
-				<tr>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						
-						<br />
-						<b>Preview:</b>
-						<div style="width:300px;height:225px;overflow:hidden;margin-left:5px;margin-bottom:20px;">
-							<img src="{$sFolder}{$aEvent.id}.jpg?{$randnum}" id="preview" />
-						</div>
-						
-					</td>
-				</tr>
-			</table> -->
+			<a href="#" title="Upload New Photo" class="replaceImage">Upload New Photo</a> 
+			<a class="cancel" href="/admin/calendar/image/{$aEvent.id}/delete/" title="Delete Photo">Delete Photo</a>
 		</form>
 	</section>
 </section>
+<script type="text/javascript">
+$(function(){ldelim}	
+	$(".replaceImage").click(function() {ldelim}
+		$('form[name=crop]').hide();
+		$("form[name=upload]").slideDown("slow");
+	{rdelim});
+	
+	$("form[name=upload] .cancel").click(function() {ldelim}
+		$('form[name=upload]').hide();
+		$("form[name=crop]").slideDown("slow");
+	{rdelim});
+{rdelim});
+</script>
 {include file="inc_footer.tpl"}
