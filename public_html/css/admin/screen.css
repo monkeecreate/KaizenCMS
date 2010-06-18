@@ -16,6 +16,10 @@ section, header, footer, article, aside, figure {
 	   url("/fonts/admin/iconic_stroke.otf") format('opentype');
 }
 
+.iconic {
+	font-family: "IconicStroke";
+}
+
 a:link, a:active, a:visited {
 	color: #333;
 	text-decoration: none;
