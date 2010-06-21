@@ -88,6 +88,8 @@ class adminController extends appController
 				$this->tplAssign("aAdminSubMenu", $aSubMenu);
 			}
 			/*## @end ##*/
+			
+			$this->tplAssign("randnum", rand(1000,9999));
 		}
 	}
 	### DISPLAY ######################
