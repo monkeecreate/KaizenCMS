@@ -30,8 +30,8 @@ function smarty_function_image_crop($aParams, &$oSmarty) {
 		$html .= "	$('#height').val(c.h);\n";
 		$html .= "	if (parseInt(c.w) > 0)\n";
 		$html .= "	{\n";
-		$html .= "		var rx = ".$aParams["minw"]." / c.w;\n";
-		$html .= "		var ry = ".$aParams["minh"]." / c.h;\n";
+		$html .= "		var rx = ".$aParams["previewWidth"]." / c.w;\n";
+		$html .= "		var ry = ".$aParams["previewHeight"]." / c.h;\n";
 		$html .= "		var width = $('#".$aParams["img"]."').width();\n";
 		$html .= "		var height = $('#".$aParams["img"]."').height();\n";
 		$html .= "		$('#preview').css({\n";

@@ -316,11 +316,22 @@ class admin_calendar extends adminController
 
 		// if(!is_file($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg"))
 		// 	$this->forward("/admin/calendar/image/".$this->_urlVars->dynamic["id"]."/upload/");
-
+		
+		// Preview Size
+		if($oCalendar->imageMinWidth < 300) {
+			$sPreviewWidth = $oCalendar->imageMinWidth;
+			$sPreviewHeight = $oCalendar->imageMinHeight;
+		} else {
+			$sPreviewWidth = 300;
+			$sPreviewHeight = ceil($oCalendar->imageMinHeight * (300 / $oCalendar->imageMinWidth));
+		}
+		
 		$this->tplAssign("aEvent", $oCalendar->getEvent($this->_urlVars->dynamic["id"]));
 		$this->tplAssign("sFolder", $oCalendar->imageFolder);
 		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
+		$this->tplAssign("previewWidth", $sPreviewWidth);
+		$this->tplAssign("previewHeight", $sPreviewHeight);
 
 		$this->tplDisplay("admin/image/edit.tpl");
 	}
