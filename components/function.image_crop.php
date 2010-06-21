@@ -10,7 +10,7 @@ function smarty_function_image_crop($aParams, &$oSmarty) {
 		$html .= "		onSelect: showCoords,\n";
 		$html .= "		minSize: [ ".$aParams["rx"].", ".$aParams["ry"]." ],\n";
 		$html .= "		aspectRatio: ".$aParams["rx"]."/".$aParams["ry"]."\n";
-		$html .= "		,boxWidth: 925\n";
+		$html .= "		,boxWidth: 600\n";
 		$html .= "		,setSelect: [".$aParams["values"]["photo_x1"]
 			.", ".$aParams["values"]["photo_y1"]
 			.", ".$aParams["values"]["photo_x2"]

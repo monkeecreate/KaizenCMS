@@ -48,20 +48,26 @@
 			</fieldset>
 		</form>
 		
-		<form name="crop" action="/admin/calendar/image/edit/s/" method="post" {if $aEvent.photo_x2 == 0}style="display:none;"{/if}>				
+		<form name="crop" action="/admin/calendar/image/edit/s/" method="post" {if $aEvent.photo_x2 == 0}style="display:none;"{/if}>
+			<span class="right" style="width:300px;margin-right:8px;">
+				<h4>Image Preview</h4>
+				<div style="width:{$minWidth}px;height:{$minHeight}px;overflow:hidden;margin-left:5px;margin-bottom:20px;">
+					<img src="{$sFolder}{$aEvent.id}.jpg?{$randnum}" id="preview">
+				</div>
+			
+				<span class="right"><a href="#" title="Upload New Photo" class="replaceImage">Upload New Photo</a> | 
+				<a class="cancel" href="/admin/calendar/image/{$aEvent.id}/delete/" title="Delete Photo">Delete Photo</a></span>
+				<div class="clear">&nbsp;</div>
+				<input type="submit" value="Save Changes">
+			</span>
 			
 			<img src="{$sFolder}{$aEvent.id}.jpg?{$randnum}" id="cropimage">
 			{image_crop load="form"}
 			
-			<h4>Image Preview</h4>
-			<div style="width:{$minWidth}px;height:{$minHeight}px;overflow:hidden;margin-left:5px;margin-bottom:20px;">
-				<img src="{$sFolder}{$aEvent.id}.jpg?{$randnum}" id="preview">
-			</div>
-			
 			<input type="hidden" name="id" value="{$aEvent.id}">
-			<input type="submit" value="Save Changes">
-			<a href="#" title="Upload New Photo" class="replaceImage">Upload New Photo</a> | 
-			<a class="cancel" href="/admin/calendar/image/{$aEvent.id}/delete/" title="Delete Photo">Delete Photo</a>
+			<!-- <input type="submit" value="Save Changes">
+			<a href="#" title="Upload New Photo" class="replaceImage">Upload New Photo</a> 
+			<a class="cancel" href="/admin/calendar/image/{$aEvent.id}/delete/" title="Delete Photo">Delete Photo</a> -->
 		</form>
 	</section>
 </section>
