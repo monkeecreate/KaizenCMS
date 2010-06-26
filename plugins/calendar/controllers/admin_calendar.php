@@ -364,17 +364,7 @@ class admin_calendar extends adminController
 		$this->forward("/admin/calendar/?notice=".urlencode("Event successfully saved."));
 	}
 	function categories_index() {
-<<<<<<< HEAD
 		$oCalendar = $this->loadModel("calendar");
-=======
-		$_SESSION["admin"]["admin_calendar_categories"] = null;
-		
-		$aCategories = $this->dbQuery(
-			"SELECT `categories`.* FROM `{dbPrefix}calendar_categories` AS `categories`"
-				." ORDER BY `categories`.`name`"
-			,"all"
-		);
->>>>>>> plugin
 		
 		$_SESSION["admin"]["admin_calendar_categories"] = null;
 

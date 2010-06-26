@@ -115,7 +115,7 @@ class adminController extends appController
 				session_regenerate_id();
 				$_SESSION["admin"]["userid"] = $sUser;
 				
-				$this->dbResults(
+				$this->dbQuery(
 					"UPDATE `users` SET"
 						." `last_login` = ".$this->dbQuote(time(), "integer")
 						." WHERE `id` = ".$this->dbQuote($sUser["id"], "integer")
