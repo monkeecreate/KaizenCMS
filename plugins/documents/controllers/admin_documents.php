@@ -44,7 +44,7 @@ class admin_documents extends adminController
 			$this->forward("/admin/documents/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$sID = $this->dbResults(
+		$sID = $this->dbQuery(
 			"INSERT INTO `{dbPrefix}documents`"
 				." (`name`, `description`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -61,7 +61,7 @@ class admin_documents extends adminController
 		);
 		
 		foreach($_POST["categories"] as $sCategory) {
-			$this->dbResults(
+			$this->dbQuery(
 				"INSERT INTO `{dbPrefix}documents_categories_assign`"
 					." (`documentid`, `categoryid`)"
 					." VALUES"
@@ -71,7 +71,7 @@ class admin_documents extends adminController
 		
 		if(!empty($_FILES["document"]["name"])) {
 			if($_FILES["document"]["error"] == 1) {
-				$this->dbResults(
+				$this->dbQuery(
 					"UPDATE `{dbPrefix}documents` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($sID, "integer")
@@ -89,13 +89,13 @@ class admin_documents extends adminController
 				
 				if(in_array($file_ext, $oDocument->allowedExt) || empty($oDocument->allowedExt)) {
 					if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file)) {
-						$this->dbResults(
+						$this->dbQuery(
 							"UPDATE `{dbPrefix}documents` SET"
 								." `document` = ".$this->dbQuote($upload_file, "text")
 								." WHERE `id` = ".$this->dbQuote($sID, "integer")
 						);
 					} else {
-						$this->dbResults(
+						$this->dbQuery(
 							"UPDATE `{dbPrefix}documents` SET"
 								." `active` = 0"
 								." WHERE `id` = ".$this->dbQuote($sID, "integer")
@@ -116,7 +116,7 @@ class admin_documents extends adminController
 		$oDocument = $this->loadModel("documents");
 		
 		if(!empty($_SESSION["admin"]["admin_documents"])) {
-			$aDocumentRow = $this->dbResults(
+			$aDocumentRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}documents`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
@@ -125,19 +125,19 @@ class admin_documents extends adminController
 			$aDocument = $_SESSION["admin"]["admin_documents"];
 			
 			$aDocument["updated_datetime"] = $aDocumentRow["updated_datetime"];
-			$aDocument["updated_by"] = $this->dbResults(
+			$aDocument["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aDocumentRow["updated_by"]
 				,"row"
 			);
 		} else {
-			$aDocument = $this->dbResults(
+			$aDocument = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}documents`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
-			$aDocument["categories"] = $this->dbResults(
+			$aDocument["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}documents_categories` AS `categories`"
 					." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `categories`.`id` = `documents_assign`.`categoryid`"
 					." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
@@ -146,7 +146,7 @@ class admin_documents extends adminController
 				,"col"
 			);
 			
-			$aDocument["updated_by"] = $this->dbResults(
+			$aDocument["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aDocument["updated_by"]
 				,"row"
@@ -165,7 +165,7 @@ class admin_documents extends adminController
 			$this->forward("/admin/documents/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"UPDATE `{dbPrefix}documents` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				.", `description` = ".$this->dbQuote($_POST["description"], "text")
@@ -175,12 +175,12 @@ class admin_documents extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}documents_categories_assign`"
 				." WHERE `documentid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		foreach($_POST["categories"] as $sCategory) {
-			$this->dbResults(
+			$this->dbQuery(
 				"INSERT INTO `{dbPrefix}documents_categories_assign`"
 					." (`documentid`, `categoryid`)"
 					." VALUES"
@@ -190,7 +190,7 @@ class admin_documents extends adminController
 		
 		if(!empty($_FILES["document"]["name"])) {
 			if($_FILES["document"]["error"] == 1) {
-				$this->dbResults(
+				$this->dbQuery(
 					"UPDATE `{dbPrefix}documents` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -207,7 +207,7 @@ class admin_documents extends adminController
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
 				if(in_array($file_ext, $oDocument->allowedExt) || empty($oDocument->allowedExt)) {
-					$sDocument = $this->dbResults(
+					$sDocument = $this->dbQuery(
 						"SELECT `{dbPrefix}document` FROM `documents`"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 						,"one"
@@ -215,13 +215,13 @@ class admin_documents extends adminController
 					@unlink($upload_dir.$sDocument);
 			
 					if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file)) {
-						$this->dbResults(
+						$this->dbQuery(
 							"UPDATE `{dbPrefix}documents` SET"
 								." `document` = ".$this->dbQuote($upload_file, "text")
 								." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 						);
 					} else {
-						$this->dbResults(
+						$this->dbQuery(
 							"UPDATE `{dbPrefix}documents` SET"
 								." `active` = 0"
 								." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -245,11 +245,11 @@ class admin_documents extends adminController
 		
 		@unlink($this->_settings->rootPublic.substr($oDocument->documentFolder, 1).$aDocument["document"]);
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}documents`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}documents_categories_assign`"
 				." WHERE `documentid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
@@ -259,7 +259,7 @@ class admin_documents extends adminController
 	function categories_index() {
 		$_SESSION["admin"]["admin_documents_categories"] = null;
 		
-		$aCategories = $this->dbResults(
+		$aCategories = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}documents_categories`"
 				." ORDER BY `name`"
 			,"all"
@@ -269,7 +269,7 @@ class admin_documents extends adminController
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
-		$this->dbResults(
+		$this->dbQuery(
 			"INSERT INTO `{dbPrefix}documents_categories`"
 				." (`name`)"
 				." VALUES"
@@ -282,7 +282,7 @@ class admin_documents extends adminController
 		echo "/admin/documents/categories/?notice=".urlencode("Category added successfully!");
 	}
 	function categories_edit_s() {
-		$this->dbResults(
+		$this->dbQuery(
 			"UPDATE `{dbPrefix}documents_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -291,11 +291,11 @@ class admin_documents extends adminController
 		echo "/admin/documents/categories/?notice=".urlencode("Changes saved successfully!");
 	}
 	function categories_delete() {
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}documents_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}documents_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);

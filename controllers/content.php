@@ -17,7 +17,7 @@ class content extends appController
 			$this->error("404");
 		
 		if(preg_match("/[a-z0-9_-]+/i", $sPage) > 0) {
-			$aContent = $this->dbResults(
+			$aContent = $this->dbQuery(
 				"SELECT * FROM `content`"
 					." WHERE `tag` = ".$this->dbQuote($sPage, "text")
 					." LIMIT 1"

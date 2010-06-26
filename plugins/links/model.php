@@ -22,7 +22,7 @@ class links_model extends appModel
 			$sOrderBy = " ORDER BY rand()";
 		
 		// Get all links for paging
-		$aLinks = $this->dbResults(
+		$aLinks = $this->dbQuery(
 			"SELECT `links`.* FROM `{dbPrefix}links` AS `links`"
 				." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links`.`id` = `links_assign`.`linkid`"
 				." INNER JOIN `{dbPrefix}links_categories` AS `categories` ON `links_assign`.`categoryid` = `categories`.`id`"
@@ -33,7 +33,7 @@ class links_model extends appModel
 		);
 	
 		foreach($aLinks as $x => $aLink) {
-			$aLinkCategories = $this->dbResults(
+			$aLinkCategories = $this->dbQuery(
 				"SELECT `name` FROM `{dbPrefix}links_categories` AS `categories`"
 					." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `links_assign`.`linkid` = ".$aLink["id"]
@@ -46,7 +46,7 @@ class links_model extends appModel
 		return $aLinks;
 	}
 	function getLink($sId) {
-		$aLink = $this->dbResults(
+		$aLink = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}links`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"row"
@@ -56,13 +56,13 @@ class links_model extends appModel
 	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}links_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}links_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
@@ -82,7 +82,7 @@ class links_model extends appModel
 		else
 			return false;
 		
-		$aCategory = $this->dbResults(
+		$aCategory = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}links_categories`"
 				.$sWhere
 			,"row"

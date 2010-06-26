@@ -1,7 +1,7 @@
 {include file="inc_header.tpl" page_title="Calendar :: Crop Image" menu="calendar" page_style="fullContent"}
 {assign var=subMenu value="Calendar Events"}
 {head}
-	{image_crop load="cropper" preview="true" img="cropimage" minw=$minWidth minh=$minHeight rx=$minWidth ry=$minHeight values=$aEvent}
+	{image_crop load="cropper" preview="true" img="cropimage" previewWidth=$previewWidth previewHeight=$previewHeight rx=$minWidth ry=$minHeight values=$aEvent}
 {/head}
 <section id="content" class="content">
 	<header>
@@ -51,8 +51,9 @@
 		<form name="crop" action="/admin/calendar/image/edit/s/" method="post" {if $aEvent.photo_x2 == 0}style="display:none;"{/if}>
 			<span class="right" style="width:300px;margin-right:8px;">
 				<h4>Image Preview</h4>
-				<div style="width:{$minWidth}px;height:{$minHeight}px;overflow:hidden;margin-left:5px;margin-bottom:20px;">
-					<img src="{$sFolder}{$aEvent.id}.jpg?{$randnum}" id="preview">
+				<div style="width:{$previewWidth}px;height:{$previewHeight}px;overflow:hidden;margin-left:5px;margin-bottom:20px;">
+				<!-- <div style="width:{$minWidth}px;height:{$minHeight}px;overflow:hidden;margin-left:5px;margin-bottom:20px;"> -->
+					<img src="{$sFolder}{$aEvent.id}.jpg?{$randnum}" style="width:{$previewWidth}px;height:{$previewHeight}px;" id="preview">
 				</div>
 			
 				<span class="right"><a href="#" title="Upload New Photo" class="replaceImage">Upload New Photo</a> | 

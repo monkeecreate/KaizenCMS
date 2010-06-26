@@ -23,7 +23,7 @@ class adminController extends appController
 		if(!$this->loggedin() && !in_array($this->_settings->url[1], $aAllowedActions) && $this->_settings->surl != "/admin/")
 			$this->forward("/admin/", 401);
 		elseif($this->loggedin()) {
-			$aUser = $this->dbResults(
+			$aUser = $this->dbQuery(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$this->dbQuote($_SESSION["admin"]["userid"], "text")
 					." LIMIT 1"
@@ -44,7 +44,7 @@ class adminController extends appController
 			
 			/*## Menu ##*/
 			if($this->_settings->url[1] != "logout") {
-				$aMenuAdmin = $this->dbResults(
+				$aMenuAdmin = $this->dbQuery(
 					"SELECT * FROM `menu_admin`"
 						." ORDER BY `sort_order`"
 					,"all"
@@ -52,7 +52,7 @@ class adminController extends appController
 				
 				if(!$this->superAdmin) {
 					foreach($aMenuAdmin as $x => $aMenu) {
-						$aMenuItem = $this->dbResults(
+						$aMenuItem = $this->dbQuery(
 							"SELECT * FROM `users_privileges`"
 								." WHERE `userid` = ".$aUser["id"]
 								." AND `menu` = ".$this->dbQuote($aMenu[tag], "text")
@@ -103,7 +103,7 @@ class adminController extends appController
 	function login()
 	{
 		if(!empty($_POST["username"]) && !empty($_POST["password"])) {
-			$sUser = $this->dbResults(
+			$sUser = $this->dbQuery(
 				"SELECT `id` FROM `users`"
 					." WHERE `username` = ".$this->dbQuote($_POST["username"], "text")
 					." AND `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
@@ -115,7 +115,7 @@ class adminController extends appController
 				session_regenerate_id();
 				$_SESSION["admin"]["userid"] = $sUser;
 				
-				$this->dbResults(
+				$this->dbQuery(
 					"UPDATE `users` SET"
 						." `last_login` = ".$this->dbQuote(time(), "integer")
 						." WHERE `id` = ".$this->dbQuote($sUser["id"], "integer")
@@ -134,7 +134,7 @@ class adminController extends appController
 	}
 	function passwordReset() {
 		if(!empty($_POST["email"])) {
-			$aUser = $this->dbResults("SELECT * FROM `users`"
+			$aUser = $this->dbQuery("SELECT * FROM `users`"
 				." WHERE `email_address` = ".$this->dbQuote($_POST["email"], "text")
 				,"row"
 			);
@@ -142,7 +142,7 @@ class adminController extends appController
 			if(!empty($aUser)) {
 				$code = sha1($aUser["email"].time());
 				
-				$this->dbResults("UPDATE `users` SET"
+				$this->dbQuery("UPDATE `users` SET"
 					."`resetCode` = ".$this->dbQuote($this->_settings->encryptSalt."_".$code, "text")
 					." WHERE `id` = ".$aUser["id"]
 				);
@@ -164,7 +164,7 @@ class adminController extends appController
 		$this->forward("/admin/?error=".urlencode("Please enter a valid email address."));
 	}
 	function passwordReset_code() {
-		$aUser = $this->dbResults("SELECT * FROM `users`"
+		$aUser = $this->dbQuery("SELECT * FROM `users`"
 			." WHERE `resetCode` = ".$this->dbQuote($this->_settings->encryptSalt."_".$this->_urlVars->dynamic["code"], "text")
 			,"row"
 		);
@@ -182,7 +182,7 @@ class adminController extends appController
 		if($_POST["password"] != $_POST["password2"] || empty($_POST["password"]))
 			$this->forward("/admin/passwordReset/".$this->_urlVars->dynamic["code"]."/?error=".urlencode("Passwords did not match. Please enter your password twice."));
 		
-		$this->dbResults("UPDATE `users` SET"
+		$this->dbQuery("UPDATE `users` SET"
 			." `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
 			." WHERE `resetCode` = ".$this->dbQuote($this->_settings->encryptSalt."_".$this->_urlVars->dynamic["code"], "text")
 		);
@@ -210,7 +210,7 @@ class adminController extends appController
 	### Functions ####################
 	function loggedin() {
 		if(!empty($_SESSION["admin"]["userid"])) {
-			$aUser = $this->dbResults(
+			$aUser = $this->dbQuery(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				,"row"
