@@ -20,7 +20,7 @@ class documents_model extends appModel
 		else
 			$sOrderBy = " ORDER BY `documents`.`created_datetime` DESC";
 		
-		$aDocuments = $this->dbResults(
+		$aDocuments = $this->dbQuery(
 			"SELECT `documents`.* FROM `{dbPrefix}documents` AS `documents`"
 				." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents`.`id` = `documents_assign`.`documentid`"
 				." INNER JOIN `{dbPrefix}documents_categories` AS `categories` ON `documents_assign`.`categoryid` = `categories`.`id`"
@@ -36,7 +36,7 @@ class documents_model extends appModel
 		return $aDocuments;
 	}
 	function getDocument($sId) {
-		$aDocument = $this->dbResults(
+		$aDocument = $this->dbQuery(
 			"SELECT `documents`.* FROM `{dbPrefix}documents` AS `documents`"
 				." WHERE `documents`.`id` = ".$this->dbQuote($sId, "integer")
 				." AND `documents`.`active` = 1"
@@ -49,7 +49,7 @@ class documents_model extends appModel
 		return $aDocument;
 	}
 	function getDocumentInfo($aDocument) {
-		$aCategories = $this->dbResults(
+		$aCategories = $this->dbQuery(
 			"SELECT `name` FROM `{dbPrefix}documents_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
@@ -62,13 +62,13 @@ class documents_model extends appModel
 	}
 	function getCategories($sEmpty = true) {		
 		if($sEmpty == true) {		
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}documents_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}documents_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
@@ -88,7 +88,7 @@ class documents_model extends appModel
 		else
 			return false;
 		
-		$aCategory = $this->dbResults(
+		$aCategory = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}documents_categories`"
 				.$sWhere
 			,"row"

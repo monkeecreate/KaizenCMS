@@ -17,7 +17,7 @@ class testimonials_model extends appModel
 		else
 			$sOrder = " ORDER BY `testimonials`.`name`, `testimonials`.`sub_name`";
 		
-		$aTestimonials = $this->dbResults(
+		$aTestimonials = $this->dbQuery(
 			"SELECT `testimonials`.* FROM `{dbPrefix}testimonials` as `testimonials`"
 				." INNER JOIN `{dbPrefix}testimonials_categories_assign` AS `testimonials_assign` ON `testimonials`.`id` = `testimonials_assign`.`testimonialid`"
 				." INNER JOIN `{dbPrefix}testimonials_categories` AS `categories` ON `testimonials_assign`.`categoryid` = `categories`.`id`"
@@ -32,7 +32,7 @@ class testimonials_model extends appModel
 		return $aTestimonials;
 	}
 	function getTestimonial($sId) {
-		$aTestimonial = $this->dbResults(
+		$aTestimonial = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}testimonials`"
 				." WHERE `id` = ".$sId
 				." AND `active` = 1"
@@ -54,13 +54,13 @@ class testimonials_model extends appModel
 	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}testimonials_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}testimonials_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
@@ -80,7 +80,7 @@ class testimonials_model extends appModel
 		else
 			return false;
 		
-		$aCategory = $this->dbResults(
+		$aCategory = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}testimonials_categories`"
 				.$sWhere
 			,"row"

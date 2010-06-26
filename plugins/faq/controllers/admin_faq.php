@@ -14,11 +14,11 @@ class admin_faq extends adminController
 		// Clear saved form info
 		$_SESSION["admin"]["admin_faq"] = null;
 		
-		$sMinSort = $this->dbResults(
+		$sMinSort = $this->dbQuery(
 			"SELECT MIN(`sort_order`) FROM `{dbPrefix}faq`"
 			,"one"
 		);
-		$sMaxSort = $this->dbResults(
+		$sMaxSort = $this->dbQuery(
 			"SELECT MAX(`sort_order`) FROM `{dbPrefix}faq`"
 			,"one"
 		);
@@ -52,7 +52,7 @@ class admin_faq extends adminController
 			$this->forward("/admin/faq/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$sOrder = $this->dbResults(
+		$sOrder = $this->dbQuery(
 			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}faq`"
 			,"one"
 		);
@@ -60,7 +60,7 @@ class admin_faq extends adminController
 		if(empty($sOrder))
 			$sOrder = 1;
 		
-		$sID = $this->dbResults(
+		$sID = $this->dbQuery(
 			"INSERT INTO `{dbPrefix}faq`"
 				." (`question`, `answer`, `sort_order`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -78,7 +78,7 @@ class admin_faq extends adminController
 		);
 		
 		foreach($_POST["categories"] as $sCategory) {
-			$this->dbResults(
+			$this->dbQuery(
 				"INSERT INTO `{dbPrefix}faq_categories_assign`"
 					." (`faqid`, `categoryid`)"
 					." VALUES"
@@ -96,39 +96,39 @@ class admin_faq extends adminController
 		$aQuestion = $oQuestions->getQuestion($this->_urlVars->dynamic["id"], "integer");
 		
 		if($this->_urlVars->dynamic["sort"] == "up") {
-			$aOld = $this->dbResults(
+			$aOld = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}faq`"
 					." WHERE `sort_order` < ".$aQuestion["sort_order"]
 					." ORDER BY `sort_order` DESC"
 				,"row"
 			);
 			
-			$this->dbResults(
+			$this->dbQuery(
 				"UPDATE `{dbPrefix}faq` SET"
 					." `sort_order` = ".$this->dbQuote($aOld["sort_order"], "text")
 					." WHERE `id` = ".$this->dbQuote($aQuestion["id"], "integer")
 			);
 			
-			$this->dbResults(
+			$this->dbQuery(
 				"UPDATE `{dbPrefix}faq` SET"
 					." `sort_order` = ".$this->dbQuote($aQuestion["sort_order"], "text")
 					." WHERE `id` = ".$this->dbQuote($aOld["id"], "integer")
 			);
 		} elseif($this->_urlVars->dynamic["sort"] == "down") {
-			$aOld = $this->dbResults(
+			$aOld = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}faq`"
 					." WHERE `sort_order` > ".$aQuestion["sort_order"]
 					." ORDER BY `sort_order` ASC"
 				,"row"
 			);
 			
-			$this->dbResults(
+			$this->dbQuery(
 				"UPDATE `{dbPrefix}faq` SET"
 					." `sort_order` = ".$this->dbQuote($aOld["sort_order"], "text")
 					." WHERE `id` = ".$this->dbQuote($aQuestion["id"], "integer")
 			);
 			
-			$this->dbResults(
+			$this->dbQuery(
 				"UPDATE `{dbPrefix}faq` SET"
 					." `sort_order` = ".$this->dbQuote($aQuestion["sort_order"], "text")
 					." WHERE `id` = ".$this->dbQuote($aOld["id"], "integer")
@@ -146,7 +146,7 @@ class admin_faq extends adminController
 			$aQuestion = $_SESSION["admin"]["admin_faq"];
 			
 			$aQuestion["updated_datetime"] = $aQuestionRow["updated_datetime"];
-			$aQuestion["updated_by"] = $this->dbResults(
+			$aQuestion["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aQuestionRow["updated_by"]
 				,"row"
@@ -156,7 +156,7 @@ class admin_faq extends adminController
 		} else {
 			$aQuestion = $oQuestions->getQuestion($this->_urlVars->dynamic["id"], "integer");
 			
-			$aQuestion["categories"] = $this->dbResults(
+			$aQuestion["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}faq_categories` AS `categories`"
 					." INNER JOIN `faq_categories_assign` AS `faq_assign` ON `categories`.`id` = `faq_assign`.`categoryid`"
 					." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
@@ -165,7 +165,7 @@ class admin_faq extends adminController
 				,"col"
 			);
 			
-			$aQuestion["updated_by"] = $this->dbResults(
+			$aQuestion["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aQuestion["updated_by"]
 				,"row"
@@ -183,7 +183,7 @@ class admin_faq extends adminController
 			$this->forward("/admin/faq/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"UPDATE `{dbPrefix}faq` SET"
 				." `question` = ".$this->dbQuote($_POST["question"], "text")
 				.", `answer` = ".$this->dbQuote($_POST["answer"], "text")
@@ -193,12 +193,12 @@ class admin_faq extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}faq_categories_assign`"
 				." WHERE `faqid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		foreach($_POST["categories"] as $sCategory) {
-			$this->dbResults(
+			$this->dbQuery(
 				"INSERT INTO `{dbPrefix}faq_categories_assign`"
 					." (`faqid`, `categoryid`)"
 					." VALUES"
@@ -211,11 +211,11 @@ class admin_faq extends adminController
 		$this->forward("/admin/faq/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}faq`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}faq_categories_assign`"
 				." WHERE `faqid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
@@ -231,7 +231,7 @@ class admin_faq extends adminController
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
-		$this->dbResults(
+		$this->dbQuery(
 			"INSERT INTO `{dbPrefix}faq_categories`"
 				." (`name`)"
 				." VALUES"
@@ -244,7 +244,7 @@ class admin_faq extends adminController
 		echo "/admin/faq/categories/?notice=".urlencode("Category added successfully!");
 	}
 	function categories_edit_s() {
-		$this->dbResults(
+		$this->dbQuery(
 			"UPDATE `{dbPrefix}faq_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -253,11 +253,11 @@ class admin_faq extends adminController
 		echo "/admin/faq/categories/?notice=".urlencode("Changes saved successfully!");
 	}
 	function categories_delete() {
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}faq_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}faq_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);

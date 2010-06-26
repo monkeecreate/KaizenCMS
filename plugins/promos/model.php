@@ -10,7 +10,7 @@ class promos_model extends appModel
 			$sSQLPosition .= " WHERE `assign`.`positionid` = ".$this->dbQuote($sPosition, "integer");
 		}
 		
-		$aPromos = $this->dbResults(
+		$aPromos = $this->dbQuery(
 			"SELECT `promos`.* FROM `{dbPrefix}promos` AS `promos`"
 				.$sSQLPosition
 				." ORDER BY `promos`.`datetime_show` DESC"
@@ -32,7 +32,7 @@ class promos_model extends appModel
 		if(!empty($sUsed))
 			$sWhere .= " AND `promos`.`id` NOT IN (".$sUsed.")";
 		
-		$aPromo = $this->dbResults(
+		$aPromo = $this->dbQuery(
 			"SELECT `promos`.* FROM `{dbPrefix}promos` AS `promos`"
 				." INNER JOIN `{dbPrefix}promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`"
 				." INNER JOIN `{dbPrefix}promos_positions` AS `positions` ON `assign`.`positionid` = `positions`.`id`"
@@ -46,7 +46,7 @@ class promos_model extends appModel
 		);
 		
 		if(!empty($aPromo)) {
-			$this->dbResults(
+			$this->dbQuery(
 				"UPDATE `{dbPrefix}promos` SET"
 					." `impressions` = `impressions` + 1"
 					." WHERE `id` = ".$aPromo["id"]
@@ -58,7 +58,7 @@ class promos_model extends appModel
 		return $aPromo;
 	}
 	function getPositions() {
-		$aPositions = $this->dbResults(
+		$aPositions = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}promos_positions`"
 				." ORDER BY `name`" 
 			,"all"
@@ -67,7 +67,7 @@ class promos_model extends appModel
 		return $aPositions;
 	}
 	function getPosition($sTag) {
-		$aPosition = $this->dbResults(
+		$aPosition = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}promos_positions`"
 				." WHERE `tag` = ".$this->dbQuote($sTag, "text")
 			,"row"

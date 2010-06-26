@@ -12,7 +12,7 @@ class admin_content extends adminController
 		// Clear saved form info
 		$_SESSION["admin"]["admin_content"] = null;
 		
-		$aPages = $this->dbResults(
+		$aPages = $this->dbQuery(
 			"SELECT * FROM `content`"
 				." ORDER BY `title`"
 			,"all"
@@ -38,7 +38,7 @@ class admin_content extends adminController
 		else
 			$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,30);
 		
-		$aPages = $this->dbResults(
+		$aPages = $this->dbQuery(
 			"SELECT `tag` FROM `content`"
 				." ORDER BY `tag`"
 			,"all"
@@ -54,7 +54,7 @@ class admin_content extends adminController
 			$sTag = $sTempTag;
 		}
 		
-		$sID = $this->dbResults(
+		$sID = $this->dbQuery(
 			"INSERT INTO `content`"
 				." (`tag`, `title`, `content`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -71,7 +71,7 @@ class admin_content extends adminController
 		);
 		
 		if($this->superAdmin) {
-			$this->dbResults(
+			$this->dbQuery(
 				"UPDATE `content` SET"
 					." `tag` = ".$this->dbQuote($sTag, "text")
 					.", `perminate` = ".$this->boolCheck($_POST["perminate"])
@@ -87,7 +87,7 @@ class admin_content extends adminController
 	}
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_content"])) {
-			$aPage = $this->dbResults(
+			$aPage = $this->dbQuery(
 				"SELECT * FROM `content`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
@@ -96,7 +96,7 @@ class admin_content extends adminController
 			$aPage = $_SESSION["admin"]["admin_content"];
 			
 			$aPage["updated_datetime"] = $aPageRow["updated_datetime"];
-			$aPage["updated_by"] = $this->dbResults(
+			$aPage["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aPageRow["updated_by"]
 				,"row"
@@ -104,13 +104,13 @@ class admin_content extends adminController
 			
 			$this->tplAssign("aPage", $aPage);
 		} else {
-			$aPage = $this->dbResults(
+			$aPage = $this->dbQuery(
 				"SELECT * FROM `content`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
-			$aPage["updated_by"] = $this->dbResults(
+			$aPage["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `users`"
 					." WHERE `id` = ".$aPage["updated_by"]
 				,"row"
@@ -128,7 +128,7 @@ class admin_content extends adminController
 			$this->forward("/admin/content/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"UPDATE `content` SET"
 				." `title` = ".$this->dbQuote($_POST["title"], "text")
 				.", `content` = ".$this->dbQuote($_POST["content"], "text")
@@ -143,7 +143,7 @@ class admin_content extends adminController
 			else
 				$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,30);
 			
-			$this->dbResults(
+			$this->dbQuery(
 				"UPDATE `content` SET"
 					." `tag` = ".$this->dbQuote($sTag, "text")
 					.", `perminate` = ".$this->boolCheck($_POST["perminate"])
@@ -158,7 +158,7 @@ class admin_content extends adminController
 		$this->forward("/admin/content/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `content`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
