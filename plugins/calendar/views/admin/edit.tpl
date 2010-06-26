@@ -48,7 +48,6 @@
 				<img src="/image/calendar/{$aEvent.id}/?width=165&rand={$randnum}" alt="{$aEvent.title|clean_html} Image">
 				<input name="submit" type="image" src="/images/admin/icons/pencil.png" value="edit">
 				<input name="submit" type="image" src="/images/admin/icons/bin_closed.png" value="delete">
-				<!-- <a href="/admin/calendar/image/{$aEvent.id}/edit/" title="Edit Image" class="text-right"><img src="/images/admin/icons/pencil.png" alt="edit image"></a> <a href="/admin/calendar/image/{$aEvent.id}/delete/" title="Delete Image"><img src="/images/admin/icons/bin_closed.png" alt="delete image"></a> -->
 			</figure>
 			{/if}
 			

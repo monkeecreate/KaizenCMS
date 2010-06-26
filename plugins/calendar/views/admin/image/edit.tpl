@@ -59,6 +59,7 @@
 				<a class="cancel" href="/admin/calendar/image/{$aEvent.id}/delete/" title="Delete Photo">Delete Photo</a></span>
 				<div class="clear">&nbsp;</div>
 				<input type="submit" value="Save Changes">
+				<a class="cancel" href="/admin/calendar/" title="Cancel">Cancel</a>
 			</span>
 			
 			<img src="{$sFolder}{$aEvent.id}.jpg?{$randnum}" id="cropimage">

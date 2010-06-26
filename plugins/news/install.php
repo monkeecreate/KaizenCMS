@@ -76,7 +76,7 @@ $aMenuAdmin = array(
 	"title" => "News",
 	"menu" => array(
 		array(
-			"text" => "News Articles",
+			"text" => "Articles",
 			"link" => "/admin/news/"
 		),
 		array(
