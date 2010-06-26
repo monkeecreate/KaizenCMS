@@ -19,7 +19,7 @@ class news_model extends appModel
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
-		$aArticles = $this->dbResults(
+		$aArticles = $this->dbQuery(
 			"SELECT `news`.* FROM `{dbPrefix}news` AS `news`"
 				." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
 				." INNER JOIN `{dbPrefix}news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
@@ -35,7 +35,7 @@ class news_model extends appModel
 		return $aArticles;
 	}
 	function getArticle($sId) {
-		$aArticle = $this->dbResults(
+		$aArticle = $this->dbQuery(
 			"SELECT `news`.* FROM `{dbPrefix}news` AS `news`"
 				." WHERE `news`.`id` = ".$this->dbQuote($sId, "integer")
 				." AND `news`.`active` = 1"
@@ -53,7 +53,7 @@ class news_model extends appModel
 		if(!empty($aArticle["created_by"]))
 			$aArticle["user"] = $this->getUser($aArticle["created_by"]);
 		
-		$aCategories = $this->dbResults(
+		$aCategories = $this->dbQuery(
 			"SELECT `name` FROM `{dbPrefix}news_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
@@ -73,13 +73,13 @@ class news_model extends appModel
 	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}news_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}news_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
@@ -99,7 +99,7 @@ class news_model extends appModel
 		else
 			return false;
 		
-		$aCategory = $this->dbResults(
+		$aCategory = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}news_categories`"
 				.$sWhere
 			,"row"

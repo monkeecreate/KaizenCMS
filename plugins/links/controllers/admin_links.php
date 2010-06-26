@@ -46,7 +46,7 @@ class admin_links extends adminController
 			$this->forward("/admin/links/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$sID = $this->dbResults(
+		$sID = $this->dbQuery(
 			"INSERT INTO `{dbPrefix}links`"
 				." (`name`, `description`, `link`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -64,7 +64,7 @@ class admin_links extends adminController
 		);
 		
 		foreach($_POST["categories"] as $sCategory) {
-			$this->dbResults(
+			$this->dbQuery(
 				"INSERT INTO `{dbPrefix}links_categories_assign`"
 					." (`linkid`, `categoryid`)"
 					." VALUES"
@@ -77,7 +77,7 @@ class admin_links extends adminController
 		
 		if(!empty($_FILES["image"]["name"])) {			
 			if($_FILES["image"]["error"] == 1) {
-				$this->dbResults(
+				$this->dbQuery(
 					"UPDATE `{dbPrefix}links` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($sID, "integer")
@@ -100,14 +100,14 @@ class admin_links extends adminController
 							$this->forward("/admin/links/add/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 						}
 					}
-					$this->dbResults(
+					$this->dbQuery(
 						"UPDATE `{dbPrefix}links` SET"
 							." `image` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
 						,"update"
 					);
 				} else {
-					$this->dbResults(
+					$this->dbQuery(
 						"UPDATE `{dbPrefix}links` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->dbQuote($sID, "integer")
@@ -132,7 +132,7 @@ class admin_links extends adminController
 			$aLink = $_SESSION["admin"]["admin_links"];
 			
 			$aLink["updated_datetime"] = $aLinkRow["updated_datetime"];
-			$aLink["updated_by"] = $this->dbResults(
+			$aLink["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aLinkRow["updated_by"]
 				,"row"
@@ -142,7 +142,7 @@ class admin_links extends adminController
 		} else {
 			$aLink = $oLinks->getLink($this->_urlVars->dynamic["id"]);
 			
-			$aLink["categories"] = $this->dbResults(
+			$aLink["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}links_categories` AS `categories`"
 					." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `categories`.`id` = `links_assign`.`categoryid`"
 					." WHERE `links_assign`.`linkid` = ".$aLink["id"]
@@ -151,7 +151,7 @@ class admin_links extends adminController
 				,"col"
 			);
 			
-			$aLink["updated_by"] = $this->dbResults(
+			$aLink["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aLink["updated_by"]
 				,"row"
@@ -173,7 +173,7 @@ class admin_links extends adminController
 			$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"UPDATE `{dbPrefix}links` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				.", `description` = ".$this->dbQuote($_POST["description"], "text")
@@ -184,12 +184,12 @@ class admin_links extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}links_categories_assign`"
 				." WHERE `linkid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		foreach($_POST["categories"] as $sCategory) {
-			$this->dbResults(
+			$this->dbQuery(
 				"INSERT INTO `{dbPrefix}links_categories_assign`"
 					." (`linkid`, `categoryid`)"
 					." VALUES"
@@ -199,7 +199,7 @@ class admin_links extends adminController
 		
 		if(!empty($_FILES["image"]["name"])) {
 			if($_FILES["image"]["error"] == 1) {
-				$this->dbResults(
+				$this->dbQuery(
 					"UPDATE `{dbPrefix}links` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -212,7 +212,7 @@ class admin_links extends adminController
 				$file_ext = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
-				$sImage = $this->dbResults(
+				$sImage = $this->dbQuery(
 					"SELECT `image` FROM `{dbPrefix}links`"
 						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 					,"one"
@@ -228,13 +228,13 @@ class admin_links extends adminController
 						}
 					}
 					
-					$this->dbResults(
+					$this->dbQuery(
 						"UPDATE `{dbPrefix}links` SET"
 							." `image` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 					);
 				} else {
-					$this->dbResults(
+					$this->dbQuery(
 						"UPDATE `{dbPrefix}links` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -254,11 +254,11 @@ class admin_links extends adminController
 		
 		$aLink = $oLinks->getLink($this->_urlVars->dynamic["id"]);
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}links`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}links_categories_assign`"
 				." WHERE `linkid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
@@ -276,7 +276,7 @@ class admin_links extends adminController
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
-		$this->dbResults(
+		$this->dbQuery(
 			"INSERT INTO `{dbPrefix}links_categories`"
 				." (`name`)"
 				." VALUES"
@@ -289,7 +289,7 @@ class admin_links extends adminController
 		echo "/admin/links/categories/?notice=".urlencode("Category added successfully!");
 	}
 	function categories_edit_s() {
-		$this->dbResults(
+		$this->dbQuery(
 			"UPDATE `{dbPrefix}links_categories` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -298,11 +298,11 @@ class admin_links extends adminController
 		echo "/admin/links/categories/?notice=".urlencode("Changes saved successfully!");
 	}
 	function categories_delete() {
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}links_categories`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}links_categories_assign`"
 				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);

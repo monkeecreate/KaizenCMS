@@ -58,7 +58,7 @@ class admin_promos extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		$sID = $this->dbResults(
+		$sID = $this->dbQuery(
 			"INSERT INTO `{dbPrefix}promos`"
 				." (`name`, `link`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
@@ -78,7 +78,7 @@ class admin_promos extends adminController
 		);
 		
 		foreach($_POST["positions"] as $sPosition) {
-			$this->dbResults(
+			$this->dbQuery(
 				"INSERT INTO `{dbPrefix}promos_positions_assign`"
 					." (`promoid`, `positionid`)"
 					." VALUES"
@@ -87,7 +87,7 @@ class admin_promos extends adminController
 		}
 
 		if($_FILES["promo"]["error"] == 1) {
-			$this->dbResults(
+			$this->dbQuery(
 				"UPDATE `{dbPrefix}promos` SET"
 					." `active` = 0"
 					." WHERE `id` = ".$this->dbQuote($sID, "integer")
@@ -101,14 +101,14 @@ class admin_promos extends adminController
 			$upload_file = $sID.".".strtolower($file_ext);
 		
 			if(move_uploaded_file($_FILES["promo"]["tmp_name"], $upload_dir.$upload_file)) {
-				$this->dbResults(
+				$this->dbQuery(
 					"UPDATE `{dbPrefix}promos` SET"
 						." `promo` = ".$this->dbQuote($upload_file, "text")
 						." WHERE `id` = ".$this->dbQuote($sID, "integer")
 					,"update"
 				);
 			} else {
-				$this->dbResults(
+				$this->dbQuery(
 					"UPDATE `{dbPrefix}promos` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($sID, "integer")
@@ -127,7 +127,7 @@ class admin_promos extends adminController
 		$oPromos = $this->loadModel("promos");
 		
 		if(!empty($_SESSION["admin"]["admin_promos"])) {
-			$aPromoRow = $this->dbResults(
+			$aPromoRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}promos`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
@@ -136,7 +136,7 @@ class admin_promos extends adminController
 			$aPromo = $_SESSION["admin"]["admin_promos"];
 			
 			$aPromo["updated_datetime"] = $aPromoRow["updated_datetime"];
-			$aPromo["updated_by"] = $this->dbResults(
+			$aPromo["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aPromoRow["updated_by"]
 				,"row"
@@ -144,13 +144,13 @@ class admin_promos extends adminController
 			
 			$this->tplAssign("aPromo", $aPromo);
 		} else {
-			$aPromo = $this->dbResults(
+			$aPromo = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}promos`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
-			$aPromo["positions"] = $this->dbResults(
+			$aPromo["positions"] = $this->dbQuery(
 				"SELECT `positions`.`id` FROM `{dbPrefix}promos_positions` AS `positions`"
 					." INNER JOIN `promos_positions_assign` AS `assign` ON `positions`.`id` = `assign`.`positionid`"
 					." WHERE `assign`.`promoid` = ".$aPromo["id"]
@@ -162,7 +162,7 @@ class admin_promos extends adminController
 			$aPromo["datetime_show_date"] = date("m/d/Y", $aPromo["datetime_show"]);
 			$aPromo["datetime_kill_date"] = date("m/d/Y", $aPromo["datetime_kill"]);
 			
-			$aPromo["updated_by"] = $this->dbResults(
+			$aPromo["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aPromo["updated_by"]
 				,"row"
@@ -191,7 +191,7 @@ class admin_promos extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"UPDATE `{dbPrefix}promos` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				.", `link` = ".$this->dbQuote($_POST["link"], "text")
@@ -205,13 +205,13 @@ class admin_promos extends adminController
 			,"update"
 		);
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}promos_positions_assign`"
 				." WHERE `promoid` = ".$this->dbQuote($_POST["id"], "integer")
 			,"delete"
 		);
 		foreach($_POST["positions"] as $sPosition) {
-			$this->dbResults(
+			$this->dbQuery(
 				"INSERT INTO `{dbPrefix}promos_positions_assign`"
 					." (`promoid`, `positionid`)"
 					." VALUES"
@@ -221,7 +221,7 @@ class admin_promos extends adminController
 		
 		if(!empty($_FILES["promo"]["name"])) {
 			if($_FILES["promo"]["error"] == 1) {
-				$this->dbResults(
+				$this->dbQuery(
 					"UPDATE `{dbPrefix}promos` SET"
 						." `active` = 0"
 						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -234,7 +234,7 @@ class admin_promos extends adminController
 				$file_ext = pathinfo($_FILES["promo"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
-				$sPromo = $this->dbResults(
+				$sPromo = $this->dbQuery(
 					"SELECT `promo` FROM `promos`"
 						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 					,"one"
@@ -242,13 +242,13 @@ class admin_promos extends adminController
 				@unlink($upload_dir.$sPromo);
 			
 				if(move_uploaded_file($_FILES["promo"]["tmp_name"], $upload_dir.$upload_file)) {
-					$this->dbResults(
+					$this->dbQuery(
 						"UPDATE `{dbPrefix}promos` SET"
 							." `promo` = ".$this->dbQuote($upload_file, "text")
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 					);
 				} else {
-					$this->dbResults(
+					$this->dbQuery(
 						"UPDATE `{dbPrefix}promos` SET"
 							." `active` = 0"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -268,11 +268,11 @@ class admin_promos extends adminController
 		
 		$aPromo = $oPromos->getPromo(null, null, null, $this->_urlVars->dynamic["id"]);
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}promos`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}promos_positions_assign`"
 				." WHERE `promoid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);
@@ -305,7 +305,7 @@ class admin_promos extends adminController
 		else
 			$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["tag"])))));
 		
-		$sID = $this->dbResults(
+		$sID = $this->dbQuery(
 			"INSERT INTO `{dbPrefix}promos_positions`"
 				." (`tag`, `name`, `promo_width`, `promo_height`)"
 				." VALUES"
@@ -328,7 +328,7 @@ class admin_promos extends adminController
 			
 			$this->tplAssign("aPosition", $aPosition);
 		} else {
-			$aPosition = $this->dbResults(
+			$aPosition = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}promos_positions`"
 					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"row"
@@ -350,7 +350,7 @@ class admin_promos extends adminController
 		else
 			$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["tag"])))));
 		
-		$this->dbResults(
+		$this->dbQuery(
 			"UPDATE `{dbPrefix}promos_positions` SET"
 				." `tag` = ".$this->dbQuote($sTag, "text")
 				.", `name` = ".$this->dbQuote($_POST["name"], "text")
@@ -365,7 +365,7 @@ class admin_promos extends adminController
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function positions_delete() {
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}promos_positions`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 		);

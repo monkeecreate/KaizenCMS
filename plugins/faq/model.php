@@ -14,7 +14,7 @@ class faq_model extends appModel
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($_GET["category"], "integer");
 		
 		// Get all faq for paging
-		$aQuestions = $this->dbResults(
+		$aQuestions = $this->dbQuery(
 			"SELECT `faq`.* FROM `{dbPrefix}faq` AS `faq`"
 				." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq`.`id` = `faq_assign`.`faqid`"
 				." INNER JOIN `{dbPrefix}faq_categories` AS `categories` ON `faq_assign`.`categoryid` = `categories`.`id`"
@@ -24,7 +24,7 @@ class faq_model extends appModel
 		);
 	
 		foreach($aQuestions as $x => $aQuestion) {
-			$aQuestionCategories = $this->dbResults(
+			$aQuestionCategories = $this->dbQuery(
 				"SELECT `name` FROM `{dbPrefix}faq_categories` AS `categories`"
 					." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
@@ -37,7 +37,7 @@ class faq_model extends appModel
 		return $aQuestions;
 	}
 	function getQuestion($sId) {
-		$aQuestion = $this->dbResults(
+		$aQuestion = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}faq`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"row"
@@ -47,13 +47,13 @@ class faq_model extends appModel
 	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}faq_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}faq_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
@@ -73,7 +73,7 @@ class faq_model extends appModel
 		else
 			return false;
 		
-		$aCategory = $this->dbResults(
+		$aCategory = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}faq_categories`"
 				.$sWhere
 			,"row"

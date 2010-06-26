@@ -101,7 +101,7 @@ class appController
 		if(empty($sTag))
 			$this->sendError("getSetting", "Setting tag not passed", null, debug_backtrace());
 		
-		$aSetting = $this->dbResults(
+		$aSetting = $this->dbQuery(
 			"SELECT * FROM `settings`"
 				." WHERE `tag` = ".$this->dbQuote($sTag, "text")
 			,"row"
@@ -121,7 +121,7 @@ class appController
 		if(empty($sId))
 			$this->sendError("getUser", "User id missing", null, debug_backtrace());
 			
-		$aUser = $this->dbResults(
+		$aUser = $this->dbQuery(
 			"SELECT * FROM `users`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"row"
@@ -152,14 +152,14 @@ class appController
 	##################################
 	
 	### Database #####################
-	function dbResults($sSQL, $return = null) {
+	function dbQuery($sSQL, $return = null) {
 		// Prefix
 		$sSQL = str_replace("{dbPrefix}", $this->_settings->dbPrefix, $sSQL);
 		
 		$oResult = $this->_db->query($sSQL);
 		
 		if(PEAR::isError($oResult))
-			$this->sendError("dbResults", "dberror", $oResult, debug_backtrace());
+			$this->sendError("dbQuery", "dberror", $oResult, debug_backtrace());
 			
 		switch($return) {
 			case "all":
@@ -195,6 +195,15 @@ class appController
 			$this->sendError("dbQuote", $sReturn->userinfo, null, debug_backtrace());
 		
 		return $sReturn;
+	}
+	function dbInsert($sTable, $sData) {
+		
+	}
+	function dbUpdate($sTable, $sData, $sId) {
+		
+	}
+	function dbDelete($sTable, $sId) {
+		
 	}
 	##################################
 	

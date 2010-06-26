@@ -15,7 +15,7 @@ class directory_model extends appModel
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 		
-		$aListings = $this->dbResults(
+		$aListings = $this->dbQuery(
 			"SELECT `directory`.* FROM `{dbPrefix}directory` AS `directory`"
 				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory`.`id` = `directory_assign`.`listingid`"
 				." INNER JOIN `{dbPrefix}directory_categories` AS `categories` ON `directory_assign`.`categoryid` = `categories`.`id`"
@@ -31,7 +31,7 @@ class directory_model extends appModel
 		return $aListings;
 	}
 	function getListingInfo($aListing) {
-		$aCategories = $this->dbResults(
+		$aCategories = $this->dbQuery(
 			"SELECT `name` FROM `{dbPrefix}directory_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
@@ -50,13 +50,13 @@ class directory_model extends appModel
 	}
 	function getCategories($sEmpty = true) {		
 		if($sEmpty == true) {		
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}directory_categories`"
 					." ORDER BY `name`"
 				,"all"
 			);
 		} else {
-			$aCategories = $this->dbResults(
+			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}directory_categories_assign`"
 					." GROUP BY `categoryid`"
 				,"all"
@@ -76,7 +76,7 @@ class directory_model extends appModel
 		else
 			return false;
 		
-		$aCategory = $this->dbResults(
+		$aCategory = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}directory_categories`"
 				.$sWhere
 			,"row"
