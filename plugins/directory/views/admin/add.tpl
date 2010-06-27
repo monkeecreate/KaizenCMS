@@ -1,77 +1,95 @@
-{include file="inc_header.tpl" page_title="Directory :: Add Listing" menu="directory"}
-<style type="text/css">
-.upload_block {ldelim}
-	float:left;
-	background: #EFEFEF;
-	border: 1px solid #BFBFBF;
-	padding:8px;
-	margin: 0 10px 10px;
-{rdelim}
-</style>
+{include file="inc_header.tpl" page_title="Directory :: Add Listing" menu="directory" page_style="halfContent"}
+{head}
+<script src="/scripts/jquery-iphone-checkboxes/jquery.iphone-style-checkboxes.js"></script>
+<link rel="stylesheet" href="/scripts/jquery-iphone-checkboxes/style.css" type="text/css">
+{/head}
+{assign var=subMenu value="Listings"}
+
 <form method="post" action="/admin/directory/add/s/" enctype="multipart/form-data">
-	<div id="sidebar" class="portlet">
-		<div class="portlet-content">
-			<div class="section">
-				<label>Active:</label>
-				<input type="checkbox" name="active" value="1"{if $aListing.active == 1} checked="checked"{/if}> Yes
-			</div>
-		</div>
-	</div>
-	<label>*Name:</label>
-	<input type="text" name="name" maxlength="100" value="{$aListing.name|clean_html}"><br>
-	<label>Address 1:</label>
-	<input type="text" name="address1" maxlength="100" value="{$aListing.address1|clean_html}"><br>
-	<label>Address 2:</label>
-	<input type="text" name="address2" maxlength="100" value="{$aListing.address2|clean_html}"><br>
-	<label>City:</label>
-	<input type="text" name="city" maxlength="100" value="{$aListing.city|clean_html}"><br>
-	<label>State:</label>
-	<input type="text" name="state" maxlength="3" style="width:30px;" value="{$aListing.state|clean_html}"><br>
-	<label>Zip:</label>
-	<input type="text" name="zip" maxlength="12" style="width:100px;" value="{$aListing.zip|clean_html}"><br>
-	<label>Phone:</label>
-	<input type="text" name="phone" maxlength="100" value="{$aListing.phone|clean_html}"><br>
-	<label>Fax:</label>
-	<input type="text" name="fax" maxlength="100" value="{$aListing.fax|clean_html}"><br>
-	<label>Website: <small>(ex; http://www.google.com/)</small></label>
-	<input type="text" name="website" maxlength="100" value="{$aListing.website|clean_html}"><br>
-	<label>Email:</label>
-	<input type="text" name="email" maxlength="100" value="{$aListing.email|clean_html}"><br>
-	<fieldset id="fieldset_categories">
-		<legend>Assign document to category:</legend>
-		<ul>
-			{foreach from=$aCategories item=aCategory}
-				<li>
-					<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
-					 {if in_array($aCategory.id, $aListing.categories)} checked="checked"{/if}>
-					<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
-				</li>
-			{/foreach}
-		</ul>
-	</fieldset><br />
-	<input type="submit" value="Add Listing"> <input type="button" value="Cancel" onclick="location.href = '/admin/directory/';">
+	<section id="content" class="content">
+		<header>
+			<h2>Manage Directory &raquo; Add Listing</h2>
+		</header>
+
+		<section class="inner-content">
+			<label>*Name:</label><br />
+			<input type="text" name="name" maxlength="100" value="{$aListing.name|clean_html}"><br />
+			<label>Address 1:</label><br />
+			<input type="text" name="address1" maxlength="100" value="{$aListing.address1|clean_html}"><br />
+			<label>Address 2:</label><br />
+			<input type="text" name="address2" maxlength="100" value="{$aListing.address2|clean_html}"><br />
+			<label>City:</label><br />
+			<input type="text" name="city" maxlength="100" value="{$aListing.city|clean_html}"><br />
+			
+			<span class="left" style="margin-right:60px;">
+				<label>State:</label><br />
+				<select name="state">
+				    {foreach from=$aStates item=sState key=sAbbr}
+						<option value="{$sAbbr},{$sState}"{if $aListing.state == $sAbbr|cat:','|cat:$sState} selected="selected"{/if}>{$sState}</option>
+					{/foreach}
+				</select><br />
+			</span>
+			<span class="left">
+				<label>Zip:</label><br />
+				<input type="text" name="zip" maxlength="12" style="width:100px;" value="{$aListing.zip|clean_html}"><br />
+			</span>
+			<div class="clear">&nbsp;</div>
+			
+			<span class="left" style="margin-right:20px;">
+				<label>Phone:</label><br />
+				<input type="text" name="phone" maxlength="100" value="{$aListing.phone|clean_html}" style="width:135px;"><br />
+			</span>
+			<span class="left">
+				<label>Fax:</label><br />
+				<input type="text" name="fax" maxlength="100" value="{$aListing.fax|clean_html}" style="width:135px;"><br />
+			</span>
+			<div class="clear">&nbsp;</div>
+			
+			<label>Email:</label><br />
+			<input type="text" name="email" maxlength="100" value="{$aListing.email|clean_html}"><br />
+			<label>Website: <span style="font-size:0.8em;">(ex: http://www.google.com/)</span></label><br />
+			<input type="text" name="website" maxlength="100" value="{$aListing.website|clean_html}"><br />
+			<fieldset id="fieldset_categories">
+				<legend>Assign listing to category:</legend>
+				<ul class="categories">
+					{foreach from=$aCategories item=aCategory}
+						<li>
+							<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
+							 {if in_array($aCategory.id, $aListing.categories)} checked="checked"{/if}>
+							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+						</li>
+					{/foreach}
+				</ul>
+			</fieldset><br />
+			<input type="submit" value="Add Listing">
+			<a class="cancel" href="/admin/directory/" title="Cancel">Cancel</a>
+		</section>
+	</section> <!-- #content -->
+
+	<section id="sidebar" class="sidebar">
+		<header>
+			<h2>Article Options</h2>
+		</header>
+		
+		<section>
+			<fieldset>
+				<legend>Listing Status</legend>
+				<input type="checkbox" name="active" value="1"{if $aListing.active == 1} checked="checked"{/if}><br />
+			</fieldset>
+		</section>
+	</section>
 </form>
 <script type="text/javascript">
-{literal}
-$(function(){
-	$('form').submit(function(){
-		error = 0;
-		
-		if($(this).find('input[name=name]').val() == '')
-		{
-			alert("Please fill in a document name.");
-			return false;
-		}
-		
-		if(check_fieldset($('#fieldset_categories')) == false)
-		{
-			alert("Please select at least one category.");
-			return false;
-		}
-		
-		return true;
-	});
-});
-{/literal}
+$(function(){ldelim}
+	$('input[name=active]').iphoneStyle({ldelim}
+		checkedLabel: 'On',
+		uncheckedLabel: 'Off'
+	{rdelim});
+	
+	$("form").validateForm([
+		"required,name,Listing name is required",
+		"required,categories[],You must select at least one category"
+	]);
+{rdelim});
 </script>
 {include file="inc_footer.tpl"}
