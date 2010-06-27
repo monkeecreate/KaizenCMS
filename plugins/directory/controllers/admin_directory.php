@@ -36,6 +36,8 @@ class admin_directory extends adminController
 		
 		$this->tplAssign("aCategories", $oDirectory->getCategories());
 		$this->tplAssign("sUseImage", $oDirectory->useImage);
+		$this->tplAssign("aStates", $oDirectory->aStates);
+		
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
@@ -130,6 +132,7 @@ class admin_directory extends adminController
 		
 		$this->tplAssign("aCategories", $oDirectory->getCategories());
 		$this->tplAssign("sUseImage", $oDirectory->useImage);
+		$this->tplAssign("aStates", $oDirectory->aStates);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
@@ -186,6 +189,8 @@ class admin_directory extends adminController
 		$this->forward("/admin/directory/?notice=".urlencode("Listing removed successfully!"));
 	}
 	function categories_index() {
+		$oDirectory = $this->loadModel("directory");
+		
 		$_SESSION["admin"]["admin_directory_categories"] = null;
 		
 		$aCategories = $this->dbQuery(
@@ -195,6 +200,7 @@ class admin_directory extends adminController
 		);
 		
 		$this->tplAssign("aCategories", $aCategories);
+		$this->tplAssign("aCategoryEdit", $oDirectory->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
@@ -208,7 +214,7 @@ class admin_directory extends adminController
 			,"insert"
 		);
 
-		echo "/admin/directory/categories/?notice=".urlencode("Category added successfully!");
+		$this->forward("/admin/directory/categories/?notice=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbQuery(
@@ -217,7 +223,7 @@ class admin_directory extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 
-		echo "/admin/directory/categories/?notice=".urlencode("Changes saved successfully!");
+		$this->forward("/admin/directory/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbQuery(

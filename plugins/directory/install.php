@@ -19,7 +19,7 @@ $aDatabases = array(
 			"address1" => array("type" => "text","length" => 100),
 			"address2" => array("type" => "text","length" => 100),
 			"city" => array("type" => "text","length" => 100),
-			"state" => array("type" => "text","length" => 3),
+			"state" => array("type" => "text","length" => 100),
 			"zip" => array("type" => "text","length" => 12),
 			"phone" => array("type" => "text","length" => 20),
 			"fax" => array("type" => "text","length" => 100),
@@ -71,7 +71,7 @@ $aMenuAdmin = array(
 	"title" => "Directory",
 	"menu" => array(
 		array(
-			"text" => "Directory Listings",
+			"text" => "Listings",
 			"link" => "/admin/directory/"
 		),
 		array(
