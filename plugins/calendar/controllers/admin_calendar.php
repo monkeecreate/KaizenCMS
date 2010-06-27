@@ -83,7 +83,7 @@ class admin_calendar extends adminController
 		$sID = $this->dbQuery(
 			"INSERT INTO `{dbPrefix}calendar`"
 				." SET `title` = ".$this->dbQuote($_POST["title"], "text")
-				.", `short_content` = ".$this->dbQuote(substr($_POST["short_content"], 0, 250), "text")
+				.", `short_content` = ".$this->dbQuote(substr($_POST["short_content"], 0, $oCalendar->shortContentCharacters), "text")
 				.", `content` = ".$this->dbQuote($_POST["content"], "text")
 				.", `allday` = ".$this->boolCheck($_POST["allday"])
 				.", `datetime_start` = ".$this->dbQuote($datetime_start, "integer")
@@ -202,7 +202,7 @@ class admin_calendar extends adminController
 		$this->dbQuery(
 			"UPDATE `{dbPrefix}calendar` SET"
 				." `title` = ".$this->dbQuote($_POST["title"], "text")
-				.", `short_content` = ".$this->dbQuote(substr($_POST["short_content"], 0, 250), "text")
+				.", `short_content` = ".$this->dbQuote(substr($_POST["short_content"], 0, $oCalendar->shortContentCharacters), "text")
 				.", `content` = ".$this->dbQuote($_POST["content"], "text")
 				.", `allday` = ".$this->boolCheck($_POST["allday"])
 				.", `datetime_start` = ".$this->dbQuote($datetime_start, "integer")
