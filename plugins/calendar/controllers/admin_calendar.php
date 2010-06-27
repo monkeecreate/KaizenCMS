@@ -206,7 +206,7 @@ class admin_calendar extends adminController
 			"calendar",
 			array(
 				"title" => $_POST["title"]
-				,"short_content" => substr($_POST["short_content"], 0, $oCalendar->shortContentCharacters)
+				,"short_content" => (string)substr($_POST["short_content"], 0, $oCalendar->shortContentCharacters)
 				,"content" => $_POST["content"]
 				,"allday" => $this->boolCheck($_POST["allday"])
 				,"datetime_start" => $datetime_start
