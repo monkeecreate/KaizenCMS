@@ -110,13 +110,8 @@ class admin_users extends adminController
 				,"row"
 			);
 			
-<<<<<<< HEAD
-			$aUser["privileges"] = $this->dbResults(
+			$aUser["privileges"] = $this->dbQuery(
 				"SELECT `menu` FROM `users_privileges`"
-=======
-			$aUser["privlages"] = $this->dbQuery(
-				"SELECT `menu` FROM `users_privlages`"
->>>>>>> plugin
 					." WHERE `userid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 				,"col"
 			);
@@ -157,25 +152,14 @@ class admin_users extends adminController
 			,"update"
 		);
 		
-<<<<<<< HEAD
-		$this->dbResults(
+		$this->dbQuery(
 			"DELETE FROM `users_privileges`"
 				." WHERE `userid` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 		if(!empty($_POST["privileges"])) {
 			foreach($_POST["privileges"] as $sPrivilege) {
-				$this->dbResults(
-					"INSERT INTO `users_privileges`"
-=======
-		$this->dbQuery(
-			"DELETE FROM `users_privlages`"
-				." WHERE `userid` = ".$this->dbQuote($_POST["id"], "integer")
-		);
-		if(!empty($_POST["privlages"])) {
-			foreach($_POST["privlages"] as $sPrivlage) {
 				$this->dbQuery(
-					"INSERT INTO `users_privlages`"
->>>>>>> plugin
+					"INSERT INTO `users_privileges`"
 						." (`userid`, `menu`)"
 						." VALUES"
 						." (".
@@ -199,14 +183,10 @@ class admin_users extends adminController
 		$this->forward("/admin/users/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-<<<<<<< HEAD
 		if($_SESSION["admin"]["userid"] == $this->_urlVars->dynamic["id"])
 			$this->forward("/admin/users/?error=".urlencode("You are not allowed to delete yourself."));
 		
-		$aRes = $this->dbResults(
-=======
 		$aRes = $this->dbQuery(
->>>>>>> plugin
 			"DELETE FROM `users`"
 				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
 			,"delete"
