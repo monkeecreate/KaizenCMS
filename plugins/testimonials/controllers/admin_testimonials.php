@@ -9,27 +9,19 @@ class admin_testimonials extends adminController
 	
 	### DISPLAY ######################
 	function index() {
+		$oTestimonials = $this->loadModel("testimonials");
+		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_testimonials"] = null;
 		
-		if(!empty($_GET["category"])) {
-			$sSQLCategory = " INNER JOIN `{dbPrefix}testimonials_categories_assign` AS `assign` ON `testimonials`.`id` = `assign`.`testimonialid`";
-			$sSQLCategory .= " WHERE `assign`.`categoryid` = ".$this->dbQuote($_GET["category"], "integer");
-		}
-		
-		$aTestimonials = $this->dbQuery(
-			"SELECT `testimonials`.* FROM `{dbPrefix}testimonials` AS `testimonials`"
-				.$sSQLCategory
-				." ORDER BY `testimonials`.`name`"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("aCategories", $oTestimonials->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aTestimonials", $aTestimonials);
+		$this->tplAssign("aTestimonials", $oTestimonials->getTestimonials());
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
+		$oTestimonials = $this->loadModel("testimonials");
+		
 		if(!empty($_SESSION["admin"]["admin_testimonials"]))
 			$this->tplAssign("aTestimonial", $_SESSION["admin"]["admin_testimonials"]);
 		else {
@@ -42,7 +34,7 @@ class admin_testimonials extends adminController
 			$this->tplAssign("aTestimonial", $aTestimonial);
 		}
 		
-		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("aCategories", $oTestimonials->getCategories());
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
@@ -82,6 +74,8 @@ class admin_testimonials extends adminController
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial created successfully!"));
 	}
 	function edit() {
+		$oTestimonials = $this->loadModel("testimonials");
+		
 		if(!empty($_SESSION["admin"]["admin_testimonials"])) {
 			$aTestimonialRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}testimonials`"
@@ -122,7 +116,7 @@ class admin_testimonials extends adminController
 		
 		$this->tplAssign("aTestimonial", $aTestimonial);
 		
-		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("aCategories", $oTestimonials->getCategories());
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
@@ -176,15 +170,12 @@ class admin_testimonials extends adminController
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial removed successfully!"));
 	}
 	function categories_index() {
+		$oTestimonials = $this->loadModel("testimonials");
+		
 		$_SESSION["admin"]["admin_testimonials_categories"] = null;
 		
-		$aCategories = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}testimonials_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $aCategories);
+		$this->tplAssign("aCategories", $oTestimonials->getCategories());
+		$this->tplAssign("aCategoryEdit", $oTestimonials->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
@@ -198,7 +189,7 @@ class admin_testimonials extends adminController
 			,"insert"
 		);
 
-		echo "/admin/testimonials/categories/?notice=".urlencode("Category added successfully!");
+		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbQuery(
@@ -208,7 +199,7 @@ class admin_testimonials extends adminController
 			,"update"
 		);
 
-		echo "/admin/testimonials/categories/?notice=".urlencode("Changes saved successfully!");
+		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbQuery(
