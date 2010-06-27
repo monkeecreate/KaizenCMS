@@ -228,6 +228,7 @@ class admin_faq extends adminController
 		$_SESSION["admin"]["admin_faq_categories"] = null;
 		
 		$this->tplAssign("aCategories", $oQuestions->getCategories());
+		$this->tplAssign("aCategoryEdit", $oQuestions->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
@@ -241,7 +242,7 @@ class admin_faq extends adminController
 			,"insert"
 		);
 
-		echo "/admin/faq/categories/?notice=".urlencode("Category added successfully!");
+		$this->forward("/admin/faq/categories/?notice=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbQuery(
@@ -250,7 +251,7 @@ class admin_faq extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 
-		echo "/admin/faq/categories/?notice=".urlencode("Changes saved successfully!");
+		$this->forward("/admin/faq/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbQuery(

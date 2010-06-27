@@ -44,6 +44,7 @@
 
 		<section>
 			<fieldset>
+				<legend>Document Status</legend>
 				<input type="checkbox" name="active" value="1"{if $aDocument.active == 1} checked="checked"{/if}>
 			</fieldset>
 		</section>

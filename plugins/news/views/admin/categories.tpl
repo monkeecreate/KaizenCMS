@@ -91,4 +91,11 @@
 		</section>
 	{/if}
 </section>
+<script type="text/javascript">
+$(function(){ldelim}
+	$("form").validateForm([
+		"required,name,Category name is required"
+	]);
+{rdelim});
+</script>
 {include file="inc_footer.tpl"}
