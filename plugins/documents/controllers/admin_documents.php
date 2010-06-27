@@ -44,7 +44,7 @@ class admin_documents extends adminController
 			$this->forward("/admin/documents/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$sID = $this->dbQuery(
+		$sID = $this->dbInsert(
 			"documents",
 			array(
 				"name" => $_POST["name"]
@@ -177,7 +177,7 @@ class admin_documents extends adminController
 				,"active" => $this->boolCheck($_POST["active"])
 				,"updated_datetime" => time()
 				,"updated_by" =>$_SESSION["admin"]["userid"]
-			)
+			),
 			$_POST["id"]
 		);
 		
