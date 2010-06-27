@@ -13,7 +13,7 @@
 			/* CAN CHANGE */
 			"bStateSave": true, //whether to save a cookie with the current table state
 			"iDisplayLength": 10, //how many items to display on each page
-			"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
+			"aaSorting": [[2, "asc"]] //which column to sort by (0-X)
 		{rdelim});
 	{rdelim});
 </script>
@@ -61,6 +61,7 @@
 					<td>{$aQuestion.question|clean_html|substr:0:80}{if strlen($aQuestion.question) > 80}...{/if}</td>
 					{if empty($sCategory)}
 						<td class="small center">
+							<span class="hidden">{$aQuestion.sort_order}</span>
 							{if $aQuestion.sort_order != $minSort}
 								<a href="/admin/faq/sort/{$aQuestion.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png"></a>
 							{else}
