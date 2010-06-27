@@ -52,10 +52,6 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_calendar",
         "action" => "delete"
     ),
-	"/admin/calendar/image/{id:[0-9]+}/upload/" => array(
-        "cmd" => "admin_calendar",
-        "action" => "image_upload"
-    ),
 	"/admin/calendar/image/upload/s/" => array(
         "cmd" => "admin_calendar",
         "action" => "image_upload_s"

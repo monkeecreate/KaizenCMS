@@ -37,13 +37,18 @@ class calendar_model extends appModel
 		
 		return $aEvents;
 	}
-	function getEvent($sId) {
+	function getEvent($sId, $sAll = false) {
+		if($sAll == false) {
+			$sWhere = " AND `calendar`.`active` = 1";
+			$sWhere .= " AND `calendar`.`datetime_show` < ".time();
+			$sWhere .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
+			$sWhere .= " AND `calendar`.`datetime_end` > ".time();
+		}
+		
 		$aEvent = $this->dbQuery(
 			"SELECT `calendar`.* FROM `{dbPrefix}calendar` AS `calendar`"
 				." WHERE `calendar`.`id` = ".$this->dbQuote($sId, "integer")
-				." AND `calendar`.`active` = 1"
-				." AND `calendar`.`datetime_show` < ".time()
-				." AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")"
+				.$sWhere
 			,"row"
 		);
 		
@@ -80,8 +85,7 @@ class calendar_model extends appModel
 			);
 		} else {
 			$aCategories = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}calendar_categories_assign`"
-					." GROUP BY `categoryid`"
+				"SELECT DISTINCT(`categoryid`) FROM `{dbPrefix}calendar_categories_assign`"
 				,"all"
 			);
 			
@@ -108,7 +112,7 @@ class calendar_model extends appModel
 		return $aCategory;
 	}
 	function getImage($sId) {
-		$aEvent = $this->getEvent($sId);
+		$aEvent = $this->getEvent($sId, true);
 		
 		$sFile = $this->_settings->root_public.substr($this->imageFolder, 1).$sId.".jpg";
 		
