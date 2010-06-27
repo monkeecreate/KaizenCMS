@@ -1,67 +1,101 @@
-{include file="inc_header.tpl" page_title="FAQ Categories" menu="faq"}
+{include file="inc_header.tpl" page_title="FAQ Categories" menu="faq" page_style="halfContent"}
+{assign var=subMenu value="Categories"}
 {head}
-<script language="JavaScript" type="text/javascript" src="/scripts/jTPS/jTPS.js"></script>
-<link rel="stylesheet" type="text/css" href="/scripts/jTPS/jTPS.css">
+<script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
+<script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
 <script type="text/javascript">
 	$(function(){ldelim}
-		$('.dataTable').jTPS({ldelim}
-			perPages:[10,15,20],
-			scrollStep: 1
+		$('.dataTable').dataTable({ldelim}
+			/* DON'T CHANGE */
+			"sDom": 'rt<"dataTable-footer"flpi<"clear">',
+			"sPaginationType": "scrolling",
+			"bLengthChange": true,
+			/* CAN CHANGE */
+			"bStateSave": true, //whether to save a cookie with the current table state
+			"iDisplayLength": 10, //how many items to display on each page
+			"aaSorting": [[0, "asc"]] //which column to sort by (0-X)
 		{rdelim});
 	{rdelim});
 </script>
 {/head}
-<div id="add-category" style="display:none;" title="Add Category">
-	<form method="post" id="addCategory-form" action="/admin/faq/categories/add/s/">
-		<label>*Name:</label>
-		<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|clean_html}"><br>
-	</form>
-</div>
-<div id="add-category-btn" class="float-right" style="margin-bottom:10px;">
-	<a href="#" id="dialogbtn" class="btn ui-button ui-corner-all ui-state-default">
-		<span class="icon ui-icon ui-icon-circle-plus"></span> Add Category
-	</a>
-</div>
-<div class="clear-right">&nbsp;</div>
-<table class="dataTable">
-	<thead>
-		<tr>
-			<th sort="name">Name</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach from=$aCategories item=aCategory}
-			<tr>
-				<td>{$aCategory.name|clean_html}</td>
-				<td class="small center border-end">
-					<a href="/admin/faq/categories/edit/{$aCategory.id}/" id="dialog_edit_{$aCategory.id}" title="Edit Category">
-						<img src="/images/admin/icons/pencil.png">
-					</a>
-					<div id="dialog_edit_{$aCategory.id}_form" style="display:none;" title="Edit Category">
-						<form method="post" action="/admin/faq/categories/edit/s/">
-							<label>*Name:</label>
-							<input class="small" type="text" name="name" maxlength="100" value="{$aCategory.name|clean_html}"><br>
-							<input type="hidden" name="id" value="{$aCategory.id}">
-						</form>
-					</div>
-					<a href="/admin/faq/categories/delete/{$aCategory.id}/"
-					 onclick="return confirm_('Are you sure you would like to delete this category?');" title="Delete Category">
-						<img src="/images/admin/icons/bin_closed.png">
-					</a>
-				</td>
-			</tr>
+
+<section id="content" class="content">
+	<header>
+		<h2>Manage FAQ</h2>
+		
+		{foreach from=$aAdminFullMenu item=aMenu key=k}
+			{if $k == "faq"}
+				{if $aMenu.menu|@count gt 1}
+					<ul class="pageTabs">
+						{foreach from=$aMenu.menu item=aItem}
+							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+						{/foreach}
+					</ul>
+				{/if}
+			{/if}
 		{/foreach}
-	</tbody>
-	<tfoot class="nav">
-		<tr>
-			<td colspan="2">
-				<div class="pagination"></div>
-				<div class="paginationTitle">Page</div>
-				<div class="selectPerPage"></div>
-				<div class="status"></div>
-			</td>
-		</tr>
-	</tfoot>
-</table>
+	</header>
+
+	<table class="dataTable">
+		<thead>
+			<tr>
+				<th>Name</th>
+				
+				<th class="empty">&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			{foreach from=$aCategories item=aCategory}
+				<tr>
+					<td>{$aCategory.name|clean_html}</td>
+					<td class="center">
+						<a href="/admin/faq/categories/?category={$aCategory.id}" title="Edit Category">
+							<img src="/images/admin/icons/pencil.png" alt="edit icon">
+						</a>
+						<a href="/admin/faq/categories/delete/{$aCategory.id}/"
+						 onclick="return alert('Are you sure you would like to delete: {$aCategory.name|clean_html}?');" title="Delete Category">
+							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
+						</a>
+					</td>
+				</tr>
+			{/foreach}
+		</tbody>
+	</table>
+</section>
+
+<section id="sidebar" class="sidebar">
+	{if !empty($aCategoryEdit)}
+		<header>
+			<h2>Edit Category</h2>
+		</header>
+
+		<section>
+			<form method="post" action="/admin/faq/categories/edit/s/">
+				<label>Name:</label>
+				<input class="small" type="text" name="name" maxlength="100" value="{$aCategoryEdit.name|clean_html}"><br />
+				<input class="submitSml" type="submit" value="Save Changes">
+				<input type="hidden" name="id" value="{$aCategoryEdit.id}">
+			</form>
+		</section>
+	{else}
+		<header>
+			<h2>Add Category</h2>
+		</header>
+
+		<section>
+			<form method="post" id="addCategory-form" action="/admin/faq/categories/add/s/">
+				<label>Name:</label>
+				<input type="text" name="name" maxlength="100" value=""><br />
+				<input class="submitSml" type="submit" value="Add Category">
+			</form>
+		</section>
+	{/if}
+</section>
+<script type="text/javascript">
+$(function(){ldelim}
+	$("form").validateForm([
+		"required,name,Category name is required"
+	]);
+{rdelim});
+</script>
 {include file="inc_footer.tpl"}

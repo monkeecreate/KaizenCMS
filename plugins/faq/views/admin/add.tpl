@@ -1,53 +1,62 @@
-{include file="inc_header.tpl" page_title="FAQ :: Add Question" menu="faq"}
+{include file="inc_header.tpl" page_title="FAQ :: Add Question" menu="faq" page_style="halfContent"}
+{head}
+<script src="/scripts/jquery-iphone-checkboxes/jquery.iphone-style-checkboxes.js"></script>
+<link rel="stylesheet" href="/scripts/jquery-iphone-checkboxes/style.css" type="text/css">
+{/head}
+{assign var=subMenu value="Questions"}
+
 <form method="post" action="/admin/faq/add/s/" enctype="multipart/form-data">
-	<div id="sidebar" class="portlet">
-		<div class="portlet-content">
-			<div class="section">
-				<label>Active:</label>
-				<input type="checkbox" name="active" value="1"{if $aQuestion.active == 1} checked="checked"{/if}> Yes
-			</div>
-		</div>
-	</div>
-	<label>*Question:</label>
-	<textarea name="question" class="elastic">{$aQuestion.question|clean_html}</textarea><br>
-	<label>Answer:</label>
-	{html_editor content=$aQuestion.answer name="answer"}
-	<div class="clear"></div>
-	<fieldset id="fieldset_categories">
-		<legend>Assign question to category:</legend>
-		<ul>
-			{foreach from=$aCategories item=aCategory}
-				<li>
-					<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
-					 {if in_array($aCategory.id, $aQuestion.categories)} checked="checked"{/if}>
-					<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
-				</li>
-			{/foreach}
-		</ul>
-	</fieldset><br />
-	<input type="submit" value="Add Question"> <input type="button" value="Cancel" onclick="location.href = '/admin/faq/';">
+	<section id="content" class="content">
+		<header>
+			<h2>Manage FAQ &raquo; Add Question</h2>
+		</header>
+
+		<section class="inner-content">
+			<label>*Question:</label><br />
+			<textarea name="question" style="height:115px;">{$aQuestion.question|clean_html}</textarea><br />
+			<label>Answer:</label><br />
+			{html_editor content=$aQuestion.answer name="answer"}<br />
+			<fieldset id="fieldset_categories">
+				<legend>Assign question to category:</legend>
+				<ul class="categories">
+					{foreach from=$aCategories item=aCategory}
+						<li>
+							<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
+							 {if in_array($aCategory.id, $aQuestion.categories)} checked="checked"{/if}>
+							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+						</li>
+					{/foreach}
+				</ul>
+			</fieldset><br />
+			<input type="submit" value="Add Question">
+			<a class="cancel" href="/admin/faq/" title="Cancel">Cancel</a>
+		</section>
+	</section> <!-- #content -->
+
+	<section id="sidebar" class="sidebar">
+		<header>
+			<h2>Question Options</h2>
+		</header>
+
+		<section>
+			<fieldset>
+				<legend>Status</legend>
+				<input type="checkbox" name="active" value="1"{if $aQuestion.active == 1} checked="checked"{/if}>
+			</fieldset>
+		</section>
+	</section>
 </form>
 <script type="text/javascript">
-{literal}
-$(function(){
-	$('form').submit(function(){
-		error = 0;
-		
-		if($(this).find('input[name=question]').val() == '')
-		{
-			alert("Please fill in question.");
-			return false;
-		}
-		
-		if(check_fieldset($('#fieldset_categories')) == false)
-		{
-			alert("Please select at least one category.");
-			return false;
-		}
-		
-		return true;
-	});
-});
-{/literal}
+$(function(){ldelim}
+	$('input[name=active]').iphoneStyle({ldelim}
+		checkedLabel: 'On',
+		uncheckedLabel: 'Off'
+	{rdelim});
+	
+	$("form").validateForm([
+		"required,question,Question is required",
+		"required,categories[],You must select at least one category"
+	]);
+{rdelim});
 </script>
 {include file="inc_footer.tpl"}
