@@ -1,89 +1,91 @@
-{include file="inc_header.tpl" page_title="News Articles" menu="news"}
+{include file="inc_header.tpl" page_title="News Articles" menu="news" page_style="fullContent"}
+{assign var=subMenu value="Articles"}
 {head}
-<script language="JavaScript" type="text/javascript" src="/scripts/jTPS/jTPS.js"></script>
-<link rel="stylesheet" type="text/css" href="/scripts/jTPS/jTPS.css">
+<script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
+<script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
 <script type="text/javascript">
 	$(function(){ldelim}
-		$('.dataTable').jTPS({ldelim}
-			perPages:[10,15,20],
-			scrollStep: 1
+		$('.dataTable').dataTable({ldelim}
+			/* DON'T CHANGE */
+			"sDom": 'rt<"dataTable-footer"flpi<"clear">',
+			"sPaginationType": "scrolling",
+			"bLengthChange": true,
+			/* CAN CHANGE */
+			"bStateSave": true, //whether to save a cookie with the current table state
+			"iDisplayLength": 10, //how many items to display on each page
+			"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
 		{rdelim});
 	{rdelim});
 </script>
 {/head}
-<form name="category" method="get" action="/admin/news/" class="float-right" style="margin-bottom:10px">
-	View by category: <select name="category">
-		<option value="">- All Categories -</option>
-		{foreach from=$aCategories item=aCategory}
-			<option value="{$aCategory.id}"{if $aCategory.id == $sCategory} selected="selected"{/if}>{$aCategory.name}</option>
+
+<section id="content" class="content">
+	<header>
+		<h2>Manage News</h2>
+		<a href="/admin/news/add/" title="Add Article" class="button">Add Article &raquo;</a>
+		
+		{foreach from=$aAdminFullMenu item=aMenu key=k}
+			{if $k == "news"}
+				{if $aMenu.menu|@count gt 1}
+					<ul class="pageTabs">
+						{foreach from=$aMenu.menu item=aItem}
+							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+						{/foreach}
+					</ul>
+				{/if}
+			{/if}
 		{/foreach}
-	</select>
-	<script type="text/javascript">
-	$(function(){ldelim}
-		$('select[name=category]').change(function(){ldelim}
-			$('form[name=category]').submit();
-		{rdelim});
-	{rdelim});
-	</script>
-</form>
-<div class="clear"></div>
-<table class="dataTable">
-	<thead>
-		<tr>
-			<th sort="title">Title</th>
-			<th sort="show">Publish Date/Time</td>
-			<th sort="published">Published</th>
-			<th sort="active">Active</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach from=$aArticles item=aArticle}
+	</header>
+	
+	<table class="dataTable">
+		<thead>
 			<tr>
-				<td>{$aArticle.title|clean_html}</td>
-				<td class="center">{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</td>
-				<td class="small center">
-					{if $aArticle.datetime_show < $smarty.now && ($aArticle.use_kill == 0 || $aArticle.datetime_kill > $smarty.now)}
-						<img src="/images/admin/icons/accept.png" class="helpTip" title="Published">
-					{else}
-						<img src="/images/admin/icons/cancel.png" class="helpTip" title="Unpublished">
-					{/if}
-				</td>
-				<td class="small center">
-					{if $aArticle.active == 1}
-						<img src="/images/admin/icons/accept.png" class="helpTip" title="Active">
-					{else}
-						<img src="/images/admin/icons/cancel.png" class="helpTip" title="Inactive">
-					{/if}
-				</td>
-				<td class="small center border-end">
-					{if $sUseImage == true}
-						<a href="/admin/news/image/{$aArticle.id}/edit/" title="Edit Article Photo">
-							<img src="/images/admin/icons/picture.png">
-						</a>
-					{/if}
-					<a href="/admin/news/edit/{$aArticle.id}/" title="Edit Article">
-						<img src="/images/admin/icons/pencil.png">
-					</a>
-					{if $aPage.perminate != 1}
-						<a href="/admin/news/delete/{$aArticle.id}/"
-						 onclick="return confirm_('Are you sure you would like to delete this news article?');" title="Delete Article">
-							<img src="/images/admin/icons/bin_closed.png">
-						</a>
-					{/if}
-				</td>
+				<th class="hidden">Category</th>
+				<th class="empty">&nbsp;</th>
+				<th>Title</th>
+				<th>Publish Date/Time</td>
+				<th></th>
 			</tr>
-		{/foreach}
-	</tbody>
-	<tfoot class="nav">
-		<tr>
-			<td colspan="5">
-				<div class="pagination"></div>
-				<div class="paginationTitle">Page</div>
-				<div class="selectPerPage"></div>
-				<div class="status"></div>
-			</td>
-		</tr>
-	</tfoot>
-</table>
+		</thead>
+		<tbody>
+			{foreach from=$aArticles item=aArticle}
+				<tr>
+					<td class="hidden">{$aArticle.categories}</td>
+					<td>
+						{if $aArticle.active == 1 && $aArticle.datetime_show < $smarty.now && ($aArticle.use_kill == 0 || $aArticle.datetime_kill > $smarty.now)}
+							<span class="hidden">active</span><img src="/images/admin/icons/bullet_green.png" alt="active">
+						{elseif $aArticle.active == 0 || $aArticle.datetime_kill < $smarty.now}
+							<span class="hidden">inactive</span><img src="/images/admin/icons/bullet_red.png" alt="inactive">
+						{else}
+							<span class="hidden">not published</span><img src="/images/admin/icons/bullet_yellow.png" alt="not published">
+						{/if}
+					</td>
+					<td>{$aArticle.title|clean_html}</td>
+					<td class="center">{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</td>
+					<td class="center">
+						{if $sUseImage == true}
+							<a href="/admin/news/image/{$aArticle.id}/edit/" title="Edit Article Image">
+								<img src="/images/admin/icons/picture.png">
+							</a>
+						{/if}
+						<a href="/admin/news/edit/{$aArticle.id}/" title="Edit Article">
+							<img src="/images/admin/icons/pencil.png" alt="edit icon">
+						</a>
+						{if $aPage.perminate != 1}
+							<a href="/admin/news/delete/{$aArticle.id}/"
+							 onclick="return confirm_('Are you sure you would like to delete: {$aArticle.title|clean_html}?');" title="Delete Article">
+								<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
+							</a>
+						{/if}
+					</td>
+				</tr>
+			{/foreach}
+		</tbody>
+	</table>
+	<ul class="dataTable-legend">
+		<li class="bullet-green">Active, published</li>
+		<li class="bullet-yellow">Active, pending publish</li>
+		<li class="bullet-red">Inactive, expired</li>
+	</ul>
+</section>
 {include file="inc_footer.tpl"}
