@@ -42,6 +42,9 @@ class admin_news extends adminController
 		
 		$this->tplAssign("aCategories", $oNews->getCategories());
 		$this->tplAssign("sUseImage", $oNews->useImage);
+		$this->tplAssign("minWidth", $oNews->imageMinWidth);
+		$this->tplAssign("minHeight", $oNews->imageMinHeight);
+		$this->tplAssign("sShortContentCount", $oNews->shortContentCharacters);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
@@ -69,7 +72,7 @@ class admin_news extends adminController
 				." VALUES"
 				." ("
 					.$this->dbQuote($_POST["title"], "text")
-					.", ".$this->dbQuote($_POST["short_content"], "text")
+					.", ".$this->dbQuote(substr($_POST["short_content"], 0, $oNews->shortContentCharacters), "text")
 					.", ".$this->dbQuote($_POST["content"], "text")
 					.", ".$this->dbQuote($datetime_show, "integer")
 					.", ".$this->dbQuote($datetime_kill, "integer")
@@ -95,9 +98,10 @@ class admin_news extends adminController
 		
 		$_SESSION["admin"]["admin_news"] = null;
 		
-		if($_POST["next"] == "Add Article & Add Image" && $oNews->useImage == true)
-			$this->forward("/admin/news/image/".$sID."/upload/");
-		else
+		if(!empty($_FILES["image"]["type"]) && $oNews->useImage == true) {
+			$_POST["id"] = $sID;
+			$this->image_upload_s();
+		} else			
 			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!"));
 	}
 	function edit() {
@@ -150,6 +154,9 @@ class admin_news extends adminController
 		
 		$this->tplAssign("aCategories", $oNews->getCategories());
 		$this->tplAssign("sUseImage", $oNews->useImage);
+		$this->tplAssign("minWidth", $oNews->imageMinWidth);
+		$this->tplAssign("minHeight", $oNews->imageMinHeight);
+		$this->tplAssign("sShortContentCount", $oNews->shortContentCharacters);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
@@ -199,7 +206,16 @@ class admin_news extends adminController
 		
 		$_SESSION["admin"]["admin_news"] = null;
 		
-		$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!"));
+		if(!empty($_FILES["image"]["type"]) && $oNews->useImage == true)
+			$this->image_upload_s();
+		else {
+			if($_POST["submit"] == "Save Changes")
+				$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!"));
+			elseif($_POST["submit"] == "edit")
+				$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
+			elseif($_POST["submit"] == "delete")
+				$this->forward("/admin/news/image/".$_POST["id"]."/delete/");
+		}
 	}
 	function delete() {
 		$oNews = $this->loadModel("news");
@@ -243,42 +259,46 @@ class admin_news extends adminController
 		) {
 			$sFile = $this->_settings->rootPublic.substr($oNews->imageFolder, 1).$_POST["id"].".jpg";
 			
-			@unlink($sFile);
+			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
+			if($aImageSize[0] < $oNews->imageMinWidth || $aImageSize[1] < $oNews->imageMinHeight) {
+				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+			}
 
-			if(move_uploaded_file($_FILES["image"]["tmp_name"], $sFile)) {
-				$aImageSize = getimagesize($sFile);
-				if($aImageSize[0] < $oNews->imageMinWidth || $aImageSize[1] < $oNews->imageMinHeight) {
-					@unlink($sFile);
-					$this->forward("/admin/news/image/".$_POST["id"]."/upload/?error=".urlencode("Image does not meet the minimum width and height requirements."));
-				} else {				
-					$this->dbQuery(
-						"UPDATE `{dbPrefix}news` SET"
-							." `photo_x1` = 0"
-							.", `photo_y1` = 0"
-							.", `photo_x2` = ".$oNews->imageMinWidth
-							.", `photo_y2` = ".$oNews->imageMinHeight
-							.", `photo_width` = ".$oNews->imageMinWidth
-							.", `photo_height` = ".$oNews->imageMinHeight
-							." WHERE `id` = ".$_POST["id"]
-					);
+			if(move_uploaded_file($_FILES["image"]["tmp_name"], $sFile)) {				
+				$this->dbQuery(
+					"UPDATE `{dbPrefix}news` SET"
+						." `photo_x1` = 0"
+						.", `photo_y1` = 0"
+						.", `photo_x2` = ".$oNews->imageMinWidth
+						.", `photo_y2` = ".$oNews->imageMinHeight
+						.", `photo_width` = ".$oNews->imageMinWidth
+						.", `photo_height` = ".$oNews->imageMinHeight
+						." WHERE `id` = ".$_POST["id"]
+				);
 
-					$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
-				}
+				$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
 			} else
-				$this->forward("/admin/news/image/".$_POST["id"]."/upload/?error=".urlencode("Unable to upload image."));
+				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Unable to upload image."));
 		} else
-			$this->forward("/admin/news/image/".$_POST["id"]."/upload/?error=".urlencode("Image not a jpg. Image is (".$_FILES["file"]["type"].")."));
+			$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["file"]["type"].")."));
 	}
 	function image_edit() {
 		$oNews = $this->loadModel("news");
 
-		if(!is_file($this->_settings->rootPublic.substr($oNews->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg"))
-			$this->forward("/admin/news/image/".$this->_urlVars->dynamic["id"]."/upload/");
-
+		if($oNews->imageMinWidth < 300) {
+			$sPreviewWidth = $oNews->imageMinWidth;
+			$sPreviewHeight = $oNews->imageMinHeight;
+		} else {
+			$sPreviewWidth = 300;
+			$sPreviewHeight = ceil($oNews->imageMinHeight * (300 / $oNews->imageMinWidth));
+		}
+		
 		$this->tplAssign("aArticle", $oNews->getArticle($this->_urlVars->dynamic["id"]));
 		$this->tplAssign("sFolder", $oNews->imageFolder);
 		$this->tplAssign("minWidth", $oNews->imageMinWidth);
 		$this->tplAssign("minHeight", $oNews->imageMinHeight);
+		$this->tplAssign("previewWidth", $sPreviewWidth);
+		$this->tplAssign("previewHeight", $sPreviewHeight);
 
 		$this->tplDisplay("admin/image/edit.tpl");
 	}
@@ -294,7 +314,7 @@ class admin_news extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 
-		$this->forward("/admin/news/?notice=".urlencode("Image cropped successfully!"));
+		$this->forward("/admin/news/?notice=".urlencode("Article updated."));
 	}
 	function image_delete() {
 		$oNews = $this->loadModel("news");
@@ -315,6 +335,8 @@ class admin_news extends adminController
 		$this->forward("/admin/news/?notice=".urlencode("Image removed successfully!"));
 	}
 	function categories_index() {
+		$oNews = $this->loadModel("news");
+		
 		$_SESSION["admin"]["admin_news_categories"] = null;
 		
 		$aCategories = $this->dbQuery(
@@ -324,6 +346,7 @@ class admin_news extends adminController
 		);
 		
 		$this->tplAssign("aCategories", $aCategories);
+		$this->tplAssign("aCategoryEdit", $oNews->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
@@ -338,7 +361,7 @@ class admin_news extends adminController
 		);
 		
 
-		echo "/admin/news/categories/?notice=".urlencode("Category added successfully!");
+		$this->forward("/admin/news/categories/?notice=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbQuery(
@@ -347,7 +370,7 @@ class admin_news extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 
-		echo "/admin/news/categories/?notice=".urlencode("Changes saved successfully!");
+		$this->forward("/admin/news/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbQuery(

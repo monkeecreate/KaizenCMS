@@ -43,17 +43,15 @@
 	</section>
 </section>
 <script type="text/javascript">
-{literal}
-$(function(){
+$(function(){ldelim}
 	$("form").validateForm([
 		"required,username,Username is required",
 		"required,email_address,An email address is required",
 		"valid_email,email_address,A valid email address is required",
 		"required,fname,First Name is required",
-		"required,lname,Last Name is required",
-		"required,privileges[],You must select at least one privilege"
+		"required,lname,Last Name is required"{if $aUser.id != 1},
+		"required,privileges[],You must select at least one privilege"{/if}
 	]);
-});
-{/literal}
+{rdelim});
 </script>
 {include file="inc_footer.tpl"}

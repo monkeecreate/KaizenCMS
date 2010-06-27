@@ -6,8 +6,9 @@ class news_model extends appModel
 	public $imageMinHeight = 87;
 	public $imageFolder = "/uploads/news/";
 	public $perPage = 5;
+	public $shortContentCharacters = 250; // max characters for short content
 	
-	function getArticles($sCategory = null) {	
+	function getArticles($sCategory = null, $sAll = false) {	
 		// Start the WHERE
 		$sWhere = " WHERE `news`.`id` > 0";// Allways true
 		

@@ -54,7 +54,7 @@
 					<td class="center">
 						{if $aEvent.active == 1 && $aEvent.datetime_show < $smarty.now && ($aEvent.use_kill == 0 || $aEvent.datetime_kill > $smarty.now)}
 							<span class="hidden">active</span><img src="/images/admin/icons/bullet_green.png" alt="active">
-						{elseif $aEvent.active == 0}
+						{elseif $aEvent.active == 0 || $aEvent.datetime_kill < $smarty.now}
 							<span class="hidden">inactive</span><img src="/images/admin/icons/bullet_red.png" alt="inactive">
 						{else}
 							<span class="hidden">not published</span><img src="/images/admin/icons/bullet_yellow.png" alt="not published">
@@ -84,7 +84,7 @@
 	<ul class="dataTable-legend">
 		<li class="bullet-green">Active, published</li>
 		<li class="bullet-yellow">Active, pending publish</li>
-		<li class="bullet-red">Inactive</li>
+		<li class="bullet-red">Inactive, expired</li>
 	</ul>
 </section>
 {include file="inc_footer.tpl"}
