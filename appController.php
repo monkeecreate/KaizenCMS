@@ -196,14 +196,49 @@ class appController
 		
 		return $sReturn;
 	}
-	function dbInsert($sTable, $sData) {
+	function dbInsert($sTable, $aData) {
+		$this->_db->loadModule('Extended');
 		
+		$oResult = $this->_db->extended->autoExecute(
+			$this->_settings->dbPrefix.$sTable,
+			$aData,
+			MDB2_AUTOQUERY_INSERT
+		);
+		
+		if(PEAR::isError($oResult))
+			$this->sendError("dbInsert", "dberror", $oResult, debug_backtrace());
+		
+		return $this->_db->lastInsertID();
 	}
-	function dbUpdate($sTable, $sData, $sId) {
+	function dbUpdate($sTable, $aData, $sId, $sIdField = "id") {
+		$this->_db->loadModule('Extended');
 		
+		$oResult = $this->_db->extended->autoExecute(
+			$this->_settings->dbPrefix.$sTable,
+			$aData,
+			MDB2_AUTOQUERY_UPDATE,
+			$sIdField." = ".$this->dbQuote($sId, "integer")
+		);
+		
+		if(PEAR::isError($oResult))
+			$this->sendError("dbUpdate", "dberror", $oResult, debug_backtrace());
+		
+		return true;
 	}
-	function dbDelete($sTable, $sId) {
+	function dbDelete($sTable, $sId, $sIdField = "id") {
+		$this->_db->loadModule('Extended');
 		
+		$oResult = $this->_db->extended->autoExecute(
+			$this->_settings->dbPrefix.$sTable,
+			null,
+			MDB2_AUTOQUERY_DELETE,
+			$sIdField." = ".$this->dbQuote($sId, "integer")
+		);
+		
+		if(PEAR::isError($oResult))
+			$this->sendError("dbDelete", "dberror", $oResult, debug_backtrace());
+		
+		return true;
 	}
 	##################################
 	
