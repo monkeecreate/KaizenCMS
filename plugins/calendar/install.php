@@ -79,7 +79,7 @@ $aMenuAdmin = array(
 	"title" => "Calendar",
 	"menu" => array(
 		array(
-			"text" => "Calendar Events",
+			"text" => "Events",
 			"link" => "/admin/calendar/"
 		),
 		array(

@@ -1,73 +1,80 @@
-{include file="inc_header.tpl" page_title="Documents" menu="documents"}
+{include file="inc_header.tpl" page_title="Documents" menu="documents" page_style="fullContent"}
+{assign var=subMenu value="Documents"}
 {head}
-<script language="JavaScript" type="text/javascript" src="/scripts/jTPS/jTPS.js"></script>
-<link rel="stylesheet" type="text/css" href="/scripts/jTPS/jTPS.css">
+<script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
+<script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
 <script type="text/javascript">
 	$(function(){ldelim}
-		$('.dataTable').jTPS({ldelim}
-			perPages:[10,15,20],
-			scrollStep: 1
+		$('.dataTable').dataTable({ldelim}
+			/* DON'T CHANGE */
+			"sDom": 'rt<"dataTable-footer"flpi<"clear">',
+			"sPaginationType": "scrolling",
+			"bLengthChange": true,
+			/* CAN CHANGE */
+			"bStateSave": true, //whether to save a cookie with the current table state
+			"iDisplayLength": 10, //how many items to display on each page
+			"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
 		{rdelim});
 	{rdelim});
 </script>
 {/head}
-<form name="category" method="get" action="/admin/documents/" class="float-right" style="margin-bottom:10px">
-	View by category: <select name="category">
-		<option value="">- All Categories -</option>
-		{foreach from=$aCategories item=aCategory}
-			<option value="{$aCategory.id}"{if $aCategory.id == $sCategory} selected="selected"{/if}>{$aCategory.name}</option>
+
+<section id="content" class="content">
+	<header>
+		<h2>Manage Documents</h2>
+		<a href="/admin/documents/add/" title="Add Document" class="button">Add Document &raquo;</a>
+		
+		{foreach from=$aAdminFullMenu item=aMenu key=k}
+			{if $k == "documents"}
+				{if $aMenu.menu|@count gt 1}
+					<ul class="pageTabs">
+						{foreach from=$aMenu.menu item=aItem}
+							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+						{/foreach}
+					</ul>
+				{/if}
+			{/if}
 		{/foreach}
-	</select>
-	<script type="text/javascript">
-	$(function(){ldelim}
-		$('select[name=category]').change(function(){ldelim}
-			$('form[name=category]').submit();
-		{rdelim});
-	{rdelim});
-	</script>
-</form>
-<div class="clear"></div>
-<table class="dataTable">
-	<thead>
-		<tr>
-			<th sort="title">Name</th>
-			<th sort="active">Active</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach from=$aDocuments item=aDocument}
+	</header>
+	
+	<table class="dataTable">
+		<thead>
 			<tr>
-				<td>{$aDocument.name|clean_html}</td>
-				<td class="small center">
-					{if $aDocument.active == 1}
-						<img src="/images/admin/icons/accept.png" class="helpTip" title="Active">
-					{else}
-						<img src="/images/admin/icons/cancel.png" class="helpTip" title="Inactive">
-					{/if}
-				</td>
-				<td class="small center border-end">
-					<a href="/admin/documents/edit/{$aDocument.id}/" title="Edit Document">
-						<img src="/images/admin/icons/pencil.png">
-					</a>
-					<a href="/admin/documents/delete/{$aDocument.id}/"
-					 onclick="return confirm_('Are you sure you would like to delete this document?');"
-					 title="Delete Document">
-						<img src="/images/admin/icons/bin_closed.png">
-					</a>
-				</td>
+				<th class="empty">&nbsp;</th>
+				<th>Name</th>
+				<th>Link</th>
+				<th></th>
 			</tr>
-		{/foreach}
-	</tbody>
-	<tfoot class="nav">
-		<tr>
-			<td colspan="3">
-				<div class="pagination"></div>
-				<div class="paginationTitle">Page</div>
-				<div class="selectPerPage"></div>
-				<div class="status"></div>
-			</td>
-		</tr>
-	</tfoot>
-</table>
+		</thead>
+		<tbody>
+			{foreach from=$aDocuments item=aDocument}
+				<tr>
+					<td>
+						{if $aDocument.active == 1}
+							<img src="/images/admin/icons/bullet_green.png" alt="active">
+						{else}
+							<img src="/images/admin/icons/bullet_red.png" alt="inactive">
+						{/if}
+					</td>
+					<td>{$aDocument.name|clean_html}</td>
+					<td><a href="http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}" title="{$aDocument.name|clean_html}">http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}</a></td>
+					<td class="center">
+						<a href="/admin/documents/edit/{$aDocument.id}/" title="Edit Document">
+							<img src="/images/admin/icons/pencil.png" alt="edit icon">
+						</a>
+						<a href="/admin/documents/delete/{$aDocument.id}/"
+						 onclick="return confirm_('Are you sure you would like to delete: {$aDocument.name|clean_html}?');"
+						 title="Delete Document">
+							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
+						</a>
+					</td>
+				</tr>
+			{/foreach}
+		</tbody>
+	</table>
+	<ul class="dataTable-legend">
+		<li class="bullet-green">Active</li>
+		<li class="bullet-red">Inactive</li>
+	</ul>
+</section>
 {include file="inc_footer.tpl"}
