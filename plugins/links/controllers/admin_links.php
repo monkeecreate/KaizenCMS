@@ -34,6 +34,7 @@ class admin_links extends adminController
 			);
 		
 		$this->tplAssign("aCategories", $oLinks->getCategories());
+		$this->tplAssign("sUseImage", $oLinks->useImage);
 		$this->tplAssign("minWidth", $oLinks->imageMinWidth);
 		$this->tplAssign("minHeight", $oLinks->imageMinHeight);
 		$this->tplDisplay("admin/add.tpl");
@@ -161,8 +162,10 @@ class admin_links extends adminController
 		}
 		
 		$this->tplAssign("aCategories", $oLinks->getCategories());
+		$this->tplAssign("sUseImage", $oLinks->useImage);
 		$this->tplAssign("minWidth", $oLinks->imageMinWidth);
 		$this->tplAssign("minHeight", $oLinks->imageMinHeight);
+		$this->tplAssign("imageFolder", $oLinks->imageFolder);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
@@ -273,6 +276,7 @@ class admin_links extends adminController
 		$_SESSION["admin"]["admin_links_categories"] = null;
 		
 		$this->tplAssign("aCategories", $oLinks->getCategories());
+		$this->tplAssign("aCategoryEdit", $oLinks->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
@@ -286,7 +290,7 @@ class admin_links extends adminController
 			,"insert"
 		);
 
-		echo "/admin/links/categories/?notice=".urlencode("Category added successfully!");
+		$this->forward("/admin/links/categories/?notice=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbQuery(
@@ -295,7 +299,7 @@ class admin_links extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 
-		echo "/admin/links/categories/?notice=".urlencode("Changes saved successfully!");
+		$this->forward("/admin/links/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbQuery(
