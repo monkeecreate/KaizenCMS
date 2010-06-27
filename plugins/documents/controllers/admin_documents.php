@@ -9,18 +9,19 @@ class admin_documents extends adminController
 	
 	### DISPLAY ######################
 	function index() {
-		$oDocument = $this->loadModel("documents");
+		$oDocuments = $this->loadModel("documents");
 		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_documents"] = null;
 		
-		$this->tplAssign("aCategories", $oDocument->getCategories());
+		$this->tplAssign("aCategories", $oDocuments->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aDocuments", $oDocument->getDocuments($_GET["category"], true));
+		$this->tplAssign("aDocuments", $oDocuments->getDocuments($_GET["category"], true));
+		$this->tplAssign("documentFolder", $oDocuments->documentFolder);
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
-		$oDocument = $this->loadModel("documents");
+		$oDocuments = $this->loadModel("documents");
 		
 		if(!empty($_SESSION["admin"]["admin_documents"]))
 			$this->tplAssign("aDocument", $_SESSION["admin"]["admin_documents"]);
@@ -33,11 +34,11 @@ class admin_documents extends adminController
 				)
 			);
 		
-		$this->tplAssign("aCategories", $oDocument->getCategories());
+		$this->tplAssign("aCategories", $oDocuments->getCategories());
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
-		$oDocument = $this->loadModel("documents");
+		$oDocuments = $this->loadModel("documents");
 		
 		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_documents"] = $_POST;
@@ -79,7 +80,7 @@ class admin_documents extends adminController
 				
 				$this->forward("/admin/document/?notice=".urlencode("Document file size was too large!"));
 			} else {
-				$upload_dir = $this->_settings->rootPublic.substr($oDocument->documentFolder, 1);
+				$upload_dir = $this->_settings->rootPublic.substr($oDocuments->documentFolder, 1);
 				
 				if(!is_dir($upload_dir))
 					mkdir($upload_dir, 0777);
@@ -87,7 +88,7 @@ class admin_documents extends adminController
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
 				
-				if(in_array($file_ext, $oDocument->allowedExt) || empty($oDocument->allowedExt)) {
+				if(in_array($file_ext, $oDocuments->allowedExt) || empty($oDocuments->allowedExt)) {
 					if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file)) {
 						$this->dbQuery(
 							"UPDATE `{dbPrefix}documents` SET"
@@ -113,7 +114,7 @@ class admin_documents extends adminController
 		$this->forward("/admin/documents/?notice=".urlencode("Document created successfully!"));
 	}
 	function edit() {
-		$oDocument = $this->loadModel("documents");
+		$oDocuments = $this->loadModel("documents");
 		
 		if(!empty($_SESSION["admin"]["admin_documents"])) {
 			$aDocumentRow = $this->dbQuery(
@@ -153,12 +154,12 @@ class admin_documents extends adminController
 			);
 		}
 		
-		$this->tplAssign("aCategories", $oDocument->getCategories());
+		$this->tplAssign("aCategories", $oDocuments->getCategories());
 		$this->tplAssign("aDocument", $aDocument);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
-		$oDocument = $this->loadModel("documents");
+		$oDocuments = $this->loadModel("documents");
 		
 		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_documents"] = $_POST;
@@ -198,7 +199,7 @@ class admin_documents extends adminController
 				
 				$this->forward("/admin/documents/?notice=".urlencode("Document file size was too large!"));
 			} else {
-				$upload_dir = $this->_settings->rootPublic.substr($oDocument->documentFolder, 1);
+				$upload_dir = $this->_settings->rootPublic.substr($oDocuments->documentFolder, 1);
 				
 				if(!is_dir($upload_dir))
 					mkdir($upload_dir, 0777);
@@ -206,7 +207,7 @@ class admin_documents extends adminController
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
-				if(in_array($file_ext, $oDocument->allowedExt) || empty($oDocument->allowedExt)) {
+				if(in_array($file_ext, $oDocuments->allowedExt) || empty($oDocuments->allowedExt)) {
 					$sDocument = $this->dbQuery(
 						"SELECT `{dbPrefix}document` FROM `documents`"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -239,11 +240,11 @@ class admin_documents extends adminController
 		$this->forward("/admin/documents/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		$oDocument = $this->loadModel("documents");
+		$oDocuments = $this->loadModel("documents");
 		
-		$aDocument = $oDocument->getDocument($this->_urlVars->dynamic["id"], "integer");
+		$aDocument = $oDocuments->getDocument($this->_urlVars->dynamic["id"], "integer");
 		
-		@unlink($this->_settings->rootPublic.substr($oDocument->documentFolder, 1).$aDocument["document"]);
+		@unlink($this->_settings->rootPublic.substr($oDocuments->documentFolder, 1).$aDocument["document"]);
 		
 		$this->dbQuery(
 			"DELETE FROM `{dbPrefix}documents`"
@@ -257,6 +258,8 @@ class admin_documents extends adminController
 		$this->forward("/admin/documents/?notice=".urlencode("Document removed successfully!"));
 	}
 	function categories_index() {
+		$oDocuments = $this->loadModel("documents");
+		
 		$_SESSION["admin"]["admin_documents_categories"] = null;
 		
 		$aCategories = $this->dbQuery(
@@ -266,6 +269,7 @@ class admin_documents extends adminController
 		);
 		
 		$this->tplAssign("aCategories", $aCategories);
+		$this->tplAssign("aCategoryEdit", $oDocuments->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
@@ -279,7 +283,7 @@ class admin_documents extends adminController
 			,"insert"
 		);
 
-		echo "/admin/documents/categories/?notice=".urlencode("Category added successfully!");
+		$this->forward("/admin/documents/categories/?notice=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbQuery(
@@ -288,7 +292,7 @@ class admin_documents extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 
-		echo "/admin/documents/categories/?notice=".urlencode("Changes saved successfully!");
+		$this->forward("/admin/documents/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbQuery(
