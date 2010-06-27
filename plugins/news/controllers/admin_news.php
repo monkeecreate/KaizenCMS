@@ -66,33 +66,31 @@ class admin_news extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		$sID = $this->dbQuery(
-			"INSERT INTO `{dbPrefix}news`"
-				." (`title`, `short_content`, `content`, `datetime_show`, `datetime_kill`, `use_kill`, `sticky`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
-				." VALUES"
-				." ("
-					.$this->dbQuote($_POST["title"], "text")
-					.", ".$this->dbQuote(substr($_POST["short_content"], 0, $oNews->shortContentCharacters), "text")
-					.", ".$this->dbQuote($_POST["content"], "text")
-					.", ".$this->dbQuote($datetime_show, "integer")
-					.", ".$this->dbQuote($datetime_kill, "integer")
-					.", ".$this->boolCheck($_POST["use_kill"])
-					.", ".$this->boolCheck($_POST["sticky"])
-					.", ".$this->boolCheck($_POST["active"])
-					.", ".$this->dbQuote(time(), "integer")
-					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->dbQuote(time(), "integer")
-					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-				.")"
-			,"insert"
+		$sID = $this->dbInsert(
+			"news",
+			array(
+				"title" => $_POST["title"]
+				,"short_content" => (string)substr($_POST["short_content"], 0, $oNews->shortContentCharacters)
+				,"content" => $_POST["content"]
+				,"datetime_show" => $datetime_show
+				,"datetime_kill" => $datetime_kill
+				,"use_kill" => $this->boolCheck($_POST["use_kill"])
+				,"sticky" => $this->boolCheck($_POST["sticky"])
+				,"active" => $this->boolCheck($_POST["active"])
+				,"created_datetime" => time()
+				,"created_by" => $_SESSION["admin"]["userid"]
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			)
 		);
 		
 		foreach($_POST["categories"] as $sCategory) {
-			$this->dbQuery(
-				"INSERT INTO `{dbPrefix}news_categories_assign`"
-					." (`articleid`, `categoryid`)"
-					." VALUES"
-					." (".$sID.", ".$sCategory.")"
+			$sID = $this->dbInsert(
+				"news_categories_assign",
+				array(
+					"articleid" => $sID
+					,"categoryid" => $sCategory
+				)
 			);
 		}
 		
@@ -176,31 +174,31 @@ class admin_news extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		$this->dbQuery(
-			"UPDATE `{dbPrefix}news` SET"
-				." `title` = ".$this->dbQuote($_POST["title"], "text")
-				.", `short_content` = ".$this->dbQuote($_POST["short_content"], "text")
-				.", `content` = ".$this->dbQuote($_POST["content"], "text")
-				.", `datetime_show` = ".$this->dbQuote($datetime_show, "integer")
-				.", `datetime_kill` = ".$this->dbQuote($datetime_kill, "integer")
-				.", `use_kill` = ".$this->boolCheck($_POST["use_kill"])
-				.", `sticky` = ".$this->boolCheck($_POST["sticky"])
-				.", `active` = ".$this->boolCheck($_POST["active"])
-				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
-				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+		$this->dbUpdate(
+			"news",
+			array(
+				"title" => $_POST["title"]
+				,"short_content" => $_POST["short_content"]
+				,"content" => $_POST["content"]
+				,"datetime_show" => $datetime_show
+				,"datetime_kill" => $datetime_kill
+				,"use_kill" => $this->boolCheck($_POST["use_kill"])
+				,"sticky" => $this->boolCheck($_POST["sticky"])
+				,"active" => $this->boolCheck($_POST["active"])
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			),
+			$_POST["id"]
 		);
 		
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}news_categories_assign`"
-				." WHERE `articleid` = ".$this->dbQuote($_POST["id"], "integer")
-		);
+		$this->dbDelete("news_categories_assign", $_POST["id"], "articleid");
 		foreach($_POST["categories"] as $sCategory) {
-			$this->dbQuery(
-				"INSERT INTO `{dbPrefix}news_categories_assign`"
-					." (`articleid`, `categoryid`)"
-					." VALUES"
-					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
+			$this->dbInsert(
+				"news_categories_assign",
+				array(
+					"articleid" => $_POST["id"]
+					,"categoryid" => $sCategory
+				)
 			);
 		}
 		
@@ -220,32 +218,12 @@ class admin_news extends adminController
 	function delete() {
 		$oNews = $this->loadModel("news");
 		
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}news`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-		);
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}news_categories_assign`"
-				." WHERE `articleid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-		);
+		$this->dbDelete("news", $this->_urlVars->dynamic["id"]);
+		$this->dbDelete("news_categories_assign", $this->_urlVars->dynamic["id"], "articleid");
 		
 		@unlink($this->_settings->rootPublic.substr($oNews->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 		
 		$this->forward("/admin/news/?notice=".urlencode("Article removed successfully!"));
-	}
-	function image_upload() {
-		$oNews = $this->loadModel("news");
-		
-		$aArticle = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}news`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"row"
-		);
-
-		$this->tplAssign("aArticle", $aArticle);
-		$this->tplAssign("minWidth", $oNews->imageMinWidth);
-		$this->tplAssign("minHeight", $oNews->imageMinHeight);
-		$this->tplDisplay("admin/image/upload.tpl");
 	}
 	function image_upload_s() {
 		$oNews = $this->loadModel("news");
@@ -264,16 +242,18 @@ class admin_news extends adminController
 				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 			}
 
-			if(move_uploaded_file($_FILES["image"]["tmp_name"], $sFile)) {				
-				$this->dbQuery(
-					"UPDATE `{dbPrefix}news` SET"
-						." `photo_x1` = 0"
-						.", `photo_y1` = 0"
-						.", `photo_x2` = ".$oNews->imageMinWidth
-						.", `photo_y2` = ".$oNews->imageMinHeight
-						.", `photo_width` = ".$oNews->imageMinWidth
-						.", `photo_height` = ".$oNews->imageMinHeight
-						." WHERE `id` = ".$_POST["id"]
+			if(move_uploaded_file($_FILES["image"]["tmp_name"], $sFile)) {
+				$this->dbUpdate(
+					"news",
+					array(
+						"photo_x1" => 0
+						,"photo_y1" => 0
+						,"photo_x2" => $oNews->imageMinWidth
+						,"photo_y2" => $oNews->imageMinHeight
+						,"photo_width" => $oNews->imageMinWidth
+						,"photo_height" => $oNews->imageMinHeight
+					),
+					$_POST["id"]
 				);
 
 				$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
@@ -300,18 +280,20 @@ class admin_news extends adminController
 		$this->tplAssign("previewWidth", $sPreviewWidth);
 		$this->tplAssign("previewHeight", $sPreviewHeight);
 
-		$this->tplDisplay("admin/image/edit.tpl");
+		$this->tplDisplay("admin/image.tpl");
 	}
 	function image_edit_s() {
-		$this->dbQuery(
-			"UPDATE `{dbPrefix}news` SET"
-				." photo_x1 = ".$this->dbQuote($_POST["x1"], "integer")
-				.", photo_y1 = ".$this->dbQuote($_POST["y1"], "integer")
-				.", photo_x2 = ".$this->dbQuote($_POST["x2"], "integer")
-				.", photo_y2 = ".$this->dbQuote($_POST["y2"], "integer")
-				.", photo_width = ".$this->dbQuote($_POST["width"], "integer")
-				.", photo_height = ".$this->dbQuote($_POST["height"], "integer")
-				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+		$this->dbUpdate(
+			"news",
+			array(
+				"photo_x1" => $_POST["x1"]
+				,"photo_y1" => $_POST["y1"]
+				,"photo_x2" => $_POST["x2"]
+				,"photo_y2" => $_POST["y2"]
+				,"photo_width" => $_POST["width"]
+				,"photo_height" => $_POST["height"]
+			),
+			$_POST["id"]
 		);
 
 		$this->forward("/admin/news/?notice=".urlencode("Article updated."));
@@ -319,15 +301,17 @@ class admin_news extends adminController
 	function image_delete() {
 		$oNews = $this->loadModel("news");
 		
-		$this->dbQuery(
-			"UPDATE `{dbPrefix}news` SET"
-				." photo_x1 = 0"
-				.", photo_y1 = 0"
-				.", photo_x2 = 0"
-				.", photo_y2 = 0"
-				.", photo_width = 0"
-				.", photo_height = 0"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+		$this->dbUpdate(
+			"news",
+			array(
+				"photo_x1" => 0
+				,"photo_y1" => 0
+				,"photo_x2" => 0
+				,"photo_y2" => 0
+				,"photo_width" => 0
+				,"photo_height" => 0
+			),
+			$this->_urlVars->dynamic["id"]
 		);
 		
 		@unlink($this->_settings->rootPublic.substr($oNews->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
@@ -339,48 +323,34 @@ class admin_news extends adminController
 		
 		$_SESSION["admin"]["admin_news_categories"] = null;
 		
-		$aCategories = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}news_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $aCategories);
+		$this->tplAssign("aCategories", $oNews->getCategories());
 		$this->tplAssign("aCategoryEdit", $oNews->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
-		$this->dbQuery(
-			"INSERT INTO `{dbPrefix}news_categories`"
-				." (`name`)"
-				." VALUES"
-				." ("
-				.$this->dbQuote($_POST["name"], "text")
-				.")"
-			,"insert"
+		$this->dbInsert(
+			"news_categories",
+			array(
+				"name" => $_POST["name"]
+			)
 		);
-		
 
 		$this->forward("/admin/news/categories/?notice=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
-		$this->dbQuery(
-			"UPDATE `{dbPrefix}news_categories` SET"
-				." `name` = ".$this->dbQuote($_POST["name"], "text")
-				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+		$this->dbUpdate(
+			"news_categories",
+			array(
+				"name" => $_POST["name"]
+			),
+			$_POST["id"]
 		);
 
 		$this->forward("/admin/news/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}news_categories`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-		);
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}news_categories_assign`"
-				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-		);
+		$this->dbDelete("news_categories", $this->_urlVars->dynamic["id"]);
+		$this->dbDelete("news_categories_assign", $this->_urlVars->dynamic["id"], "categoryid");
 
 		$this->forward("/admin/news/categories/?notice=".urlencode("Category removed successfully!"));
 	}

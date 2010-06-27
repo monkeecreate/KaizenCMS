@@ -30,7 +30,7 @@
 					{/foreach}
 				</ul>
 			</fieldset><br />
-			<input type="submit" name="next" value="Add Article">
+			<input type="submit" name="submit" value="Save Changes">
 			<a class="cancel" href="/admin/news/" title="Cancel">Cancel</a>
 			<input type="hidden" name="id" value="{$aArticle.id}">
 		</section>
