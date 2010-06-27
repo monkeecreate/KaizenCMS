@@ -78,7 +78,7 @@ $aMenuAdmin = array(
 			"link" => "/admin/promos/"
 		),
 		array(
-			"text" => "Promo Positions",
+			"text" => "Positions",
 			"link" => "/admin/promos/positions/",
 			"type" => "super"
 		)

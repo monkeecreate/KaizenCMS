@@ -66,10 +66,17 @@ class promos_model extends appModel
 		
 		return $aPositions;
 	}
-	function getPosition($sTag) {
+	function getPosition($sTag = null, $sId = null) {
+		if(!empty($sId))
+			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
+		elseif(!empty($sTag))
+			$sWhere = " WHERE `tag` LIKE ".$this->dbQuote($sTag, "text");
+		else
+			return false;
+		
 		$aPosition = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}promos_positions`"
-				." WHERE `tag` = ".$this->dbQuote($sTag, "text")
+				.$sWhere
 			,"row"
 		);
 		

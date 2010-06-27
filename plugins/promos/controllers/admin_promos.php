@@ -172,6 +172,7 @@ class admin_promos extends adminController
 		}
 		
 		$this->tplAssign("aPositions", $oPromos->getPositions());
+		$this->tplAssign("imageFolder", $oPromos->imageFolder);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
@@ -288,11 +289,8 @@ class admin_promos extends adminController
 		$_SESSION["admin"]["admin_promo_positions"] = null;
 		
 		$this->tplAssign("aPositions", $oPromos->getPositions());
+		$this->tplAssign("aPositionEdit", $oPromos->getPosition(null, $_GET["position"]));
 		$this->tplDisplay("admin/positions/index.tpl");
-	}
-	function positions_add() {	
-		$this->tplAssign("aPosition", $_SESSION["admin"]["admin_promo_positions"]);
-		$this->tplDisplay("admin/positions/add.tpl");
 	}
 	function positions_add_s() {
 		if(empty($_POST["name"])) {
@@ -321,23 +319,6 @@ class admin_promos extends adminController
 		$_SESSION["admin"]["admin_promo_positions"] = null;
 		
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Position created successfully!"));
-	}
-	function positions_edit() {
-		if(!empty($_SESSION["admin"]["admin_promo_positions"])) {	
-			$aPosition = $_SESSION["admin"]["admin_promo_positions"];
-			
-			$this->tplAssign("aPosition", $aPosition);
-		} else {
-			$aPosition = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}promos_positions`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-				,"row"
-			);
-		
-			$this->tplAssign("aPosition", $aPosition);
-		}
-		
-		$this->tplDisplay("admin/positions/edit.tpl");
 	}
 	function positions_edit_s() {
 		if(empty($_POST["name"])) {
