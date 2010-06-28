@@ -58,40 +58,39 @@ class admin_promos extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		$sID = $this->dbQuery(
-			"INSERT INTO `{dbPrefix}promos`"
-				." (`name`, `link`, `datetime_show`, `datetime_kill`, `use_kill`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
-				." VALUES"
-				." ("
-					.$this->dbQuote($_POST["name"], "text")
-					.", ".$this->dbQuote($_POST["link"], "text")
-					.", ".$this->dbQuote($datetime_show, "integer")
-					.", ".$this->dbQuote($datetime_kill, "integer")
-					.", ".$this->boolCheck($_POST["use_kill"])
-					.", ".$this->boolCheck($_POST["active"])
-					.", ".$this->dbQuote(time(), "integer")
-					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->dbQuote(time(), "integer")
-					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-				.")"
-			,"insert"
+		$sID = $this->dbInsert(
+			"promos",
+			array(
+				"name" => $_POST["name"]
+				,"link" => $_POST["link"]
+				,"datetime_show" => $datetime_show
+				,"datetime_kill" => $datetime_kill
+				,"use_kill" => $this->boolCheck($_POST["use_kill"])
+				,"active" => $this->boolCheck($_POST["active"])
+				,"created_datetime" => time()
+				,"created_by" => $_SESSION["admin"]["userid"]
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			)
 		);
 		
 		foreach($_POST["positions"] as $sPosition) {
-			$this->dbQuery(
-				"INSERT INTO `{dbPrefix}promos_positions_assign`"
-					." (`promoid`, `positionid`)"
-					." VALUES"
-					." (".$sID.", ".$sPosition.")"
+			$this->dbInsert(
+				"promos_positions_assign",
+				array(
+					"promoid" => $sID,
+					"positionid" => $sPosition
+				)
 			);
 		}
 
 		if($_FILES["promo"]["error"] == 1) {
-			$this->dbQuery(
-				"UPDATE `{dbPrefix}promos` SET"
-					." `active` = 0"
-					." WHERE `id` = ".$this->dbQuote($sID, "integer")
-				,"update"
+			$this->dbUpdate(
+				"promos",
+				array(
+					"active" => 0
+				),
+				$sID
 			);
 			
 			$this->forward("/admin/promos/?error=".urlencode("Promo file size was too large!"));
@@ -101,18 +100,20 @@ class admin_promos extends adminController
 			$upload_file = $sID.".".strtolower($file_ext);
 		
 			if(move_uploaded_file($_FILES["promo"]["tmp_name"], $upload_dir.$upload_file)) {
-				$this->dbQuery(
-					"UPDATE `{dbPrefix}promos` SET"
-						." `promo` = ".$this->dbQuote($upload_file, "text")
-						." WHERE `id` = ".$this->dbQuote($sID, "integer")
-					,"update"
+				$this->dbUpdate(
+					"promos",
+					array(
+						"promo" => $upload_file
+					),
+					$sID
 				);
 			} else {
-				$this->dbQuery(
-					"UPDATE `{dbPrefix}promos` SET"
-						." `active` = 0"
-						." WHERE `id` = ".$this->dbQuote($sID, "integer")
-					,"update"
+				$this->dbUpdate(
+					"promos",
+					array(
+						"active" => 0
+					),
+					$sID
 				);
 				
 				$this->forward("/admin/promos/?notice=".urlencode("Failed to upload file!"));
@@ -192,41 +193,40 @@ class admin_promos extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
-		$this->dbQuery(
-			"UPDATE `{dbPrefix}promos` SET"
-				." `name` = ".$this->dbQuote($_POST["name"], "text")
-				.", `link` = ".$this->dbQuote($_POST["link"], "text")
-				.", `datetime_show` = ".$this->dbQuote($datetime_show, "integer")
-				.", `datetime_kill` = ".$this->dbQuote($datetime_kill, "integer")
-				.", `use_kill` = ".$this->boolCheck($_POST["use_kill"])
-				.", `active` = ".$this->boolCheck($_POST["active"])
-				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
-				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"update"
+		$this->dbUpdate(
+			"promos",
+			array(
+				"name" => $_POST["name"]
+				,"link" => $_POST["link"]
+				,"datetime_show" => $datetime_show
+				,"datetime_kill" => $datetime_kill
+				,"use_kill" => $this->boolCheck($_POST["use_kill"])
+				,"active" => $this->boolCheck($_POST["active"])
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			),
+			$_POST["id"]
 		);
 		
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}promos_positions_assign`"
-				." WHERE `promoid` = ".$this->dbQuote($_POST["id"], "integer")
-			,"delete"
-		);
+		$this->dbDelete("promos_positions_assign", $_POST["id"], "promoid");
 		foreach($_POST["positions"] as $sPosition) {
-			$this->dbQuery(
-				"INSERT INTO `{dbPrefix}promos_positions_assign`"
-					." (`promoid`, `positionid`)"
-					." VALUES"
-					." (".$this->dbQuote($_POST["id"], "integer").", ".$sPosition.")"
+			$this->dbInsert(
+				"promos_positions_assign",
+				array(
+					"promoid" => $_POST["id"],
+					"positionid" => $sPosition
+				)
 			);
 		}
 		
 		if(!empty($_FILES["promo"]["name"])) {
 			if($_FILES["promo"]["error"] == 1) {
-				$this->dbQuery(
-					"UPDATE `{dbPrefix}promos` SET"
-						." `active` = 0"
-						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"update"
+				$this->dbUpdate(
+					"promos",
+					array(
+						"active" => 0
+					),
+					$_POST["id"]
 				);
 				
 				$this->forward("/admin/promos/?notice=".urlencode("Promo file size was too large!"));
@@ -243,16 +243,20 @@ class admin_promos extends adminController
 				@unlink($upload_dir.$sPromo);
 			
 				if(move_uploaded_file($_FILES["promo"]["tmp_name"], $upload_dir.$upload_file)) {
-					$this->dbQuery(
-						"UPDATE `{dbPrefix}promos` SET"
-							." `promo` = ".$this->dbQuote($upload_file, "text")
-							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+					$this->dbUpdate(
+						"promos",
+						array(
+							"promo" => $upload_file
+						),
+						$_POST["id"]
 					);
 				} else {
-					$this->dbQuery(
-						"UPDATE `{dbPrefix}promos` SET"
-							." `active` = 0"
-							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+					$this->dbUpdate(
+						"promos",
+						array(
+							"active" => 0
+						),
+						$_POST["id"]
 					);
 					
 					$this->forward("/admin/promos/?notice=".urlencode("Failed to upload file!"));
@@ -269,14 +273,8 @@ class admin_promos extends adminController
 		
 		$aPromo = $oPromos->getPromo(null, null, null, $this->_urlVars->dynamic["id"]);
 		
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}promos`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-		);
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}promos_positions_assign`"
-				." WHERE `promoid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-		);
+		$this->dbDelete("promos", $this->_urlVars->dynamic["id"]);
+		$this->dbDelete("promos_positions_assign", $this->_urlVars->dynamic["id"], "promoid");
 		
 		@unlink($this->_settings->rootPublic.substr($oPromos->imageFolder, 1).$aPromo["promo"]);
 		
@@ -303,17 +301,14 @@ class admin_promos extends adminController
 		else
 			$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["tag"])))));
 		
-		$sID = $this->dbQuery(
-			"INSERT INTO `{dbPrefix}promos_positions`"
-				." (`tag`, `name`, `promo_width`, `promo_height`)"
-				." VALUES"
-				." ("
-					.$this->dbQuote($sTag, "text")
-					.", ".$this->dbQuote($_POST["name"], "text")
-					.", ".$this->dbQuote($_POST["promo_width"], "integer")
-					.", ".$this->dbQuote($_POST["promo_height"], "integer")
-				.")"
-			,"insert"
+		$sID = $this->dbInsert(
+			"promos_positions",
+			array(
+				"tag" => $sTag
+				,"name" => $_POST["name"]
+				,"promo_width" => $_POST["promo_width"]
+				,"promo_height" => $_POST["promo_height"]
+			)
 		);
 		
 		$_SESSION["admin"]["admin_promo_positions"] = null;
@@ -331,14 +326,15 @@ class admin_promos extends adminController
 		else
 			$sTag = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["tag"])))));
 		
-		$this->dbQuery(
-			"UPDATE `{dbPrefix}promos_positions` SET"
-				." `tag` = ".$this->dbQuote($sTag, "text")
-				.", `name` = ".$this->dbQuote($_POST["name"], "text")
-				.", `promo_width` = ".$this->dbQuote($_POST["promo_width"], "integer")
-				.", `promo_height` = ".$this->dbQuote($_POST["promo_height"], "integer")
-				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"admin->promos->positions->edit"
+		$this->dbUpdate(
+			"promos_positions",
+			array(
+				"tag" => $sTag
+				,"name" => $_POST["name"]
+				,"promo_width" => $_POST["promo_width"]
+				,"promo_height" => $_POST["promo_height"]
+			),
+			$_POST["id"]
 		);
 		
 		$_SESSION["admin"]["admin_promo_positions"] = null;
@@ -346,10 +342,8 @@ class admin_promos extends adminController
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function positions_delete() {
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}promos_positions`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-		);
+		$this->dbDelete("promos_positions", $this->_urlVars->dynamic["id"]);
+		$this->dbDelete("promos_positions_assign", $this->_urlVars->dynamic["id"], "positionid");
 		
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Position removed successfully!"));
 	}
