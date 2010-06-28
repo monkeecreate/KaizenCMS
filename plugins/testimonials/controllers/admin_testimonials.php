@@ -43,29 +43,27 @@ class admin_testimonials extends adminController
 			$this->forward("/admin/testimonials/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$sID = $this->dbQuery(
-			"INSERT INTO `{dbPrefix}testimonials`"
-				." (`name`, `sub_name`, `text`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
-				." VALUES"
-				." ("
-					.$this->dbQuote($_POST["name"], "text")
-					.", ".$this->dbQuote($_POST["sub_name"], "text")
-					.", ".$this->dbQuote($_POST["text"], "text")
-					.", ".$this->boolCheck($_POST["active"])
-					.", ".$this->dbQuote(time(), "integer")
-					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->dbQuote(time(), "integer")
-					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-				.")"
-			,"insert"
+		$sID = $this->dbInsert(
+			"testimonials",
+			array(
+				"name" => $_POST["name"]
+				,"sub_name" => $_POST["sub_name"]
+				,"text" => $_POST["text"]
+				,"active" => $this->boolCheck($_POST["active"])
+				,"created_datetime" => time()
+				,"created_by" => $_SESSION["admin"]["userid"]
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			)
 		);
 		
 		foreach($_POST["categories"] as $sCategory) {
-			$this->dbQuery(
-				"INSERT INTO `{dbPrefix}testimonials_categories_assign`"
-					." (`testimonialid`, `categoryid`)"
-					." VALUES"
-					." (".$sID.", ".$sCategory.")"
+			$this->dbInsert(
+				"testimonials_categories_assign",
+				array(
+					"testimonialid" => $sID,
+					"categoryid" => $sCategory
+				)
 			);
 		}
 		
@@ -125,29 +123,27 @@ class admin_testimonials extends adminController
 			$this->forward("/admin/testimonials/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$this->dbQuery(
-			"UPDATE `{dbPrefix}testimonials` SET"
-				." `name` = ".$this->dbQuote($_POST["name"], "text")
-				.", `sub_name` = ".$this->dbQuote($_POST["sub_name"], "text")
-				.", `text` = ".$this->dbQuote($_POST["text"], "text")
-				.", `active` = ".$this->boolCheck($_POST["active"])
-				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
-				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"update"
+		$this->dbUpdate(
+			"testimonials",
+			array(
+				"name" => $_POST["name"]
+				,"sub_name" => $_POST["sub_name"]
+				,"text" => $_POST["text"]
+				,"active" => $this->boolCheck($_POST["active"])
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			),
+			$_POST["id"]
 		);
 		
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}testimonials_categories_assign`"
-				." WHERE `testimonialid` = ".$this->dbQuote($_POST["id"], "integer")
-			,"update"
-		);
+		$this->dbDelete("testimonials_categories_assign", $_POST["id"], "testimonialid");
 		foreach($_POST["categories"] as $sCategory) {
-			$this->dbQuery(
-				"INSERT INTO `{dbPrefix}testimonials_categories_assign`"
-					." (`testimonialid`, `categoryid`)"
-					." VALUES"
-					." (".$this->dbQuote($_POST["id"], "integer").", ".$sCategory.")"
+			$this->dbInsert(
+				"testimonials_categories_assign",
+				array(
+					"testimonialid" => $_POST["id"],
+					"categoryid" => $sCategory
+				)
 			);
 		}
 		
@@ -156,16 +152,8 @@ class admin_testimonials extends adminController
 		$this->forward("/admin/testimonials/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}testimonials`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"delete"
-		);
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}testimonials_categories_assign`"
-				." WHERE `testimonialid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"delete"
-		);
+		$this->dbDelete("testimonials", $this->_urlVars->dynamic["id"]);
+		$this->dbDelete("testimonials_categories_assign", $this->_urlVars->dynamic["id"], "testimonialid");
 		
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial removed successfully!"));
 	}
@@ -179,39 +167,29 @@ class admin_testimonials extends adminController
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
-		$this->dbQuery(
-			"INSERT INTO `{dbPrefix}testimonials_categories`"
-				." (`name`)"
-				." VALUES"
-				." ("
-				.$this->dbQuote($_POST["name"], "text")
-				.")"
-			,"insert"
+		$this->dbInsert(
+			"testimonials_categories",
+			array(
+				"name" => $_POST["name"]
+			)
 		);
 
 		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
-		$this->dbQuery(
-			"UPDATE `{dbPrefix}testimonials_categories` SET"
-				." `name` = ".$this->dbQuote($_POST["name"], "text")
-				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"update"
+		$this->dbUpdate(
+			"testimonials_categories",
+			array(
+				"name" => $_POST["name"]
+			),
+			$_POST["id"]
 		);
 
 		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}testimonials_categories`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"delete"
-		);
-		$this->dbQuery(
-			"DELETE FROM `{dbPrefix}testimonials_categories_assign`"
-				." WHERE `categoryid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"delete"
-		);
+		$this->dbDelete("testimonials_categories", $this->_urlVars->dynamic["id"]);
+		$this->dbDelete("testimonials_categories_assign", $this->_urlVars->dynamic["id"], "categoryid");
 
 		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Category removed successfully!"));
 	}
