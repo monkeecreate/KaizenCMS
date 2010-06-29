@@ -39,6 +39,9 @@ class appController
 	### Functions ####################
 	function forward($url, $type = "") {
 		switch($type) {
+			case "301":
+				header('HTTP/1.1 301 Moved Permanentl');
+				break;
 			case "403":
 				header('HTTP/1.1 403 Forbidden');
 				break;
@@ -210,35 +213,35 @@ class appController
 		
 		return $this->_db->lastInsertID();
 	}
-	function dbUpdate($sTable, $aData, $sId, $sIdField = "id") {
+	function dbUpdate($sTable, $aData, $sId, $sIdField = "id", $sIdType = "integer") {
 		$this->_db->loadModule('Extended');
 		
 		$oResult = $this->_db->extended->autoExecute(
 			$this->_settings->dbPrefix.$sTable,
 			$aData,
 			MDB2_AUTOQUERY_UPDATE,
-			$sIdField." = ".$this->dbQuote($sId, "integer")
+			$sIdField." = ".$this->dbQuote($sId, $sIdType)
 		);
 		
 		if(PEAR::isError($oResult))
 			$this->sendError("dbUpdate", "dberror", $oResult, debug_backtrace());
 		
-		return true;
+		return $oResult;
 	}
-	function dbDelete($sTable, $sId, $sIdField = "id") {
+	function dbDelete($sTable, $sId, $sIdField = "id", $sIdType = "integer") {
 		$this->_db->loadModule('Extended');
 		
 		$oResult = $this->_db->extended->autoExecute(
 			$this->_settings->dbPrefix.$sTable,
 			null,
 			MDB2_AUTOQUERY_DELETE,
-			$sIdField." = ".$this->dbQuote($sId, "integer")
+			$sIdField." = ".$this->dbQuote($sId, $sIdType)
 		);
 		
 		if(PEAR::isError($oResult))
 			$this->sendError("dbDelete", "dberror", $oResult, debug_backtrace());
 		
-		return true;
+		return $oResult;
 	}
 	##################################
 	
