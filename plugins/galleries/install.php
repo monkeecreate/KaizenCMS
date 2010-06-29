@@ -22,6 +22,7 @@ $aDatabases = array(
 			"description" => array("type" => "clob"),
 			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"active" => array("type" => "boolean"),
 			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
@@ -83,7 +84,7 @@ $aMenuAdmin = array(
 	"title" => "Photo Galleries",
 	"menu" => array(
 		array(
-			"text" => "Photo Galleries",
+			"text" => "Galleries",
 			"link" => "/admin/galleries/"
 		),
 		array(

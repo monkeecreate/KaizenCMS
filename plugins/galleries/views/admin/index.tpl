@@ -1,83 +1,83 @@
-{include file="inc_header.tpl" page_title="Galleries" menu="galleries"}
+{include file="inc_header.tpl" page_title="Galleries" menu="galleries" page_style="fullContent"}
+{assign var=subMenu value="Galleries"}
 {head}
-<script language="JavaScript" type="text/javascript" src="/scripts/jTPS/jTPS.js"></script>
-<link rel="stylesheet" type="text/css" href="/scripts/jTPS/jTPS.css">
+<script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
+<script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
 <script type="text/javascript">
 	$(function(){ldelim}
-		$('.dataTable').jTPS({ldelim}
-			perPages:[10,15,20],
-			scrollStep: 1
+		$('.dataTable').dataTable({ldelim}
+			/* DON'T CHANGE */
+			"sDom": 'rt<"dataTable-footer"flpi<"clear">',
+			"sPaginationType": "scrolling",
+			"bLengthChange": true,
+			/* CAN CHANGE */
+			"bStateSave": true, //whether to save a cookie with the current table state
+			"iDisplayLength": 10, //how many items to display on each page
+			"aaSorting": [[0, "asc"]] //which column to sort by (0-X)
 		{rdelim});
 	{rdelim});
 </script>
 {/head}
-<form name="category" method="get" action="/admin/galleries/" class="float-right" style="margin-bottom:10px">
-	View by category: <select name="category">
-		<option value="">- All Categories -</option>
-		{foreach from=$aCategories item=aCategory}
-			<option value="{$aCategory.id}"{if $aCategory.id == $sCategory} selected="selected"{/if}>{$aCategory.name}</option>
+
+<section id="content" class="content">
+	<header>
+		<h2>Manage Galleries</h2>
+		<a href="/admin/galleries/add/" title="Add Gallery" class="button">Add Gallery &raquo;</a>
+		
+		{foreach from=$aAdminFullMenu item=aMenu key=k}
+			{if $k == "galleries"}
+				{if $aMenu.menu|@count gt 1}
+					<ul class="pageTabs">
+						{foreach from=$aMenu.menu item=aItem}
+							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+						{/foreach}
+					</ul>
+				{/if}
+			{/if}
 		{/foreach}
-	</select>
-	<script type="text/javascript">
-	$(function(){ldelim}
-		$('select[name=category]').change(function(){ldelim}
-			$('form[name=category]').submit();
-		{rdelim});
-	{rdelim});
-	</script>
-</form>
-<div class="clear"></div>
-<table class="dataTable">
-	<thead>
-		<tr>
-			<th sort="name">Name</th>
-			<th sort="photos">Photos</td>
-			<th>Order</td>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach from=$aGalleries item=aGallery}
+	</header>
+	
+	<table class="dataTable">
+		<thead>
 			<tr>
-				<td>{$aGallery.name|clean_html}</td>
-				<td class="small center">{$aGallery.photos}</td>
-				<td class="small center">
-					{if $aGallery.sort_order != 1}
-						<a href="/admin/galleries/sort/{$aGallery.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png"></a>
-					{else}
-						<img src="/images/blank.gif" style="width:16px;height:16px;">
-					{/if}
-					{if $aGallery.sort_order != $maxsort}
-						<a href="/admin/galleries/sort/{$aGallery.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png"></a>
-					{else}
-						<img src="/images/blank.gif" style="width:16px;height:16px;">
-					{/if}
-				</td>
-				<td class="small center border-end">
-					<a href="/admin/galleries/{$aGallery.id}/photos/" title="Manage Gallery Photos">
-						<img src="/images/admin/icons/pictures.png">
-					</a>
-					<a href="/admin/galleries/edit/{$aGallery.id}/" title="Edit Gallery">
-						<img src="/images/admin/icons/pencil.png">
-					</a>
-					<a href="/admin/galleries/delete/{$aGallery.id}/"
-						onclick="return confirm_('Are you sure you would like to delete this gallery?');"
-						title="Delete Gallery">
-						<img src="/images/admin/icons/bin_closed.png">
-					</a>
-				</td>
+				<th class="empty" style="width:30px !important;">&nbsp;</th>
+				<th>Name</th>
+				<th>Photos</td>
+				<th></th>
 			</tr>
-		{/foreach}
-	</tbody>
-	<tfoot class="nav">
-		<tr>
-			<td colspan="4">
-				<div class="pagination"></div>
-				<div class="paginationTitle">Page</div>
-				<div class="selectPerPage"></div>
-				<div class="status"></div>
-			</td>
-		</tr>
-	</tfoot>
-</table>
+		</thead>
+		<tbody>
+			{foreach from=$aGalleries item=aGallery}
+				<tr>
+					<td style="width:30px !important;">
+						{if $aGallery.sort_order != 1}
+							<a href="/admin/galleries/sort/{$aGallery.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png"></a>
+						{else}
+							<img src="/images/blank.gif" style="width:16px;height:16px;">
+						{/if}
+						{if $aGallery.sort_order != $maxsort}
+							<a href="/admin/galleries/sort/{$aGallery.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png"></a>
+						{else}
+							<img src="/images/blank.gif" style="width:16px;height:16px;">
+						{/if}
+					</td>
+					<td>{$aGallery.name|clean_html}</td>
+					<td class="center">{if !empty($aGallery.photos)}{$aGallery.photos}{else}No Photos{/if}</td>
+					<td class="center">
+						<a href="/admin/galleries/{$aGallery.id}/photos/" title="Manage Gallery Photos">
+							<img src="/images/admin/icons/pictures.png" alt="manage photos">
+						</a>
+						<a href="/admin/galleries/edit/{$aGallery.id}/" title="Edit Gallery">
+							<img src="/images/admin/icons/pencil.png" alt="edit gallery">
+						</a>
+						<a href="/admin/galleries/delete/{$aGallery.id}/"
+							onclick="return confirm_('Are you sure you would like to delete: {$aGallery.name|clean_html}?');"
+							title="Delete Gallery">
+							<img src="/images/admin/icons/bin_closed.png" alt="delete gallery">
+						</a>
+					</td>
+				</tr>
+			{/foreach}
+		</tbody>
+	</table>
 {include file="inc_footer.tpl"}

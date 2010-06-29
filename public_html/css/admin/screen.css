@@ -558,7 +558,7 @@ form input.text, form input.file {
 	width: 587px;
 }
 
-.halfContent form .sidebar input.text, .halfContent .sidebar form input.text {
+.halfContent form .sidebar input.text, .halfContent .sidebar form input.text, .halfContent form .sidebar textarea, .halfContent .sidebar form .textarea {
 	width: 215px;
 }
 
