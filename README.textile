@@ -8,6 +8,10 @@ The requirements are simple. Apache 2+ and PHP 5+. PEAR and Memcache are recomme
 
 * Keeping the directory structure upload the files to your server. Remember, upload them to the directory just outside your public_html. This is important to the setup. Be sure and double check that all hidden files and folders were also uploaded (might have to show hidden files if your OS is hiding them).
 
+* When moving the CMS be sure include the hidden folders. (.compiled, .pear, .smarty)
+
+* If your host/server does not use public_html to store the files, no problem. Just rename the public_html from the repository.
+
 * Inside the root folder (where you just uploaded the cms files) create a new directory: .compiled/
 Then create another directory inside the .compiled/ and name it: admin/
 Both directories should be writeable.

@@ -54,30 +54,29 @@ class admin_content extends adminController
 			$sTag = $sTempTag;
 		}
 		
-		$sID = $this->dbQuery(
-			"INSERT INTO `content`"
-				." (`tag`, `title`, `content`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
-				." VALUES"
-				." ("
-					.$this->dbQuote($sTag, "text")
-					.", ".$this->dbQuote($_POST["title"], "text")
-					.", ".$this->dbQuote($_POST["content"], "text")
-					.", ".$this->dbQuote(time(), "integer")
-					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->dbQuote(time(), "integer")
-					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-				.")"
-			,"insert"
+		$sID = $this->dbInsert(
+			"content",
+			array(
+				"tag" => $sTag
+				,"title" => $_POST["title"]
+				,"content" => $_POST["content"]
+				,"created_datetime" => time()
+				,"created_by" => $_SESSION["admin"]["userid"]
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			)
 		);
 		
 		if($this->superAdmin) {
-			$this->dbQuery(
-				"UPDATE `content` SET"
-					." `tag` = ".$this->dbQuote($sTag, "text")
-					.", `perminate` = ".$this->boolCheck($_POST["perminate"])
-					.", `module` = ".$this->boolCheck($_POST["module"])
-					.", `template` = ".$this->dbQuote($_POST["template"], "text")
-					." WHERE `id` = ".$this->dbQuote($sID, "integer")
+			$this->dbUpdate(
+				"content",
+				array(
+					"tag" => $sTag
+					,"perminate" => $this->boolCheck($_POST["perminate"])
+					,"module" => $this->boolCheck($_POST["module"])
+					,"template" => $_POST["template"]
+				),
+				$sID
 			);
 		}
 		
@@ -128,13 +127,15 @@ class admin_content extends adminController
 			$this->forward("/admin/content/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$this->dbQuery(
-			"UPDATE `content` SET"
-				." `title` = ".$this->dbQuote($_POST["title"], "text")
-				.", `content` = ".$this->dbQuote($_POST["content"], "text")
-				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
-				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+		$this->dbUpdate(
+			"content",
+			array(
+				"title" => $_POST["title"]
+				,"content" => $_POST["content"]
+				,"updated_datetime" =>time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			),
+			$_POST["id"]
 		);
 		
 		if($this->superAdmin) {
@@ -143,13 +144,15 @@ class admin_content extends adminController
 			else
 				$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,30);
 			
-			$this->dbQuery(
-				"UPDATE `content` SET"
-					." `tag` = ".$this->dbQuote($sTag, "text")
-					.", `perminate` = ".$this->boolCheck($_POST["perminate"])
-					.", `module` = ".$this->boolCheck($_POST["module"])
-					.", `template` = ".$this->dbQuote($_POST["template"], "text")
-					." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+			$this->dbUpdate(
+				"content",
+				array(
+					"tag" => $sTag
+					,"perminate" => $this->boolCheck($_POST["perminate"])
+					,"module" => $this->boolCheck($_POST["module"])
+					,"template" => $_POST["template"]
+				),
+				$_POST["id"]
 			);
 		}
 		
@@ -158,10 +161,7 @@ class admin_content extends adminController
 		$this->forward("/admin/content/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		$this->dbQuery(
-			"DELETE FROM `content`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-		);
+		$this->dbDelete("content", $this->_urlVars->dynamic["id"]);
 		
 		$this->forward("/admin/content/?notice=".urlencode("Page removed successfully!"));
 	}

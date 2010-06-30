@@ -38,10 +38,14 @@ class admin_settings extends adminController
 		include($this->_settings->root."helpers/Form.php");
 		foreach($aSettings as $aSetting) {
 			$oField = new Form($aSetting);	
-			$this->dbQuery(
-				"UPDATE `settings` SET"
-					." `value` = '".$oField->setting->save($_POST["settings"][$aSetting["tag"]])."'"
-					." WHERE `tag` = ".$this->dbQuote($aSetting["tag"], "text")
+			$this->dbUpdate(
+				"settings",
+				array(
+					"value" => $oField->setting->save($_POST["settings"][$aSetting["tag"]])
+				),
+				$aSetting["tag"],
+				"tag",
+				"text"
 			);
 		}
 		
@@ -77,7 +81,7 @@ class admin_settings extends adminController
 			);
 		}
 		
-		$aSettingGroups = $this->dbResults(
+		$aSettingGroups = $this->dbQuery(
 			"SELECT distinct `group` FROM `settings`"
 			,"all"
 		);
@@ -91,21 +95,18 @@ class admin_settings extends adminController
 			$this->forward("/admin/settings/manage/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$sID = $this->dbQuery(
-			"INSERT INTO `settings`"
-				." (`group`, `tag`, `title`, `text`, `value`, `type`, `sortOrder`, `active`)"
-				." VALUES"
-				." ("
-					.$this->dbQuote($_POST["group"], "text")
-					.", ".$this->dbQuote($_POST["tag"], "text")
-					.", ".$this->dbQuote($_POST["title"], "text")
-					.", ".$this->dbQuote($_POST["text"], "text")
-					.", ".$this->dbQuote($_POST["value"], "text")
-					.", ".$this->dbQuote($_POST["type"], "text")
-					.", ".$this->dbQuote($_POST["sortorder"], "text")
-					.", ".$this->boolCheck($_POST["active"])
-				.")"
-			,"insert"
+		$sID = $this->dbInsert(
+			"settings",
+			array(
+				"group" => $_POST["group"]
+				,"tag" => $_POST["tag"]
+				,"title" => $_POST["title"]
+				,"text" => $_POST["text"]
+				,"value" => $_POST["value"]
+				,"type" => $_POST["type"]
+				,"sortOrder" => $_POST["sortorder"]
+				,"active" => $this->boolCheck($_POST["active"])
+			)
 		);
 		
 		$_SESSION["admin"]["admin_settings"] = null;
@@ -130,7 +131,7 @@ class admin_settings extends adminController
 			$this->tplAssign("aSetting", $aSetting);
 		}
 		
-		$aSettingGroups = $this->dbResults(
+		$aSettingGroups = $this->dbQuery(
 			"SELECT distinct `group` FROM `settings`"
 			,"all"
 		);
@@ -144,16 +145,18 @@ class admin_settings extends adminController
 			$this->forward("/admin/settings/manage/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$this->dbQuery(
-			"UPDATE `settings` SET"
-				." `group` = ".$this->dbQuote($_POST["group"], "text")
-				.", `tag` = ".$this->dbQuote($_POST["tag"], "text")
-				.", `title` = ".$this->dbQuote($_POST["title"], "text")
-				.", `text` = ".$this->dbQuote($_POST["text"], "text")
-				.", `value` = ".$this->dbQuote($_POST["value"], "text")
-				.", `sortOrder` = ".$this->dbQuote($_POST["sortorder"], "text")
-				.", `active` = ".$this->boolCheck($_POST["active"])
-				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+		$this->dbUpdate(
+			"settings",
+			array(
+				"group" => $_POST["group"]
+				,"tag" => $_POST["tag"]
+				,"title" => $_POST["title"]
+				,"text" => $_POST["text"]
+				,"value" => $_POST["value"]
+				,"sortOrder" => $_POST["sortorder"]
+				,"active" => $this->boolCheck($_POST["active"])
+			),
+			$_POST["id"]
 		);
 		
 		$_SESSION["admin"]["admin_settings"] = null;
@@ -161,10 +164,7 @@ class admin_settings extends adminController
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function manageDelete() {
-		$this->dbQuery(
-			"DELETE FROM `settings`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-		);
+		$this->dbDelete("settings", $this->_urlVars->dynamic["id"]);
 		
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting removed successfully!"));
 	}
@@ -256,17 +256,17 @@ class admin_settings extends adminController
 		
 		// Settings
 		foreach($aSettings as $aSetting) {
-			$this->dbQuery("INSERT INTO `settings`"
-				."(`group`, `tag`, `title`, `text`, `value`, `type`, `sortOrder`)"
-				." VALUES ("
-				.$this->dbQuote($aSetting["group"], "text")
-				.", ".$this->dbQuote($aSetting["tag"], "text")
-				.", ".$this->dbQuote($aSetting["title"], "text")
-				.", ".$this->dbQuote($aSetting["text"], "text")
-				.", ".$this->dbQuote($aSetting["value"], "text")
-				.", ".$this->dbQuote($aSetting["type"], "text")
-				.", ".$this->dbQuote($aSetting["order"], "integer")
-				.")"
+			$this->dbInsert(
+				"settings",
+				array(
+					"group" => $aSetting["group"]
+					,"tag" => $aSetting["tag"]
+					,"title" => $aSetting["title"]
+					,"text" => $aSetting["text"]
+					,"value" => $aSetting["value"]
+					,"type" => $aSetting["type"]
+					,"sortOrder" => $aSetting["order"]
+				)
 			);
 		}
 		
@@ -278,24 +278,22 @@ class admin_settings extends adminController
 			);
 			$sOrder++;
 			
-			$this->dbQuery(
-				"INSERT INTO `menu_admin`"
-					."(`tag`, `sort_order`, `info`)"
-					." VALUES ("
-					.$this->dbQuote($sPlugin, "text")
-					.", ".$sOrder
-					.", ".$this->dbQuote(json_encode($aMenuAdmin), "text")
-					.")"
+			$this->dbInsert(
+				"menu_admin",
+				array(
+					"tag" => $sPlugin
+					,"sort_order" => $sOrder
+					,"info" => json_encode($aMenuAdmin)
+				)
 			);
 		}
 		
 		// Plugin Status
-		$this->dbQuery(
-			"INSERT INTO `plugins`"
-				." (`plugin`)"
-				." VALUES ("
-				.$this->dbQuote($sPlugin, "text")
-				.")"
+		$this->dbInsert(
+			"plugins",
+			array(
+				"plugin" => $sPlugin
+			)
 		);
 		
 		$this->forward("/admin/settings/plugins/?notice=".urlencode("Plugin installed successfully!"));
@@ -322,20 +320,14 @@ class admin_settings extends adminController
 		
 		// Settings
 		foreach($aSettings as $aSetting) {
-			$this->dbQuery(
-				"DELETE FROM `settings` WHERE `tag` = ".$this->dbQuote($aSetting["tag"], "text")
-			);
+			$this->dbDelete("settings", $aSetting["tag"], "tag");
 		}
 		
 		// Admin Menu
-		$this->dbQuery(
-			"DELETE FROM `menu_admin` WHERE `tag` = ".$this->dbQuote($sPlugin, "text")
-		);
+		$this->dbDelete("menu_admin", $sPlugin, "tag", "text");
 		
 		// Plugin status
-		$this->dbQuery(
-			"DELETE FROM `plugins` WHERE `plugin` = ".$this->dbQuote($sPlugin, "text")
-		);
+		$this->dbDelete("plugins", $sPlugin, "plugin", "text");
 		
 		$this->forward("/admin/settings/plugins/?notice=".urlencode("Plugin uninstalled successfully!"));
 	}
@@ -359,10 +351,14 @@ class admin_settings extends adminController
 	}
 	function admin_menu_s() {
 		foreach($_POST["admin_menu"] as $sSortOrder => $aMenuTag) {
-			$this->dbQuery(
-				"UPDATE `menu_admin` SET"
-					." `sort_order` = ".$this->dbQuote($sSortOrder, "integer")
-					." WHERE `tag` = ".$this->dbQuote($aMenuTag, "text")
+			$this->dbUpdate(
+				"menu_admin",
+				array(
+					"sort_order" => $sSortOrder
+				),
+				$aMenuTag,
+				"tag",
+				"text"
 			);
 		}
 		

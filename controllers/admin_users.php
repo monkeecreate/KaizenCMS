@@ -50,33 +50,29 @@ class admin_users extends adminController
 			$this->forward("/admin/users/add/?error=".urlencode("Please enter a valid email address."));
 		}
 		
-		$sID = $this->dbQuery(
-			"INSERT INTO `users`"
-				." (`username`, `password`, `fname`, `lname`, `email_address`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
-				." VALUES"
-				." ("
-					.$this->dbQuote($_POST["username"], "text")
-					.", ".$this->dbQuote(md5($_POST["password"]), "text")
-					.", ".$this->dbQuote($_POST["fname"], "text")
-					.", ".$this->dbQuote($_POST["lname"], "text")
-					.", ".$this->dbQuote($_POST["email_address"], "text")
-					.", ".$this->dbQuote(time(), "integer")
-					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-					.", ".$this->dbQuote(time(), "integer")
-					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-				.")"
-			,"insert"
+		$sID = $this->dbInsert(
+			"users",
+			array(
+				"username" => $_POST["username"]
+				,"password" => md5($_POST["password"])
+				,"fname" => $_POST["fname"]
+				,"lname" => $_POST["lname"]
+				,"email_address" => $_POST["email_address"]
+				,"created_datetime" => time()
+				,"created_by" => $_SESSION["admin"]["userid"]
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			)
 		);
 		
 		if(!empty($_POST["privileges"])) {
 			foreach($_POST["privileges"] as $sPrivilege) {
-				$this->dbQuery(
-					"INSERT INTO `users_privileges`"
-						." (`userid`, `menu`)"
-						." VALUES"
-						." (".
-						$this->dbQuote($sID, "integer")
-						.", ".$this->dbQuote($sPrivilege, "text").")"
+				$this->dbInsert(
+					"users_privileges",
+					array(
+						"userid" => $sID
+						,"menu" => $sPrivilege
+					)
 				);
 			}
 		}
@@ -140,41 +136,39 @@ class admin_users extends adminController
 			$this->forward("/admin/users/edit/?error=".urlencode("Please enter a valid email address."));
 		}
 		
-		$aRes = $this->dbQuery(
-			"UPDATE `users` SET"
-				." `username` = ".$this->dbQuote($_POST["username"], "text")
-				.", `fname` = ".$this->dbQuote($_POST["fname"], "text")
-				.", `lname` = ".$this->dbQuote($_POST["lname"], "text")
-				.", `email_address` = ".$this->dbQuote($_POST["email_address"], "text")
-				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
-				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
-				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-			,"update"
+		$aRes = $this->dbUpdate(
+			"users",
+			array(
+				"username" => $_POST["username"]
+				,"fname" => $_POST["fname"]
+				,"lname" => $_POST["lname"]
+				,"email_address" => $_POST["email_address"]
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			),
+			$_POST["id"]
 		);
 		
-		$this->dbQuery(
-			"DELETE FROM `users_privileges`"
-				." WHERE `userid` = ".$this->dbQuote($_POST["id"], "integer")
-		);
+		$this->dbDelete("users_privileges", $_POST["id"], "userid");
 		if(!empty($_POST["privileges"])) {
 			foreach($_POST["privileges"] as $sPrivilege) {
-				$this->dbQuery(
-					"INSERT INTO `users_privileges`"
-						." (`userid`, `menu`)"
-						." VALUES"
-						." (".
-						$this->dbQuote($_POST["id"], "integer")
-						.", ".$this->dbQuote($sPrivilege, "text").")"
+				$this->dbInsert(
+					"users_privileges",
+					array(
+						"userid" => $_POST["id"]
+						,"menu" => $sPrivilege
+					)
 				);
 			}
 		}
 		
 		if(!empty($_POST["password"])) {
-			$aRes = $this->dbQuery(
-				"UPDATE `users` SET"
-					." `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
-					." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-				,"update"
+			$this->dbUpdate(
+				"users",
+				array(
+					"password" => md5($_POST["password"])
+				),
+				$_POST["id"]
 			);
 		}
 		
@@ -186,11 +180,8 @@ class admin_users extends adminController
 		if($_SESSION["admin"]["userid"] == $this->_urlVars->dynamic["id"])
 			$this->forward("/admin/users/?error=".urlencode("You are not allowed to delete yourself."));
 		
-		$aRes = $this->dbQuery(
-			"DELETE FROM `users`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
-			,"delete"
-		);
+		$this->dbDelete("users", $this->_urlVars->dynamic["id"]);
+		$this->dbDelete("users_privileges", $this->_urlVars->dynamic["id"], "userid");
 		
 		$this->forward("/admin/users/?notice=".urlencode("User removed successfully!"));
 	}
