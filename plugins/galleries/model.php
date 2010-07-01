@@ -3,10 +3,14 @@ class galleries_model extends appModel
 {
 	public $perPage = 5;
 	
-	function getGalleries($sCategory = null) {
+	function getGalleries($sCategory = null, $sAll = false) {
 		$sWhere = " WHERE `galleries`.`id` > 0";
+		
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+			
+		if($sAll == false)	
+			$sWhere = " AND `galleries`.`active` = 1";
 		
 		// Get all gallerys for paging
 		$aGalleries = $this->dbQuery(

@@ -16,7 +16,7 @@ class admin_galleries extends adminController
 		
 		$this->tplAssign("aCategories", $oGalleries->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aGalleries", $oGalleries->getGalleries($_GET["category"]));
+		$this->tplAssign("aGalleries", $oGalleries->getGalleries($_GET["category"], true));
 		$this->tplAssign("maxsort", $oGalleries->getMaxSort());
 		$this->tplDisplay("admin/index.tpl");
 	}
@@ -52,12 +52,13 @@ class admin_galleries extends adminController
 		
 		$sID = $this->dbQuery(
 			"INSERT INTO `{dbPrefix}galleries`"
-				." (`name`, `description`, `sort_order`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
+				." (`name`, `description`, `sort_order`, `active`, `created_datetime`, `created_by`, `updated_datetime`, `updated_by`)"
 				." VALUES"
 				." ("
 					.$this->dbQuote($_POST["name"], "text")
 					.", ".$this->dbQuote($_POST["description"], "text")
 					.", ".$this->dbQuote($sOrder, "integer")
+					.", ".$this->boolCheck($_POST["active"])
 					.", ".$this->dbQuote(time(), "integer")
 					.", ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 					.", ".$this->dbQuote(time(), "integer")
@@ -179,6 +180,7 @@ class admin_galleries extends adminController
 			"UPDATE `{dbPrefix}galleries` SET"
 				." `name` = ".$this->dbQuote($_POST["name"], "text")
 				.", `description` = ".$this->dbQuote($_POST["description"], "text")
+				.", `active` = ".$this->boolCheck($_POST["active"])
 				.", `updated_datetime` = ".$this->dbQuote(time(), "integer")
 				.", `updated_by` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -232,6 +234,7 @@ class admin_galleries extends adminController
 		$_SESSION["admin"]["admin_galleries_categories"] = null;
 		
 		$this->tplAssign("aCategories", $oGalleries->getCategories());
+		$this->tplAssign("aCategoryEdit", $oGalleries->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
@@ -245,7 +248,7 @@ class admin_galleries extends adminController
 			,"insert"
 		);
 
-		echo "/admin/galleries/categories/?notice=".urlencode("Category added successfully!");
+		$this->forward("/admin/galleries/categories/?notice=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbQuery(
@@ -254,7 +257,7 @@ class admin_galleries extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 		);
 
-		echo "/admin/galleries/categories/?notice=".urlencode("Changes saved successfully!");
+		$this->forward("/admin/galleries/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbQuery(
