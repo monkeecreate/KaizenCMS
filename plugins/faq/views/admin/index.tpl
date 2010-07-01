@@ -3,6 +3,7 @@
 {head}
 <script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
 <script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
+<script src="/scripts/dataTables/plugins/num-sorting-plugin.js"></script>
 <script type="text/javascript">
 	$(function(){ldelim}
 		$('.dataTable').dataTable({ldelim}
@@ -13,7 +14,13 @@
 			/* CAN CHANGE */
 			"bStateSave": true, //whether to save a cookie with the current table state
 			"iDisplayLength": 10, //how many items to display on each page
-			"aaSorting": [[2, "asc"]] //which column to sort by (0-X)
+			"aaSorting": [[2, "asc"]], //which column to sort by (0-X)
+			"aoColumns": [
+				null,
+				null,
+				{ldelim} "sType": "num-html" {rdelim},
+				null
+			]
 		{rdelim});
 	{rdelim});
 </script>
