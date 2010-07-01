@@ -5,6 +5,7 @@ class calendar_model extends appModel
 	public $imageMinWidth = 320;
 	public $imageMinHeight = 200;
 	public $imageFolder = "/uploads/calendar/";
+	public $useCategories = true;
 	public $perPage = 5;
 	public $shortContentCharacters = 250; // max characters for short content
 	
@@ -24,8 +25,8 @@ class calendar_model extends appModel
 		
 		$aEvents = $this->dbQuery(
 			"SELECT `calendar`.* FROM `{dbPrefix}calendar` AS `calendar`"
-				." INNER JOIN `{dbPrefix}calendar_categories_assign` AS `calendar_assign` ON `calendar`.`id` = `calendar_assign`.`eventid`"
-				." INNER JOIN `{dbPrefix}calendar_categories` AS `categories` ON `calendar_assign`.`categoryid` = `categories`.`id`"
+				." LEFT JOIN `{dbPrefix}calendar_categories_assign` AS `calendar_assign` ON `calendar`.`id` = `calendar_assign`.`eventid`"
+				." LEFT JOIN `{dbPrefix}calendar_categories` AS `categories` ON `calendar_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `calendar`.`id`"
 				." ORDER BY `calendar`.`datetime_start`"
