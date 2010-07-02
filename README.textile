@@ -6,7 +6,7 @@ h2. Requirements/Installing
 
 The requirements are simple. Apache 2+ and PHP 5+. PEAR and Memcache are recommended but not required. Kaizen CMS will not work in a sub directory. It must be the root domain or a subdomain. Now to the setup.
 
-* Keeping the directory structure upload the files to your server. Remember, upload them to the directory just outside your public_html. This is important to the setup. Be sure and double check that all hidden files and folders were also uploaded (might have to show hidden files if your OS is hiding them).
+* Keeping the directory structure upload the files to your server. Remember, upload them to the directory just outside your public_html. This is important to the setup. Be sure and double check that all hidden files and folders were also uploaded (might have to show hidden files if your OS is hiding them). When copying on the command line, make sure that you copy the .pear/ and the .smarty/ directories as a cp ~/oldpath/* ~/newpath won't copy those folders.
 
 * Inside the root folder (where you just uploaded the cms files) create a new directory: .compiled/
 Then create another directory inside the .compiled/ and name it: admin/
