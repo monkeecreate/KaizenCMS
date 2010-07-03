@@ -121,49 +121,40 @@ $(function() {
 			}
 		);
 	}
-	var editPhotoDialog = new Array();
-	$(".image").each(function(){
-		id = $(this).attr('id');
-		
-		editPhotoDialog[id] = $('#'+id+'_form')
-			.dialog({
-				autoOpen: false,
-				bgiframe: true,
-				modal: true,
-				buttons: {
-					'Save Changes': function() {				
-						if($(this).find('input[name=name]').val() == '') {
-							alert("Please fill in category name.");
-							return false;
-						} else {
-							editPhoto(this);
-						}
-					},
-					Cancel: function() {
-						$(this).dialog('close');
-					}
-				}
-			});
-		$('#'+id+'_form').each(function(){
-			var item = this;
-			
-			$(this).find('form').submit(function(){
-				editPhoto(item);
-				return false;
-			});
-		});
-		$(this).dblclick(function(){
-			id = $(this).attr('id');
-			editPhotoDialog[id].dialog('open');
-			
-			return false;
-		});
-	});
+	// var editPhotoDialog = new Array();
+	// $(".image").each(function(){
+	// 	id = $(this).attr('id');
+	// 	
+	// 	editPhotoDialog[id] = $('#'+id+'_form')
+	// 		.dialog({
+	// 			autoOpen: false,
+	// 			bgiframe: true,
+	// 			modal: true
+	// 		});
+	// 	$('#'+id+'_form').each(function(){
+	// 		var item = this;
+	// 		
+	// 		$(this).find('form').submit(function(){
+	// 			editPhoto(item);
+	// 			return false;
+	// 		});
+	// 	});
+	// 	$(this).dblclick(function(){
+	// 		id = $(this).attr('id');
+	// 		editPhotoDialog[id].dialog('open');
+	// 		
+	// 		return false;
+	// 	});
+	// });
 });
 {/literal}
 </script>
 {/head}
 <form name="sort" class="photo_sort" method="post" action="/admin/galleries/{$aGallery.id}/photos/sort/">
+	<input type="submit" value="Save Changes">
+	<input type="hidden" name="sort" value="">
+	<input type="hidden" name="default_photo" value="{$aDefaultPhoto.id}">
+</form>
 	<section id="content" class="content">
 		<header>
 			<h2>Manage Galleries &raquo; Edit Gallery</h2>
@@ -229,10 +220,7 @@ $(function() {
 					No photos.
 				{/foreach}
 			</div> -->
-			<div class="clear"></div>
-
-				<input type="submit" value="Save Changes">
-				<input type="hidden" name="sort" value="">
+			<div class="clear"></div>				
 		</section>
 	</section> <!-- #content -->
 
@@ -245,7 +233,6 @@ $(function() {
 			<div id="defaultPhoto" style="margin:0 0 10px;">
 				<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aDefaultPhoto.photo}&width=95&height=95" class="image" style="margin:0 4px;" id="photo_{$aDefaultPhoto.id}" width="273px">
 			</div>
-			<input type="hidden" name="default_photo" value="{$aDefaultPhoto.id}">
 			
 			<fieldset>
 				<legend>Status</legend>
@@ -274,7 +261,6 @@ $(function() {
 			</fieldset>
 		</section>
 	</section>
-</form>
 <script type="text/javascript">
 $(function(){ldelim}
 	$('input[name=active]').iphoneStyle({ldelim}
@@ -282,10 +268,10 @@ $(function(){ldelim}
 		uncheckedLabel: 'Off'
 	{rdelim});
 	
-	$("form").validateForm([
-		"required,name,Gallery name is required",
-		"required,categories[],You must select at least one category"
-	]);
+	// $("form").validateForm([
+	// 	"required,name,Gallery name is required",
+	// 	"required,categories[],You must select at least one category"
+	// ]);
 {rdelim});
 </script>
 {include file="inc_footer.tpl"}
