@@ -1,5 +1,5 @@
 <?php
-$sFolder = $this->_settings->rootPublic."uploads/galleries/";
+$sFolder = $this->settings->rootPublic."uploads/galleries/";
 if($sPluginStatus == 1) {
 	// Install
 	mkdir($sFolder);

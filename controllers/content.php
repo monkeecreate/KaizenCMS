@@ -9,10 +9,10 @@ class content extends appController
 		$this->siteInfo();
 	}
 	function view() {
-		if(!empty($this->_urlVars->dynamic["page"]))
-			$sPage = $this->_urlVars->dynamic["page"];
-		elseif(!empty($this->_urlVars->manual["page"]))
-			$sPage = $this->_urlVars->manual["page"];
+		if(!empty($this->urlVars->dynamic["page"]))
+			$sPage = $this->urlVars->dynamic["page"];
+		elseif(!empty($this->urlVars->manual["page"]))
+			$sPage = $this->urlVars->manual["page"];
 		else
 			$this->error("404");
 		
@@ -41,7 +41,7 @@ class content extends appController
 			$this->error("404");
 	}
 	function form_submit() {
-		require_once($this->_settings->root.'helpers/recaptchalib.php');
+		require_once($this->settings->root.'helpers/recaptchalib.php');
 		$privatekey = "6LfXQwkAAAAAAJ2WgHyDtraMxy639SPAln9f0uFj";
 		$resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
 		

@@ -1,5 +1,5 @@
 <?php
-$sFolder = $this->_settings->rootPublic."uploads/calendar/";
+$sFolder = $this->settings->rootPublic."uploads/calendar/";
 if($sPluginStatus == 1) {
 	// Install
 	mkdir($sFolder);

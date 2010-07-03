@@ -95,7 +95,7 @@ class admin_faq extends adminController
 		$oQuestions = $this->loadModel("faq");
 		
 		if(!empty($_SESSION["admin"]["admin_faq"])) {
-			$aQuestionRow = $oQuestions->getQuestion($this->_urlVars->dynamic["id"]);
+			$aQuestionRow = $oQuestions->getQuestion($this->urlVars->dynamic["id"]);
 			
 			$aQuestion = $_SESSION["admin"]["admin_faq"];
 			
@@ -108,7 +108,7 @@ class admin_faq extends adminController
 			
 			$this->tplAssign("aQuestion", $aQuestion);
 		} else {
-			$aQuestion = $oQuestions->getQuestion($this->_urlVars->dynamic["id"], "integer");
+			$aQuestion = $oQuestions->getQuestion($this->urlVars->dynamic["id"], "integer");
 			
 			$aQuestion["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}faq_categories` AS `categories`"
@@ -168,24 +168,24 @@ class admin_faq extends adminController
 		$this->forward("/admin/faq/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		$this->dbDelete("faq", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("faq_categories_assign", $this->_urlVars->dynamic["id"], "faqid");
+		$this->dbDelete("faq", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("faq_categories_assign", $this->urlVars->dynamic["id"], "faqid");
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Question removed successfully!"));
 	}
 	function sort() {
 		$oQuestions = $this->loadModel("faq");
 		
-		$aQuestion = $oQuestions->getQuestion($this->_urlVars->dynamic["id"], "integer");
+		$aQuestion = $oQuestions->getQuestion($this->urlVars->dynamic["id"], "integer");
 		
-		if($this->_urlVars->dynamic["sort"] == "up") {
+		if($this->urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}faq`"
 					." WHERE `sort_order` < ".$aQuestion["sort_order"]
 					." ORDER BY `sort_order` DESC"
 				,"row"
 			);
-		} elseif($this->_urlVars->dynamic["sort"] == "down") {
+		} elseif($this->urlVars->dynamic["sort"] == "down") {
 			$aOld = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}faq`"
 					." WHERE `sort_order` > ".$aQuestion["sort_order"]
@@ -243,8 +243,8 @@ class admin_faq extends adminController
 		$this->forward("/admin/faq/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
-		$this->dbDelete("faq_categories", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("faq_categories_assign", $this->_urlVars->dynamic["id"], "categoryid");
+		$this->dbDelete("faq_categories", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("faq_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
 		$this->forward("/admin/faq/categories/?notice=".urlencode("Category removed successfully!"));
 	}

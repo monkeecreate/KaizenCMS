@@ -66,7 +66,7 @@ class calendar_model extends appModel
 			,"all"
 		);
 	
-		if(file_exists($this->_settings->rootPublic.substr($this->imageFolder, 1).$aEvent["id"].".jpg")
+		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aEvent["id"].".jpg")
 		 && $aEvent["photo_x2"] > 0
 		 && $this->useImage == true)
 			$aEvent["image"] = 1;
@@ -113,7 +113,7 @@ class calendar_model extends appModel
 	function getImage($sId) {
 		$aEvent = $this->getEvent($sId, true);
 		
-		$sFile = $this->_settings->root_public.substr($this->imageFolder, 1).$sId.".jpg";
+		$sFile = $this->settings->root_public.substr($this->imageFolder, 1).$sId.".jpg";
 		
 		$aImage = array(
 			"file" => $sFile

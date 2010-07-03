@@ -85,7 +85,7 @@ class admin_users extends adminController
 		if(!empty($_SESSION["admin"]["admin_users"])) {
 			$aUserRow = $this->dbQuery(
 				"SELECT * FROM `users`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"admin->users->edit"
 				,"row"
 			);
@@ -101,14 +101,14 @@ class admin_users extends adminController
 		} else {
 			$aUser = $this->dbQuery(
 				"SELECT * FROM `users`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 					." LIMIT 1"
 				,"row"
 			);
 			
 			$aUser["privileges"] = $this->dbQuery(
 				"SELECT `menu` FROM `users_privileges`"
-					." WHERE `userid` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `userid` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"col"
 			);
 			
@@ -177,11 +177,11 @@ class admin_users extends adminController
 		$this->forward("/admin/users/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		if($_SESSION["admin"]["userid"] == $this->_urlVars->dynamic["id"])
+		if($_SESSION["admin"]["userid"] == $this->urlVars->dynamic["id"])
 			$this->forward("/admin/users/?error=".urlencode("You are not allowed to delete yourself."));
 		
-		$this->dbDelete("users", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("users_privileges", $this->_urlVars->dynamic["id"], "userid");
+		$this->dbDelete("users", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("users_privileges", $this->urlVars->dynamic["id"], "userid");
 		
 		$this->forward("/admin/users/?notice=".urlencode("User removed successfully!"));
 	}

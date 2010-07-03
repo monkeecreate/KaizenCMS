@@ -1,5 +1,5 @@
 <?php
-$sFolder = $this->_settings->rootPublic."uploads/promos/";
+$sFolder = $this->settings->rootPublic."uploads/promos/";
 if($sPluginStatus == 1) {
 	// Install
 	mkdir($sFolder);

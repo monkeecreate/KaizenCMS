@@ -80,7 +80,7 @@ class admin_testimonials extends adminController
 		if(!empty($_SESSION["admin"]["admin_testimonials"])) {
 			$aTestimonialRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}testimonials`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -95,7 +95,7 @@ class admin_testimonials extends adminController
 		} else {
 			$aTestimonial = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}testimonials`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -158,8 +158,8 @@ class admin_testimonials extends adminController
 		$this->forward("/admin/testimonials/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		$this->dbDelete("testimonials", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("testimonials_categories_assign", $this->_urlVars->dynamic["id"], "testimonialid");
+		$this->dbDelete("testimonials", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("testimonials_categories_assign", $this->urlVars->dynamic["id"], "testimonialid");
 		
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial removed successfully!"));
 	}
@@ -194,8 +194,8 @@ class admin_testimonials extends adminController
 		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
-		$this->dbDelete("testimonials_categories", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("testimonials_categories_assign", $this->_urlVars->dynamic["id"], "categoryid");
+		$this->dbDelete("testimonials_categories", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("testimonials_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
 		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Category removed successfully!"));
 	}

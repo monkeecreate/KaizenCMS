@@ -1,5 +1,5 @@
 <?php
-$sFolder = $this->_settings->rootPublic."uploads/news/";
+$sFolder = $this->settings->rootPublic."uploads/news/";
 if($sPluginStatus == 1) {
 	// Install
 	mkdir($sFolder);

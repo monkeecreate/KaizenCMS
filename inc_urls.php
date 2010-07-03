@@ -85,55 +85,55 @@ $aUrlPatterns = array(
         "action" => "delete"
     ),
 	"/admin/settings/" => array(
-        "cmd" => "admin_settings",
+        "cmd" => "adminsettings",
         "action" => "index"
     ),
 	"/admin/settings/save/" => array(
-        "cmd" => "admin_settings",
+        "cmd" => "adminsettings",
         "action" => "save"
     ),
 	"/admin/settings/manage/" => array(
-        "cmd" => "admin_settings",
+        "cmd" => "adminsettings",
         "action" => "manageIndex"
     ),
 	"/admin/settings/manage/add/" => array(
-        "cmd" => "admin_settings",
+        "cmd" => "adminsettings",
         "action" => "manageAdd"
     ),
 	"/admin/settings/manage/add/s/" => array(
-        "cmd" => "admin_settings",
+        "cmd" => "adminsettings",
         "action" => "manageAdd_s"
     ),
 	"/admin/settings/manage/edit/{id:[0-9]+}/" => array(
-        "cmd" => "admin_settings",
+        "cmd" => "adminsettings",
         "action" => "manageEdit"
     ),
 	"/admin/settings/manage/edit/s/" => array(
-        "cmd" => "admin_settings",
+        "cmd" => "adminsettings",
         "action" => "manageEdit_s"
     ),
 	"/admin/settings/manage/delete/{id:[0-9]+}/" => array(
-        "cmd" => "admin_settings",
+        "cmd" => "adminsettings",
         "action" => "manageDelete"
     ),
 	"/admin/settings/plugins/" => array(
-        "cmd" => "admin_settings",
+        "cmd" => "adminsettings",
         "action" => "plugins_index"
     ),
 	"/admin/settings/plugins/install/{plugin:[a-z0-9_-]+}/" => array(
-        "cmd" => "admin_settings",
+        "cmd" => "adminsettings",
         "action" => "plugins_install"
     ),
 	"/admin/settings/plugins/uninstall/{plugin:[a-z0-9_-]+}/" => array(
-        "cmd" => "admin_settings",
+        "cmd" => "adminsettings",
         "action" => "plugins_uninstall"
     ),
 	"/admin/settings/admin-menu/" => array(
-		"cmd" => "admin_settings",
+		"cmd" => "adminsettings",
 		"action" => "admin_menu_index"
 	),
 	"/admin/settings/admin-menu/s/" => array(
-		"cmd" => "admin_settings",
+		"cmd" => "adminsettings",
 		"action" => "admin_menu_s"
 	),
 	"/admin/users/" => array(

@@ -88,7 +88,7 @@ class admin_content extends adminController
 		if(!empty($_SESSION["admin"]["admin_content"])) {
 			$aPage = $this->dbQuery(
 				"SELECT * FROM `content`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -105,7 +105,7 @@ class admin_content extends adminController
 		} else {
 			$aPage = $this->dbQuery(
 				"SELECT * FROM `content`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -161,7 +161,7 @@ class admin_content extends adminController
 		$this->forward("/admin/content/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		$this->dbDelete("content", $this->_urlVars->dynamic["id"]);
+		$this->dbDelete("content", $this->urlVars->dynamic["id"]);
 		
 		$this->forward("/admin/content/?notice=".urlencode("Page removed successfully!"));
 	}
@@ -170,7 +170,7 @@ class admin_content extends adminController
 	### Functions ####################
 	function getTemplates() {
 		$aTemplates = array();
-		$aFiles = scandir($this->_settings->root."views/content/");
+		$aFiles = scandir($this->settings->root."views/content/");
 		foreach($aFiles as $sFile) {
 			if($sFile != "." && $sFile != "..")
 				$aTemplates[] = $sFile;

@@ -54,7 +54,7 @@ class news extends appController
 		$this->tplDisplay("rss.tpl");
 	}
 	function article() {
-		$aArticle = $this->model->getArticle($this->_urlVars->dynamic["id"]);
+		$aArticle = $this->model->getArticle($this->urlVars->dynamic["id"]);
 		
 		if(empty($aArticle))
 			$this->error('404');

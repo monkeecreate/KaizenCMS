@@ -1,5 +1,5 @@
 <?php
-class admin_settings extends adminController
+class adminsettings extends adminController
 {
 	function __construct() {
 		parent::__construct();
@@ -17,7 +17,7 @@ class admin_settings extends adminController
 		);
 		
 		$aSettings = array();
-		include($this->_settings->root."helpers/Form.php");
+		include($this->settings->root."helpers/Form.php");
 		foreach($aSettingsFull as $aSetting) {
 			$oField = new Form($aSetting);
 			
@@ -35,7 +35,7 @@ class admin_settings extends adminController
 			,"all"
 		);
 		
-		include($this->_settings->root."helpers/Form.php");
+		include($this->settings->root."helpers/Form.php");
 		foreach($aSettings as $aSetting) {
 			$oField = new Form($aSetting);	
 			$this->dbUpdate(
@@ -56,7 +56,7 @@ class admin_settings extends adminController
 			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
 		
 		// Clear saved form info
-		$_SESSION["admin"]["admin_settings"] = null;
+		$_SESSION["admin"]["adminsettings"] = null;
 		
 		$aSettings = $this->dbQuery(
 			"SELECT * FROM `settings`"
@@ -71,8 +71,8 @@ class admin_settings extends adminController
 		if($this->superAdmin == false)
 			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
 		
-		if(!empty($_SESSION["admin"]["admin_settings"]))
-			$this->tplAssign("aSetting", $_SESSION["admin"]["admin_settings"]);
+		if(!empty($_SESSION["admin"]["adminsettings"]))
+			$this->tplAssign("aSetting", $_SESSION["admin"]["adminsettings"]);
 		else {
 			$this->tplAssign("aSetting",
 				array(
@@ -91,7 +91,7 @@ class admin_settings extends adminController
 	}
 	function manageAdd_s() {
 		if(empty($_POST["tag"]) || empty($_POST["title"])) {
-			$_SESSION["admin"]["admin_settings"] = $_POST;
+			$_SESSION["admin"]["adminsettings"] = $_POST;
 			$this->forward("/admin/settings/manage/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
@@ -109,7 +109,7 @@ class admin_settings extends adminController
 			)
 		);
 		
-		$_SESSION["admin"]["admin_settings"] = null;
+		$_SESSION["admin"]["adminsettings"] = null;
 		
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting created successfully!"));
 	}
@@ -117,14 +117,14 @@ class admin_settings extends adminController
 		if($this->superAdmin == false)
 			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
 		
-		if(!empty($_SESSION["admin"]["admin_settings"])) {
-			$aSetting = $_SESSION["admin"]["admin_settings"];
+		if(!empty($_SESSION["admin"]["adminsettings"])) {
+			$aSetting = $_SESSION["admin"]["adminsettings"];
 			
 			$this->tplAssign("aSetting", $aSetting);
 		} else {
 			$aSetting = $this->dbQuery(
 				"SELECT * FROM `settings`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -141,7 +141,7 @@ class admin_settings extends adminController
 	}
 	function manageEdit_s() {
 		if(empty($_POST["tag"]) || empty($_POST["title"])) {
-			$_SESSION["admin"]["admin_settings"] = $_POST;
+			$_SESSION["admin"]["adminsettings"] = $_POST;
 			$this->forward("/admin/settings/manage/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
@@ -159,12 +159,12 @@ class admin_settings extends adminController
 			$_POST["id"]
 		);
 		
-		$_SESSION["admin"]["admin_settings"] = null;
+		$_SESSION["admin"]["adminsettings"] = null;
 		
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function manageDelete() {
-		$this->dbDelete("settings", $this->_urlVars->dynamic["id"]);
+		$this->dbDelete("settings", $this->urlVars->dynamic["id"]);
 		
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting removed successfully!"));
 	}
@@ -175,7 +175,7 @@ class admin_settings extends adminController
 		// Loop plugins. Find installed, and not installed
 		$aPlugins = array();
 		
-		$oPlugins = dir($this->_settings->root."plugins");
+		$oPlugins = dir($this->settings->root."plugins");
 		while (false !== ($sPlugin = $oPlugins->read())) {
 			if(substr($sPlugin, 0, 1) != ".")
 				$aPlugins[] = $sPlugin;
@@ -191,8 +191,8 @@ class admin_settings extends adminController
 			
 			// Load config
 			$aPluginInfo = array();
-			if(is_file($this->_settings->root."plugins/".$aPlugin."/config.php"))
-				include($this->_settings->root."plugins/".$aPlugin."/config.php");
+			if(is_file($this->settings->root."plugins/".$aPlugin."/config.php"))
+				include($this->settings->root."plugins/".$aPlugin."/config.php");
 			
 			$aPlugin = array(
 				"tag" => $aPlugin,
@@ -218,15 +218,15 @@ class admin_settings extends adminController
 	function plugins_install() {
 		global $objDB;
 		
-		$sPlugin = $this->_urlVars->dynamic["plugin"];
+		$sPlugin = $this->urlVars->dynamic["plugin"];
 		
 		// Set defaults
 		$aDatabases = $aSettings = $aMenuAdmin = array();
 		
 		// Include isntall
 		$sPluginStatus = 1;
-		if(is_file($this->_settings->root."plugins/".$sPlugin."/install.php"))
-			include($this->_settings->root."plugins/".$sPlugin."/install.php");
+		if(is_file($this->settings->root."plugins/".$sPlugin."/install.php"))
+			include($this->settings->root."plugins/".$sPlugin."/install.php");
 		
 		// Database
 		$objDB->loadModule('Manager');
@@ -301,15 +301,15 @@ class admin_settings extends adminController
 	function plugins_uninstall() {
 		global $objDB;
 		
-		$sPlugin = $this->_urlVars->dynamic["plugin"];
+		$sPlugin = $this->urlVars->dynamic["plugin"];
 		
 		// Set defaults
 		$aDatabases = $aSettings = $aMenuAdmin = array();
 		
 		// Include isntall
 		$sPluginStatus = 0;
-		if(is_file($this->_settings->root."plugins/".$sPlugin."/install.php"))
-			include($this->_settings->root."plugins/".$sPlugin."/install.php");
+		if(is_file($this->settings->root."plugins/".$sPlugin."/install.php"))
+			include($this->settings->root."plugins/".$sPlugin."/install.php");
 			
 		// Database
 		$objDB->loadModule('Manager');

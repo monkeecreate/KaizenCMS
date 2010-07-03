@@ -3,12 +3,12 @@ class image extends appController
 {
 	### DISPLAY ######################
 	function resize() {
-		$sFile = $this->_settings->root_public.substr($_GET["file"], 1);
+		$sFile = $this->settings->root_public.substr($_GET["file"], 1);
 		
 		if(filesize($sFile) == 0)
 			$this->error('404');
 		
-		include($this->_settings->root."helpers/makeImage.php");
+		include($this->settings->root."helpers/makeImage.php");
 		$oImage = new makeImage($sFile, false);
 		
 		if(!empty($_GET["scale"]))
@@ -25,17 +25,17 @@ class image extends appController
 		$oImage->draw(null, 85);
 	}
 	function itemImage() {
-		$oModel = $this->loadModel($this->_urlVars->dynamic["model"]);
+		$oModel = $this->loadModel($this->urlVars->dynamic["model"]);
 		
 		if(empty($oModel))
 			$this->error("404");
 		
-		$aImage = $oModel->getImage($this->_urlVars->dynamic["id"]);
+		$aImage = $oModel->getImage($this->urlVars->dynamic["id"]);
 		
 		if(empty($aImage))
 			$this->error("404");
 		
-		include($this->_settings->root."helpers/makeImage.php");
+		include($this->settings->root."helpers/makeImage.php");
 		$oImage = new makeImage($aImage["file"], true);
 		$oImage->crop($aImage["info"]["photo_width"], $aImage["info"]["photo_height"], $aImage["info"]["photo_x1"], $aImage["info"]["photo_y1"]);
 		$oImage->resize($oModel->imageMinWidth, $oModel->imageMinHeight);

@@ -90,7 +90,7 @@ class directory_model extends appModel
 			,"all"
 		);
 		
-		if(file_exists($this->_settings->rootPublic.substr($this->imageFolder, 1).$aListing["file"])
+		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["file"])
 		 && $this->useImage == true)
 			$aListing["image"] = 1;
 		else
