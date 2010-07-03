@@ -17,7 +17,7 @@
 			<label>Description:</label><br />
 			<textarea name="description" style="height:115px;">{$aGallery.description|clean_html}</textarea><br /><br /><br />
 			<fieldset id="fieldset_categories">
-				<legend>Assign question to category:</legend>
+				<legend>Assign gallery to category:</legend>
 				<ul class="categories">
 					{foreach from=$aCategories item=aCategory}
 						<li>
@@ -55,7 +55,7 @@ $(function(){ldelim}
 	{rdelim});
 	
 	$("form").validateForm([
-		"required,name,Link name is required",
+		"required,name,Gallery name is required",
 		"required,categories[],You must select at least one category"
 	]);
 {rdelim});
