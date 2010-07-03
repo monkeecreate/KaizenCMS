@@ -5,18 +5,23 @@ class image extends appController
 	function resize() {
 		$sFile = $this->_settings->root_public.substr($_GET["file"], 1);
 		
-		if(filesize($sFile) == 0 || empty($_GET["width"]) || empty($_GET["height"]))
+		if(filesize($sFile) == 0)
 			$this->error('404');
 		
-		if(!is_numeric($_GET["width"]) || !is_numeric($_GET["height"]))
+		include($this->_settings->root."helpers/makeImage.php");
+		$oImage = new makeImage($sFile, false);
+		
+		if(!empty($_GET["scale"]))
+			$oImage->scale($_GET["scale"]);
+		elseif(!empty($_GET["width"]) && empty($_GET["height"]))
+			$oImage->resizeWidth($_GET["width"]);
+		elseif(!empty($_GET["height"]) && empty($_GET["width"]))
+			$oImage->resizeHeight($_GET["height"]);
+		elseif(!empty($_GET["width"]) && !empty($_GET["height"]))
+			$oImage->resize($_GET["width"], $_GET["height"]);
+		else
 			$this->error('505');
 		
-		$sNewWidth = $_GET["width"];
-		$sNewHeight = $_GET["height"];
-		
-		include($this->_settings->root."helpers/makeImage.php");
-		$oImage = new makeImage($sFile, true);
-		$oImage->resize($sNewWidth, $sNewHeight);
 		$oImage->draw(null, 85);
 	}
 	function itemImage() {

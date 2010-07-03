@@ -85,35 +85,32 @@ class makeImage
 		
 		return true;
 	}
-	public function resize($sWidth, $sHeight, $sKeep = false) {
+	public function resizeWidth($sWidth) {
+		$sRatio = (int)$sWidth / $this->_width;
+		$sHeight = $this->_height * $sRatio;
+		
+		return $this->resize($sWidth, $sHeight);
+	}
+	public function resizeHeight($sHeight) {
+		$sRatio = (int)$sHeight / $this->_height;
+		$sWidth = $this->_width * $sRatio;
+		
+		return $this->resize($sWidth, $sHeight);
+	}
+	public function scale($sScale) {
+		$sWidth = $this->_width * (int)$sScale / 100;
+		$sHeight = $this->_height * (int)$sScale / 100;
+		
+		return $this->resize($sWidth, $sHeight);
+	}
+	public function resize($sWidth, $sHeight) {
 		if(!empty($this->_info) && !empty($this->_image)) {
-			if($sKeep == false) {
-				if($sWidth >= $this->_width && $sHeight >= $this->_height)
-					return true;// Image smaller than size given
-				elseif($this->_width < $sWidth && $this->_height < $sHeight) {
-					$sNewWidth = $this->_width;
-					$sNewHeight = $this->_height;
-				} elseif($this->_width < $this->_height) {
-					$sNewWidth = $sWidth;
-					$sNewHeight = $this->_height * ($sWidth / $this->_width);
-				} elseif($this->_width > $this->_height) {
-					$sNewWidth = $this->_width * ($sHeight / $this->_height);
-					$sNewHeight = $sHeight;
-				} elseif($this->_width == $this->_height) {
-					$sNewWidth = $sWidth;
-					$sNewHeight = $sHeight;
-				}
-			} else {
-				$sNewWidth = $sWidth;
-				$sNewHeight = $sHeight;
-			}
-			
 			// Create resized canvas
-			$oResized = imagecreatetruecolor($sNewWidth, $sNewHeight);
+			$oResized = imagecreatetruecolor($sWidth, $sHeight);
 			imagefill($oResized, 0, 0, imagecolorallocate($oResized, 255, 255, 255));
 			
 			// Resize image
-			imagecopyresampled($oResized, $this->_image, 0, 0, 0, 0, $sNewWidth, $sNewHeight, $this->_width, $this->_height);
+			imagecopyresampled($oResized, $this->_image, 0, 0, 0, 0, $sWidth, $sHeight, $this->_width, $this->_height);
 			
 			// Save info
 			$this->_image = $oResized;
