@@ -1,6 +1,8 @@
 <?php
 class testimonials_model extends appModel
 {
+	public $useCategories = true;
+	
 	function getTestimonials($sCategory = null, $sRandom = false) {
 		$aWhere = array();
 		
@@ -19,8 +21,8 @@ class testimonials_model extends appModel
 		
 		$aTestimonials = $this->dbQuery(
 			"SELECT `testimonials`.* FROM `{dbPrefix}testimonials` as `testimonials`"
-				." INNER JOIN `{dbPrefix}testimonials_categories_assign` AS `testimonials_assign` ON `testimonials`.`id` = `testimonials_assign`.`testimonialid`"
-				." INNER JOIN `{dbPrefix}testimonials_categories` AS `categories` ON `testimonials_assign`.`categoryid` = `categories`.`id`"
+				." LEFT JOIN `{dbPrefix}testimonials_categories_assign` AS `testimonials_assign` ON `testimonials`.`id` = `testimonials_assign`.`testimonialid`"
+				." LEFT JOIN `{dbPrefix}testimonials_categories` AS `categories` ON `testimonials_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				.$sOrder
 			,"all"

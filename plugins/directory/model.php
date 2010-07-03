@@ -3,6 +3,7 @@ class directory_model extends appModel
 {
 	public $useImage = true;
 	public $imageFolder = "/uploads/directory/";
+	public $useCategories = true;
 	public $perPage = 5;
 	public $aStates = array('AL'=>"Alabama",  
 							'AK'=>"Alaska",  
@@ -68,28 +69,26 @@ class directory_model extends appModel
 		
 		$aListings = $this->dbQuery(
 			"SELECT `directory`.* FROM `{dbPrefix}directory` AS `directory`"
-				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory`.`id` = `directory_assign`.`listingid`"
-				." INNER JOIN `{dbPrefix}directory_categories` AS `categories` ON `directory_assign`.`categoryid` = `categories`.`id`"
+				." LEFT JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory`.`id` = `directory_assign`.`listingid`"
+				." LEFT JOIN `{dbPrefix}directory_categories` AS `categories` ON `directory_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `directory`.`id`"
 				." ORDER BY `directory`.`name`"
 			,"all"
 		);
 	
-		foreach($aListings as $x => $aListing)
-			$aListings[$x] = $this->getListingInfo($aListing);
+		foreach($aListings as $x => &$aListing)
+			$aListing = $this->_getListingInfo($aListing);
 		
 		return $aListings;
 	}
-	function getListingInfo($aListing) {
-		$aCategories = $this->dbQuery(
-			"SELECT `name` FROM `{dbPrefix}directory_categories` AS `categories`"
+	private function _getListingInfo($aListing) {
+		$aListing["categories"] = $this->dbQuery(
+			"SELECT `id`, `name` FROM `{dbPrefix}directory_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
-			,"col"
+			,"all"
 		);
-	
-		$aListing["categories"] = implode(", ", $aCategories);
 		
 		if(file_exists($this->_settings->rootPublic.substr($this->imageFolder, 1).$aListing["file"])
 		 && $this->useImage == true)

@@ -29,6 +29,10 @@
 								 {if in_array($aCategory.id, $aEvent.categories)} checked="checked"{/if}>
 								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
 							</li>
+						{foreachelse}
+							<li>
+								Currently no categories.
+							</li>
 						{/foreach}
 					</ul>
 				</fieldset><br />

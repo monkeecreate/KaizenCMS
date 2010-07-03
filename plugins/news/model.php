@@ -5,6 +5,7 @@ class news_model extends appModel
 	public $imageMinWidth = 140;
 	public $imageMinHeight = 87;
 	public $imageFolder = "/uploads/news/";
+	public $useCategories = true;
 	public $perPage = 5;
 	public $shortContentCharacters = 250; // max characters for short content
 	
@@ -22,8 +23,8 @@ class news_model extends appModel
 		
 		$aArticles = $this->dbQuery(
 			"SELECT `news`.* FROM `{dbPrefix}news` AS `news`"
-				." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
-				." INNER JOIN `{dbPrefix}news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
+				." LEFT JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
+				." LEFT JOIN `{dbPrefix}news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `news`.`id`"
 				." ORDER BY `news`.`datetime_show` DESC"
@@ -31,7 +32,7 @@ class news_model extends appModel
 		);
 		
 		foreach($aArticles as $x => $aArticle)
-			$aArticles[$x] = $this->getArticleInfo($aArticle);
+			$aArticles[$x] = $this->_getArticleInfo($aArticle);
 		
 		return $aArticles;
 	}
@@ -46,22 +47,20 @@ class news_model extends appModel
 		);
 		
 		if(!empty($aArticle))
-			$aArticle = $this->getArticleInfo($aArticle);
+			$aArticle = $this->_getArticleInfo($aArticle);
 		
 		return $aArticle;
 	}
-	private function getArticleInfo($aArticle) {
+	private function _getArticleInfo($aArticle) {
 		if(!empty($aArticle["created_by"]))
 			$aArticle["user"] = $this->getUser($aArticle["created_by"]);
 		
-		$aCategories = $this->dbQuery(
-			"SELECT `name` FROM `{dbPrefix}news_categories` AS `categories`"
+		$aArticle["categories"] = $this->dbQuery(
+			"SELECT `id`, `name` FROM `{dbPrefix}news_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-			,"col"
+			,"all"
 		);
-		
-		$aArticle["categories"] = implode(", ", $aCategories);
 		
 		if(file_exists($this->_settings->rootPublic.substr($this->imageFolder, 1).$aArticle["id"].".jpg")
 		 && $aArticle["photo_x2"] > 0

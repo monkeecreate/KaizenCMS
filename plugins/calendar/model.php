@@ -33,8 +33,8 @@ class calendar_model extends appModel
 			,"all"
 		);
 	
-		foreach($aEvents as $x => $aEvent)
-			$aEvents[$x] = $this->getEventInfo($aEvent);
+		foreach($aEvents as $x => &$aEvent)
+			$aEvent = $this->_getEventInfo($aEvent);
 		
 		return $aEvents;
 	}
@@ -54,19 +54,17 @@ class calendar_model extends appModel
 		);
 		
 		if(!empty($aEvent))
-			$aEvent = $this->getEventInfo($aEvent);
+			$aEvent = $this->_getEventInfo($aEvent);
 		
 		return $aEvent;
 	}
-	private function getEventInfo($aEvent) {
-		$aCategories = $this->dbQuery(
-			"SELECT `name` FROM `{dbPrefix}calendar_categories` AS `category`"
+	private function _getEventInfo($aEvent) {
+		$aEvent["categories"] = $this->dbQuery(
+			"SELECT `id`, `name` FROM `{dbPrefix}calendar_categories` AS `category`"
 				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
 				." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
-			,"col"
+			,"all"
 		);
-	
-		$aEvent["categories"] = implode(", ", $aCategories);
 	
 		if(file_exists($this->_settings->rootPublic.substr($this->imageFolder, 1).$aEvent["id"].".jpg")
 		 && $aEvent["photo_x2"] > 0

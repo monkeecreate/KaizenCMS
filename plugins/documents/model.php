@@ -3,6 +3,7 @@ class documents_model extends appModel
 {
 	public $allowedExt = array();//array("pdf","doc");
 	public $documentFolder = "/uploads/documents/";
+	public $useCategories = true;
 	public $perPage = 5;
 	
 	function getDocuments($sCategory, $sAll = false, $sRandom = false) {
@@ -22,16 +23,16 @@ class documents_model extends appModel
 		
 		$aDocuments = $this->dbQuery(
 			"SELECT `documents`.* FROM `{dbPrefix}documents` AS `documents`"
-				." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents`.`id` = `documents_assign`.`documentid`"
-				." INNER JOIN `{dbPrefix}documents_categories` AS `categories` ON `documents_assign`.`categoryid` = `categories`.`id`"
+				." LEFT JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents`.`id` = `documents_assign`.`documentid`"
+				." LEFT JOIN `{dbPrefix}documents_categories` AS `categories` ON `documents_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `documents`.`id`"
 				.$sOrderBy
 			,"all"
 		);
 		
-		foreach($aDocuments as $x => $aDocument)
-			$aDocuments[$x] = $this->getDocumentInfo($aDocument);
+		foreach($aDocuments as $x => &$aDocument)
+			$aDocument = $this->_getDocumentInfo($aDocument);
 		
 		return $aDocuments;
 	}
@@ -44,19 +45,17 @@ class documents_model extends appModel
 		);
 		
 		if(!empty($aDocument))
-			$aDocument = $this->getDocumentInfo($aDocument);
+			$aDocument = $this->_getDocumentInfo($aDocument);
 		
 		return $aDocument;
 	}
-	function getDocumentInfo($aDocument) {
-		$aCategories = $this->dbQuery(
-			"SELECT `name` FROM `{dbPrefix}documents_categories` AS `categories`"
+	private function _getDocumentInfo($aDocument) {
+		$aDocument["categories"] = $this->dbQuery(
+			"SELECT `id`, `name` FROM `{dbPrefix}documents_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
-			,"col"
+			,"all"
 		);
-	
-		$aDocument["categories"] = implode(", ", $aCategories);
 		
 		return $aDocument;
 	}
