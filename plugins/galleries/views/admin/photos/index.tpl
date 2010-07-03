@@ -109,6 +109,56 @@ $(function() {
 		$("#uploadPhotosFiles").uploadifyClearQueue();
 		return false;
 	});
+	
+	
+	
+	function editPhoto(item){
+		$.post(
+			$(item).find('form').attr("action"),
+			$(item).find('form').serialize(),
+			function(data){
+				window.location.replace(data);
+			}
+		);
+	}
+	var editPhotoDialog = new Array();
+	$(".image").each(function(){
+		id = $(this).attr('id');
+		
+		editPhotoDialog[id] = $('#'+id+'_form')
+			.dialog({
+				autoOpen: false,
+				bgiframe: true,
+				modal: true,
+				buttons: {
+					'Save Changes': function() {				
+						if($(this).find('input[name=name]').val() == '') {
+							alert("Please fill in category name.");
+							return false;
+						} else {
+							editPhoto(this);
+						}
+					},
+					Cancel: function() {
+						$(this).dialog('close');
+					}
+				}
+			});
+		$('#'+id+'_form').each(function(){
+			var item = this;
+			
+			$(this).find('form').submit(function(){
+				editPhoto(item);
+				return false;
+			});
+		});
+		$(this).dblclick(function(){
+			id = $(this).attr('id');
+			editPhotoDialog[id].dialog('open');
+			
+			return false;
+		});
+	});
 });
 {/literal}
 </script>
@@ -148,8 +198,17 @@ $(function() {
 			</div> -->
 			
 			<div id="photos" style="margin:10px 0;">
-				{foreach from=$aPhotos item=aPhoto key=k}
+				{foreach from=$aPhotos item=aPhoto}
 					<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=95&height=95" class="image" style="margin:0 4px;" id="{$aPhoto.id}" width="95px" height="95px">
+					<div id="{$aPhoto.id}_form" style="display:none;" title="Edit Photo">
+						<form method="post" action="/admin/galleries/{$aGallery.id}/photos/edit/s/">
+							<label>*Name:</label><br />
+							<input type="text" name="name" maxlength="100" value="{$aPhoto.title|clean_html}"><br />
+							<label>Description:</label><br />
+							<textarea name="description" class="elastic">{$aPhoto.description|clean_html}</textarea><br />
+							<input type="hidden" name="id" value="{$aPhoto.id}">
+						</form>
+					</div>
 				{foreachelse}
 					<p>There are currently no phot os in this gallery.</p>
 				{/foreach}
