@@ -1,5 +1,5 @@
 <?php
-class adminsettings extends adminController
+class admin_settings extends adminController
 {
 	function __construct() {
 		parent::__construct();
@@ -56,7 +56,7 @@ class adminsettings extends adminController
 			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
 		
 		// Clear saved form info
-		$_SESSION["admin"]["adminsettings"] = null;
+		$_SESSION["admin"]["admin_settings"] = null;
 		
 		$aSettings = $this->dbQuery(
 			"SELECT * FROM `settings`"
@@ -71,8 +71,8 @@ class adminsettings extends adminController
 		if($this->superAdmin == false)
 			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
 		
-		if(!empty($_SESSION["admin"]["adminsettings"]))
-			$this->tplAssign("aSetting", $_SESSION["admin"]["adminsettings"]);
+		if(!empty($_SESSION["admin"]["admin_settings"]))
+			$this->tplAssign("aSetting", $_SESSION["admin"]["admin_settings"]);
 		else {
 			$this->tplAssign("aSetting",
 				array(
@@ -91,7 +91,7 @@ class adminsettings extends adminController
 	}
 	function manageAdd_s() {
 		if(empty($_POST["tag"]) || empty($_POST["title"])) {
-			$_SESSION["admin"]["adminsettings"] = $_POST;
+			$_SESSION["admin"]["admin_settings"] = $_POST;
 			$this->forward("/admin/settings/manage/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
@@ -109,7 +109,7 @@ class adminsettings extends adminController
 			)
 		);
 		
-		$_SESSION["admin"]["adminsettings"] = null;
+		$_SESSION["admin"]["admin_settings"] = null;
 		
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting created successfully!"));
 	}
@@ -117,8 +117,8 @@ class adminsettings extends adminController
 		if($this->superAdmin == false)
 			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
 		
-		if(!empty($_SESSION["admin"]["adminsettings"])) {
-			$aSetting = $_SESSION["admin"]["adminsettings"];
+		if(!empty($_SESSION["admin"]["admin_settings"])) {
+			$aSetting = $_SESSION["admin"]["admin_settings"];
 			
 			$this->tplAssign("aSetting", $aSetting);
 		} else {
@@ -141,7 +141,7 @@ class adminsettings extends adminController
 	}
 	function manageEdit_s() {
 		if(empty($_POST["tag"]) || empty($_POST["title"])) {
-			$_SESSION["admin"]["adminsettings"] = $_POST;
+			$_SESSION["admin"]["admin_settings"] = $_POST;
 			$this->forward("/admin/settings/manage/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
@@ -159,7 +159,7 @@ class adminsettings extends adminController
 			$_POST["id"]
 		);
 		
-		$_SESSION["admin"]["adminsettings"] = null;
+		$_SESSION["admin"]["admin_settings"] = null;
 		
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Changes saved successfully!"));
 	}
