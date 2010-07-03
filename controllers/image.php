@@ -38,7 +38,7 @@ class image extends appController
 		include($this->_settings->root."helpers/makeImage.php");
 		$oImage = new makeImage($aImage["file"], true);
 		$oImage->crop($aImage["info"]["photo_width"], $aImage["info"]["photo_height"], $aImage["info"]["photo_x1"], $aImage["info"]["photo_y1"]);
-		$oImage->resize($oModel->imageMinWidth, $oModel->imageMinHeight, true);
+		$oImage->resize($oModel->imageMinWidth, $oModel->imageMinHeight);
 		
 		if(!empty($_GET["width"]) && $_GET["width"] <= $oModel->imageMinWidth)
 			$oImage->resize($_GET["width"], $_GET["width"]);
