@@ -255,9 +255,22 @@ class admin_galleries extends adminController
 	}
 	function photos_index() {
 		$oGalleries = $this->loadModel("galleries");
-				
-		$this->tplAssign("aPhotos", $oGalleries->getPhotos($this->urlVars->dynamic["gallery"]));
-		$this->tplAssign("aGallery", $oGalleries->getGallery($this->urlVars->dynamic["gallery"]));
+		
+		$aGallery = $oGalleries->getGallery($this->_urlVars->dynamic["gallery"]);
+		
+		$aGallery["categories"] = $this->dbQuery(
+			"SELECT `categories`.`id` FROM `{dbPrefix}galleries_categories` AS `categories`"
+				." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `categories`.`id` = `galleries_assign`.`categoryid`"
+				." WHERE `galleries_assign`.`galleryid` = ".$this->_urlVars->dynamic["gallery"]
+				." GROUP BY `categories`.`id`"
+				." ORDER BY `categories`.`name`"
+			,"col"
+		);
+		
+		$this->tplAssign("aPhotos", $oGalleries->getPhotos($this->_urlVars->dynamic["gallery"]));
+		$this->tplAssign("aDefaultPhoto", $oGalleries->getPhoto(null, true));
+		$this->tplAssign("aGallery", $aGallery);
+		$this->tplAssign("aCategories", $oGalleries->getCategories());
 		$this->tplAssign("sessionID", session_id());
 		$this->tplDisplay("admin/photos/index.tpl");
 	}
@@ -364,7 +377,19 @@ class admin_galleries extends adminController
 			);
 		}
 		
-		$this->forward("/admin/galleries/".$this->urlVars->dynamic["gallery"]."/photos/?notice=".urlencode("Sort order saved successfully!"));
+		$this->dbQuery(
+			"UPDATE `{dbPrefix}galleries_photos` SET"
+				." `gallery_default` = 0"
+				." WHERE `galleryid` = ".$this->dbQuote($this->_urlVars->dynamic["gallery"], "integer")
+		);
+		
+		$this->dbQuery(
+			"UPDATE `{dbPrefix}galleries_photos` SET"
+				." `gallery_default` = 1"
+				." WHERE `id` = ".$this->dbQuote($_POST["default_photo"], "integer")
+		);
+		
+		$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/?notice=".urlencode("Sort order saved successfully!"));
 	}
 	function photos_default() {
 		$this->dbUpdate(

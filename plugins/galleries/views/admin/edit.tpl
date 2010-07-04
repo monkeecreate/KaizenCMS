@@ -63,7 +63,7 @@ $(function(){ldelim}
 	{rdelim});
 	
 	$("form").validateForm([
-		"required,name,Link name is required"
+		"required,name,Gallery name is required"
 	]);
 {rdelim});
 </script>

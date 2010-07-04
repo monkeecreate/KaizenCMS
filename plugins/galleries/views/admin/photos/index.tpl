@@ -1,5 +1,8 @@
-{include file="inc_header.tpl" page_title="Gallery :: Photos" menu="galleries"}
+{include file="inc_header.tpl" page_title="Gallery :: Photos" menu="galleries" page_style="halfContent"}
+{assign var=subMenu value="Galleries"}
 {head}
+<script src="/scripts/jquery-iphone-checkboxes/jquery.iphone-style-checkboxes.js"></script>
+<link rel="stylesheet" href="/scripts/jquery-iphone-checkboxes/style.css" type="text/css">
 <link rel="stylesheet" href="/scripts/uploadify/uploadify.css" type="text/css" />
 <link rel="stylesheet" href="/css/admin/uploadify.css" type="text/css" />
 <script type="text/javascript" src="/scripts/uploadify/jquery.uploadify.v2.1.0.min.js"></script>
@@ -8,8 +11,8 @@
 {literal}
 $(function() {
 	var sortable = $("#photos").sortable({
-		placeholder: 'ui-state-highlight',
-		handle: '.move',
+		cursor: 'move',
+		placeholder: 'photo-sortable-placeholder',
 		stop: function(event, ui){
 			items = $("#photos").sortable('toArray');
 			ids = new Array();
@@ -17,8 +20,7 @@ $(function() {
 			
 			length = items.length;
 			for(i=0;i<length;i++){
-				id = items[i].replace("photo_","");
-				ids[x] = id;
+				ids[x] = items[i];
 				x++;
 			}
 			
@@ -28,6 +30,19 @@ $(function() {
 		}
 	});
 	$("#photos").disableSelection();
+	
+	$("#photos").draggable({
+		helper: 'clone',
+		cursor: 'move'
+	});
+	$("#defaultPhoto").droppable({
+		accept: '.image',
+		drop: function(event, ui) {
+			$(this).addClass('ui-state-highlight').html(ui.draggable.clone());
+			$("input[name=default_photo]").attr("value", $(ui.draggable).attr("id"));
+		}
+	});
+	
 	function uploadPhotos(){
 		$("#uploadPhotosFiles").uploadifyUpload();
 	}
@@ -94,80 +109,169 @@ $(function() {
 		$("#uploadPhotosFiles").uploadifyClearQueue();
 		return false;
 	});
+	
+	
+	
+	function editPhoto(item){
+		$.post(
+			$(item).find('form').attr("action"),
+			$(item).find('form').serialize(),
+			function(data){
+				window.location.replace(data);
+			}
+		);
+	}
+	// var editPhotoDialog = new Array();
+	// $(".image").each(function(){
+	// 	id = $(this).attr('id');
+	// 	
+	// 	editPhotoDialog[id] = $('#'+id+'_form')
+	// 		.dialog({
+	// 			autoOpen: false,
+	// 			bgiframe: true,
+	// 			modal: true
+	// 		});
+	// 	$('#'+id+'_form').each(function(){
+	// 		var item = this;
+	// 		
+	// 		$(this).find('form').submit(function(){
+	// 			editPhoto(item);
+	// 			return false;
+	// 		});
+	// 	});
+	// 	$(this).dblclick(function(){
+	// 		id = $(this).attr('id');
+	// 		editPhotoDialog[id].dialog('open');
+	// 		
+	// 		return false;
+	// 	});
+	// });
 });
 {/literal}
 </script>
 {/head}
-<div style="float:right;width:140px;">
-	<div class="ui-state-highlight" style="padding:5px">
-		<input type="radio" checked="checked"> = Default photo
-	</div>
-</div>
-
-<h2>{$aGallery.name|stripslashes}</h2>
-
 <form name="sort" class="photo_sort" method="post" action="/admin/galleries/{$aGallery.id}/photos/sort/">
-	<input type="submit" value="Save Sort Changes">
+	<input type="submit" value="Save Changes">
 	<input type="hidden" name="sort" value="">
+	<input type="hidden" name="default_photo" value="{$aDefaultPhoto.id}">
 </form>
+	<section id="content" class="content">
+		<header>
+			<h2>Manage Galleries &raquo; Edit Gallery</h2>
+		</header>
 
-<!--### IMAGE UPLOAD ###-->
-<div id="uploadPhotosBtn" style="margin-bottom:10px;">
-	<a href="#" id="dialogbtn" class="btn ui-button ui-corner-all ui-state-default">
-		<span class="icon ui-icon ui-icon-circle-plus"></span> Upload Photos
-	</a>
-</div>
-<div id="uploadPhotos" style="display:none;" title="Upload Photos">
-	<input id="uploadPhotosFiles" name="fileInput4" type="file" />
-	<div id="uploadPhotosFilesQueue"></div>
-	<div id="uploadPhotosDialogFooter">
-		<div class="float-right">
-			<a href="#" id="uploadPhotosClear">Clear</a>
-		</div>
-		<span id="uploadPhotosFilesCount">0</span> Files
-	</div>
-</div>
-<div style="float:left;margin-bottom:10px;">
-	<a href="/admin/galleries/{$aGallery.id}/photos/manage/" class="btn ui-button ui-corner-all ui-state-default ui-priority-secondary">
-		Manage All Photos
-	</a>
-</div>
-<!--### IMAGE UPLOAD ###-->
-<div class="clear">&nbsp;</div>
+		<section class="inner-content">
+			<h3>{$aGallery.name|clean_html}</h3>
+			<a href="/admin/galleries/{$aGallery.id}/photos/manage/" title="Batch Edit">Batch Edit Photos</a> | <a href="#" title="Delete Gallery">Delete Gallery</a>
 
-<div id="photos">
-	{foreach from=$aPhotos item=aPhoto}
-		<div id="photo_{$aPhoto.id}" class="photo">
-			<div class="move">
-				<img src="/images/admin/icons/arrow-move.png">
+
+			<!--### IMAGE UPLOAD ###-->
+			<!-- <div id="uploadPhotosBtn" style="margin-bottom:10px;">
+				<a href="#" id="dialogbtn" class="btn ui-button ui-corner-all ui-state-default">
+					<span class="icon ui-icon ui-icon-circle-plus"></span> Upload Photos
+				</a>
 			</div>
-			<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=150&height=150" class="image">
-			<div class="default">
-				<input type="radio" id="gallery_default_{$aPhoto.id}"{if $aPhoto.gallery_default == 1} checked="checked"{/if}>
-				<script type="text/javascript">
-				$(function(){ldelim}
-					$('#gallery_default_{$aPhoto.id}').click(function(){ldelim}
-						location.href = '/admin/galleries/{$aGallery.id}/photos/default/{$aPhoto.id}/';
-					{rdelim});
-				{rdelim});
-				</script>
+			<div id="uploadPhotos" style="display:none;" title="Upload Photos">
+				<input id="uploadPhotosFiles" name="fileInput4" type="file" />
+				<div id="uploadPhotosFilesQueue"></div>
+				<div id="uploadPhotosDialogFooter">
+					<div class="float-right">
+						<a href="#" id="uploadPhotosClear">Clear</a>
+					</div>
+					<span id="uploadPhotosFilesCount">0</span> Files
+				</div>
+			</div> -->
+			
+			<!-- <div style="float:left;margin-bottom:10px;">
+				<a href="/admin/galleries/{$aGallery.id}/photos/manage/" class="btn ui-button ui-corner-all ui-state-default ui-priority-secondary">
+					Manage All Photos
+				</a>
+			</div> -->
+			
+			<div id="photos" style="margin:10px 0;">
+				{foreach from=$aPhotos item=aPhoto}
+					<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=95&height=95" class="image" style="margin:0 4px;" id="{$aPhoto.id}" width="95px" height="95px">
+					<div id="{$aPhoto.id}_form" style="display:none;" title="Edit Photo">
+						<form method="post" action="/admin/galleries/{$aGallery.id}/photos/edit/s/">
+							<label>*Name:</label><br />
+							<input type="text" name="name" maxlength="100" value="{$aPhoto.title|clean_html}"><br />
+							<label>Description:</label><br />
+							<textarea name="description" class="elastic">{$aPhoto.description|clean_html}</textarea><br />
+							<input type="hidden" name="id" value="{$aPhoto.id}">
+						</form>
+					</div>
+				{foreachelse}
+					<p>There are currently no phot os in this gallery.</p>
+				{/foreach}
 			</div>
-			<div class="delete">
-				<a href="/admin/galleries/{$aGallery.id}/photos/edit/{$aPhoto.id}/"><img src="/images/admin/icons/pencil.png"></a>
-				<a href="/admin/galleries/{$aGallery.id}/photos/delete/{$aPhoto.id}/"
-					onclick="return confirm_('Are you sure you would like to remove this photo?');">
-				<img src="/images/admin/icons/bin_closed.png"></a>
+			
+			<!-- <div id="photos">
+				{foreach from=$aPhotos item=aPhoto}
+					<div id="photo_{$aPhoto.id}" class="photo">
+						<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=150&height=150" class="image">
+						<div class="delete">
+							<a href="/admin/galleries/{$aGallery.id}/photos/edit/{$aPhoto.id}/"><img src="/images/admin/icons/pencil.png"></a>
+							<a href="/admin/galleries/{$aGallery.id}/photos/delete/{$aPhoto.id}/"
+								onclick="return confirm_('Are you sure you would like to remove this photo?');">
+							<img src="/images/admin/icons/bin_closed.png"></a>
+						</div>
+					</div>
+				{foreachelse}
+					No photos.
+				{/foreach}
+			</div> -->
+			<div class="clear"></div>				
+		</section>
+	</section> <!-- #content -->
+
+	<section id="sidebar" class="sidebar">
+		<header>
+			<h2>Gallery Options</h2>
+		</header>
+
+		<section>
+			<div id="defaultPhoto" style="margin:0 0 10px;">
+				<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aDefaultPhoto.photo}&width=95&height=95" class="image" style="margin:0 4px;" id="photo_{$aDefaultPhoto.id}" width="273px">
 			</div>
-		</div>
-	{foreachelse}
-		No photos.
-	{/foreach}
-</div>
-<div class="clear"></div>
-
-<form name="sort" class="photo_sort" style="margin-bottom:10px;" method="post" action="/admin/galleries/{$aGallery.id}/photos/sort/">
-	<input type="submit" value="Save Sort Changes">
-	<input type="hidden" name="sort" value="">
-</form>
-
+			
+			<fieldset>
+				<legend>Status</legend>
+				<input type="checkbox" name="active" value="1"{if $aGallery.active == 1} checked="checked"{/if}>
+			</fieldset>
+			
+			<fieldset>
+				<legend>Gallery Info</legend>
+				<label>*Name:</label><br />
+				<input type="text" name="name" maxlength="100" value="{$aGallery.name|clean_html}"><br />
+				<label>Description:</label><br />
+				<textarea name="description" style="height:115px;">{$aGallery.description|clean_html}</textarea>
+			</fieldset>
+			
+			<fieldset id="fieldset_categories">
+				<legend>Categories</legend>
+				<ul class="categories">
+					{foreach from=$aCategories item=aCategory}
+						<li>
+							<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
+							 {if in_array($aCategory.id, $aGallery.categories)} checked="checked"{/if}>
+							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+						</li>
+					{/foreach}
+				</ul>
+			</fieldset>
+		</section>
+	</section>
+<script type="text/javascript">
+$(function(){ldelim}
+	$('input[name=active]').iphoneStyle({ldelim}
+		checkedLabel: 'On',
+		uncheckedLabel: 'Off'
+	{rdelim});
+	
+	// $("form").validateForm([
+	// 	"required,name,Gallery name is required",
+	// 	"required,categories[],You must select at least one category"
+	// ]);
+{rdelim});
+</script>
 {include file="inc_footer.tpl"}

@@ -1,3 +1,7 @@
+html, body {
+	background: #f4f4f4;
+}
+
 body {
 	background: #f4f4f4 url(/images/admin/header-bg.png) repeat-x 0 0;
 	font: 65% "Verdana", Arial, sans-serif;
@@ -963,6 +967,22 @@ tr.even td.sorting_3 {
 /* @end */
 
 /* @group misc */
+
+img.photo-sortable-placeholder {
+	width:95px;
+	height:95px;
+	margin: 0 4px;
+}
+
+#defaultPhoto img {
+	width: 273px !important;
+	height: 200px !important;
+	margin: 0 !important;
+	z-index: 0 !important;
+	top: 0 !important;
+	left: 0 !important;
+	position: static !important;
+}
 
 .ui-state-error ul {
 	list-style: disc inside;
