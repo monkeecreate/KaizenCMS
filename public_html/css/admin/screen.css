@@ -13,9 +13,9 @@ section, header, footer, article, aside, figure {
 }
 
 @font-face {
-  font-family: 'IconicStroke';
-    src: url("/fonts/admin/iconic_stroke.eot");
-    src: local('IconicStroke'),
+	font-family: 'IconicStroke';
+	src: url("/fonts/admin/iconic_stroke.eot");
+	src: local('IconicStroke'),
        url("/fonts/admin/iconic_stroke.svg#iconic") format('svg'),
 	   url("/fonts/admin/iconic_stroke.otf") format('opentype');
 }
@@ -43,7 +43,6 @@ a:hover {
 
 header {
 	margin: 0 0 15px;
-
 }
 
 header h1 {
@@ -339,6 +338,21 @@ ul#admin-menu-sort li:hover {
 	cursor: pointer;
 }
 
+ul#photos {
+	list-style: none;
+	margin: 10px 0;
+	overflow: hidden;
+	height: 95px;
+}
+
+ul#photos li {
+	float: left;
+	list-style: none;
+	margin: 0 4px;
+	width: 95px;
+	height: 95px;
+}
+
 /* @group login */
 
 .loginContent #wrapper-inner {
@@ -393,6 +407,7 @@ form#login input.text:focus, form#forgotPassword input.text:focus {
 	-moz-transform: scale(1.05);
 	transform: scale(1.05);
 }
+
 
 /* @end */
 
@@ -620,6 +635,18 @@ form.categoryForm {
 	margin: 0 15px 0 0;
 }
 
+form.dialogForm {
+	margin: 10px;
+}
+
+form.dialogForm input.text, form.dialogForm .textarea {
+	width: 300px;
+}
+
+form.dialogForm .textarea {
+	height: 135px;
+}
+
 /* @group settings form */
 
 form.settings input.text {
@@ -631,7 +658,9 @@ form.settings textarea {
 	height: 150px;
 }
 
-/* @end */
+/* @end
+
+*/
 
 /* @end */
 
@@ -639,15 +668,15 @@ form.settings textarea {
 
 .dataTables_wrapper {
 	position: relative;
-	
+	/*
 
-/*min-height: 302px;
+min-height: 302px;
 	_height: 302px;*/
 	clear: both;
 	zoom: 1;
+/* F
 
-
-/* Feeling sorry for IE */
+eeling sorry for IE */
 }
 
 .dataTable-footer {
@@ -763,9 +792,9 @@ table.dataTable td.group {
 .dataTables_filter {
 	width: 50%;
 	float: left;
-	
+	/*
 
-/*position: absolute;
+position: absolute;
 	bottom: 0;
 	left: 0;*/
 	text-align: left;
@@ -966,11 +995,29 @@ tr.even td.sorting_3 {
 
 /* @end */
 
+/* @group Photo Upload */
+
+#uploadPhotosFilesQueue {
+	height: 200px;
+	overflow: auto;
+	background: #FFF;
+	border: 1px solid #8F8F8F;
+}
+
+#uploadPhotosDialogFooter {
+	background: #DCDCDC;
+	border: 1px solid #8F8F8F;
+	border-top-width: 0;
+	padding: 5px;
+}
+
+/* @end */
+
 /* @group misc */
 
 img.photo-sortable-placeholder {
-	width:95px;
-	height:95px;
+	width: 95px;
+	height: 95px;
 	margin: 0 4px;
 }
 
@@ -982,6 +1029,7 @@ img.photo-sortable-placeholder {
 	top: 0 !important;
 	left: 0 !important;
 	position: static !important;
+	float: none !important;
 }
 
 .ui-state-error ul {
@@ -994,7 +1042,7 @@ img.photo-sortable-placeholder {
 }
 
 .helpTip {
-
+	
 }
 
 .clear {
