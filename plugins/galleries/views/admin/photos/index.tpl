@@ -193,7 +193,7 @@ $(function() {
 					</span>
 				</li>
 				{foreachelse}
-					<p>There are currently no phot os in this gallery.</p>
+					<p>There are currently no photos in this gallery.</p>
 				{/foreach}
 			</ul>
 			<div class="clear">&nbsp;</div>				

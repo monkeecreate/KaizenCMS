@@ -342,13 +342,12 @@ ul#photos {
 	list-style: none;
 	margin: 10px 0;
 	overflow: hidden;
-	height: 95px;
 }
 
 ul#photos li {
 	float: left;
 	list-style: none;
-	margin: 0 4px;
+	margin: 0 4px 10px;
 	width: 95px;
 	height: 95px;
 }
