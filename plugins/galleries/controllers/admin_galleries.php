@@ -407,7 +407,7 @@ class admin_galleries extends adminController
 				." WHERE `id` = ".$this->dbQuote($_POST["default_photo"], "integer")
 		);
 		
-		$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/galleries/".$this->_urlVars->dynamic["gallery"]."/photos/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function photos_default() {
 		$this->dbQuery(

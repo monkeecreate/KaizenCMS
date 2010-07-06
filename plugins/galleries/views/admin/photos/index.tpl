@@ -36,9 +36,9 @@ $(function() {
 		cursor: 'move'
 	});
 	$("#defaultPhoto").droppable({
-		accept: '.image',
+		// accept: '.image',
 		drop: function(event, ui) {
-			$(this).addClass('ui-state-highlight').html(ui.draggable.clone());
+			$(this).addClass('ui-state-highlight').html($("img", ui.draggable).clone());
 			$("input[name=default_photo]").attr("value", $(ui.draggable).attr("id"));
 		}
 	});
@@ -121,31 +121,32 @@ $(function() {
 			}
 		);
 	}
-	// var editPhotoDialog = new Array();
-	// $(".image").each(function(){
-	// 	id = $(this).attr('id');
-	// 	
-	// 	editPhotoDialog[id] = $('#'+id+'_form')
-	// 		.dialog({
-	// 			autoOpen: false,
-	// 			bgiframe: true,
-	// 			modal: true
-	// 		});
-	// 	$('#'+id+'_form').each(function(){
-	// 		var item = this;
-	// 		
-	// 		$(this).find('form').submit(function(){
-	// 			editPhoto(item);
-	// 			return false;
-	// 		});
-	// 	});
-	// 	$(this).dblclick(function(){
-	// 		id = $(this).attr('id');
-	// 		editPhotoDialog[id].dialog('open');
-	// 		
-	// 		return false;
-	// 	});
-	// });
+	var editPhotoDialog = new Array();
+	$("#photos li").each(function(){
+		id = $(this).attr('id');
+		
+		editPhotoDialog[id] = $('#'+id+'_form')
+			.dialog({
+				autoOpen: false,
+				bgiframe: true,
+				modal: true,
+				width: 600
+			});
+		$('#'+id+'_form').each(function(){
+			var item = this;
+			
+			$(this).find('form').submit(function(){
+				editPhoto(item);
+				return false;
+			});
+		});
+		$(this).dblclick(function(){
+			id = $(this).attr('id');
+			editPhotoDialog[id].dialog('open');
+			
+			return false;
+		});
+	});
 });
 {/literal}
 </script>
@@ -188,22 +189,29 @@ $(function() {
 				</a>
 			</div> -->
 			
-			<div id="photos" style="margin:10px 0;">
+			<ul id="photos">
 				{foreach from=$aPhotos item=aPhoto}
-					<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=95&height=95" class="image" style="margin:0 4px;" id="{$aPhoto.id}" width="95px" height="95px">
-					<div id="{$aPhoto.id}_form" style="display:none;" title="Edit Photo">
-						<form method="post" action="/admin/galleries/{$aGallery.id}/photos/edit/s/">
+				<li id="{$aPhoto.id}">
+					<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=95&height=95" class="image" width="95px" height="95px">
+					<span id="{$aPhoto.id}_form" style="display:none;" title="Edit Photo">
+						<form class="dialogForm" method="post" action="/admin/galleries/{$aGallery.id}/photos/edit/s/">
+							<figure class="right">
+								<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=245&height=245" width="245px">
+							</figure>
 							<label>*Name:</label><br />
 							<input type="text" name="name" maxlength="100" value="{$aPhoto.title|clean_html}"><br />
 							<label>Description:</label><br />
 							<textarea name="description" class="elastic">{$aPhoto.description|clean_html}</textarea><br />
+							<input type="submit" value="Save">
+							<a class="cancel" href="#" title="Cancel" rel="{$aPhoto.id}">Cancel</a>
 							<input type="hidden" name="id" value="{$aPhoto.id}">
 						</form>
-					</div>
+					</span>
+				</li>
 				{foreachelse}
 					<p>There are currently no phot os in this gallery.</p>
 				{/foreach}
-			</div>
+			</ul>
 			
 			<!-- <div id="photos">
 				{foreach from=$aPhotos item=aPhoto}
@@ -266,6 +274,11 @@ $(function(){ldelim}
 	$('input[name=active]').iphoneStyle({ldelim}
 		checkedLabel: 'On',
 		uncheckedLabel: 'Off'
+	{rdelim});
+	
+	$('.cancel').click(function() {ldelim}
+		id = $(this).attr("rel");
+		$('#'+id+'_form').dialog('close');
 	{rdelim});
 	
 	// $("form").validateForm([
