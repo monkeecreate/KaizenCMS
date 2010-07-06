@@ -61,7 +61,7 @@ $(function() {
 			}
 		}
 	});
-	$('#uploadPhotosBtn a').click(function() {
+	$('#uploadPhotosBtn').click(function() {
 		uploadPhotosDialog.dialog('open');
 		return false;
 	});
@@ -151,11 +151,6 @@ $(function() {
 {/literal}
 </script>
 {/head}
-<form name="sort" class="photo_sort" method="post" action="/admin/galleries/{$aGallery.id}/photos/sort/">
-	<input type="submit" value="Save Changes">
-	<input type="hidden" name="sort" value="">
-	<input type="hidden" name="default_photo" value="{$aDefaultPhoto.id}">
-</form>
 	<section id="content" class="content">
 		<header>
 			<h2>Manage Galleries &raquo; Edit Gallery</h2>
@@ -163,15 +158,10 @@ $(function() {
 
 		<section class="inner-content">
 			<h3>{$aGallery.name|clean_html}</h3>
-			<a href="/admin/galleries/{$aGallery.id}/photos/manage/" title="Batch Edit">Batch Edit Photos</a> | <a href="#" title="Delete Gallery">Delete Gallery</a>
+			<a href="#" id="uploadPhotosBtn">Upload Photos</a> | <a href="/admin/galleries/{$aGallery.id}/photos/manage/" title="Batch Edit">Batch Edit Photos</a> | <a href="#" title="Delete Gallery">Delete Gallery</a>
 
 
-			<!--### IMAGE UPLOAD ###-->
-			<!-- <div id="uploadPhotosBtn" style="margin-bottom:10px;">
-				<a href="#" id="dialogbtn" class="btn ui-button ui-corner-all ui-state-default">
-					<span class="icon ui-icon ui-icon-circle-plus"></span> Upload Photos
-				</a>
-			</div>
+			<!--### IMAGE UPLOAD ###-->			
 			<div id="uploadPhotos" style="display:none;" title="Upload Photos">
 				<input id="uploadPhotosFiles" name="fileInput4" type="file" />
 				<div id="uploadPhotosFilesQueue"></div>
@@ -181,13 +171,7 @@ $(function() {
 					</div>
 					<span id="uploadPhotosFilesCount">0</span> Files
 				</div>
-			</div> -->
-			
-			<!-- <div style="float:left;margin-bottom:10px;">
-				<a href="/admin/galleries/{$aGallery.id}/photos/manage/" class="btn ui-button ui-corner-all ui-state-default ui-priority-secondary">
-					Manage All Photos
-				</a>
-			</div> -->
+			</div>
 			
 			<ul id="photos">
 				{foreach from=$aPhotos item=aPhoto}
@@ -212,23 +196,7 @@ $(function() {
 					<p>There are currently no phot os in this gallery.</p>
 				{/foreach}
 			</ul>
-			
-			<!-- <div id="photos">
-				{foreach from=$aPhotos item=aPhoto}
-					<div id="photo_{$aPhoto.id}" class="photo">
-						<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=150&height=150" class="image">
-						<div class="delete">
-							<a href="/admin/galleries/{$aGallery.id}/photos/edit/{$aPhoto.id}/"><img src="/images/admin/icons/pencil.png"></a>
-							<a href="/admin/galleries/{$aGallery.id}/photos/delete/{$aPhoto.id}/"
-								onclick="return confirm_('Are you sure you would like to remove this photo?');">
-							<img src="/images/admin/icons/bin_closed.png"></a>
-						</div>
-					</div>
-				{foreachelse}
-					No photos.
-				{/foreach}
-			</div> -->
-			<div class="clear"></div>				
+			<div class="clear">&nbsp;</div>				
 		</section>
 	</section> <!-- #content -->
 
@@ -236,38 +204,44 @@ $(function() {
 		<header>
 			<h2>Gallery Options</h2>
 		</header>
-
-		<section>
-			<div id="defaultPhoto" style="margin:0 0 10px;">
-				<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aDefaultPhoto.photo}&width=95&height=95" class="image" style="margin:0 4px;" id="photo_{$aDefaultPhoto.id}" width="273px">
-			</div>
+		<form name="sort" class="photo_sort" method="post" action="/admin/galleries/{$aGallery.id}/photos/sort/">
 			
-			<fieldset>
-				<legend>Status</legend>
-				<input type="checkbox" name="active" value="1"{if $aGallery.active == 1} checked="checked"{/if}>
-			</fieldset>
+			<section>
+				<div id="defaultPhoto" style="margin:0 0 10px;">
+					<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aDefaultPhoto.photo}&width=95&height=95" class="image" style="margin:0 4px;" id="photo_{$aDefaultPhoto.id}" width="273px">
+				</div>
 			
-			<fieldset>
-				<legend>Gallery Info</legend>
-				<label>*Name:</label><br />
-				<input type="text" name="name" maxlength="100" value="{$aGallery.name|clean_html}"><br />
-				<label>Description:</label><br />
-				<textarea name="description" style="height:115px;">{$aGallery.description|clean_html}</textarea>
-			</fieldset>
+				<fieldset>
+					<legend>Status</legend>
+					<input type="checkbox" name="active" value="1"{if $aGallery.active == 1} checked="checked"{/if}>
+				</fieldset>
 			
-			<fieldset id="fieldset_categories">
-				<legend>Categories</legend>
-				<ul class="categories">
-					{foreach from=$aCategories item=aCategory}
-						<li>
-							<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
-							 {if in_array($aCategory.id, $aGallery.categories)} checked="checked"{/if}>
-							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
-						</li>
-					{/foreach}
-				</ul>
-			</fieldset>
-		</section>
+				<fieldset>
+					<legend>Gallery Info</legend>
+					<label>*Name:</label><br />
+					<input type="text" name="name" maxlength="100" value="{$aGallery.name|clean_html}"><br />
+					<label>Description:</label><br />
+					<textarea name="description" style="height:115px;">{$aGallery.description|clean_html}</textarea>
+				</fieldset>
+			
+				<fieldset id="fieldset_categories">
+					<legend>Categories</legend>
+					<ul class="categories">
+						{foreach from=$aCategories item=aCategory}
+							<li>
+								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
+								 {if in_array($aCategory.id, $aGallery.categories)} checked="checked"{/if}>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+							</li>
+						{/foreach}
+					</ul>
+				</fieldset>
+				
+				<input class="submit" type="submit" value="Save Changes">
+				<input type="hidden" name="sort" value="">
+				<input type="hidden" name="default_photo" value="{$aDefaultPhoto.id}">
+			</section>
+		</form>
 	</section>
 <script type="text/javascript">
 $(function(){ldelim}

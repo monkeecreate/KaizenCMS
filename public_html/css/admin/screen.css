@@ -13,9 +13,9 @@ section, header, footer, article, aside, figure {
 }
 
 @font-face {
-  font-family: 'IconicStroke';
-    src: url("/fonts/admin/iconic_stroke.eot");
-    src: local('IconicStroke'),
+	font-family: 'IconicStroke';
+	src: url("/fonts/admin/iconic_stroke.eot");
+	src: local('IconicStroke'),
        url("/fonts/admin/iconic_stroke.svg#iconic") format('svg'),
 	   url("/fonts/admin/iconic_stroke.otf") format('opentype');
 }
@@ -43,7 +43,6 @@ a:hover {
 
 header {
 	margin: 0 0 15px;
-
 }
 
 header h1 {
@@ -409,6 +408,7 @@ form#login input.text:focus, form#forgotPassword input.text:focus {
 	transform: scale(1.05);
 }
 
+
 /* @end */
 
 /* @end */
@@ -658,7 +658,9 @@ form.settings textarea {
 	height: 150px;
 }
 
-/* @end */
+/* @end
+
+*/
 
 /* @end */
 
@@ -666,15 +668,15 @@ form.settings textarea {
 
 .dataTables_wrapper {
 	position: relative;
-	
+	/*
 
-/*min-height: 302px;
+min-height: 302px;
 	_height: 302px;*/
 	clear: both;
 	zoom: 1;
+/* F
 
-
-/* Feeling sorry for IE */
+eeling sorry for IE */
 }
 
 .dataTable-footer {
@@ -790,9 +792,9 @@ table.dataTable td.group {
 .dataTables_filter {
 	width: 50%;
 	float: left;
-	
+	/*
 
-/*position: absolute;
+position: absolute;
 	bottom: 0;
 	left: 0;*/
 	text-align: left;
@@ -993,11 +995,29 @@ tr.even td.sorting_3 {
 
 /* @end */
 
+/* @group Photo Upload */
+
+#uploadPhotosFilesQueue {
+	height: 200px;
+	overflow: auto;
+	background: #FFF;
+	border: 1px solid #8F8F8F;
+}
+
+#uploadPhotosDialogFooter {
+	background: #DCDCDC;
+	border: 1px solid #8F8F8F;
+	border-top-width: 0;
+	padding: 5px;
+}
+
+/* @end */
+
 /* @group misc */
 
 img.photo-sortable-placeholder {
-	width:95px;
-	height:95px;
+	width: 95px;
+	height: 95px;
 	margin: 0 4px;
 }
 
@@ -1022,7 +1042,7 @@ img.photo-sortable-placeholder {
 }
 
 .helpTip {
-
+	
 }
 
 .clear {
