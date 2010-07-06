@@ -19,6 +19,23 @@ class image extends appController
 		$oImage->resize($sNewWidth, $sNewHeight);
 		$oImage->draw(null, 85);
 	}
+	function crop() {
+		$sFile = $this->_settings->root_public.substr($_GET["file"], 1);
+		
+		if(filesize($sFile) == 0 || empty($_GET["width"]) || empty($_GET["height"]))
+			$this->error('404');
+		
+		if(!is_numeric($_GET["width"]) || !is_numeric($_GET["height"]))
+			$this->error('505');
+		
+		$sNewWidth = $_GET["width"];
+		$sNewHeight = $_GET["height"];
+		
+		include($this->_settings->root."helpers/makeImage.php");
+		$oImage = new makeImage($sFile, true);
+		$oImage->cropCenter($sNewWidth, $sNewHeight);
+		$oImage->draw(null, 85);
+	}
 	function itemImage() {
 		$oModel = $this->loadModel($this->_urlVars->dynamic["model"]);
 		

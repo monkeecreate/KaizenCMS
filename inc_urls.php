@@ -28,6 +28,10 @@ $aUrlPatterns = array(
 		"cmd" => "image",
 		"action" => "resize"
 	),
+	"/image/crop/" => array(
+		"cmd" => "image",
+		"action" => "crop"
+	),
 	"/image/{model:[a-z]+}/{id:[0-9]+}/" => array(
 		"cmd" => "image",
 		"action" => "itemImage"
