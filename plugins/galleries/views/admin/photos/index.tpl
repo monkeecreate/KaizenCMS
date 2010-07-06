@@ -38,6 +38,7 @@ $(function() {
 	$("#defaultPhoto").droppable({
 		// accept: '.image',
 		drop: function(event, ui) {
+			$("#photos").sortable('cancel');
 			$(this).addClass('ui-state-highlight').html($("img", ui.draggable).clone());
 			$("input[name=default_photo]").attr("value", $(ui.draggable).attr("id"));
 		}
