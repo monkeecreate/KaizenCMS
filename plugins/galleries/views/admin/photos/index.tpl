@@ -38,6 +38,7 @@ $(function() {
 	$("#defaultPhoto").droppable({
 		// accept: '.image',
 		drop: function(event, ui) {
+			$("#photos").sortable('cancel');
 			$(this).addClass('ui-state-highlight').html($("img", ui.draggable).clone());
 			$("input[name=default_photo]").attr("value", $(ui.draggable).attr("id"));
 		}
@@ -175,23 +176,23 @@ $(function() {
 			
 			<ul id="photos">
 				{foreach from=$aPhotos item=aPhoto}
-				<li id="{$aPhoto.id}">
-					<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=95&height=95" class="image" width="95px" height="95px">
-					<span id="{$aPhoto.id}_form" style="display:none;" title="Edit Photo">
-						<form class="dialogForm" method="post" action="/admin/galleries/{$aGallery.id}/photos/edit/s/">
-							<figure class="right">
-								<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=245&height=245" width="245px">
-							</figure>
-							<label>*Name:</label><br />
-							<input type="text" name="name" maxlength="100" value="{$aPhoto.title|clean_html}"><br />
-							<label>Description:</label><br />
-							<textarea name="description" class="elastic">{$aPhoto.description|clean_html}</textarea><br />
-							<input type="submit" value="Save">
-							<a class="cancel" href="#" title="Cancel" rel="{$aPhoto.id}">Cancel</a>
-							<input type="hidden" name="id" value="{$aPhoto.id}">
-						</form>
-					</span>
-				</li>
+					<li id="{$aPhoto.id}">
+						<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=273&height=273" class="image" width="95px" height="95px">
+						<span id="{$aPhoto.id}_form" style="display:none;" title="Edit Photo">
+							<form class="dialogForm" method="post" action="/admin/galleries/{$aGallery.id}/photos/edit/s/">
+								<figure class="right">
+									<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=245&height=245" width="245px">
+								</figure>
+								<label>*Name:</label><br />
+								<input type="text" name="name" maxlength="100" value="{$aPhoto.title|clean_html}"><br />
+								<label>Description:</label><br />
+								<textarea name="description" class="elastic">{$aPhoto.description|clean_html}</textarea><br />
+								<input type="submit" value="Save">
+								<a class="cancel" href="#" title="Cancel" rel="{$aPhoto.id}">Cancel</a>
+								<input type="hidden" name="id" value="{$aPhoto.id}">
+							</form>
+						</span>
+					</li>
 				{foreachelse}
 					<p>There are currently no photos in this gallery.</p>
 				{/foreach}
@@ -208,7 +209,7 @@ $(function() {
 			
 			<section>
 				<div id="defaultPhoto" style="margin:0 0 10px;">
-					<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aDefaultPhoto.photo}&width=95&height=95" class="image" style="margin:0 4px;" id="photo_{$aDefaultPhoto.id}" width="273px">
+					<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aDefaultPhoto.photo}&width=273&height=273" class="image" style="margin:0 4px;" id="photo_{$aDefaultPhoto.id}" width="273px">
 				</div>
 			
 				<fieldset>

@@ -61,20 +61,25 @@ class makeImage
 			return false;
 	}
 	public function cropCenter($sWidth, $sHeight) {
-		if($this->_width < $this->_height) {
-			$sPhotoX1 = 0;
-			$sPhotoY1 = ($this->_height - $sHeight) / 2;
+		$sSourceAspectRatio = $this->_width / $this->_height;
+		$sDesiredAspectRatio = $sWidth / $sHeight;
+
+		if ( $sSourceAspectRatio > $sDesiredAspectRatio ) {
+			$sTempHeight = $sHeight;
+			$sTempWidth = (int)($sHeight * $sSourceAspectRatio);
 		} else {
-			$sPhotoX1 = ($this->_width - $sWidth) / 2;
-			$sPhotoY1 = 0;
+			$sTempWidth = $sWidth;
+			$sTempHeight = (int)($sWidth / $sSourceAspectRatio);
 		}
 		
-		// Load end canvas for cropping
-		$oImage = imagecreatetruecolor($sWidth, $sHeight);
-		imagefill($oImage, 0, 0, imagecolorallocate($oImage, 255, 255, 255));
+		$oTempImage = imagecreatetruecolor($sTempWidth, $sTempHeight);
+		imagecopyresampled($oTempImage, $this->_image, 0, 0, 0, 0, $sTempWidth, $sTempHeight, $this->_width, $this->_height);
 		
-		// Crop image onto canvas
-		imagecopyresized($oImage, $this->_image, 0, 0, $sPhotoX1, $sPhotoY1, $this->_width, $this->_height, $this->_width, $this->_height);
+		$x0 = ( $sTempWidth - $sWidth ) / 2;
+		$y0 = ( $sTempHeight - $sHeight ) / 2;
+		
+		$oImage = imagecreatetruecolor($sWidth, $sHeight);
+		imagecopy($oImage, $oTempImage, 0, 0, $x0, $y0, $sWidth, $sHeight);
 		
 		// Save info
 		$this->_image = $oImage;
@@ -82,6 +87,7 @@ class makeImage
 		$this->_height = imageSY($this->_image);
 		
 		unset($oImage);
+		unset($oTempImage);
 		
 		return true;
 	}
