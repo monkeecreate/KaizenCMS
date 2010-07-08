@@ -36,11 +36,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_galleries",
         "action" => "sort"
     ),
-	"/admin/galleries/edit/{id:[0-9]+}/" => array(
-        "cmd" => "admin_galleries",
-        "action" => "edit"
-    ),
-	"/admin/galleries/edit/s/" => array(
+	"/admin/galleries/edit/" => array(
         "cmd" => "admin_galleries",
         "action" => "edit_s"
     ),
@@ -80,21 +76,9 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_galleries",
         "action" => "photos_manage_s"
     ),
-	"/admin/galleries/{gallery:[0-9]+}/photos/sort/" => array(
-        "cmd" => "admin_galleries",
-        "action" => "photos_sort"
-    ),
-	"/admin/galleries/{gallery:[0-9]+}/photos/default/{id:[0-9]+}/" => array(
-        "cmd" => "admin_galleries",
-        "action" => "photos_default"
-    ),
-	"/admin/galleries/{gallery:[0-9]+}/photos/edit/{id:[0-9]+}/" => array(
+	"/admin/galleries/{gallery:[0-9]+}/photos/edit/" => array(
         "cmd" => "admin_galleries",
         "action" => "photos_edit"
-    ),
-	"/admin/galleries/{gallery:[0-9]+}/photos/edit/s/" => array(
-        "cmd" => "admin_galleries",
-        "action" => "photos_edit_s"
     ),
 	"/admin/galleries/{gallery:[0-9]+}/photos/delete/{id:[0-9]+}/" => array(
         "cmd" => "admin_galleries",

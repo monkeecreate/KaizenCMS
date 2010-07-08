@@ -111,14 +111,25 @@ $(function() {
 		return false;
 	});
 	
-	
-	
 	function editPhoto(item){
 		$.post(
 			$(item).find('form').attr("action"),
 			$(item).find('form').serialize(),
-			function(data){
-				window.location.replace(data);
+			function(id){
+				editPhotoDialog[id].dialog('close');
+			}
+		);
+	}
+	function deletePhoto(id){
+		$.post(
+			"/admin/galleries/{/literal}{$aGallery.id}{literal}/photos/delete/"+id+"/",
+			null,
+			function(newDefault){
+				editPhotoDialog[id].dialog('close');
+				
+				$("#"+id).remove();
+				$("#defaultPhoto").addClass('ui-state-highlight').html($("#"+newDefault+" .image").clone());
+				$("input[name=default_photo]").attr("value", newDefault);
 			}
 		);
 	}
@@ -138,6 +149,11 @@ $(function() {
 			
 			$(this).find('form').submit(function(){
 				editPhoto(item);
+				return false;
+			});
+			$(this).find('.delete').click(function(){
+				id = $(item).attr('id').replace("_form", "");
+				deletePhoto(id);
 				return false;
 			});
 		});
@@ -177,17 +193,18 @@ $(function() {
 			<ul id="photos">
 				{foreach from=$aPhotos item=aPhoto}
 					<li id="{$aPhoto.id}">
-						<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=273&height=273" class="image" width="95px" height="95px">
+						<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=273&height=200" class="image" width="95px" height="95px">
 						<span id="{$aPhoto.id}_form" style="display:none;" title="Edit Photo">
-							<form class="dialogForm" method="post" action="/admin/galleries/{$aGallery.id}/photos/edit/s/">
+							<form class="dialogForm" method="post" action="/admin/galleries/{$aGallery.id}/photos/edit/">
 								<figure class="right">
 									<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=245&height=245" width="245px">
 								</figure>
-								<label>*Name:</label><br />
-								<input type="text" name="name" maxlength="100" value="{$aPhoto.title|clean_html}"><br />
+								<label>*Title:</label><br />
+								<input type="text" name="title" maxlength="100" value="{$aPhoto.title|clean_html}"><br />
 								<label>Description:</label><br />
 								<textarea name="description" class="elastic">{$aPhoto.description|clean_html}</textarea><br />
 								<input type="submit" value="Save">
+								<input type="button" value="Delete" class="delete">
 								<a class="cancel" href="#" title="Cancel" rel="{$aPhoto.id}">Cancel</a>
 								<input type="hidden" name="id" value="{$aPhoto.id}">
 							</form>
@@ -205,11 +222,11 @@ $(function() {
 		<header>
 			<h2>Gallery Options</h2>
 		</header>
-		<form name="sort" class="photo_sort" method="post" action="/admin/galleries/{$aGallery.id}/photos/sort/">
+		<form name="sort" class="photo_sort" method="post" action="/admin/galleries/edit/">
 			
 			<section>
 				<div id="defaultPhoto" style="margin:0 0 10px;">
-					<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aDefaultPhoto.photo}&width=273&height=273" class="image" style="margin:0 4px;" id="photo_{$aDefaultPhoto.id}" width="273px">
+					<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aDefaultPhoto.photo}&width=273&height=200" class="image" style="margin:0 4px;" id="photo_{$aDefaultPhoto.id}" width="273px">
 				</div>
 			
 				<fieldset>
@@ -241,6 +258,7 @@ $(function() {
 				<input class="submit" type="submit" value="Save Changes">
 				<input type="hidden" name="sort" value="">
 				<input type="hidden" name="default_photo" value="{$aDefaultPhoto.id}">
+				<input type="hidden" name="gallery" value="{$aGallery.id}">
 			</section>
 		</form>
 	</section>
