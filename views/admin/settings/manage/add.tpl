@@ -57,6 +57,7 @@ $(function(){ldelim}
 					<option value="textarea"{if $aSetting.type == "textarea"} selected="selected"{/if}>Textarea</option>
 					<option value="bool"{if $aSetting.type == "bool"} selected="selected"{/if}>Checkbox</option>
 					<option value="editor"{if $aSetting.type == "editor"} selected="selected"{/if}>WYSIWYG Editor</option>
+					<option value="file"{if $aSetting.type == "file"} selected="selected"{/if}>File Upload</option>
 				</select><br />
 		
 				<label>Order:</label>
