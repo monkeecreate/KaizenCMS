@@ -13,8 +13,8 @@
 */
 $aPluginUrlPatterns = array(
     "/promos/{id:[0-9]+}/" => array(
-		"cmd" => "content",
-		"action" => "promo"
+		"cmd" => "promos",
+		"action" => "index"
 	),
 	"/admin/promos/" => array(
         "cmd" => "admin_promos",
