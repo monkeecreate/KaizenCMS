@@ -158,6 +158,8 @@ class admin_news extends adminController
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
+		$oNews = $this->loadModel("news");
+		
 		if(empty($_POST["title"]) || count($_POST["categories"]) == 0) {
 			$_SESSION["admin"]["admin_news"] = $_POST;
 			$this->forward("/admin/news/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
