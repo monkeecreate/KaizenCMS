@@ -240,9 +240,11 @@ $(document).ready(function() {
 	$(".column").disableSelection();
 	$(".checkAll").click(function(){
 		$("fieldset#fieldset_categories INPUT[type='checkbox']").attr('checked', true);
+		return false;
 	});
 	$(".uncheckAll").click(function(){
 		$("fieldset#fieldset_categories INPUT[type='checkbox']").attr('checked', false);
+		return false;
 	});
 	$(".btn").hover(
 		function(){

@@ -68,7 +68,7 @@
 
 	<section id="sidebar" class="sidebar">
 		<header>
-			<h2>Article Options</h2>
+			<h2>Listing Options</h2>
 		</header>
 		
 		<section>

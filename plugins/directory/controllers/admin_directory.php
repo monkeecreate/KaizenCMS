@@ -96,8 +96,8 @@ class admin_directory extends adminController
 			
 			$aListing = $_SESSION["admin"]["admin_directory"];
 			
-			$directory["updated_datetime"] = $aListingRow["updated_datetime"];
-			$directory["updated_by"] = $this->dbQuery(
+			$aListing["updated_datetime"] = $aListingRow["updated_datetime"];
+			$aListing["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aListingRow["updated_by"]
 				,"row"
