@@ -663,6 +663,10 @@ form.settings textarea {
 	height: 150px;
 }
 
+.content ul li label {
+	font-size: inherit;
+}
+
 /* @end
 
 */
