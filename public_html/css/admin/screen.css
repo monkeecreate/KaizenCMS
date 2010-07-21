@@ -274,7 +274,8 @@ nav ul li ul.dropdown li a:hover {
 
 ul.pageTabs {
 	float: right;
-	margin: 12px 0 0;
+	margin: 4px 0 0;
+	overflow: hidden;
 }
 
 ul.pageTabs li {
@@ -291,8 +292,9 @@ ul.pageTabs li a:link, ul.pageTabs li a:active, ul.pageTabs li a:visited {
 	-webkit-border-top-right-radius: 3px;
 	font-size: 0.9em;
 	color: #f1f1f1;
-	padding: 8px 10px;
-	text-decoration: none
+	padding: 8px 10px 5px;
+	text-decoration: none;
+	float: left;
 }
 
 ul.pageTabs li a.active, ul.pageTabs li a:hover {
@@ -646,6 +648,10 @@ form.dialogForm .textarea {
 	height: 135px;
 }
 
+form#login {
+	overflow: hidden;
+}
+
 /* @group settings form */
 
 form.settings input.text {
@@ -655,6 +661,10 @@ form.settings input.text {
 form.settings textarea {
 	width: 300px;
 	height: 150px;
+}
+
+.content ul li label {
+	font-size: inherit;
 }
 
 /* @end
@@ -714,10 +724,6 @@ table.dataTable thead th {
 
 table.dataTable thead th.center {
 	text-align: center;
-}
-
-table.dataTable thead th.empty {
-	padding: 0;
 }
 
 table.dataTable thead th:first-child {
@@ -992,6 +998,15 @@ tr.even td.sorting_3 {
 	background-color: #efefef;
 }*/
 
+table.dataTable thead th.empty {
+	padding: 0;
+}
+
+table.dataTable thead th.hidden {
+	padding: 0 !important;
+	border: 0 !important;
+}
+
 /* @end */
 
 /* @group Photo Upload */
@@ -1074,6 +1089,8 @@ img.photo-sortable-placeholder {
 
 .hidden {
 	display: none;
+	width: 0px;
+	height: 0px;
 }
 
 /* @end */
