@@ -20,7 +20,7 @@ class adminController extends appController
 			,"passwordReset_code_s"
 		);
 		
-		if(!$this->loggedin() && !in_array($this->_settings->url[1], $aAllowedActions) && $this->_settings->surl != "/admin/")
+		if(!$this->loggedin() && !in_array($this->settings->url[1], $aAllowedActions) && $this->settings->surl != "/admin/")
 			$this->forward("/admin/", 401);
 		elseif($this->loggedin()) {
 			$aUser = $this->dbQuery(
@@ -43,7 +43,7 @@ class adminController extends appController
 			/*## @end ##*/
 			
 			/*## Menu ##*/
-			if($this->_settings->url[1] != "logout") {
+			if($this->settings->url[1] != "logout") {
 				$aMenuAdmin = $this->dbQuery(
 					"SELECT * FROM `menu_admin`"
 						." ORDER BY `sort_order`"
@@ -143,7 +143,7 @@ class adminController extends appController
 				$code = sha1($aUser["email"].time());
 				
 				$this->dbQuery("UPDATE `users` SET"
-					."`resetCode` = ".$this->dbQuote($this->_settings->encryptSalt."_".$code, "text")
+					."`resetCode` = ".$this->dbQuote($this->settings->encryptSalt."_".$code, "text")
 					." WHERE `id` = ".$aUser["id"]
 				);
 				
@@ -165,7 +165,7 @@ class adminController extends appController
 	}
 	function passwordReset_code() {
 		$aUser = $this->dbQuery("SELECT * FROM `users`"
-			." WHERE `resetCode` = ".$this->dbQuote($this->_settings->encryptSalt."_".$this->_urlVars->dynamic["code"], "text")
+			." WHERE `resetCode` = ".$this->dbQuote($this->settings->encryptSalt."_".$this->_urlVars->dynamic["code"], "text")
 			,"row"
 		);
 		
@@ -184,7 +184,7 @@ class adminController extends appController
 		
 		$this->dbQuery("UPDATE `users` SET"
 			." `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
-			." WHERE `resetCode` = ".$this->dbQuote($this->_settings->encryptSalt."_".$this->_urlVars->dynamic["code"], "text")
+			." WHERE `resetCode` = ".$this->dbQuote($this->settings->encryptSalt."_".$this->_urlVars->dynamic["code"], "text")
 		);
 		
 		$this->forward("/admin/?notice=".urlencode("Password successfully reset."));

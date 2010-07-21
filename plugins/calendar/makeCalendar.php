@@ -71,6 +71,7 @@ class makeCalendar
 			}
 		}
 		#######################
+		
 		$cDay = 1;
 		$week = 1;
 		$aCal = $this->_cal;

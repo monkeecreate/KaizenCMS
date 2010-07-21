@@ -251,21 +251,21 @@ class admin_calendar extends adminController
 		$this->dbDelete("calendar", $this->_urlVars->dynamic["id"]);
 		$this->dbDelete("calendar_categories_assign", $this->_urlVars->dynamic["id"], "eventid");
 		
-		@unlink($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 		
 		$this->forward("/admin/calendar/?notice=".urlencode("Event removed successfully!"));
 	}
 	function image_upload_s() {			
 		$oCalendar = $this->loadModel("calendar");
 				
-		if(!is_dir($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1)))
-			mkdir($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1), 0777);
+		if(!is_dir($this->settings->rootPublic.substr($oCalendar->imageFolder, 1)))
+			mkdir($this->settings->rootPublic.substr($oCalendar->imageFolder, 1), 0777);
 
 		if($_FILES["image"]["type"] == "image/jpeg"
 		 || $_FILES["image"]["type"] == "image/jpg"
 		 || $_FILES["image"]["type"] == "image/pjpeg"
 		) {
-			$sFile = $this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$_POST["id"].".jpg";
+			$sFile = $this->settings->rootPublic.substr($oCalendar->imageFolder, 1).$_POST["id"].".jpg";
 			
 			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
 			if($aImageSize[0] < $oCalendar->imageMinWidth || $aImageSize[1] < $oCalendar->imageMinHeight) {
@@ -345,7 +345,7 @@ class admin_calendar extends adminController
 			$this->_urlVars->dynamic["id"]
 		);
 		
-		@unlink($this->_settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 
 		$this->forward("/admin/calendar/?notice=".urlencode("Event successfully saved."));
 	}

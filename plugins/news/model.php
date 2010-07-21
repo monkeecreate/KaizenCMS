@@ -63,7 +63,7 @@ class news_model extends appModel
 		
 		$aArticle["categories"] = implode(", ", $aCategories);
 		
-		if(file_exists($this->_settings->rootPublic.substr($this->imageFolder, 1).$aArticle["id"].".jpg")
+		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aArticle["id"].".jpg")
 		 && $aArticle["photo_x2"] > 0
 		 && $this->useImage == true)
 			$aArticle["image"] = 1;
@@ -111,7 +111,7 @@ class news_model extends appModel
 	function getImage($sId) {
 		$aArticle = $this->getArticle($sId);
 		
-		$sFile = $this->_settings->rootPublic.substr($this->imageFolder, 1).$sId.".jpg";
+		$sFile = $this->settings->rootPublic.substr($this->imageFolder, 1).$sId.".jpg";
 		
 		$aImage = array(
 			"file" => $sFile

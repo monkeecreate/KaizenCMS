@@ -25,7 +25,7 @@ class image extends appController
 		$oImage->draw(null, 85);
 	}
 	function crop() {
-		$sFile = $this->_settings->rootPublic.substr($_GET["file"], 1);
+		$sFile = $this->settings->rootPublic.substr($_GET["file"], 1);
 		
 		if(filesize($sFile) == 0 || empty($_GET["width"]) || empty($_GET["height"]))
 			$this->error("404");
@@ -36,7 +36,7 @@ class image extends appController
 		$sNewWidth = $_GET["width"];
 		$sNewHeight = $_GET["height"];
 		
-		include($this->_settings->root."helpers/makeImage.php");
+		include($this->settings->root."helpers/makeImage.php");
 		$oImage = new makeImage($sFile, true);
 		$oImage->cropCenter($sNewWidth, $sNewHeight);
 		$oImage->draw(null, 85);
@@ -52,7 +52,7 @@ class image extends appController
 		if(empty($aImage))
 			$this->error("404");
 		
-		include($this->_settings->root."helpers/makeImage.php");
+		include($this->settings->root."helpers/makeImage.php");
 		$oImage = new makeImage($aImage["file"], true);
 		$oImage->crop($aImage["info"]["photo_width"], $aImage["info"]["photo_height"], $aImage["info"]["photo_x1"], $aImage["info"]["photo_y1"]);
 		$oImage->resize($oModel->imageMinWidth, $oModel->imageMinHeight, true);

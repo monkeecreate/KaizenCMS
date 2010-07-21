@@ -1,7 +1,7 @@
 <?php
 function smarty_function_getFeed($aParams, &$oSmarty) {
 	$oApp = $oSmarty->get_registered_object("appController");
-	require_once $oApp->_settings->root.'helpers/Xml2Array.php';
+	require_once $oApp->settings->root.'helpers/Xml2Array.php';
 	
 	$sFeed = $aParams["feed"];
 	

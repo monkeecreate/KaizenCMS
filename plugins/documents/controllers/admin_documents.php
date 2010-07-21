@@ -79,7 +79,7 @@ class admin_documents extends adminController
 				
 				$this->forward("/admin/document/?notice=".urlencode("Document file size was too large!"));
 			} else {
-				$upload_dir = $this->_settings->rootPublic.substr($oDocuments->documentFolder, 1);
+				$upload_dir = $this->settings->rootPublic.substr($oDocuments->documentFolder, 1);
 				
 				if(!is_dir($upload_dir))
 					mkdir($upload_dir, 0777);
@@ -204,7 +204,7 @@ class admin_documents extends adminController
 				
 				$this->forward("/admin/documents/?notice=".urlencode("Document file size was too large!"));
 			} else {
-				$upload_dir = $this->_settings->rootPublic.substr($oDocuments->documentFolder, 1);
+				$upload_dir = $this->settings->rootPublic.substr($oDocuments->documentFolder, 1);
 				
 				if(!is_dir($upload_dir))
 					mkdir($upload_dir, 0777);
@@ -253,7 +253,7 @@ class admin_documents extends adminController
 		
 		$aDocument = $oDocuments->getDocument($this->_urlVars->dynamic["id"], "integer");
 		
-		@unlink($this->_settings->rootPublic.substr($oDocuments->documentFolder, 1).$aDocument["document"]);
+		@unlink($this->settings->rootPublic.substr($oDocuments->documentFolder, 1).$aDocument["document"]);
 		
 		$this->dbDelete("documents", $this->_urlVars->dynamic["id"]);
 		$this->dbDelete("documents_categories_assign", $this->_urlVars->dynamic["id"], "documentid");

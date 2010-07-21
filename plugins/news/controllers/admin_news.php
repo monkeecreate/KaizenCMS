@@ -223,21 +223,21 @@ class admin_news extends adminController
 		$this->dbDelete("news", $this->_urlVars->dynamic["id"]);
 		$this->dbDelete("news_categories_assign", $this->_urlVars->dynamic["id"], "articleid");
 		
-		@unlink($this->_settings->rootPublic.substr($oNews->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($oNews->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 		
 		$this->forward("/admin/news/?notice=".urlencode("Article removed successfully!"));
 	}
 	function image_upload_s() {
 		$oNews = $this->loadModel("news");
 		
-		if(!is_dir($this->_settings->rootPublic.substr($oNews->imageFolder, 1)))
-			mkdir($this->_settings->rootPublic.substr($oNews->imageFolder, 1), 0777);
+		if(!is_dir($this->settings->rootPublic.substr($oNews->imageFolder, 1)))
+			mkdir($this->settings->rootPublic.substr($oNews->imageFolder, 1), 0777);
 
 		if($_FILES["image"]["type"] == "image/jpeg"
 		 || $_FILES["image"]["type"] == "image/jpg"
 		 || $_FILES["image"]["type"] == "image/pjpeg"
 		) {
-			$sFile = $this->_settings->rootPublic.substr($oNews->imageFolder, 1).$_POST["id"].".jpg";
+			$sFile = $this->settings->rootPublic.substr($oNews->imageFolder, 1).$_POST["id"].".jpg";
 			
 			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
 			if($aImageSize[0] < $oNews->imageMinWidth || $aImageSize[1] < $oNews->imageMinHeight) {
@@ -316,7 +316,7 @@ class admin_news extends adminController
 			$this->_urlVars->dynamic["id"]
 		);
 		
-		@unlink($this->_settings->rootPublic.substr($oNews->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($oNews->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
 
 		$this->forward("/admin/news/?notice=".urlencode("Image removed successfully!"));
 	}

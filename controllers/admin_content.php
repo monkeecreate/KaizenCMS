@@ -170,7 +170,7 @@ class admin_content extends adminController
 	### Functions ####################
 	function getTemplates() {
 		$aTemplates = array();
-		$aFiles = scandir($this->_settings->root."views/content/");
+		$aFiles = scandir($this->settings->root."views/content/");
 		foreach($aFiles as $sFile) {
 			if($sFile != "." && $sFile != "..")
 				$aTemplates[] = $sFile;

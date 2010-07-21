@@ -19,7 +19,7 @@ class appController
 		$this->_firephp = $oFirePHP;
 		$this->_enc = $oEnc;
 		$this->_smarty = $oSmarty;
-		$this->_settings = (object) array(
+		$this->settings = (object) array(
 			"root" => $site_root
 			,"rootPublic" => $site_public_root
 			,"adminInfo" => $aConfig["admin_info"]
@@ -58,7 +58,7 @@ class appController
 	}
 	function siteInfo() {
 		echo "<pre>";
-		print_r($this->_settings);
+		print_r($this->settings);
 		print_r($this->_db);
 		print_r($this->_smarty);
 		echo "</pre>";
@@ -72,10 +72,10 @@ class appController
 			else
 				$sControllerFile = $sController;
 			
-			if(is_file($this->_settings->root."controllers/".$sControllerFile.".php"))
-				require($this->_settings->root."controllers/".$sControllerFile.".php");
-			elseif(is_file($this->_settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php"))
-				require($this->_settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php");
+			if(is_file($this->settings->root."controllers/".$sControllerFile.".php"))
+				require($this->settings->root."controllers/".$sControllerFile.".php");
+			elseif(is_file($this->settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php"))
+				require($this->settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php");
 			else
 				return false;
 		}
@@ -86,11 +86,11 @@ class appController
 	}
 	function loadModel($sModel) {
 		if(!class_exists("appModel"))
-			require($this->_settings->root."appModel.php");
+			require($this->settings->root."appModel.php");
 		
 		if(!class_exists($sModel."_model")) {
-			if(is_file($this->_settings->root."plugins/".$sModel."/model.php"))
-				require($this->_settings->root."plugins/".$sModel."/model.php");
+			if(is_file($this->settings->root."plugins/".$sModel."/model.php"))
+				require($this->settings->root."plugins/".$sModel."/model.php");
 			else
 				return false;
 		}
@@ -114,7 +114,7 @@ class appController
 			$this->sendError("getSetting", "Could not find setting", null, debug_backtrace());
 		
 		if(!class_exists("Form"))
-			include($this->_settings->root."helpers/Form.php");
+			include($this->settings->root."helpers/Form.php");
 		
 		$oField = new Form($aSetting);
 		
@@ -157,7 +157,7 @@ class appController
 	### Database #####################
 	function dbQuery($sSQL, $return = null) {
 		// Prefix
-		$sSQL = str_replace("{dbPrefix}", $this->_settings->dbPrefix, $sSQL);
+		$sSQL = str_replace("{dbPrefix}", $this->settings->dbPrefix, $sSQL);
 		
 		$oResult = $this->_db->query($sSQL);
 		
@@ -203,7 +203,7 @@ class appController
 		$this->_db->loadModule('Extended');
 		
 		$oResult = $this->_db->extended->autoExecute(
-			$this->_settings->dbPrefix.$sTable,
+			$this->settings->dbPrefix.$sTable,
 			$aData,
 			MDB2_AUTOQUERY_INSERT
 		);
@@ -217,7 +217,7 @@ class appController
 		$this->_db->loadModule('Extended');
 		
 		$oResult = $this->_db->extended->autoExecute(
-			$this->_settings->dbPrefix.$sTable,
+			$this->settings->dbPrefix.$sTable,
 			$aData,
 			MDB2_AUTOQUERY_UPDATE,
 			$sIdField." = ".$this->dbQuote($sId, $sIdType)
@@ -232,7 +232,7 @@ class appController
 		$this->_db->loadModule('Extended');
 		
 		$oResult = $this->_db->extended->autoExecute(
-			$this->_settings->dbPrefix.$sTable,
+			$this->settings->dbPrefix.$sTable,
 			null,
 			MDB2_AUTOQUERY_DELETE,
 			$sIdField." = ".$this->dbQuote($sId, $sIdType)
@@ -256,7 +256,7 @@ class appController
 	}
 	function tplDisplay($sTemplate) {
 		if(!empty($this->_plugin)) {
-			$sTemplate = $this->_settings->root."plugins/".$this->_plugin."/views/".$sTemplate;
+			$sTemplate = $this->settings->root."plugins/".$this->_plugin."/views/".$sTemplate;
 			if(is_file($sTemplate)) {
 				$this->tplAssign("sPluginView", $sTemplate);
 				$this->_smarty->display("plugin.tpl");
@@ -343,9 +343,9 @@ class appController
 		if(empty($aTrace))
 			$aTrace = debug_backtrace();
 		
-		$recipients = $this->_settings->adminInfo["email"];
-		$headers["To"] = $this->_settings->adminInfo["email"];
-		$headers["From"] = $this->_settings->adminInfo["email"];
+		$recipients = $this->settings->adminInfo["email"];
+		$headers["To"] = $this->settings->adminInfo["email"];
+		$headers["From"] = $this->settings->adminInfo["email"];
 		$headers["Subject"] = "Website Error - ".$section;
 		
 		$body = "Where: ".$section."\n";
@@ -366,7 +366,7 @@ class appController
 		$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
 		$body .= "Time: ".date("M j,Y - h:i:s a")."\n";
 		
-		if($this->_settings->debug == true)
+		if($this->settings->debug == true)
 			die(str_replace("\n","<br />",$body));
 		else
 			$this->mail($recipients, $headers, $body);

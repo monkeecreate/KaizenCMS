@@ -17,7 +17,7 @@ class admin_settings extends adminController
 		);
 		
 		$aSettings = array();
-		include($this->_settings->root."helpers/Form.php");
+		include($this->settings->root."helpers/Form.php");
 		foreach($aSettingsFull as $aSetting) {
 			$oField = new Form($aSetting);
 			
@@ -35,7 +35,7 @@ class admin_settings extends adminController
 			,"all"
 		);
 		
-		include($this->_settings->root."helpers/Form.php");
+		include($this->settings->root."helpers/Form.php");
 		foreach($aSettings as $aSetting) {
 			$oField = new Form($aSetting);	
 			$this->dbUpdate(
@@ -175,7 +175,7 @@ class admin_settings extends adminController
 		// Loop plugins. Find installed, and not installed
 		$aPlugins = array();
 		
-		$oPlugins = dir($this->_settings->root."plugins");
+		$oPlugins = dir($this->settings->root."plugins");
 		while (false !== ($sPlugin = $oPlugins->read())) {
 			if(substr($sPlugin, 0, 1) != ".")
 				$aPlugins[] = $sPlugin;
@@ -191,8 +191,8 @@ class admin_settings extends adminController
 			
 			// Load config
 			$aPluginInfo = array();
-			if(is_file($this->_settings->root."plugins/".$aPlugin."/config.php"))
-				include($this->_settings->root."plugins/".$aPlugin."/config.php");
+			if(is_file($this->settings->root."plugins/".$aPlugin."/config.php"))
+				include($this->settings->root."plugins/".$aPlugin."/config.php");
 			
 			$aPlugin = array(
 				"tag" => $aPlugin,
@@ -225,8 +225,8 @@ class admin_settings extends adminController
 		
 		// Include isntall
 		$sPluginStatus = 1;
-		if(is_file($this->_settings->root."plugins/".$sPlugin."/install.php"))
-			include($this->_settings->root."plugins/".$sPlugin."/install.php");
+		if(is_file($this->settings->root."plugins/".$sPlugin."/install.php"))
+			include($this->settings->root."plugins/".$sPlugin."/install.php");
 		
 		// Database
 		$objDB->loadModule('Manager');
@@ -308,8 +308,8 @@ class admin_settings extends adminController
 		
 		// Include isntall
 		$sPluginStatus = 0;
-		if(is_file($this->_settings->root."plugins/".$sPlugin."/install.php"))
-			include($this->_settings->root."plugins/".$sPlugin."/install.php");
+		if(is_file($this->settings->root."plugins/".$sPlugin."/install.php"))
+			include($this->settings->root."plugins/".$sPlugin."/install.php");
 			
 		// Database
 		$objDB->loadModule('Manager');

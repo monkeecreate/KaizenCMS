@@ -52,7 +52,7 @@ class promos_model extends appModel
 					." WHERE `id` = ".$aPromo["id"]
 			);
 			
-			$this->_settings->displayedPromos[] = $aPromo["id"];
+			$this->settings->displayedPromos[] = $aPromo["id"];
 		}
 		
 		return $aPromo;

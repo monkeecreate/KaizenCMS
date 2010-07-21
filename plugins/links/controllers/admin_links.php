@@ -71,8 +71,8 @@ class admin_links extends adminController
 			);
 		}
 		
-		if(!is_dir($this->_settings->rootPublic.substr($oLinks->imageFolder, 1)))
-			mkdir($this->_settings->rootPublic.substr($oLinks->imageFolder, 1), 0777);
+		if(!is_dir($this->settings->rootPublic.substr($oLinks->imageFolder, 1)))
+			mkdir($this->settings->rootPublic.substr($oLinks->imageFolder, 1), 0777);
 		
 		if(!empty($_FILES["image"]["name"])) {			
 			if($_FILES["image"]["error"] == 1) {
@@ -87,15 +87,15 @@ class admin_links extends adminController
 				$_SESSION["admin"]["admin_links"] = $_POST;
 				$this->forward("/admin/links/add/?error=".urlencode("Image file size was too large!"));
 			} else {
-				$upload_dir = $this->_settings->rootPublic."uploads/links/";
+				$upload_dir = $this->settings->rootPublic."uploads/links/";
 				$file_ext = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
 		
 				if(move_uploaded_file($_FILES["image"]["tmp_name"], $upload_dir.$upload_file)) {
 					if($oLinks->imageMinWidth != 0 && $oLinks->imageMinHeight != 0) {
-						$aImageSize = getimagesize($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
+						$aImageSize = getimagesize($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
 						if($aImageSize[0] < $oLinks->imageMinWidth || $aImageSize[1] < $oLinks->imageMinHeight) {
-							@unlink($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
+							@unlink($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
 							$_SESSION["admin"]["admin_links"] = $_POST;
 							$this->forward("/admin/links/add/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 						}
@@ -213,7 +213,7 @@ class admin_links extends adminController
 				
 				$this->forward("/admin/links/?notice=".urlencode("Image file size was too large!"));
 			} else {
-				$upload_dir = $this->_settings->rootPublic."uploads/links/";
+				$upload_dir = $this->settings->rootPublic."uploads/links/";
 				$file_ext = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
@@ -226,9 +226,9 @@ class admin_links extends adminController
 			
 				if(move_uploaded_file($_FILES["image"]["tmp_name"], $upload_dir.$upload_file)) {
 					if($oLinks->imageMinWidth != 0 && $oLinks->imageMinHeight != 0) {
-						$aImageSize = getimagesize($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
+						$aImageSize = getimagesize($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
 						if($aImageSize[0] < $oLinks->imageMinWidth || $aImageSize[1] < $oLinks->imageMinHeight) {
-							@unlink($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
+							@unlink($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
 							$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 						}
 					}
@@ -266,7 +266,7 @@ class admin_links extends adminController
 		$this->dbDelete("links", $this->_urlVars->dynamic["id"]);
 		$this->dbDelete("links_categories_assign", $this->_urlVars->dynamic["id"], "linkid");
 		
-		@unlink($this->_settings->rootPublic.substr($oLinks->imageFolder, 1).$aLink["image"]);
+		@unlink($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$aLink["image"]);
 		
 		$this->forward("/admin/links/?notice=".urlencode("Link removed successfully!"));
 	}

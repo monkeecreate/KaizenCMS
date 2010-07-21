@@ -95,7 +95,7 @@ class admin_promos extends adminController
 			
 			$this->forward("/admin/promos/?error=".urlencode("Promo file size was too large!"));
 		} else {
-			$upload_dir = $this->_settings->rootPublic."uploads/promos/";
+			$upload_dir = $this->settings->rootPublic."uploads/promos/";
 			$file_ext = pathinfo($_FILES["promo"]["name"], PATHINFO_EXTENSION);
 			$upload_file = $sID.".".strtolower($file_ext);
 		
@@ -231,7 +231,7 @@ class admin_promos extends adminController
 				
 				$this->forward("/admin/promos/?notice=".urlencode("Promo file size was too large!"));
 			} else {
-				$upload_dir = $this->_settings->rootPublic."uploads/promos/";
+				$upload_dir = $this->settings->rootPublic."uploads/promos/";
 				$file_ext = pathinfo($_FILES["promo"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
@@ -276,7 +276,7 @@ class admin_promos extends adminController
 		$this->dbDelete("promos", $this->_urlVars->dynamic["id"]);
 		$this->dbDelete("promos_positions_assign", $this->_urlVars->dynamic["id"], "promoid");
 		
-		@unlink($this->_settings->rootPublic.substr($oPromos->imageFolder, 1).$aPromo["promo"]);
+		@unlink($this->settings->rootPublic.substr($oPromos->imageFolder, 1).$aPromo["promo"]);
 		
 		$this->forward("/admin/promos/?notice=".urlencode("Promo removed successfully!"));
 	}
