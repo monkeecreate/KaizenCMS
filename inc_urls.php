@@ -16,10 +16,6 @@ $aUrlPatterns = array(
         "cmd" => "content",
         "action" => "index"
     ),
-	"/info/" => array(
-		"cmd" => "content",
-		"action" => "info"
-	),
 	"/sendform/" => array(
 		"cmd" => "content",
 		"action" => "form_submit"

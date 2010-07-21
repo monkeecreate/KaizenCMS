@@ -20,7 +20,7 @@ class image extends appController
 		elseif(!empty($_GET["width"]) && !empty($_GET["height"]))
 			$oImage->resize($_GET["width"], $_GET["height"]);
 		else
-			$this->error('505');
+			$this->error('500');
 		
 		$oImage->draw(null, 85);
 	}
@@ -40,8 +40,14 @@ class image extends appController
 		$oImage->crop($aImage["info"]["photo_width"], $aImage["info"]["photo_height"], $aImage["info"]["photo_x1"], $aImage["info"]["photo_y1"]);
 		$oImage->resize($oModel->imageMinWidth, $oModel->imageMinHeight);
 		
-		if(!empty($_GET["width"]) && $_GET["width"] <= $oModel->imageMinWidth)
-			$oImage->resize($_GET["width"], $_GET["width"]);
+		if(!empty($_GET["scale"]))
+			$oImage->scale($_GET["scale"]);
+		elseif(!empty($_GET["width"]) && empty($_GET["height"]))
+			$oImage->resizeWidth($_GET["width"]);
+		elseif(!empty($_GET["height"]) && empty($_GET["width"]))
+			$oImage->resizeHeight($_GET["height"]);
+		elseif(!empty($_GET["width"]) && !empty($_GET["height"]))
+			$oImage->resize($_GET["width"], $_GET["height"]);
 		
 		$oImage->draw(null, 85);
 	}

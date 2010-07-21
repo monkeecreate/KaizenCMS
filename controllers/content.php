@@ -5,9 +5,6 @@ class content extends appController
 	function index() {
 		$this->tplDisplay("index.tpl");
 	}
-	function info() {
-		$this->siteInfo();
-	}
 	function view() {
 		if(!empty($this->urlVars->dynamic["page"]))
 			$sPage = $this->urlVars->dynamic["page"];
