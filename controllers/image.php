@@ -3,30 +3,35 @@ class image extends appController
 {
 	### DISPLAY ######################
 	function resize() {
-		$sFile = $this->_settings->root_public.substr($_GET["file"], 1);
+		$sFile = $this->settings->rootPublic.substr($_GET["file"], 1);
 		
-		if(filesize($sFile) == 0 || empty($_GET["width"]) || empty($_GET["height"]))
+		if(filesize($sFile) == 0)
 			$this->error('404');
 		
-		if(!is_numeric($_GET["width"]) || !is_numeric($_GET["height"]))
-			$this->error('505');
+		include($this->settings->root."helpers/makeImage.php");
+		$oImage = new makeImage($sFile, false);
 		
-		$sNewWidth = $_GET["width"];
-		$sNewHeight = $_GET["height"];
+		if(!empty($_GET["scale"]))
+			$oImage->scale($_GET["scale"]);
+		elseif(!empty($_GET["width"]) && empty($_GET["height"]))
+			$oImage->resizeWidth($_GET["width"]);
+		elseif(!empty($_GET["height"]) && empty($_GET["width"]))
+			$oImage->resizeHeight($_GET["height"]);
+		elseif(!empty($_GET["width"]) && !empty($_GET["height"]))
+			$oImage->resize($_GET["width"], $_GET["height"]);
+		else
+			$this->error("500");
 		
-		include($this->_settings->root."helpers/makeImage.php");
-		$oImage = new makeImage($sFile, true);
-		$oImage->resize($sNewWidth, $sNewHeight);
 		$oImage->draw(null, 85);
 	}
 	function crop() {
-		$sFile = $this->_settings->root_public.substr($_GET["file"], 1);
+		$sFile = $this->_settings->rootPublic.substr($_GET["file"], 1);
 		
 		if(filesize($sFile) == 0 || empty($_GET["width"]) || empty($_GET["height"]))
-			$this->error('404');
+			$this->error("404");
 		
 		if(!is_numeric($_GET["width"]) || !is_numeric($_GET["height"]))
-			$this->error('505');
+			$this->error("500");
 		
 		$sNewWidth = $_GET["width"];
 		$sNewHeight = $_GET["height"];
@@ -52,8 +57,14 @@ class image extends appController
 		$oImage->crop($aImage["info"]["photo_width"], $aImage["info"]["photo_height"], $aImage["info"]["photo_x1"], $aImage["info"]["photo_y1"]);
 		$oImage->resize($oModel->imageMinWidth, $oModel->imageMinHeight, true);
 		
-		if(!empty($_GET["width"]) && $_GET["width"] <= $oModel->imageMinWidth)
-			$oImage->resize($_GET["width"], $_GET["width"]);
+		if(!empty($_GET["scale"]))
+			$oImage->scale($_GET["scale"]);
+		elseif(!empty($_GET["width"]) && empty($_GET["height"]))
+			$oImage->resizeWidth($_GET["width"]);
+		elseif(!empty($_GET["height"]) && empty($_GET["width"]))
+			$oImage->resizeHeight($_GET["height"]);
+		elseif(!empty($_GET["width"]) && !empty($_GET["height"]))
+			$oImage->resize($_GET["width"], $_GET["height"]);
 		
 		$oImage->draw(null, 85);
 	}

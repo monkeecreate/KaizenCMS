@@ -301,7 +301,7 @@ class appController
 		$oMail = $this->_mail->send($sRecipients, $aHeaders, $sBody);
 		
 		if(PEAR::iserror($oMail))
-			$this->error("Mail - ".$aHeaders["Subject"], $oMail->message);
+			$this->sendError("Mail - ".$aHeaders["Subject"], $oMail->message);
 		else {
 			unset($oMime, $sBody, $sHeaders, $oMail);
 			return true;
