@@ -122,7 +122,7 @@ class admin_documents extends adminController
 		if(!empty($_SESSION["admin"]["admin_documents"])) {
 			$aDocumentRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}documents`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -137,7 +137,7 @@ class admin_documents extends adminController
 		} else {
 			$aDocument = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}documents`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -251,12 +251,12 @@ class admin_documents extends adminController
 	function delete() {
 		$oDocuments = $this->loadModel("documents");
 		
-		$aDocument = $oDocuments->getDocument($this->_urlVars->dynamic["id"], "integer");
+		$aDocument = $oDocuments->getDocument($this->urlVars->dynamic["id"], "integer");
 		
 		@unlink($this->settings->rootPublic.substr($oDocuments->documentFolder, 1).$aDocument["document"]);
 		
-		$this->dbDelete("documents", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("documents_categories_assign", $this->_urlVars->dynamic["id"], "documentid");
+		$this->dbDelete("documents", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("documents_categories_assign", $this->urlVars->dynamic["id"], "documentid");
 		
 		$this->forward("/admin/documents/?notice=".urlencode("Document removed successfully!"));
 	}
@@ -291,8 +291,8 @@ class admin_documents extends adminController
 		$this->forward("/admin/documents/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
-		$this->dbDelete("documents_categories", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("documents_categories_assign", $this->_urlVars->dynamic["id"], "categoryid");
+		$this->dbDelete("documents_categories", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("documents_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
 		$this->forward("/admin/documents/categories/?notice=".urlencode("Category removed successfully!"));
 	}

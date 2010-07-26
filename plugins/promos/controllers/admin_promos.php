@@ -130,7 +130,7 @@ class admin_promos extends adminController
 		if(!empty($_SESSION["admin"]["admin_promos"])) {
 			$aPromoRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}promos`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -147,7 +147,7 @@ class admin_promos extends adminController
 		} else {
 			$aPromo = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}promos`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -271,10 +271,10 @@ class admin_promos extends adminController
 	function delete() {
 		$oPromos = $this->loadModel("promos");
 		
-		$aPromo = $oPromos->getPromo(null, null, null, $this->_urlVars->dynamic["id"]);
+		$aPromo = $oPromos->getPromo(null, null, null, $this->urlVars->dynamic["id"]);
 		
-		$this->dbDelete("promos", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("promos_positions_assign", $this->_urlVars->dynamic["id"], "promoid");
+		$this->dbDelete("promos", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("promos_positions_assign", $this->urlVars->dynamic["id"], "promoid");
 		
 		@unlink($this->settings->rootPublic.substr($oPromos->imageFolder, 1).$aPromo["promo"]);
 		
@@ -342,8 +342,8 @@ class admin_promos extends adminController
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function positions_delete() {
-		$this->dbDelete("promos_positions", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("promos_positions_assign", $this->_urlVars->dynamic["id"], "positionid");
+		$this->dbDelete("promos_positions", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("promos_positions_assign", $this->urlVars->dynamic["id"], "positionid");
 		
 		$this->forward("/admin/promos/positions/?notice=".urlencode("Position removed successfully!"));
 	}

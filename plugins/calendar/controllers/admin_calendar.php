@@ -125,7 +125,7 @@ class admin_calendar extends adminController
 		if(!empty($_SESSION["admin"]["admin_calendar"])) {
 			$aEventRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}calendar`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -140,7 +140,7 @@ class admin_calendar extends adminController
 		} else {
 			$aEvent = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}calendar`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -248,10 +248,10 @@ class admin_calendar extends adminController
 	function delete() {
 		$oCalendar = $this->loadModel("calendar");
 		
-		$this->dbDelete("calendar", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("calendar_categories_assign", $this->_urlVars->dynamic["id"], "eventid");
+		$this->dbDelete("calendar", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("calendar_categories_assign", $this->urlVars->dynamic["id"], "eventid");
 		
-		@unlink($this->settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 		
 		$this->forward("/admin/calendar/?notice=".urlencode("Event removed successfully!"));
 	}
@@ -304,7 +304,7 @@ class admin_calendar extends adminController
 			$sPreviewHeight = ceil($oCalendar->imageMinHeight * (300 / $oCalendar->imageMinWidth));
 		}
 		
-		$this->tplAssign("aEvent", $oCalendar->getEvent($this->_urlVars->dynamic["id"], true));
+		$this->tplAssign("aEvent", $oCalendar->getEvent($this->urlVars->dynamic["id"], true));
 		$this->tplAssign("sFolder", $oCalendar->imageFolder);
 		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
@@ -342,10 +342,10 @@ class admin_calendar extends adminController
 				,"photo_width" => 0
 				,"photo_height" => 0
 			),
-			$this->_urlVars->dynamic["id"]
+			$this->urlVars->dynamic["id"]
 		);
 		
-		@unlink($this->settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 
 		$this->forward("/admin/calendar/?notice=".urlencode("Event successfully saved."));
 	}
@@ -380,8 +380,8 @@ class admin_calendar extends adminController
 		$this->forward("/admin/calendar/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
-		$this->dbDelete("calendar_categories", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("calendar_categories_assign", $this->_urlVars->dynamic["id"], "categoryid");
+		$this->dbDelete("calendar_categories", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("calendar_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
 		$this->forward("/admin/calendar/categories/?notice=".urlencode("Category removed successfully!"));
 	}

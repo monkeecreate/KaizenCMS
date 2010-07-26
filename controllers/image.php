@@ -42,12 +42,12 @@ class image extends appController
 		$oImage->draw(null, 85);
 	}
 	function itemImage() {
-		$oModel = $this->loadModel($this->_urlVars->dynamic["model"]);
+		$oModel = $this->loadModel($this->urlVars->dynamic["model"]);
 		
 		if(empty($oModel))
 			$this->error("404");
 		
-		$aImage = $oModel->getImage($this->_urlVars->dynamic["id"]);
+		$aImage = $oModel->getImage($this->urlVars->dynamic["id"]);
 		
 		if(empty($aImage))
 			$this->error("404");

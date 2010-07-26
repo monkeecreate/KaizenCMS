@@ -6,10 +6,10 @@ class content extends appController
 		$this->tplDisplay("index.tpl");
 	}
 	function view() {
-		if(!empty($this->_urlVars->dynamic["page"]))
-			$sPage = $this->_urlVars->dynamic["page"];
-		elseif(!empty($this->_urlVars->manual["page"]))
-			$sPage = $this->_urlVars->manual["page"];
+		if(!empty($this->urlVars->dynamic["page"]))
+			$sPage = $this->urlVars->dynamic["page"];
+		elseif(!empty($this->urlVars->manual["page"]))
+			$sPage = $this->urlVars->manual["page"];
 		else
 			$this->error("404");
 		

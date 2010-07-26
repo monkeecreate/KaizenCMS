@@ -9,7 +9,7 @@ class promos extends appController
 	function index() {
 		$aPromo = $this->dbQuery(
 			"SELECT `promos`.* FROM `{dbPrefix}promos` AS `promos`"
-				." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+				." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 			,"row"
 		);
 		

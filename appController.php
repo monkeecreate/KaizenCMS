@@ -7,8 +7,8 @@ class appController
 	private $_firephp;
 	private $_enc;
 	private $_plugin;
-	public $_settings;
-	public $_urlVars;
+	public $settings;
+	public $urlVars;
 	public $model;
 	
 	function __construct($sModel = null) {
@@ -28,7 +28,7 @@ class appController
 			,"url" => $aUrl
 			,"encryptSalt" => $aConfig["encryption"]["salt"]
 		);
-		$this->_urlVars = $aURLVars;
+		$this->urlVars = $aURLVars;
 		
 		if(!empty($sModel)) {
 			$this->_plugin = $sModel;

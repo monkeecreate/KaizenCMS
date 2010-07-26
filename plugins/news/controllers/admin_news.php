@@ -108,7 +108,7 @@ class admin_news extends adminController
 		if(!empty($_SESSION["admin"]["admin_news"])) {
 			$aArticleRow = $this->dbQuery(
 				"SELECT * FROM `news`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -125,7 +125,7 @@ class admin_news extends adminController
 		} else {
 			$aArticle = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}news`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -220,10 +220,10 @@ class admin_news extends adminController
 	function delete() {
 		$oNews = $this->loadModel("news");
 		
-		$this->dbDelete("news", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("news_categories_assign", $this->_urlVars->dynamic["id"], "articleid");
+		$this->dbDelete("news", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("news_categories_assign", $this->urlVars->dynamic["id"], "articleid");
 		
-		@unlink($this->settings->rootPublic.substr($oNews->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($oNews->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 		
 		$this->forward("/admin/news/?notice=".urlencode("Article removed successfully!"));
 	}
@@ -275,7 +275,7 @@ class admin_news extends adminController
 			$sPreviewHeight = ceil($oNews->imageMinHeight * (300 / $oNews->imageMinWidth));
 		}
 		
-		$this->tplAssign("aArticle", $oNews->getArticle($this->_urlVars->dynamic["id"]));
+		$this->tplAssign("aArticle", $oNews->getArticle($this->urlVars->dynamic["id"]));
 		$this->tplAssign("sFolder", $oNews->imageFolder);
 		$this->tplAssign("minWidth", $oNews->imageMinWidth);
 		$this->tplAssign("minHeight", $oNews->imageMinHeight);
@@ -313,10 +313,10 @@ class admin_news extends adminController
 				,"photo_width" => 0
 				,"photo_height" => 0
 			),
-			$this->_urlVars->dynamic["id"]
+			$this->urlVars->dynamic["id"]
 		);
 		
-		@unlink($this->settings->rootPublic.substr($oNews->imageFolder, 1).$this->_urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($oNews->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 
 		$this->forward("/admin/news/?notice=".urlencode("Image removed successfully!"));
 	}
@@ -351,8 +351,8 @@ class admin_news extends adminController
 		$this->forward("/admin/news/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
-		$this->dbDelete("news_categories", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("news_categories_assign", $this->_urlVars->dynamic["id"], "categoryid");
+		$this->dbDelete("news_categories", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("news_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
 		$this->forward("/admin/news/categories/?notice=".urlencode("Category removed successfully!"));
 	}

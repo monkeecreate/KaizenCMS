@@ -124,7 +124,7 @@ class admin_settings extends adminController
 		} else {
 			$aSetting = $this->dbQuery(
 				"SELECT * FROM `settings`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -164,7 +164,7 @@ class admin_settings extends adminController
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function manageDelete() {
-		$this->dbDelete("settings", $this->_urlVars->dynamic["id"]);
+		$this->dbDelete("settings", $this->urlVars->dynamic["id"]);
 		
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting removed successfully!"));
 	}
@@ -218,7 +218,7 @@ class admin_settings extends adminController
 	function plugins_install() {
 		global $objDB;
 		
-		$sPlugin = $this->_urlVars->dynamic["plugin"];
+		$sPlugin = $this->urlVars->dynamic["plugin"];
 		
 		// Set defaults
 		$aDatabases = $aSettings = $aMenuAdmin = array();
@@ -301,7 +301,7 @@ class admin_settings extends adminController
 	function plugins_uninstall() {
 		global $objDB;
 		
-		$sPlugin = $this->_urlVars->dynamic["plugin"];
+		$sPlugin = $this->urlVars->dynamic["plugin"];
 		
 		// Set defaults
 		$aDatabases = $aSettings = $aMenuAdmin = array();
