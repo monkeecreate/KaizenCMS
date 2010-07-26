@@ -53,7 +53,7 @@
 							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>
 						<a href="/admin/testimonials/categories/delete/{$aCategory.id}/"
-						 onclick="return alert('Are you sure you would like to delete: {$aCategory.name|clean_html}?');" title="Delete Category">
+						 onclick="return confirm('Are you sure you would like to delete: {$aCategory.name|clean_html}?');" title="Delete Category">
 							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
 						</a>
 					</td>

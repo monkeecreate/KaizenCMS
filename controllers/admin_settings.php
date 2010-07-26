@@ -153,6 +153,7 @@ class admin_settings extends adminController
 				,"title" => $_POST["title"]
 				,"text" => $_POST["text"]
 				,"value" => $_POST["value"]
+				,"type" => $_POST["type"]
 				,"sortOrder" => $_POST["sortorder"]
 				,"active" => $this->boolCheck($_POST["active"])
 			),
