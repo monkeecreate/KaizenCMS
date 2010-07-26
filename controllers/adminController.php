@@ -118,7 +118,7 @@ class adminController extends appController
 				$this->dbQuery(
 					"UPDATE `users` SET"
 						." `last_login` = ".$this->dbQuote(time(), "integer")
-						." WHERE `id` = ".$this->dbQuote($sUser["id"], "integer")
+						." WHERE `id` = ".$this->dbQuote($sUser, "integer")
 				);
 				
 				$this->forward("/admin/");
