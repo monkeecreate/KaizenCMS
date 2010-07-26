@@ -25,7 +25,7 @@ class Form_file extends Form_Field
 		return $this->_setting["value"];
 	}
 	public function save($value) {
-		$upload_dir = $this->_settings->rootPublic."uploads/settings/";
+		$upload_dir = $this->settings->rootPublic."uploads/settings/";
 		$file_ext = pathinfo($_FILES["settings"]["name"][$this->_setting["tag"]], PATHINFO_EXTENSION);
 		$upload_file = $this->_setting["tag"].".".strtolower($file_ext);
 
