@@ -81,16 +81,11 @@ class content extends appController
 				$this->sendError("content->form_submit", "Invalid line type. (".$input["linetype"].")");
 		}
 		
-		// Email to
-		$aRecipients = array(
-			$this->decrypt($_POST["to"])
-		);
-		
 		$aHeaders["From"] = $this->formSubmitValues($this->decrypt($_POST["from"]), $aItems);
 		$aHeaders["To"] = $this->formSubmitValues($this->decrypt($_POST["to"]), $aItems);
 		$aHeaders["Subject"] = $this->formSubmitValues($this->decrypt($_POST["subject"]), $aItems);
 		
-		$this->mail($aRecipients, $aHeaders, $sBody);
+		$this->mail($aHeaders, $sBody);
 		
 		$this->forward($this->decrypt($_POST["forward"]));
 	}

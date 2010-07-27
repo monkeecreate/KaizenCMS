@@ -155,7 +155,7 @@ class adminController extends appController
 				$sBody .= "Username: ".$aUser["username"]."\n\n";
 				$sBody .= "http://".$_SERVER["SERVER_NAME"]."/admin/passwordReset/".$code."/";
 				
-				$this->mail($aHeaders["To"], $aHeaders, $sBody);
+				$this->mail($aHeaders, $sBody);
 				
 				$this->forward("/admin/?notice=".urlencode("Check your email for details to reset your password."));
 			}

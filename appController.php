@@ -278,10 +278,22 @@ class appController
 	###################################
 	
 	### Mail ##########################
-	function mail($sRecipients, $aHeaders, $bodyText, $bodyHTML = null, $aAttachment = array()) {
+	function mail($aHeaders, $bodyText, $bodyHTML = null, $aAttachment = array()) {
 		if(!class_exists("Mail_mime"))
 			include("Mail/mime.php");
 		$oMime = new Mail_mime("\n");
+		
+		//Build Recipients
+		$aRecipients = array();
+		foreach(array("To", "Cc", "Bcc") as $sHeader) {
+			preg_match_all('/\b[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}\b/i', $aHeaders[$sHeader], $aTempRecipients);
+			foreach($aTempRecipients[0] as $x => $sRecipient) {
+				if(!in_array($sRecipient, $aRecipients))
+					$aRecipients[] = $sRecipient;
+			}
+		}
+		
+		$sRecipients = implode(", ", $aRecipients);
 		
 		// Set text for message body
 		$oMime->setTXTBody($bodyText);
@@ -343,7 +355,6 @@ class appController
 		if(empty($aTrace))
 			$aTrace = debug_backtrace();
 		
-		$recipients = $this->settings->adminInfo["email"];
 		$headers["To"] = $this->settings->adminInfo["email"];
 		$headers["From"] = $this->settings->adminInfo["email"];
 		$headers["Subject"] = "Website Error - ".$section;
@@ -369,7 +380,7 @@ class appController
 		if($this->settings->debug == true)
 			die(str_replace("\n","<br />",$body));
 		else
-			$this->mail($recipients, $headers, $body);
+			$this->mail($headers, $body);
 		
 		$this->error("500");
 	}
