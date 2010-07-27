@@ -286,10 +286,12 @@ class appController
 		//Build Recipients
 		$aRecipients = array();
 		foreach(array("To", "Cc", "Bcc") as $sHeader) {
-			preg_match_all('/\b[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}\b/i', $aHeaders[$sHeader], $aTempRecipients);
-			foreach($aTempRecipients[0] as $x => $sRecipient) {
-				if(!in_array($sRecipient, $aRecipients))
-					$aRecipients[] = $sRecipient;
+			if(isset($aHeaders[$sHeader])) {
+				preg_match_all('/\b[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}\b/i', $aHeaders[$sHeader], $aTempRecipients);
+				foreach($aTempRecipients[0] as $x => $sRecipient) {
+					if(!in_array($sRecipient, $aRecipients))
+						$aRecipients[] = $sRecipient;
+				}
 			}
 		}
 		
