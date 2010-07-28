@@ -129,7 +129,7 @@ class admin_links extends adminController
 		$oLinks = $this->loadModel("links");
 		
 		if(!empty($_SESSION["admin"]["admin_links"])) {
-			$aLinkRow = $oLinks->getLink($this->_urlVars->dynamic["id"]);
+			$aLinkRow = $oLinks->getLink($this->urlVars->dynamic["id"]);
 			
 			$aLink = $_SESSION["admin"]["admin_links"];
 			
@@ -142,7 +142,7 @@ class admin_links extends adminController
 			
 			$this->tplAssign("aLink", $aLink);
 		} else {
-			$aLink = $oLinks->getLink($this->_urlVars->dynamic["id"]);
+			$aLink = $oLinks->getLink($this->urlVars->dynamic["id"]);
 			
 			$aLink["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}links_categories` AS `categories`"
@@ -261,10 +261,10 @@ class admin_links extends adminController
 	function delete() {
 		$oLinks = $this->loadModel("links");
 		
-		$aLink = $oLinks->getLink($this->_urlVars->dynamic["id"]);
+		$aLink = $oLinks->getLink($this->urlVars->dynamic["id"]);
 		
-		$this->dbDelete("links", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("links_categories_assign", $this->_urlVars->dynamic["id"], "linkid");
+		$this->dbDelete("links", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("links_categories_assign", $this->urlVars->dynamic["id"], "linkid");
 		
 		@unlink($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$aLink["image"]);
 		
@@ -301,8 +301,8 @@ class admin_links extends adminController
 		$this->forward("/admin/links/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
-		$this->dbDelete("links_categories", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("links_categories_assign", $this->_urlVars->dynamic["id"], "categoryid");
+		$this->dbDelete("links_categories", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("links_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
 		$this->forward("/admin/links/categories/?notice=".urlencode("Category removed successfully!"));
 	}

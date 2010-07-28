@@ -90,7 +90,7 @@ class admin_directory extends adminController
 		if(!empty($_SESSION["admin"]["admin_directory"])) {
 			$aListingRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}directory`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -107,7 +107,7 @@ class admin_directory extends adminController
 		} else {
 			$aListing = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}directory`"
-					." WHERE `id` = ".$this->dbQuote($this->_urlVars->dynamic["id"], "integer")
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
@@ -176,8 +176,8 @@ class admin_directory extends adminController
 		$this->forward("/admin/directory/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		$this->dbDelete("directory", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("directory_categories_assign", $this->_urlVars->dynamic["id"], "listingid");
+		$this->dbDelete("directory", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("directory_categories_assign", $this->urlVars->dynamic["id"], "listingid");
 		
 		$this->forward("/admin/directory/?notice=".urlencode("Listing removed successfully!"));
 	}
@@ -218,8 +218,8 @@ class admin_directory extends adminController
 		$this->forward("/admin/directory/categories/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
-		$this->dbDelete("directory_categories", $this->_urlVars->dynamic["id"]);
-		$this->dbDelete("directory_categories_assign", $this->_urlVars->dynamic["id"], "categoryid");
+		$this->dbDelete("directory_categories", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("directory_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
 		$this->forward("/admin/directory/categories/?notice=".urlencode("Category removed successfully!"));
 	}

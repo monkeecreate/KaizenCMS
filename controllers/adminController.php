@@ -155,7 +155,7 @@ class adminController extends appController
 				$sBody .= "Username: ".$aUser["username"]."\n\n";
 				$sBody .= "http://".$_SERVER["SERVER_NAME"]."/admin/passwordReset/".$code."/";
 				
-				$this->mail($aHeaders["To"], $aHeaders, $sBody);
+				$this->mail($aHeaders, $sBody);
 				
 				$this->forward("/admin/?notice=".urlencode("Check your email for details to reset your password."));
 			}
@@ -165,26 +165,26 @@ class adminController extends appController
 	}
 	function passwordReset_code() {
 		$aUser = $this->dbQuery("SELECT * FROM `users`"
-			." WHERE `resetCode` = ".$this->dbQuote($this->settings->encryptSalt."_".$this->_urlVars->dynamic["code"], "text")
+			." WHERE `resetCode` = ".$this->dbQuote($this->settings->encryptSalt."_".$this->urlVars->dynamic["code"], "text")
 			,"row"
 		);
 		
 		if(empty($aUser))
 			$this->forward("/admin/");
 		
-		$this->tplAssign("sCode", $this->_urlVars->dynamic["code"]);
+		$this->tplAssign("sCode", $this->urlVars->dynamic["code"]);
 		$this->tplDisplay("passwordReset.tpl");
 	}
 	function passwordReset_code_s() {
 		if(empty($_POST["password"]))
-			$this->forward("/admin/passwordReset/".$this->_urlVars->dynamic["code"]."/?error=".urlencode("Password can not be empty."));
+			$this->forward("/admin/passwordReset/".$this->urlVars->dynamic["code"]."/?error=".urlencode("Password can not be empty."));
 		
 		if($_POST["password"] != $_POST["password2"] || empty($_POST["password"]))
-			$this->forward("/admin/passwordReset/".$this->_urlVars->dynamic["code"]."/?error=".urlencode("Passwords did not match. Please enter your password twice."));
+			$this->forward("/admin/passwordReset/".$this->urlVars->dynamic["code"]."/?error=".urlencode("Passwords did not match. Please enter your password twice."));
 		
 		$this->dbQuery("UPDATE `users` SET"
 			." `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
-			." WHERE `resetCode` = ".$this->dbQuote($this->settings->encryptSalt."_".$this->_urlVars->dynamic["code"], "text")
+			." WHERE `resetCode` = ".$this->dbQuote($this->settings->encryptSalt."_".$this->urlVars->dynamic["code"], "text")
 		);
 		
 		$this->forward("/admin/?notice=".urlencode("Password successfully reset."));
