@@ -16,6 +16,7 @@
 	
 	<script type="text/javascript" src="/scripts/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery.scrollTo.min.js"></script>
+	<script src="/scripts/jquery.rsv.js"></script>
 	<script type="text/javascript" src="/scripts/common.js"></script>
 	
 	<!--[if IE]><script type="text/javascript" src="/scripts/html5.js"></script><![endif]-->
