@@ -209,6 +209,10 @@ footer {
 
 /* @group misc */
 
+.hidden {
+	display: none;
+}
+
 .clear {
 	clear: both;
 	height: 0;

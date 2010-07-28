@@ -17,9 +17,7 @@ if($_GET["captcha_error"] != 1)
 	<h2>{$aContent.title|stripslashes}</h2>
 	{$aContent.content|stripslashes}
 	
-	<div class="form-errors">
-		
-	</div>
+	<div class="form-errors hidden"></div>
 	
 	<form name="contact" method="post" action="/sendform/" id="myForm" class="contactForm">
 		{getSetting tag="email" assign="sEmail"}

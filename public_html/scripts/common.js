@@ -81,7 +81,7 @@ $(document).ready(function() {
 				errorFieldClass: "errorField",
 				customErrorHandler: function(f, errorInfo) {
 					if(errorInfo != 0) {
-						$(errorBox).html('');
+						$(errorBox).html('').show();
 						$(errorBox).prepend('<p>'+message+'</p>');
 						for (var i=0; i<errorInfo.length; i++) {
 							$(errorBox).append('<li>'+errorInfo[i][1]+'</li>');
