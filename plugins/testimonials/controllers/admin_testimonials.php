@@ -35,10 +35,11 @@ class admin_testimonials extends adminController
 		}
 		
 		$this->tplAssign("aCategories", $oTestimonials->getCategories());
+		$this->tplAssign("sUseCategories", $oTestimonials->useCategories);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_testimonials"] = $_POST;
 			$this->forward("/admin/testimonials/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -57,14 +58,16 @@ class admin_testimonials extends adminController
 			)
 		);
 		
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"testimonials_categories_assign",
-				array(
-					"testimonialid" => $sID,
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"testimonials_categories_assign",
+					array(
+						"testimonialid" => $sID,
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		$_SESSION["admin"]["admin_testimonials"] = null;
@@ -115,10 +118,11 @@ class admin_testimonials extends adminController
 		$this->tplAssign("aTestimonial", $aTestimonial);
 		
 		$this->tplAssign("aCategories", $oTestimonials->getCategories());
+		$this->tplAssign("sUseCategories", $oTestimonials->useCategories);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_testimonials"] = $_POST;
 			$this->forward("/admin/testimonials/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -137,14 +141,16 @@ class admin_testimonials extends adminController
 		);
 		
 		$this->dbDelete("testimonials_categories_assign", $_POST["id"], "testimonialid");
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"testimonials_categories_assign",
-				array(
-					"testimonialid" => $_POST["id"],
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"testimonials_categories_assign",
+					array(
+						"testimonialid" => $_POST["id"],
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		$_SESSION["admin"]["admin_testimonials"] = null;

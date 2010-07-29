@@ -34,6 +34,7 @@ class admin_links extends adminController
 			);
 		
 		$this->tplAssign("aCategories", $oLinks->getCategories());
+		$this->tplAssign("sUseCategories", $oLinks->useCategories);
 		$this->tplAssign("sUseImage", $oLinks->useImage);
 		$this->tplAssign("minWidth", $oLinks->imageMinWidth);
 		$this->tplAssign("minHeight", $oLinks->imageMinHeight);
@@ -42,7 +43,7 @@ class admin_links extends adminController
 	function add_s() {
 		$oLinks = $this->loadModel("links");
 		
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_links"] = $_POST;
 			$this->forward("/admin/links/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -61,14 +62,16 @@ class admin_links extends adminController
 			)
 		);
 		
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"links_categories_assign",
-				array(
-					"linkid" => $sID,
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"links_categories_assign",
+					array(
+						"linkid" => $sID,
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		if(!is_dir($this->settings->rootPublic.substr($oLinks->imageFolder, 1)))
@@ -163,6 +166,7 @@ class admin_links extends adminController
 		}
 		
 		$this->tplAssign("aCategories", $oLinks->getCategories());
+		$this->tplAssign("sUseCategories", $oLinks->useCategories);
 		$this->tplAssign("sUseImage", $oLinks->useImage);
 		$this->tplAssign("minWidth", $oLinks->imageMinWidth);
 		$this->tplAssign("minHeight", $oLinks->imageMinHeight);
@@ -172,7 +176,7 @@ class admin_links extends adminController
 	function edit_s() {
 		$oLinks = $this->loadModel("links");
 		
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_links"] = $_POST;
 			$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -191,14 +195,16 @@ class admin_links extends adminController
 		);
 		
 		$this->dbDelete("links_categories_assign", $_POST["id"], "linkid");
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"links_categories_assign",
-				array(
-					"linkid" => $_POST["id"],
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"links_categories_assign",
+					array(
+						"linkid" => $_POST["id"],
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		if(!empty($_FILES["image"]["name"])) {

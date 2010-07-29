@@ -44,10 +44,11 @@ class admin_faq extends adminController
 			);
 		
 		$this->tplAssign("aCategories", $oQuestions->getCategories());
+		$this->tplAssign("sUseCategories", $oQuestions->useCategories);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
-		if(empty($_POST["question"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["question"])) {
 			$_SESSION["admin"]["admin_faq"] = $_POST;
 			$this->forward("/admin/faq/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -74,14 +75,16 @@ class admin_faq extends adminController
 			)
 		);
 		
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"faq_categories_assign",
-				array(
-					"faqid" => $sID,
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"faq_categories_assign",
+					array(
+						"faqid" => $sID,
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		$_SESSION["admin"]["admin_faq"] = null;
@@ -165,10 +168,11 @@ class admin_faq extends adminController
 		}
 		
 		$this->tplAssign("aCategories", $oQuestions->getCategories());
+		$this->tplAssign("sUseCategories", $oQuestions->useCategories);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
-		if(empty($_POST["question"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["question"])) {
 			$_SESSION["admin"]["admin_faq"] = $_POST;
 			$this->forward("/admin/faq/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -186,14 +190,16 @@ class admin_faq extends adminController
 		);
 		
 		$this->dbDelete("faq_categories_assign", $_POST["id"], "faqid");
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"faq_categories_assign",
-				array(
-					"faqid" => $_POST["id"],
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"faq_categories_assign",
+					array(
+						"faqid" => $_POST["id"],
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		$_SESSION["admin"]["admin_faq"] = null;
@@ -205,6 +211,45 @@ class admin_faq extends adminController
 		$this->dbDelete("faq_categories_assign", $this->urlVars->dynamic["id"], "faqid");
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Question removed successfully!"));
+	}
+	function sort() {
+		$oQuestions = $this->loadModel("faq");
+		
+		$aQuestion = $oQuestions->getQuestion($this->urlVars->dynamic["id"], "integer");
+		
+		if($this->urlVars->dynamic["sort"] == "up") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}faq`"
+					." WHERE `sort_order` < ".$aQuestion["sort_order"]
+					." ORDER BY `sort_order` DESC"
+				,"row"
+			);
+		} elseif($this->urlVars->dynamic["sort"] == "down") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}faq`"
+					." WHERE `sort_order` > ".$aQuestion["sort_order"]
+					." ORDER BY `sort_order` ASC"
+				,"row"
+			);
+		}
+			
+		$this->dbUpdate(
+			"faq",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aQuestion["id"]
+		);
+		
+		$this->dbUpdate(
+			"faq",
+			array(
+				"sort_order" => $aQuestion["sort_order"]
+			),
+			$aOld["id"]
+		);
+		
+		$this->forward("/admin/faq/?notice=".urlencode("Sort order saved successfully!"));
 	}
 	function categories_index() {
 		$oQuestions = $this->loadModel("faq");

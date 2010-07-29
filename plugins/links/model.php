@@ -6,6 +6,7 @@ class links_model extends appModel
 	public $imageMinWidth = 0;
 	public $imageMinHeight = 0;
 	public $imageFolder = "/uploads/links/";
+	public $useCategories = true;
 	public $perPage = 5;
 	
 	function getLinks($sCategory = null, $sAll = false, $sRandom = false) {
@@ -24,24 +25,16 @@ class links_model extends appModel
 		// Get all links for paging
 		$aLinks = $this->dbQuery(
 			"SELECT `links`.* FROM `{dbPrefix}links` AS `links`"
-				." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links`.`id` = `links_assign`.`linkid`"
-				." INNER JOIN `{dbPrefix}links_categories` AS `categories` ON `links_assign`.`categoryid` = `categories`.`id`"
+				." LEFT JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links`.`id` = `links_assign`.`linkid`"
+				." LEFT JOIN `{dbPrefix}links_categories` AS `categories` ON `links_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `links`.`id`"
 				.$sOrderBy
 			,"all"
 		);
-	
-		foreach($aLinks as $x => $aLink) {
-			$aLinkCategories = $this->dbQuery(
-				"SELECT `name` FROM `{dbPrefix}links_categories` AS `categories`"
-					." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
-					." WHERE `links_assign`.`linkid` = ".$aLink["id"]
-				,"col"
-			);
 		
-			$aLinks[$x]["categories"] = stripslashes(implode(", ", $aLinkCategories));
-		}
+		foreach($aLinks as $x => &$aLink)
+			$aLink = $this->_getLinkInfo($aLink);
 		
 		return $aLinks;
 	}
@@ -50,6 +43,19 @@ class links_model extends appModel
 			"SELECT * FROM `{dbPrefix}links`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"row"
+		);
+		
+		if(!empty($aLink))
+			$aLink = $this->_getLinkInfo($aLink);
+		
+		return $aLink;
+	}
+	private function _getLinkInfo($aLink) {
+		$aLink["categories"] = $this->dbQuery(
+			"SELECT `id`, `name` FROM `{dbPrefix}links_categories` AS `categories`"
+				." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
+				." WHERE `links_assign`.`linkid` = ".$aLink["id"]
+			,"all"
 		);
 		
 		return $aLink;

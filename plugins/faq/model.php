@@ -1,6 +1,7 @@
 <?php
 class faq_model extends appModel
 {
+	public $useCategories = true;
 	public $perPage = 5;
 	
 	function getQuestions($sCategory = null, $sAll = false) {
@@ -16,23 +17,15 @@ class faq_model extends appModel
 		// Get all faq for paging
 		$aQuestions = $this->dbQuery(
 			"SELECT `faq`.* FROM `{dbPrefix}faq` AS `faq`"
-				." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq`.`id` = `faq_assign`.`faqid`"
-				." INNER JOIN `{dbPrefix}faq_categories` AS `categories` ON `faq_assign`.`categoryid` = `categories`.`id`"
+				." LEFT JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq`.`id` = `faq_assign`.`faqid`"
+				." LEFT JOIN `{dbPrefix}faq_categories` AS `categories` ON `faq_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `faq`.`sort_order`"
 			,"all"
 		);
-	
-		foreach($aQuestions as $x => $aQuestion) {
-			$aQuestionCategories = $this->dbQuery(
-				"SELECT `name` FROM `{dbPrefix}faq_categories` AS `categories`"
-					." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
-					." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
-				,"col"
-			);
 		
-			$aQuestions[$x]["categories"] = stripslashes(implode(", ", $aQuestionCategories));
-		}
+		foreach($aQuestions as $x => &$aQuestion)
+			$aQuestion = $this->_getQuestionInfo($aQuestion);
 		
 		return $aQuestions;
 	}
@@ -41,6 +34,19 @@ class faq_model extends appModel
 			"SELECT * FROM `{dbPrefix}faq`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"row"
+		);
+		
+		if(!empty($aQuestion))
+			$aQuestion = $this->_getQuestionInfo($aQuestion);
+		
+		return $aQuestion;
+	}
+	private function _getQuestionInfo($aQuestion) {
+		$aQuestion["categories"] = $this->dbQuery(
+			"SELECT `id`, `name` FROM `{dbPrefix}faq_categories` AS `categories`"
+				." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
+				." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
+			,"all"
 		);
 		
 		return $aQuestion;

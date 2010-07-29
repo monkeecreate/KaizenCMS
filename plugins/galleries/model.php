@@ -1,6 +1,7 @@
 <?php
 class galleries_model extends appModel
 {
+	public $useCategories = true;
 	public $perPage = 5;
 	
 	function getGalleries($sCategory = null, $sAll = false) {
@@ -15,32 +16,15 @@ class galleries_model extends appModel
 		// Get all gallerys for paging
 		$aGalleries = $this->dbQuery(
 			"SELECT `galleries`.* FROM `{dbPrefix}galleries` AS `galleries`"
-				." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries`.`id` = `galleries_assign`.`galleryid`"
-				." INNER JOIN `{dbPrefix}galleries_categories` AS `categories` ON `galleries_assign`.`categoryid` = `categories`.`id`"
+				." LEFT JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries`.`id` = `galleries_assign`.`galleryid`"
+				." LEFT JOIN `{dbPrefix}galleries_categories` AS `categories` ON `galleries_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `galleries`.`sort_order`"
 			,"all"
 		);
-	
-		foreach($aGalleries as $x => $aGallery) {
-			$aGalleries[$x]["photo"] = $this->dbQuery(
-				"SELECT `photo` FROM `{dbPrefix}galleries_photos`"
-					." WHERE `galleryid` = ".$aGallery["id"]
-					." AND `gallery_default` = 1"
-				,"one"
-			);
-			
-			$aGalleryCategories = $this->dbQuery(
-				"SELECT `name` FROM `{dbPrefix}galleries_categories` AS `categories`"
-					." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `categories`.`id`"
-					." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
-				,"col"
-			);
-			
-			$aGalleries[$x]["photos"] = count($this->getPhotos($aGallery["id"]));
-			
-			$aGalleries[$x]["categories"] = stripslashes(implode(", ", $aGalleryCategories));
-		}
+		
+		foreach($aGalleries as $x => &$aGallery)
+			$aGallery = $this->_getGalleryInfo($aGallery);
 		
 		return $aGalleries;
 	}
@@ -51,16 +35,25 @@ class galleries_model extends appModel
 			,"row"
 		);
 		
-		if(!empty($aGallery)) {
-			$aCategories = $this->dbQuery(
-				"SELECT `name` FROM `{dbPrefix}galleries_categories` AS `category`"
-					." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `category`.`id`"
-					." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
-				,"col"
-			);
-
-			$aGallery["categories"] = implode(", ", $aCategories);
-		}
+		if(!empty($aGallery))
+			$aGallery = $this->_getGalleryInfo($aGallery);
+		
+		return $aGallery;
+	}
+	private function _getGalleryInfo($aGallery) {
+		$aGallery["categories"] = $this->dbQuery(
+			"SELECT `name` FROM `{dbPrefix}galleries_categories` AS `category`"
+				." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `category`.`id`"
+				." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
+			,"col"
+		);
+		
+		$aGallery["photo"] = $this->dbQuery(
+			"SELECT `photo` FROM `{dbPrefix}galleries_photos`"
+				." WHERE `galleryid` = ".$aGallery["id"]
+				." AND `gallery_default` = 1"
+			,"one"
+		);
 		
 		return $aGallery;
 	}

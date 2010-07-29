@@ -49,18 +49,26 @@
 			<input type="text" name="email" maxlength="100" value="{$aListing.email|clean_html}"><br />
 			<label>Website: <span style="font-size:0.8em;">(ex: http://www.google.com/)</span></label><br />
 			<input type="text" name="website" maxlength="100" value="{$aListing.website|clean_html}"><br />
-			<fieldset id="fieldset_categories">
-				<legend>Assign listing to category:</legend>
-				<ul class="categories">
-					{foreach from=$aCategories item=aCategory}
-						<li>
-							<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
-							 {if in_array($aCategory.id, $aListing.categories)} checked="checked"{/if}>
-							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
-						</li>
-					{/foreach}
-				</ul>
-			</fieldset><br />
+			
+			{if $sUseCategories == true}
+				<fieldset id="fieldset_categories">
+					<legend>Assign listing to category:</legend>
+					<ul class="categories">
+						{foreach from=$aCategories item=aCategory}
+							<li>
+								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
+								 {if in_array($aCategory.id, $aListing.categories)} checked="checked"{/if}>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+							</li>
+						{foreachelse}
+							<li>
+								Currently no categories.
+							</li>
+						{/foreach}
+					</ul>
+				</fieldset><br />
+			{/if}
+			
 			<input type="submit" value="Add Listing">
 			<a class="cancel" href="/admin/directory/" title="Cancel">Cancel</a>
 		</section>
@@ -87,8 +95,7 @@ $(function(){ldelim}
 	{rdelim});
 	
 	$("form").validateForm([
-		"required,name,Listing name is required",
-		"required,categories[],You must select at least one category"
+		"required,name,Listing name is required"
 	]);
 {rdelim});
 </script>

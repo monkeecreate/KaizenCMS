@@ -18,18 +18,26 @@
 			<textarea name="short_content" style="height:115px;">{$aArticle.short_content|clean_html}</textarea><br />
 			<label>Content:</label><br />
 			{html_editor content=$aArticle.content name="content"}<br />
-			<fieldset id="fieldset_categories">
-				<legend>Assign article to category:</legend>
-				<ul class="categories">
-					{foreach from=$aCategories item=aCategory}
-						<li>
-							<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
-							 {if in_array($aCategory.id, $aArticle.categories)} checked="checked"{/if}>
-							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
-						</li>
-					{/foreach}
-				</ul>
-			</fieldset><br />
+			
+			{if $sUseCategories == true}
+				<fieldset id="fieldset_categories">
+					<legend>Assign article to category:</legend>
+					<ul class="categories">
+						{foreach from=$aCategories item=aCategory}
+							<li>
+								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
+								 {if in_array($aCategory.id, $aArticle.categories)} checked="checked"{/if}>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+							</li>
+						{foreachelse}
+							<li>
+								Currently no categories.
+							</li>
+						{/foreach}
+					</ul>
+				</fieldset><br />
+			{/if}
+			
 			<input type="submit" name="next" value="Add Article">
 			<a class="cancel" href="/admin/news/" title="Cancel">Cancel</a>
 		</section>
@@ -121,8 +129,7 @@ $(function(){ldelim}
 	{rdelim});
 	
 	$("form").validateForm([
-		"required,title,Article title is required",
-		"required,categories[],You must select at least one category"
+		"required,title,Article title is required"
 	]);
 {rdelim});
 </script>

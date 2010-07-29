@@ -1,30 +1,30 @@
-{include file="inc_header.tpl" page_title="FAQ :: Edit Question" menu="faq" page_style="halfContent"}
+{include file="inc_header.tpl" page_title="Galleries :: Edit Gallery" menu="galleries" page_style="halfContent"}
 {head}
 <script src="/scripts/jquery-iphone-checkboxes/jquery.iphone-style-checkboxes.js"></script>
 <link rel="stylesheet" href="/scripts/jquery-iphone-checkboxes/style.css" type="text/css">
 {/head}
-{assign var=subMenu value="Questions"}
+{assign var=subMenu value="Galleries"}
 
-<form method="post" action="/admin/faq/edit/s/" enctype="multipart/form-data">
+<form method="post" action="/admin/galleries/edit/s/" enctype="multipart/form-data">
 	<section id="content" class="content">
 		<header>
-			<h2>Manage FAQ &raquo; Edit Question</h2>
+			<h2>Manage Galleries &raquo; Edit Gallery</h2>
 		</header>
 
 		<section class="inner-content">
-			<label>*Question:</label><br />
-			<textarea name="question" style="height:115px;">{$aQuestion.question|clean_html}</textarea><br />
-			<label>Answer:</label><br />
-			{html_editor content=$aQuestion.answer name="answer"}<br />
+			<label>*Name:</label><br />
+			<input type="text" name="name" maxlength="100" value="{$aGallery.name|clean_html}"><br />
+			<label>Description:</label><br />
+			<textarea name="description" style="height:115px;">{$aGallery.description|clean_html}</textarea><br /><br /><br />
 			
-			{if $aUseCategories == true}
+			{if $sUseCategories == true}
 				<fieldset id="fieldset_categories">
 					<legend>Assign question to category:</legend>
 					<ul class="categories">
 						{foreach from=$aCategories item=aCategory}
 							<li>
 								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
-								 {if in_array($aCategory.id, $aQuestion.categories)} checked="checked"{/if}>
+								 {if in_array($aCategory.id, $aGallery.categories)} checked="checked"{/if}>
 								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
 							</li>
 						{foreachelse}
@@ -37,20 +37,20 @@
 			{/if}
 			
 			<input type="submit" value="Save Changes">
-			<a class="cancel" href="/admin/faq/" title="Cancel">Cancel</a>
-			<input type="hidden" name="id" value="{$aQuestion.id}">
+			<a class="cancel" href="/admin/galleries/" title="Cancel">Cancel</a>
+			<input type="hidden" name="id" value="{$aGallery.id}">
 		</section>
 	</section> <!-- #content -->
 
 	<section id="sidebar" class="sidebar">
 		<header>
-			<h2>Question Options</h2>
+			<h2>Gallery Options</h2>
 		</header>
 
 		<section>
 			<fieldset>
 				<legend>Status</legend>
-				<input type="checkbox" name="active" value="1"{if $aQuestion.active == 1} checked="checked"{/if}>
+				<input type="checkbox" name="active" value="1"{if $aGallery.active == 1} checked="checked"{/if}>
 			</fieldset>
 		</section>
 	</section>
@@ -63,7 +63,7 @@ $(function(){ldelim}
 	{rdelim});
 	
 	$("form").validateForm([
-		"required,question,Question is required"
+		"required,name,Gallery name is required"
 	]);
 {rdelim});
 </script>

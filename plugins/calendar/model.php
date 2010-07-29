@@ -5,6 +5,7 @@ class calendar_model extends appModel
 	public $imageMinWidth = 320;
 	public $imageMinHeight = 200;
 	public $imageFolder = "/uploads/calendar/";
+	public $useCategories = true;
 	public $perPage = 5;
 	public $shortContentCharacters = 250; // max characters for short content
 	
@@ -24,16 +25,16 @@ class calendar_model extends appModel
 		
 		$aEvents = $this->dbQuery(
 			"SELECT `calendar`.* FROM `{dbPrefix}calendar` AS `calendar`"
-				." INNER JOIN `{dbPrefix}calendar_categories_assign` AS `calendar_assign` ON `calendar`.`id` = `calendar_assign`.`eventid`"
-				." INNER JOIN `{dbPrefix}calendar_categories` AS `categories` ON `calendar_assign`.`categoryid` = `categories`.`id`"
+				." LEFT JOIN `{dbPrefix}calendar_categories_assign` AS `calendar_assign` ON `calendar`.`id` = `calendar_assign`.`eventid`"
+				." LEFT JOIN `{dbPrefix}calendar_categories` AS `categories` ON `calendar_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `calendar`.`id`"
 				." ORDER BY `calendar`.`datetime_start`"
 			,"all"
 		);
 	
-		foreach($aEvents as $x => $aEvent)
-			$aEvents[$x] = $this->getEventInfo($aEvent);
+		foreach($aEvents as $x => &$aEvent)
+			$aEvent = $this->_getEventInfo($aEvent);
 		
 		return $aEvents;
 	}
@@ -53,20 +54,18 @@ class calendar_model extends appModel
 		);
 		
 		if(!empty($aEvent))
-			$aEvent = $this->getEventInfo($aEvent);
+			$aEvent = $this->_getEventInfo($aEvent);
 		
 		return $aEvent;
 	}
-	private function getEventInfo($aEvent) {
-		$aCategories = $this->dbQuery(
-			"SELECT `name` FROM `{dbPrefix}calendar_categories` AS `category`"
+	private function _getEventInfo($aEvent) {
+		$aEvent["categories"] = $this->dbQuery(
+			"SELECT `id`, `name` FROM `{dbPrefix}calendar_categories` AS `category`"
 				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
 				." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
-			,"col"
+			,"all"
 		);
-	
-		$aEvent["categories"] = stripslashes(implode(", ", $aCategories));
-	
+		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aEvent["id"].".jpg")
 		 && $aEvent["photo_x2"] > 0
 		 && $this->useImage == true)

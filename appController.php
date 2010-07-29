@@ -40,7 +40,7 @@ class appController
 	function forward($url, $type = "") {
 		switch($type) {
 			case "301":
-				header('HTTP/1.1 301 Moved Permanentl');
+				header('HTTP/1.1 301 Moved Permanently');
 				break;
 			case "403":
 				header('HTTP/1.1 403 Forbidden');

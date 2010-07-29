@@ -41,6 +41,7 @@ class admin_news extends adminController
 			);
 		
 		$this->tplAssign("aCategories", $oNews->getCategories());
+		$this->tplAssign("sUseCategories", $oNews->useCategories);
 		$this->tplAssign("sUseImage", $oNews->useImage);
 		$this->tplAssign("minWidth", $oNews->imageMinWidth);
 		$this->tplAssign("minHeight", $oNews->imageMinHeight);
@@ -50,7 +51,7 @@ class admin_news extends adminController
 	function add_s() {
 		$oNews = $this->loadModel("news");
 		
-		if(empty($_POST["title"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["title"])) {
 			$_SESSION["admin"]["admin_news"] = $_POST;
 			$this->forward("/admin/news/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -84,14 +85,16 @@ class admin_news extends adminController
 			)
 		);
 		
-		foreach($_POST["categories"] as $sCategory) {
-			$sID = $this->dbInsert(
-				"news_categories_assign",
-				array(
-					"articleid" => $sID
-					,"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$sID = $this->dbInsert(
+					"news_categories_assign",
+					array(
+						"articleid" => $sID
+						,"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		$_SESSION["admin"]["admin_news"] = null;
@@ -151,6 +154,7 @@ class admin_news extends adminController
 		}
 		
 		$this->tplAssign("aCategories", $oNews->getCategories());
+		$this->tplAssign("sUseCategories", $oNews->useCategories);
 		$this->tplAssign("sUseImage", $oNews->useImage);
 		$this->tplAssign("minWidth", $oNews->imageMinWidth);
 		$this->tplAssign("minHeight", $oNews->imageMinHeight);
@@ -158,9 +162,13 @@ class admin_news extends adminController
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
+<<<<<<< HEAD
 		$oNews = $this->loadModel("news");
 		
 		if(empty($_POST["title"]) || count($_POST["categories"]) == 0) {
+=======
+		if(empty($_POST["title"])) {
+>>>>>>> categories
 			$_SESSION["admin"]["admin_news"] = $_POST;
 			$this->forward("/admin/news/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -194,14 +202,16 @@ class admin_news extends adminController
 		);
 		
 		$this->dbDelete("news_categories_assign", $_POST["id"], "articleid");
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"news_categories_assign",
-				array(
-					"articleid" => $_POST["id"]
-					,"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"news_categories_assign",
+					array(
+						"articleid" => $_POST["id"]
+						,"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		$_SESSION["admin"]["admin_news"] = null;

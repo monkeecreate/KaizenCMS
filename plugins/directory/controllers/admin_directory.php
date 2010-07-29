@@ -35,6 +35,7 @@ class admin_directory extends adminController
 			);
 		
 		$this->tplAssign("aCategories", $oDirectory->getCategories());
+		$this->tplAssign("sUseCategories", $oDirectory->useCategories);
 		$this->tplAssign("sUseImage", $oDirectory->useImage);
 		$this->tplAssign("aStates", $oDirectory->aStates);
 		
@@ -43,7 +44,7 @@ class admin_directory extends adminController
 	function add_s() {
 		$oDirectory = $this->loadModel("directory");
 		
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_directory"] = $_POST;
 			$this->forward("/admin/directory/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -70,14 +71,16 @@ class admin_directory extends adminController
 			"insert"
 		);
 		
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"directory_categories_assign",
-				array(
-					"listingid" => $sID,
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"directory_categories_assign",
+					array(
+						"listingid" => $sID,
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		$_SESSION["admin"]["admin_directory"] = null;
@@ -130,12 +133,13 @@ class admin_directory extends adminController
 		}
 		
 		$this->tplAssign("aCategories", $oDirectory->getCategories());
+		$this->tplAssign("sUseCategories", $oDirectory->useCategories);
 		$this->tplAssign("sUseImage", $oDirectory->useImage);
 		$this->tplAssign("aStates", $oDirectory->aStates);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_directory"] = $_POST;
 			$this->forward("/admin/directory/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -161,14 +165,16 @@ class admin_directory extends adminController
 		);
 		
 		$this->dbDelete("directory_categories_assign", $_POST["id"], "listingid");
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"directory_categories_assign",
-				array(
-					"listingid" => $_POST["id"],
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"directory_categories_assign",
+					array(
+						"listingid" => $_POST["id"],
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		$_SESSION["admin"]["admin_directory"] = null;
