@@ -22,7 +22,10 @@
 	<small class="timeCat">
 		<time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time>
 		| Posted by: {$aArticle.user.fname} {$aArticle.user.lname} 
-		| Categories: {$aArticle.categories|clean_html}
+		| Categories: 
+		{foreach from=$aArticle.categories item=aCategory name=category}
+			<a href="/news/?category={$aCategory.id}" title="Articles in {$aCategory.name|clean_html}">{$aCategory.name|clean_html}</a>{if $smarty.foreach.category.last == false},{/if} 
+		{/foreach}
 	</small>
 	<fb:like show_faces="false"></fb:like>
 	<p>

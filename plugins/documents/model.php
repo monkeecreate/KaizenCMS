@@ -49,14 +49,12 @@ class documents_model extends appModel
 		return $aDocument;
 	}
 	function getDocumentInfo($aDocument) {
-		$aCategories = $this->dbQuery(
-			"SELECT `name` FROM `{dbPrefix}documents_categories` AS `categories`"
+		$aDocument["categories"] = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}documents_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
-			,"col"
+			,"all"
 		);
-	
-		$aDocument["categories"] = implode(", ", $aCategories);
 		
 		return $aDocument;
 	}

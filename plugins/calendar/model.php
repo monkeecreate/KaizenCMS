@@ -58,14 +58,12 @@ class calendar_model extends appModel
 		return $aEvent;
 	}
 	private function getEventInfo($aEvent) {
-		$aCategories = $this->dbQuery(
-			"SELECT `name` FROM `{dbPrefix}calendar_categories` AS `category`"
+		$aEvent["categories"] = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}calendar_categories` AS `category`"
 				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
 				." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
-			,"col"
+			,"all"
 		);
-	
-		$aEvent["categories"] = implode(", ", $aCategories);
 	
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aEvent["id"].".jpg")
 		 && $aEvent["photo_x2"] > 0

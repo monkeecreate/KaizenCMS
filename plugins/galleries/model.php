@@ -30,16 +30,14 @@ class galleries_model extends appModel
 				,"one"
 			);
 			
-			$aGalleryCategories = $this->dbQuery(
-				"SELECT `name` FROM `{dbPrefix}galleries_categories` AS `categories`"
+			$aGalleries[$x]["categories"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}galleries_categories` AS `categories`"
 					." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
-				,"col"
+				,"all"
 			);
 			
 			$aGalleries[$x]["photos"] = count($this->getPhotos($aGallery["id"]));
-			
-			$aGalleries[$x]["categories"] = implode(", ", $aGalleryCategories);
 		}
 		
 		return $aGalleries;

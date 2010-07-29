@@ -82,14 +82,12 @@ class directory_model extends appModel
 		return $aListings;
 	}
 	function getListingInfo($aListing) {
-		$aCategories = $this->dbQuery(
-			"SELECT `name` FROM `{dbPrefix}directory_categories` AS `categories`"
+		$aListing["categories"] = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}directory_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
-			,"col"
+			,"all"
 		);
-	
-		$aListing["categories"] = implode(", ", $aCategories);
 		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["file"])
 		 && $this->useImage == true)

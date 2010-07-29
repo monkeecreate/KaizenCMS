@@ -54,14 +54,12 @@ class news_model extends appModel
 		if(!empty($aArticle["created_by"]))
 			$aArticle["user"] = $this->getUser($aArticle["created_by"]);
 		
-		$aCategories = $this->dbQuery(
-			"SELECT `name` FROM `{dbPrefix}news_categories` AS `categories`"
+		$aArticle["categories"] = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}news_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-			,"col"
+			,"all"
 		);
-		
-		$aArticle["categories"] = implode(", ", $aCategories);
 		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aArticle["id"].".jpg")
 		 && $aArticle["photo_x2"] > 0

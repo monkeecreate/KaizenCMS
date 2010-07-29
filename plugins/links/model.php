@@ -33,14 +33,12 @@ class links_model extends appModel
 		);
 	
 		foreach($aLinks as $x => $aLink) {
-			$aLinkCategories = $this->dbQuery(
+			$aLinks[$x]["categories"] = $this->dbQuery(
 				"SELECT `name` FROM `{dbPrefix}links_categories` AS `categories`"
 					." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `links_assign`.`linkid` = ".$aLink["id"]
 				,"col"
 			);
-		
-			$aLinks[$x]["categories"] = implode(", ", $aLinkCategories);
 		}
 		
 		return $aLinks;

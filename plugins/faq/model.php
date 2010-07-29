@@ -24,14 +24,12 @@ class faq_model extends appModel
 		);
 	
 		foreach($aQuestions as $x => $aQuestion) {
-			$aQuestionCategories = $this->dbQuery(
-				"SELECT `name` FROM `{dbPrefix}faq_categories` AS `categories`"
+			$aQuestions[$x]["categories"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}faq_categories` AS `categories`"
 					." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
-				,"col"
+				,"all"
 			);
-		
-			$aQuestions[$x]["categories"] = implode(", ", $aQuestionCategories);
 		}
 		
 		return $aQuestions;
