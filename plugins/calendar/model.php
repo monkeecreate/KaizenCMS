@@ -65,7 +65,7 @@ class calendar_model extends appModel
 			,"col"
 		);
 	
-		$aEvent["categories"] = implode(", ", $aCategories);
+		$aEvent["categories"] = stripslashes(implode(", ", $aCategories));
 	
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aEvent["id"].".jpg")
 		 && $aEvent["photo_x2"] > 0

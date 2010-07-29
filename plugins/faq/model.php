@@ -31,7 +31,7 @@ class faq_model extends appModel
 				,"col"
 			);
 		
-			$aQuestions[$x]["categories"] = implode(", ", $aQuestionCategories);
+			$aQuestions[$x]["categories"] = stripslashes(implode(", ", $aQuestionCategories));
 		}
 		
 		return $aQuestions;

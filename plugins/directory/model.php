@@ -89,7 +89,7 @@ class directory_model extends appModel
 			,"col"
 		);
 	
-		$aListing["categories"] = implode(", ", $aCategories);
+		$aListing["categories"] = stripslashes(implode(", ", $aCategories));
 		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["file"])
 		 && $this->useImage == true)

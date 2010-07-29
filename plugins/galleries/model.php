@@ -39,7 +39,7 @@ class galleries_model extends appModel
 			
 			$aGalleries[$x]["photos"] = count($this->getPhotos($aGallery["id"]));
 			
-			$aGalleries[$x]["categories"] = implode(", ", $aGalleryCategories);
+			$aGalleries[$x]["categories"] = stripslashes(implode(", ", $aGalleryCategories));
 		}
 		
 		return $aGalleries;

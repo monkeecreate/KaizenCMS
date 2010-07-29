@@ -56,7 +56,7 @@ class documents_model extends appModel
 			,"col"
 		);
 	
-		$aDocument["categories"] = implode(", ", $aCategories);
+		$aDocument["categories"] = stripslashes(implode(", ", $aCategories));
 		
 		return $aDocument;
 	}

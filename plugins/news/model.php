@@ -61,7 +61,7 @@ class news_model extends appModel
 			,"col"
 		);
 		
-		$aArticle["categories"] = implode(", ", $aCategories);
+		$aArticle["categories"] = stripslashes(implode(", ", $aCategories));
 		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aArticle["id"].".jpg")
 		 && $aArticle["photo_x2"] > 0

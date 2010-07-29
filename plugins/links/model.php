@@ -40,7 +40,7 @@ class links_model extends appModel
 				,"col"
 			);
 		
-			$aLinks[$x]["categories"] = implode(", ", $aLinkCategories);
+			$aLinks[$x]["categories"] = stripslashes(implode(", ", $aLinkCategories));
 		}
 		
 		return $aLinks;
