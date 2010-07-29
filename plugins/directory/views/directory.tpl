@@ -27,7 +27,10 @@
 			<div class="contentListItem">
 				<h2>{$aListing.name|clean_html}</h2>
 				<small class="timeCat">
-					Categories: {$aListing.categories|clean_html}
+					Categories:
+					{foreach from=$aListing.categories item=aCategory name=category}
+						<a href="/directory/?category={$aCategory.id}" title="Listings in {$aCategory.name|clean_html}">{$aCategory.name|clean_html}</a>{if $smarty.foreach.category.last == false},{/if} 
+					{/foreach}
 				</small>
 				<p class="content">
 					{if !empty($aListing.address1)}

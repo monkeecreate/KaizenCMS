@@ -52,7 +52,7 @@ class links_model extends appModel
 	}
 	private function _getLinkInfo($aLink) {
 		$aLink["categories"] = $this->dbQuery(
-			"SELECT `id`, `name` FROM `{dbPrefix}links_categories` AS `categories`"
+			"SELECT * FROM `{dbPrefix}links_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `links_assign`.`linkid` = ".$aLink["id"]
 			,"all"

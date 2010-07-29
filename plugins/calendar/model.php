@@ -60,7 +60,7 @@ class calendar_model extends appModel
 	}
 	private function _getEventInfo($aEvent) {
 		$aEvent["categories"] = $this->dbQuery(
-			"SELECT `id`, `name` FROM `{dbPrefix}calendar_categories` AS `category`"
+			"SELECT * FROM `{dbPrefix}calendar_categories` AS `category`"
 				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
 				." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
 			,"all"

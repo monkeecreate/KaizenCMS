@@ -1,46 +1,47 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="description" content="{getSetting tag="description"}">
+	<meta charset="utf-8">
 	<meta name="keywords" content="{getSetting tag="keywords"}">
-	<meta name="robots" content="index, follow">
+	<meta name="description" content="{getSetting tag="description"}">
+	<!-- iPhone -->
+	<meta name="viewport" content="width=device-width">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<!-- /iPhone -->
 	
 	<title>{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="title"}</title>
 	
-	<link href="/css/generic.css" rel="stylesheet" type="text/css" />
-	<link href="/css/style.css" media="screen, projection, print" rel="stylesheet" type="text/css" />
-	<link href="/css/print.css" media="print" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="/css/reset.css" type="text/css">	
+	<link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="/css/print.css" type="text/css" media="print">
+	<link rel="stylesheet" href="/css/iphone.css" media="only screen and (max-width: 480px)" type="text/css">
+	<link rel="stylesheet" media="only screen and (-webkit-min-device-pixel-ratio: 2)" type="text/css" href="/css/iphone4.css"> <!-- Target iPhone 4 Retina Display -->
+	<!--[if IE]><link rel="stylesheet" href="/css/ie.css" type="text/css" media="screen, projection" /><![endif]-->
+	<!--[if gte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css" media="screen, projection" /><![endif]-->
+	<!--[if lte IE 6]><link rel="stylesheet" href="/css/ie6.css" type="text/css" media="screen, projection" /><![endif]-->
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
 	
-	<script type="text/javascript" src="/scripts/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="/scripts/jquery.scrollTo.min.js"></script>
-	<script type="text/javascript" src="/scripts/common.js"></script>
-	
-	<!--[if IE]><script type="text/javascript" src="/scripts/html5.js"></script><![endif]-->
+	<script src="/scripts/jquery-1.4.2.min.js"></script>
+	<script src="/scripts/jquery.scrollTo.min.js"></script>
+	<script src="/scripts/jquery.rsv.js"></script>
+	<script src="/scripts/common.js"></script>
+	<!--[if lt IE 9]>
+	<script src="/scripts/html5.js"></script>
+	<![endif]-->
 </head>
 <body class="{$menu}">
-<div id="wrapper">
-	<header>
-		<h1><a href="/" title="Kaizen CMS">Kaizen CMS</a></h1>
-
-		<nav>
-			<ul>
-				<li><a href="/" class="{currentMenu var="home"}">Home</a></li>
-				<li><a href="/news/" class="{currentMenu var="news"}">News</a></li>
-				<li><a href="/calendar/" class="{currentMenu var="calendar"}">Calendar</a></li>
-				<li><a href="/faq/" class="{currentMenu var="faq"}">FAQ</a></li>
-				<li><a href="/links/" class="{currentMenu var="links"}">Links</a></li>
-				<li><a href="/documents/" class="{currentMenu var="documents"}">Documents</a></li>
-				<li><a href="/testimonials/" class="{currentMenu var="testimonials"}">Testimonials</a></li>
-				<li><a href="/galleries/" class="{currentMenu var="galleries"}">Photo Gallery</a></li>
-				<li><a href="/directory/" class="{currentMenu var="directory"}">Directory</a></li>
-				<li><a href="/social/" class="{currentMenu var="social"}">Social</a></li>
-				<li><a href="/test-content/" class="{currentMenu var="test-content"}">Test Menu</a></li>
-			</ul>
-		</nav>
-	</header>
-	
-	<div id="wrapper-inner">
-		<section id="content" class="content column">
+	<div id="wrapper">
+		<header>
+			<h1><a href="/" title="">Kaizen CMS</a></h1>
+			
+			<nav>
+				<ul>
+					<li><a href="/" title="" class="{currentMenu var="home"}">Home</a></li>
+					<li><a href="/about/" title="About Us" class="{currentMenu var="about"}">About</a></li>
+					<li><a href="/contact/" title="Contact Us" class="{currentMenu var="contact"}">Contact</a></li>
+				</ul>
+			</nav>
+		</header>
+		
+		<section id="content" class="content">

@@ -29,7 +29,11 @@
 					Q: <a href="#{$aQuestion.id}" class="faq-Question">{$aQuestion.question|clean_html}</a>
 				</h3>
 				<div style="display:none;" id="{$aQuestion.id}">
-					<small>Categories: {$aQuestion.categories|clean_html}</small>
+					<small>Categories: 
+						{foreach from=$aQuestion.categories item=aCategory name=category}
+							<a href="/faq/?category={$aCategory.id}" title="Questions in {$aCategory.name|clean_html}">{$aCategory.name|clean_html}</a>{if $smarty.foreach.category.last == false},{/if} 
+						{/foreach}
+					</small>
  					<p>{$aQuestion.answer|stripslashes}</p>
 				</div>
 			</div>

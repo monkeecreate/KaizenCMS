@@ -38,7 +38,10 @@
 					</a>
 				</h2>
 				<small class="timeCat">
-					Categories: {$aGallery.categories|clean_html}
+					Categories: 
+					{foreach from=$aGallery.categories item=aCategory name=category}
+						<a href="/gallery/?category={$aCategory.id}" title="Galleries in {$aCategory.name|clean_html}">{$aCategory.name|clean_html}</a>{if $smarty.foreach.category.last == false},{/if} 
+					{/foreach}
 				</small>
 				<p class="content">
 					{$aGallery.description|clean_html}

@@ -34,7 +34,10 @@
 					</a>
 				</h2>
 				<small class="timeCat">
-					Categories: {$aLink.categories|clean_html}
+					Categories: 
+					{foreach from=$aLink.categories item=aCategory name=category}
+						<a href="/links/?category={$aCategory.id}" title="Links in {$aCategory.name|clean_html}">{$aCategory.name|clean_html}</a>{if $smarty.foreach.category.last == false},{/if} 
+					{/foreach}
 				</small>
 				<p class="content">
 					{$aLink.description|clean_html}<br />

@@ -56,7 +56,7 @@ class news_model extends appModel
 			$aArticle["user"] = $this->getUser($aArticle["created_by"]);
 		
 		$aArticle["categories"] = $this->dbQuery(
-			"SELECT `id`, `name` FROM `{dbPrefix}news_categories` AS `categories`"
+			"SELECT * FROM `{dbPrefix}news_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
 			,"all"

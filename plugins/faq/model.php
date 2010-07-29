@@ -43,7 +43,7 @@ class faq_model extends appModel
 	}
 	private function _getQuestionInfo($aQuestion) {
 		$aQuestion["categories"] = $this->dbQuery(
-			"SELECT `id`, `name` FROM `{dbPrefix}faq_categories` AS `categories`"
+			"SELECT * FROM `{dbPrefix}faq_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
 			,"all"

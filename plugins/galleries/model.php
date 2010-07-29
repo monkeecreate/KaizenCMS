@@ -42,10 +42,10 @@ class galleries_model extends appModel
 	}
 	private function _getGalleryInfo($aGallery) {
 		$aGallery["categories"] = $this->dbQuery(
-			"SELECT `name` FROM `{dbPrefix}galleries_categories` AS `category`"
-				." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `category`.`id`"
+			"SELECT * FROM `{dbPrefix}galleries_categories` AS `categories`"
+				." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
-			,"col"
+			,"all"
 		);
 		
 		$aGallery["photo"] = $this->dbQuery(
@@ -54,6 +54,8 @@ class galleries_model extends appModel
 				." AND `gallery_default` = 1"
 			,"one"
 		);
+		
+		$aGallery["photos"] = count($this->getPhotos($aGallery["id"]));
 		
 		return $aGallery;
 	}

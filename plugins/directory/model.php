@@ -84,7 +84,7 @@ class directory_model extends appModel
 	}
 	private function _getListingInfo($aListing) {
 		$aListing["categories"] = $this->dbQuery(
-			"SELECT `id`, `name` FROM `{dbPrefix}directory_categories` AS `categories`"
+			"SELECT * FROM `{dbPrefix}directory_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
 			,"all"

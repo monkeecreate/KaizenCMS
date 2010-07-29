@@ -648,10 +648,6 @@ form.dialogForm .textarea {
 	height: 135px;
 }
 
-form#login {
-	overflow: hidden;
-}
-
 /* @group settings form */
 
 form.settings input.text {

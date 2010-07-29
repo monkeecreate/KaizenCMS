@@ -51,7 +51,7 @@ class documents_model extends appModel
 	}
 	private function _getDocumentInfo($aDocument) {
 		$aDocument["categories"] = $this->dbQuery(
-			"SELECT `id`, `name` FROM `{dbPrefix}documents_categories` AS `categories`"
+			"SELECT * FROM `{dbPrefix}documents_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
 			,"all"

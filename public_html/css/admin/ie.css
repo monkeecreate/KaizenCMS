@@ -1,3 +1,7 @@
+form#login {
+	overflow: hidden;
+}
+
 nav ul li.adminSubMenu a {
 	padding-top: 2px;
 }
