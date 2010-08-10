@@ -236,7 +236,7 @@ class admin_promos extends adminController
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
 				$sPromo = $this->dbQuery(
-					"SELECT `promo` FROM `promos`"
+					"SELECT `promo` FROM `{dbPrefix}promos`"
 						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 					,"one"
 				);

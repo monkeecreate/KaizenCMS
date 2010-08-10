@@ -13,11 +13,12 @@ class promos extends appController
 			,"row"
 		);
 		
-		$this->dbQuery(
-			"UPDATE `{dbPrefix}promos` SET"
-				." `clicks` = `clicks` + 1"
-				." WHERE `id` = ".$aPromo["id"]
-			,"update"
+		$this->dbUpdate(
+			"promos",
+			array(
+				"clicks" => ($aPromo["clicks"] + 1)
+			),
+			$aPromo["id"]
 		);
 		
 		$this->forward($aPromo["link"]);

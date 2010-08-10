@@ -110,7 +110,7 @@ class admin_news extends adminController
 		
 		if(!empty($_SESSION["admin"]["admin_news"])) {
 			$aArticleRow = $this->dbQuery(
-				"SELECT * FROM `news`"
+				"SELECT * FROM `{dbPrefix}news`"
 					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
@@ -119,7 +119,7 @@ class admin_news extends adminController
 			
 			$aArticle["updated_datetime"] = $aArticleRow["updated_datetime"];
 			$aArticle["updated_by"] = $this->dbQuery(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aArticleRow["updated_by"]
 				,"row"
 			);
@@ -162,13 +162,9 @@ class admin_news extends adminController
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
-<<<<<<< HEAD
 		$oNews = $this->loadModel("news");
 		
-		if(empty($_POST["title"]) || count($_POST["categories"]) == 0) {
-=======
 		if(empty($_POST["title"])) {
->>>>>>> categories
 			$_SESSION["admin"]["admin_news"] = $_POST;
 			$this->forward("/admin/news/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}

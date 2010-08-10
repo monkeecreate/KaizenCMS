@@ -91,45 +91,6 @@ class admin_faq extends adminController
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Question created successfully!"));
 	}
-	function sort() {
-		$oQuestions = $this->loadModel("faq");
-		
-		$aQuestion = $oQuestions->getQuestion($this->urlVars->dynamic["id"], "integer");
-		
-		if($this->urlVars->dynamic["sort"] == "up") {
-			$aOld = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}faq`"
-					." WHERE `sort_order` < ".$aQuestion["sort_order"]
-					." ORDER BY `sort_order` DESC"
-				,"row"
-			);
-		} elseif($this->urlVars->dynamic["sort"] == "down") {
-			$aOld = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}faq`"
-					." WHERE `sort_order` > ".$aQuestion["sort_order"]
-					." ORDER BY `sort_order` ASC"
-				,"row"
-			);
-		}
-			
-		$this->dbUpdate(
-			"faq",
-			array(
-				"sort_order" => $aOld["sort_order"]
-			),
-			$aQuestion["id"]
-		);
-		
-		$this->dbUpdate(
-			"faq",
-			array(
-				"sort_order" => $aQuestion["sort_order"]
-			),
-			$aOld["id"]
-		);
-		
-		$this->forward("/admin/faq/?notice=".urlencode("Sort order saved successfully!"));
-	}
 	function edit() {
 		$oQuestions = $this->loadModel("faq");
 		

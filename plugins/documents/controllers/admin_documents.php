@@ -220,7 +220,7 @@ class admin_documents extends adminController
 				
 				if(in_array($file_ext, $oDocuments->allowedExt) || empty($oDocuments->allowedExt)) {
 					$sDocument = $this->dbQuery(
-						"SELECT `{dbPrefix}document` FROM `documents`"
+						"SELECT `{dbPrefix}document` FROM `{dbPrefix}documents`"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 						,"one"
 					);

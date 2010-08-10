@@ -4,13 +4,13 @@ function smarty_function_getContent($aParams, &$oSmarty) {
 	
 	if(!empty($aParams["tag"]))
 		$aContent = $oApp->dbQuery(
-			"SELECT * FROM `content`"
+			"SELECT * FROM `{dbPrefix}content`"
 				." WHERE `tag` = ".$oApp->dbQuote($aParams["tag"], "text")
 			,"row"
 		);
 	elseif(!empty($aParams["id"]))
 		$aContent = $oApp->dbQuery(
-			"SELECT * FROM `content`"
+			"SELECT * FROM `{dbPrefix}content`"
 				." WHERE `id` = ".$oApp->dbQuote($aParams["id"], "text")
 			,"row"
 		);

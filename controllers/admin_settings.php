@@ -10,7 +10,7 @@ class admin_settings extends adminController
 	### DISPLAY ######################
 	function index() {
 		$aSettingsFull = $this->dbQuery(
-			"SELECT * FROM `settings`"
+			"SELECT * FROM `{dbPrefix}settings`"
 				." WHERE `active` = 1"
 				." ORDER BY `group`, `sortOrder`, `title`"
 			,"all"
@@ -30,7 +30,7 @@ class admin_settings extends adminController
 	}
 	function save() {
 		$aSettings = $this->dbQuery(
-			"SELECT * FROM `settings`"
+			"SELECT * FROM `{dbPrefix}settings`"
 				." ORDER BY `group`, `sortOrder`, `title`"
 			,"all"
 		);
@@ -59,7 +59,7 @@ class admin_settings extends adminController
 		$_SESSION["admin"]["admin_settings"] = null;
 		
 		$aSettings = $this->dbQuery(
-			"SELECT * FROM `settings`"
+			"SELECT * FROM `{dbPrefix}settings`"
 				." ORDER BY `group`, `sortOrder`, `title`"
 			,"all"
 		);
@@ -82,7 +82,7 @@ class admin_settings extends adminController
 		}
 		
 		$aSettingGroups = $this->dbQuery(
-			"SELECT distinct `group` FROM `settings`"
+			"SELECT distinct `group` FROM `{dbPrefix}settings`"
 			,"all"
 		);
 
@@ -123,7 +123,7 @@ class admin_settings extends adminController
 			$this->tplAssign("aSetting", $aSetting);
 		} else {
 			$aSetting = $this->dbQuery(
-				"SELECT * FROM `settings`"
+				"SELECT * FROM `{dbPrefix}settings`"
 					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
@@ -132,7 +132,7 @@ class admin_settings extends adminController
 		}
 		
 		$aSettingGroups = $this->dbQuery(
-			"SELECT distinct `group` FROM `settings`"
+			"SELECT distinct `group` FROM `{dbPrefix}settings`"
 			,"all"
 		);
 
@@ -185,7 +185,7 @@ class admin_settings extends adminController
 		
 		foreach($aPlugins as &$aPlugin) {
 			$aPluginInstalled = $this->dbQuery(
-				"SELECT * FROM `plugins`"
+				"SELECT * FROM `{dbPrefix}plugins`"
 					." WHERE `plugin` = ".$this->dbQuote($aPlugin, "text")
 				,"row"
 			);
@@ -274,7 +274,7 @@ class admin_settings extends adminController
 		// Admin Menu
 		if(!empty($aMenuAdmin)) {
 			$sOrder = $this->dbQuery(
-				"SELECT MAX(`sort_order`) FROM `menu_admin`"
+				"SELECT MAX(`sort_order`) FROM `{dbPrefix}menu_admin`"
 				,"one"
 			);
 			$sOrder++;
@@ -337,7 +337,7 @@ class admin_settings extends adminController
 			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
 		
 		$aAdminMenuResult = $this->dbQuery(
-			"SELECT * FROM `menu_admin`"
+			"SELECT * FROM `{dbPrefix}menu_admin`"
 				." ORDER BY `sort_order`"
 			,"all"
 		);

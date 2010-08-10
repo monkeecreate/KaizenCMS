@@ -27,7 +27,7 @@ class news_model extends appModel
 				." LEFT JOIN `{dbPrefix}news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
 				." GROUP BY `news`.`id`"
-				." ORDER BY `news`.`datetime_show` DESC"
+				." ORDER BY `news`.`sticky` DESC, `news`.`datetime_show` DESC"
 			,"all"
 		);
 		

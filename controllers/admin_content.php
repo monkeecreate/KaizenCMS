@@ -13,7 +13,7 @@ class admin_content extends adminController
 		$_SESSION["admin"]["admin_content"] = null;
 		
 		$aPages = $this->dbQuery(
-			"SELECT * FROM `content`"
+			"SELECT * FROM `{dbPrefix}content`"
 				." ORDER BY `title`"
 			,"all"
 		);
@@ -39,7 +39,7 @@ class admin_content extends adminController
 			$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,30);
 		
 		$aPages = $this->dbQuery(
-			"SELECT `tag` FROM `content`"
+			"SELECT `tag` FROM `{dbPrefix}content`"
 				." ORDER BY `tag`"
 			,"all"
 		);
@@ -87,7 +87,7 @@ class admin_content extends adminController
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_content"])) {
 			$aPage = $this->dbQuery(
-				"SELECT * FROM `content`"
+				"SELECT * FROM `{dbPrefix}content`"
 					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
@@ -96,7 +96,7 @@ class admin_content extends adminController
 			
 			$aPage["updated_datetime"] = $aPageRow["updated_datetime"];
 			$aPage["updated_by"] = $this->dbQuery(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aPageRow["updated_by"]
 				,"row"
 			);
@@ -104,13 +104,13 @@ class admin_content extends adminController
 			$this->tplAssign("aPage", $aPage);
 		} else {
 			$aPage = $this->dbQuery(
-				"SELECT * FROM `content`"
+				"SELECT * FROM `{dbPrefix}content`"
 					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
 			$aPage["updated_by"] = $this->dbQuery(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aPage["updated_by"]
 				,"row"
 			);
