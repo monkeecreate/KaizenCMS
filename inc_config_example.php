@@ -1,7 +1,9 @@
 <?php
+$aConfig["installer"] = true;
+
 ###############################################
-$aConfig["encryption"]["key"] = ""; // example: sha1("domain.com")
-$aConfig["encryption"]["salt"] = ""; // example: sha1("random string")
+$aConfig["encryption"]["key"] = ""; // example: "domain.com"
+$aConfig["encryption"]["salt"] = ""; // example: "random string"
 ###############################################
 
 ### ADMIN INFO ################################
@@ -29,6 +31,7 @@ $aConfig["database"]["host"] = "localhost";
 $aConfig["database"]["username"] = "";
 $aConfig["database"]["password"] = "";
 $aConfig["database"]["database"] = "";
+$aConfig["database"]["prefix"] = "";
 $aConfig["database"]["fetch"] = 2; // 1 = Ordered (0=>value,1=>value), 2 = Assoc (col=>value,col=>val), 3 = Object {col->value,col->value}
 
 $aConfig["database"]["dsn"] = $aConfig["database"]["type"]."://".$aConfig["database"]["username"].":".$aConfig["database"]["password"]."@".$aConfig["database"]["host"]."/".$aConfig["database"]["database"];
@@ -39,9 +42,10 @@ $aConfig["database"]["options"] = array(
 # PEAR MAIL
 # http://pear.php.net/mail/
 $aConfig["mail"]["type"] = "mail"; // mail, sendmail, smtp
-$aConfig["mail"]["params"] = array(); //mail
-/*$aConfig["mail"]["params"] = array("sendmail_path" => "", "sendmail_args" => "") // sendmail */
-/*$aConfig["mail"]["params"] = array(
+$aConfig["mail"]["params"] = array();
+/* $aConfig["mail"]["params"] = array(); //mail */
+/* $aConfig["mail"]["params"] = array("sendmail_path" => "", "sendmail_args" => "") // sendmail */
+/* $aConfig["mail"]["params"] = array(
 	"host" => "",
 	//"port" => "25",
 	"auth" => true,
