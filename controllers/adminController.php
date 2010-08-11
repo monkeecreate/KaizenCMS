@@ -106,7 +106,7 @@ class adminController extends appController
 			$sUser = $this->dbQuery(
 				"SELECT `id` FROM `{dbPrefix}users`"
 					." WHERE `username` = ".$this->dbQuote($_POST["username"], "text")
-					." AND `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
+					." AND `password` = ".$this->dbQuote(sha1($_POST["password"]), "text")
 					." LIMIT 1"
 				,"one"
 			);
