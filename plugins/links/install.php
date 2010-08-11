@@ -5,7 +5,7 @@ if($sPluginStatus == 1) {
 	// Uninstall
 }
 
-$aDatabases = array(
+$aTables = array(
 	"links" => array(
 		"fields" => array(
 			"id" => array(

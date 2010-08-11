@@ -13,7 +13,7 @@ function changeConfig($sKey1, $sKey2, $sValue, $sConfig, $sQuote = true) {
 		$sSetting .= "[\"".$sKey2."\"]";
 	}
 	
-	$sOldSetting .= " = ".$sQuote."[a-zA-z0-9_-]+".$sQuote.";";
+	$sOldSetting .= " = ".$sQuote."[a-zA-z0-9_\-:.\(\)]+".$sQuote.";";
 	$sSetting .= " = ".$sQuote."".trim($sValue)."".$sQuote.";";
 	
 	$sConfig = preg_replace(

@@ -1,5 +1,5 @@
 <?php
-$aConfig["installer"] = true;
+$aConfig["installer"] = false;
 
 ###############################################
 $aConfig["encryption"]["key"] = ""; // example: "domain.com"
@@ -8,14 +8,11 @@ $aConfig["encryption"]["salt"] = ""; // example: "random string"
 
 ### ADMIN INFO ################################
 // Info used to send when an error happens when debug is off
-$aConfig["admin_info"] = array(
-	"name" => "",
-	"email" => ""
-);
+$aConfig["admin_info"] = array(); // array("name" => "", "email" => "");
 ###############################################
 
 ### OPTIONS ###################################
-$aConfig["options"]["pear"] = "server"; //PEAR file locations; server = packages installed on server, folder = packages sit with site in .pear
+$aConfig["options"]["pear"] = "folder"; // PEAR file locations; server = packages installed on server, folder = packages sit with site in .pear
 $aConfig["options"]["debug"] = true;
 ###############################################
 
@@ -43,15 +40,6 @@ $aConfig["database"]["options"] = array(
 # http://pear.php.net/mail/
 $aConfig["mail"]["type"] = "mail"; // mail, sendmail, smtp
 $aConfig["mail"]["params"] = array();
-/* $aConfig["mail"]["params"] = array(); //mail */
-/* $aConfig["mail"]["params"] = array("sendmail_path" => "", "sendmail_args" => "") // sendmail */
-/* $aConfig["mail"]["params"] = array(
-	"host" => "",
-	//"port" => "25",
-	"auth" => true,
-	"username" => "",
-	"password" => ""
-); //smtp */
 ###############################################
 
 ### TEMPLATES #################################
@@ -81,7 +69,8 @@ $aConfig["smarty"]["cache"]["lifetime"] = 30;// -1 = never expire, 0 = always re
 /* Filters */
 $aConfig["smarty"]["filters"] = Array(
 	//[0] = Type (pre,post,output), [1] = name of filter
-	array("output", "move_to_head")
+	array("output", "move_to_head"),
+	array("output", "move_to_footer")
 );
 
 /* Settings */

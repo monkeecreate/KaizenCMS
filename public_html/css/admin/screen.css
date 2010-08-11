@@ -379,6 +379,10 @@ ul#photos li {
 	-webkit-border-top-right-radius: 5px;
 }
 
+form#forgotPassword {
+	height: 120px;
+}
+
 form#login label, form#forgotPassword label {
 	font-size: 1.5em;
 }

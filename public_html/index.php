@@ -15,11 +15,11 @@ $site_root = dirname($site_public_root)."/";
 ##############################################
 @include("../inc_config.php");
 
-if(is_dir("installer") && $aConfig["installer_skip"] != 1)
-	die(require("installer/index.php"));
-
 if($aConfig["options"]["pear"] == "folder")
 	ini_set("include_path", ini_get("include_path").":".$site_root.".pear");
+
+if(is_dir("installer") && $aConfig["installer_skip"] != 1)
+	die(require("installer/index.php"));
 ##############################################
 
 ### NON-DEBUG ################################

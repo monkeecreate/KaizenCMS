@@ -222,7 +222,7 @@ class admin_settings extends adminController
 		$sPlugin = $this->urlVars->dynamic["plugin"];
 		
 		// Set defaults
-		$aDatabases = $aSettings = $aMenuAdmin = array();
+		$aTables = $aSettings = $aMenuAdmin = array();
 		
 		// Include isntall
 		$sPluginStatus = 1;
@@ -232,9 +232,11 @@ class admin_settings extends adminController
 		// Database
 		$objDB->loadModule('Manager');
 
-		foreach($aDatabases as $sDatabase => $aDatabase) {
+		foreach($aTables as $sTable => $aTable) {
+			$sTable = $this->settings->dbPrefix.$sTable;
+			
 			// Add database
-			$oDatabase = $objDB->createTable($sDatabase, $aDatabase["fields"]);
+			$oTable = $objDB->createTable($sTable, $aTable["fields"]);
 			
 			// Add indexes
 			$aDefinitions = array(
@@ -242,8 +244,8 @@ class admin_settings extends adminController
 				)
 			);
 			
-			if(is_array($aDatabase["index"])) {
-				foreach($aDatabase["index"] as $x => $sIndex) {
+			if(is_array($aTable["index"])) {
+				foreach($aTable["index"] as $x => $sIndex) {
 					if($x == 0)
 						$sName = $sIndex;
 				
@@ -252,7 +254,7 @@ class admin_settings extends adminController
 			}
 			
 			if(!empty($sName))
-				$objDB->createIndex($sDatabase, $sName, $aDefinitions);
+				$objDB->createIndex($sTable, $sName, $aDefinitions);
 		}
 		
 		// Settings
@@ -305,7 +307,7 @@ class admin_settings extends adminController
 		$sPlugin = $this->urlVars->dynamic["plugin"];
 		
 		// Set defaults
-		$aDatabases = $aSettings = $aMenuAdmin = array();
+		$aTables = $aSettings = $aMenuAdmin = array();
 		
 		// Include isntall
 		$sPluginStatus = 0;
@@ -315,8 +317,8 @@ class admin_settings extends adminController
 		// Database
 		$objDB->loadModule('Manager');
 
-		foreach($aDatabases as $sDatabase => $aDatabase) {
-			$objDB->dropTable($sDatabase);
+		foreach($aTables as $sTable => $aTable) {
+			$objDB->dropTable($this->settings->dbPrefix.$sTable);
 		}
 		
 		// Settings
