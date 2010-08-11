@@ -11,50 +11,64 @@ if(!is_file("../inc_config.php")) {
 	}
 }
 
+$currentStep = "Step One";
+
 include("inc_header.php");
 ?>
+			<header>
+				<h2>Step One</h2>
+			</header>
 
-<h2>Step 1</h2>
-
-<p>
-	Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.
-</p>
-
-<?php
-if(!is_file("../inc_config.php")) {
-	echo "Please setup your config file.";
-} else {
-	if(!is_writable($aConfig["smarty"]["dir"]["compile"])) {
-		echo "Compile directory is not writable.<br>";
-	} else {
-		echo "Compile directory is writable.<br>";
-	}
+			<section class="inner-content">
+				<p><span class="iconic">i</span> You are moments away from CMS bliss by choosing <strong>Kaizen CMS</strong>. This installer will walk you through some quick and simple steps to get you on your way. Make sure to have your database info handy as you will need it.</p>
+				
+				<p>You will find an example config file (<em>inc_config_example.php</em>) included. Rename this file to inc_config.php to get started. You will also need to change permissions on the following to make them writable (<em>CHMOD 077</em>): <em>./inc_config.php, ./compiled/, ./public_html/uploads/</em></p>
+				
+				<ul>
+				<?php
+				if(!is_file("../inc_config.php")) {
+					echo "<li><span class=\"iconic fail\">x</span> Missing config file</li>";
+				} else {
+					if(!is_writable("../inc_config.php")) {
+						echo "<li><span class=\"iconic fail\">x</span> Config file is not writable</li>";
+					} else {
+						echo "<li><span class=\"iconic success\">y</span> Config file found and is writable</li>";
+					}
+					
+					if(!is_writable($aConfig["smarty"]["dir"]["compile"])) {
+						echo "<li><span class=\"iconic fail\">x</span> Compile directory is not writable</li>";
+					} else {
+						echo "<li><span class=\"iconic success\">y</span> Compile directory is writable</li>";
+					}
 	
-	if($aConfig["smarty"]["cache"]["type"] != false) {
-		if(!is_writable($aConfig["smarty"]["dir"]["cache"])) {
-			echo "Cache directory is not writable.<br>";
-		} else {
-			echo "Cache directory is writable.<br>";
-		}
-	}
+					if($aConfig["smarty"]["cache"]["type"] != false) {
+						if(!is_writable($aConfig["smarty"]["dir"]["cache"])) {
+							echo "<li><span class=\"iconic fail\">x</span> Cache directory is not writable</li>";
+						} else {
+							echo "<li><span class=\"iconic success\">y</span> Cache directory is writable</li>";
+						}
+					}
 	
-	if(!is_writable("uploads/")) {
-		echo "Uploads directory is not writable.<br>";
-	} else {
-		echo "Uploads directory is writable.<br>";
-	}
-}
-?>
-<form name="step1" method="get" action="/">
-	<?php
-	if($sFail == true) {
-		echo "<input type=\"submit\" value=\"Re-try\">\n";
-		echo "<input type=\"hidden\" name=\"step\" value=\"1\">\n";
-	} else {
-		echo "<input type=\"submit\" value=\"Next\">\n";
-		echo "<input type=\"hidden\" name=\"step\" value=\"2\">\n";
-	}
-	?>
-</form>
+					if(!is_writable("uploads/")) {
+						echo "<li><span class=\"iconic fail\">x</span> Uploads directory is not writable</li>";
+					} else {
+						echo "<li><span class=\"iconic success\">y</span> Uploads directory is writable</li>";
+					}
+				}
+				?>
+				</ul>
+				
+				<form name="step1" method="get" action="/">
+					<?php
+					if($sFail == true) {
+						echo "<input type=\"submit\" value=\"Check Again\">\n";
+						echo "<input type=\"hidden\" name=\"step\" value=\"1\">\n";
+					} else {
+						echo "<input type=\"submit\" value=\"Step Two\">\n";
+						echo "<input type=\"hidden\" name=\"step\" value=\"2\">\n";
+					}
+					?>
+				</form>
+			</section>
 
 <?php include("inc_footer.php"); ?>

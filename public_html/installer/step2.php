@@ -134,80 +134,81 @@ if($_POST["setup"] == 1) {
 
 include("inc_header.php");
 ?>
+			<header>
+				<h2>Step Two</h2>
+			</header>
 
-<h2>Step 2</h2>
+			<section class="inner-content">
+				<?php
+				if(!empty($sFail)) {
+					echo "<p class=\"error\">";
+					echo $sFail;
+					echo "</p>";
+				}
+				?>
 
-<?php
-if(!empty($sFail)) {
-	echo "<p class=\"error\">";
-	echo $sFail;
-	echo "</p>";
-}
-?>
+				<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
 
-<p>
-	Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.
-</p>
-
-<form name="setp2" method="post" action="/?step=2">
-	<p>
-		<!-- <label>Database Type:</label>
-		<select name="type">
-		<option value="mysql">MySQL</option>
-		</select><br> -->
-		<input type="hidden" name="type" value="mysql">
-		<label>Database Host:</label>
-		<input type="text" name="host" value="<?=$_POST["host"]?>"><br>
-		<label>Database:</label>
-		<input type="text" name="database" value="<?=$_POST["database"]?>"><br>
-		<label>Database Username:</label>
-		<input type="text" name="username" value="<?=$_POST["username"]?>"><br>
-		<label>Database Password:</label>
-		<input type="text" name="password" value="<?=$_POST["password"]?>"><br>
-		<label>Database Prefix:</label>
-		<input type="text" name="prefix" value="<?=$_POST["prefix"]?>"><br>
-	</p>
-	<p>
-		<label>Mail Delivery Method:</label>
-		<select name="mail">
-			<option value="mail">PHP Mail</option>
-			<option value="sendmail"<?php if($_POST["mail"] == "sendmail") echo " selected=\"selected\""; ?>>Sendmail</option>
-			<option value="smtp"<?php if($_POST["mail"] == "smtp") echo " selected=\"selected\""; ?>>SMTP</option>
-		</select><br>
-	</p>
-	<p>
-		<b>Sendmail Options:</b><br>
-		<label>Sendmail Path:</label>
-		<input type="text" name="sendmail_path" value="<?=$_POST["sendmail_path"]?>"><br>
-		<label>Sendmail Arguments:</label>
-		<input type="text" name="sendmail_arg" value="<?=$_POST["sendmail_arg"]?>"><br>
-	</p>
-	<p>
-		<b>SMTP Options:</b><br>
-		<label>Host:</label>
-		<input type="text" name="smtp_host" value="<?=$_POST["smtp_host"]?>"><br>
-		<label>Port:</label>
-		<input type="text" name="smtp_port" value="<?=$_POST["smtp_port"]?>"><br>
-		<label>Authentication:</label>
-		<select name="smtp_auth">
-			<option value="1">Yes</option>
-			<option value="0"<?php if($_POST["smtp_auth"] == false) echo " selected=\"selected\""; ?>>No</option>
-		</select><br>
-		<label>Username:</label>
-		<input type="text" name="smtp_username" value="<?=$_POST["smtp_username"]?>"><br>
-		<label>Password:</label>
-		<input type="text" name="smtp_password" value="<?=$_POST["smtp_password"]?>"><br>
-	</p>
-	<p>
-		<b>Encryption:</b><br>
-		<label>Key:</label>
-		<input type="text" name="enc_key" value="<?=$_POST["enc_key"]?>"><br>
-		<label>Salt:</label>
-		<input type="text" name="enc_salt" value="<?=$_POST["enc_salt"]?>"><br>
-	</p>
+				<form name="setp2" method="post" action="/?step=2">
+					<p>
+						<!-- <label>Database Type:</label>
+						<select name="type">
+						<option value="mysql">MySQL</option>
+						</select><br> -->
+						<input type="hidden" name="type" value="mysql">
+						<label>Database Host:</label>
+						<input type="text" name="host" value="<?=$_POST["host"]?>"><br>
+						<label>Database:</label>
+						<input type="text" name="database" value="<?=$_POST["database"]?>"><br>
+						<label>Database Username:</label>
+						<input type="text" name="username" value="<?=$_POST["username"]?>"><br>
+						<label>Database Password:</label>
+						<input type="text" name="password" value="<?=$_POST["password"]?>"><br>
+						<label>Database Prefix:</label>
+						<input type="text" name="prefix" value="<?=$_POST["prefix"]?>"><br>
+					</p>
+					<p>
+						<label>Mail Delivery Method:</label>
+						<select name="mail">
+							<option value="mail">PHP Mail</option>
+							<option value="sendmail"<?php if($_POST["mail"] == "sendmail") echo " selected=\"selected\""; ?>>Sendmail</option>
+							<option value="smtp"<?php if($_POST["mail"] == "smtp") echo " selected=\"selected\""; ?>>SMTP</option>
+						</select><br>
+					</p>
+					<p>
+						<b>Sendmail Options:</b><br>
+						<label>Sendmail Path:</label>
+						<input type="text" name="sendmail_path" value="<?=$_POST["sendmail_path"]?>"><br>
+						<label>Sendmail Arguments:</label>
+						<input type="text" name="sendmail_arg" value="<?=$_POST["sendmail_arg"]?>"><br>
+					</p>
+					<p>
+						<b>SMTP Options:</b><br>
+						<label>Host:</label>
+						<input type="text" name="smtp_host" value="<?=$_POST["smtp_host"]?>"><br>
+						<label>Port:</label>
+						<input type="text" name="smtp_port" value="<?=$_POST["smtp_port"]?>"><br>
+						<label>Authentication:</label>
+						<select name="smtp_auth">
+							<option value="1">Yes</option>
+							<option value="0"<?php if($_POST["smtp_auth"] == false) echo " selected=\"selected\""; ?>>No</option>
+						</select><br>
+						<label>Username:</label>
+						<input type="text" name="smtp_username" value="<?=$_POST["smtp_username"]?>"><br>
+						<label>Password:</label>
+						<input type="text" name="smtp_password" value="<?=$_POST["smtp_password"]?>"><br>
+					</p>
+					<p>
+						<b>Encryption:</b><br>
+						<label>Key:</label>
+						<input type="text" name="enc_key" value="<?=$_POST["enc_key"]?>"><br>
+						<label>Salt:</label>
+						<input type="text" name="enc_salt" value="<?=$_POST["enc_salt"]?>"><br>
+					</p>
 	
-	<input type="submit" value="Next">
-	<input type="hidden" name="setup" value="1">
-</form>
+					<input type="submit" value="Step Three">
+					<input type="hidden" name="setup" value="1">
+				</form>
+			</section>
 
 <?php include("inc_footer.php"); ?>
