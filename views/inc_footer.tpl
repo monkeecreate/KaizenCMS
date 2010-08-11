@@ -15,6 +15,15 @@
 			<p>&copy; Copyright {$smarty.now|date_format:"%Y"} Your Company, All Rights Reserved.</p>
 		</footer>
 	</div>
+	
+	<script src="/scripts/jquery-1.4.2.min.js"></script>
+	<script src="/scripts/jquery.scrollTo.min.js"></script>
+	<script src="/scripts/jquery.rsv.js"></script>
+	<script src="/scripts/common.js"></script>
+	<!--[if lt IE 7 ]>
+		<script src="/scripts/dd_belatedpng.js"></script>
+	<![endif]-->
+	
 {getSetting tag="analytics_google" assign="aSettingGoogle"}
 {if !empty($aSettingGoogle)}
 <script type="text/javascript">
