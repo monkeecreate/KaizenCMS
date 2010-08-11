@@ -45,6 +45,7 @@ class admin_calendar extends adminController
 			);
 		
 		$this->tplAssign("aCategories", $oCalendar->getCategories());
+		$this->tplAssign("sUseCategories", $oCalendar->useCategories);
 		$this->tplAssign("sUseImage", $oCalendar->useImage);
 		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
@@ -54,7 +55,7 @@ class admin_calendar extends adminController
 	function add_s() {
 		$oCalendar = $this->loadModel("calendar");
 		
-		if(empty($_POST["title"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["title"])) {
 			$_SESSION["admin"]["admin_calendar"] = $_POST;
 			$this->forward("/admin/calendar/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -101,14 +102,16 @@ class admin_calendar extends adminController
 			)
 		);
 		
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"calendar_categories_assign",
-				array(
-					"eventid" => $sID,
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"calendar_categories_assign",
+					array(
+						"eventid" => $sID,
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		$_SESSION["admin"]["admin_calendar"] = null;
@@ -167,6 +170,7 @@ class admin_calendar extends adminController
 		
 		$this->tplAssign("aEvent", $aEvent);
 		$this->tplAssign("aCategories", $oCalendar->getCategories());
+		$this->tplAssign("sUseCategories", $oCalendar->useCategories);
 		$this->tplAssign("sUseImage", $oCalendar->useImage);
 		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
@@ -176,7 +180,7 @@ class admin_calendar extends adminController
 	function edit_s() {
 		$oCalendar = $this->loadModel("calendar");
 		
-		if(empty($_POST["title"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["title"])) {
 			$_SESSION["admin"]["admin_calendar"] = $_POST;
 			$this->forward("/admin/calendar/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -222,14 +226,16 @@ class admin_calendar extends adminController
 		);
 		
 		$this->dbDelete("calendar_categories_assign", $_POST["id"], "eventid");
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"calendar_categories_assign",
-				array(
-					"eventid" => $_POST["id"],
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"calendar_categories_assign",
+					array(
+						"eventid" => $_POST["id"],
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		$_SESSION["admin"]["admin_calendar"] = null;

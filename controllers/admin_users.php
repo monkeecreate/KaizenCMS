@@ -18,7 +18,7 @@ class admin_users extends adminController
 		}
 		
 		$aUsers = $this->dbQuery(
-			"SELECT * FROM `users`"
+			"SELECT * FROM `{dbPrefix}users`"
 				.$sWhere
 				." ORDER BY `lname`"
 			,"all"
@@ -54,7 +54,7 @@ class admin_users extends adminController
 			"users",
 			array(
 				"username" => $_POST["username"]
-				,"password" => md5($_POST["password"])
+				,"password" => sha1($_POST["password"])
 				,"fname" => $_POST["fname"]
 				,"lname" => $_POST["lname"]
 				,"email_address" => $_POST["email_address"]
@@ -84,7 +84,7 @@ class admin_users extends adminController
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_users"])) {
 			$aUserRow = $this->dbQuery(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"admin->users->edit"
 				,"row"
@@ -94,26 +94,26 @@ class admin_users extends adminController
 			
 			$aUser["updated_datetime"] = $aUserRow["updated_datetime"];
 			$aUser["updated_by"] = $this->dbQuery(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aUserRow["updated_by"]
 				,"row"
 			);
 		} else {
 			$aUser = $this->dbQuery(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 					." LIMIT 1"
 				,"row"
 			);
 			
 			$aUser["privileges"] = $this->dbQuery(
-				"SELECT `menu` FROM `users_privileges`"
+				"SELECT `menu` FROM `{dbPrefix}users_privileges`"
 					." WHERE `userid` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"col"
 			);
 			
 			$aUser["updated_by"] = $this->dbQuery(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$aUser["updated_by"]
 				,"row"
 			);
@@ -166,7 +166,7 @@ class admin_users extends adminController
 			$this->dbUpdate(
 				"users",
 				array(
-					"password" => md5($_POST["password"])
+					"password" => sha1($_POST["password"])
 				),
 				$_POST["id"]
 			);

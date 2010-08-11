@@ -24,6 +24,7 @@ class appController
 			,"rootPublic" => $site_public_root
 			,"adminInfo" => $aConfig["admin_info"]
 			,"debug" => $aConfig["options"]["debug"]
+			,"dbPrefix" => $aConfig["database"]["prefix"]
 			,"surl" => $sURL
 			,"url" => $aUrl
 			,"encryptSalt" => $aConfig["encryption"]["salt"]
@@ -40,7 +41,7 @@ class appController
 	function forward($url, $type = "") {
 		switch($type) {
 			case "301":
-				header('HTTP/1.1 301 Moved Permanentl');
+				header('HTTP/1.1 301 Moved Permanently');
 				break;
 			case "403":
 				header('HTTP/1.1 403 Forbidden');
@@ -105,7 +106,7 @@ class appController
 			$this->sendError("getSetting", "Setting tag not passed", null, debug_backtrace());
 		
 		$aSetting = $this->dbQuery(
-			"SELECT * FROM `settings`"
+			"SELECT * FROM `{dbPrefix}settings`"
 				." WHERE `tag` = ".$this->dbQuote($sTag, "text")
 			,"row"
 		);
@@ -125,7 +126,7 @@ class appController
 			$this->sendError("getUser", "User id missing", null, debug_backtrace());
 			
 		$aUser = $this->dbQuery(
-			"SELECT * FROM `users`"
+			"SELECT * FROM `{dbPrefix}users`"
 				." WHERE `id` = ".$this->dbQuote($sId, "integer")
 			,"row"
 		);

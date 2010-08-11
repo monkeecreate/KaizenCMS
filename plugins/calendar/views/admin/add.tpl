@@ -19,18 +19,24 @@
 			<label>Content:</label><br />
 			{html_editor content=$aEvent.content name="content"}<br />
 			
-			<fieldset id="fieldset_categories">
-				<legend>Assign event to category:</legend>
-				<ul class="categories">
-					{foreach from=$aCategories item=aCategory}
-						<li>
-							<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
-							 {if in_array($aCategory.id, $aEvent.categories)} checked="checked"{/if}>
-							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
-						</li>
-					{/foreach}
-				</ul>
-			</fieldset><br />
+			{if $sUseCategories == true}
+				<fieldset id="fieldset_categories">
+					<legend>Assign event to category:</legend>
+					<ul class="categories">
+						{foreach from=$aCategories item=aCategory}
+							<li>
+								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
+								 {if in_array($aCategory.id, $aEvent.categories)} checked="checked"{/if}>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+							</li>
+						{foreachelse}
+							<li>
+								Currently no categories.
+							</li>
+						{/foreach}
+					</ul>
+				</fieldset><br />
+			{/if}
 			
 			<input type="submit" name="name" value="Add Event">
 			<a class="cancel" href="/admin/calendar/" title="Cancel">Cancel</a>
@@ -144,8 +150,7 @@ $(function(){ldelim}
 	
 	$("form").validateForm([
 		"required,title,Event title is required",
-		"length<={$sShortContentCount},short_content,Short content must be less then {$sShortContentCount} characters",
-		"required,categories[],You must select at least one category"
+		"length<={$sShortContentCount},short_content,Short content must be less then {$sShortContentCount} characters"
 	]);
 {rdelim});
 </script>

@@ -46,10 +46,12 @@ class promos_model extends appModel
 		);
 		
 		if(!empty($aPromo)) {
-			$this->dbQuery(
-				"UPDATE `{dbPrefix}promos` SET"
-					." `impressions` = `impressions` + 1"
-					." WHERE `id` = ".$aPromo["id"]
+			$this->dbUpdate(
+				"promos",
+				array(
+					"impressions" => ($aPromo["impressions"] + 1)
+				),
+				$aPromo["id"]
 			);
 			
 			$this->settings->displayedPromos[] = $aPromo["id"];

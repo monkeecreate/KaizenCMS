@@ -18,18 +18,26 @@
 			<input type="text" name="link" maxlength="100" value="{if !empty($aLink.link)}{$aLink.link|clean_html}{else}http://{/if}"><br />
 			<label>Description</label><br />
 			<textarea name="description" style="height:115px;">{$aLink.description|clean_html}</textarea><br />
-			<fieldset id="fieldset_categories">
-				<legend>Assign link to category</legend>
-				<ul class="categories">
-					{foreach from=$aCategories item=aCategory}
-						<li>
-							<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
-							 {if in_array($aCategory.id, $aLink.categories)} checked="checked"{/if}>
-							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
-						</li>
-					{/foreach}
-				</ul>
-			</fieldset><br />
+			
+			{if $sUseCategories == true}
+				<fieldset id="fieldset_categories">
+					<legend>Assign link to category</legend>
+					<ul class="categories">
+						{foreach from=$aCategories item=aCategory}
+							<li>
+								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
+								 {if in_array($aCategory.id, $aLink.categories)} checked="checked"{/if}>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+							</li>
+						{foreachelse}
+							<li>
+								Currently no categories.
+							</li>
+						{/foreach}
+					</ul>
+				</fieldset><br />
+			{/if}
+			
 			<input type="submit" value="Add Link">
 			<a class="cancel" href="/admin/links/" title="Cancel">Cancel</a>
 		</section>
@@ -71,8 +79,7 @@ $(function(){ldelim}
 	
 	$("form").validateForm([
 		"required,name,Link name is required",
-		"required,link,Link destination is required",
-		"required,categories[],You must select at least one category"
+		"required,link,Link destination is required"
 	]);
 {rdelim});
 </script>

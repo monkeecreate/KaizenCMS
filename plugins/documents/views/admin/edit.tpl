@@ -19,18 +19,25 @@
 			<label>Description:</label><br />
 			<textarea name="description" style="height:115px;">{$aDocument.description|clean_html}</textarea><br />
 
-			<fieldset id="fieldset_categories">
-				<legend>Assign document to category:</legend>
-				<ul class="categories">
-					{foreach from=$aCategories item=aCategory}
-						<li>
-							<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
-							 {if in_array($aCategory.id, $aDocument.categories)} checked="checked"{/if}>
-							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
-						</li>
-					{/foreach}
-				</ul>
-			</fieldset><br />
+			{if $sUseCategories == true}
+				<fieldset id="fieldset_categories">
+					<legend>Assign document to category:</legend>
+					<ul class="categories">
+						{foreach from=$aCategories item=aCategory}
+							<li>
+								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
+								 {if in_array($aCategory.id, $aDocument.categories)} checked="checked"{/if}>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+							</li>
+						{foreachelse}
+							<li>
+								Currently no categories.
+							</li>
+						{/foreach}
+					</ul>
+				</fieldset><br />
+			{/if}
+			
 			<input type="submit" value="Save Changes">
 			<a class="cancel" href="/admin/documents/" title="Cancel">Cancel</a>
 			<input type="hidden" name="id" value="{$aDocument.id}">
@@ -58,8 +65,7 @@ $(function(){ldelim}
 	{rdelim});
 	
 	$("form").validateForm([
-		"required,name,Document name is required",
-		"required,categories[],You must select at least one category"
+		"required,name,Document name is required"
 	]);
 {rdelim});
 </script>

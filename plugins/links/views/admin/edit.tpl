@@ -27,6 +27,10 @@
 							 {if in_array($aCategory.id, $aLink.categories)} checked="checked"{/if}>
 							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
 						</li>
+					{foreachelse}
+						<li>
+							Currently no categories.
+						</li>
 					{/foreach}
 				</ul>
 			</fieldset><br />
@@ -84,8 +88,7 @@ $(function(){ldelim}
 	
 	$("form").validateForm([
 		"required,name,Link name is required",
-		"required,link,Link destination is required",
-		"required,categories[],You must select at least one category"
+		"required,link,Link destination is required"
 	]);
 {rdelim});
 </script>

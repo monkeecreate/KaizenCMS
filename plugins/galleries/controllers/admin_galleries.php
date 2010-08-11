@@ -34,10 +34,11 @@ class admin_galleries extends adminController
 			);
 		
 		$this->tplAssign("aCategories", $oGalleries->getCategories());
+		$this->tplAssign("sUseCategories", $oGalleries->useCategories);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_galleries"] = $_POST;
 			$this->forward("/admin/galleries/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -64,14 +65,16 @@ class admin_galleries extends adminController
 			)
 		);
 		
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"galleries_categories_assign",
-				array(
-					"galleryid" => $sID
-					,"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"galleries_categories_assign",
+					array(
+						"galleryid" => $sID
+						,"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		$folder = $this->settings->rootPublic."uploads/galleries/".$sID."/";
@@ -158,10 +161,11 @@ class admin_galleries extends adminController
 		}
 		
 		$this->tplAssign("aCategories", $oGalleries->getCategories());
+		$this->tplAssign("sUseCategories", $oGalleries->useCategories);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_galleries"] = $_POST;
 			$this->forward("/admin/galleries/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -239,6 +243,44 @@ class admin_galleries extends adminController
 		@unlink($this->settings->rootPublic."uploads/galleries/".$this->urlVars->dynamic["id"]."/");
 		
 		$this->forward("/admin/galleries/?notice=".urlencode("Gallery removed successfully!"));
+	}
+	function sort() {
+		$oGalleries = $this->loadModel("galleries");
+		
+		$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["id"]);
+		
+		if($this->urlVars->dynamic["sort"] == "up")
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}galleries`"
+					." WHERE `sort_order` < ".$aGallery["sort_order"]
+					." ORDER BY `sort_order` DESC"
+				,"row"
+			);
+		elseif($this->urlVars->dynamic["sort"] == "down")
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}galleries`"
+					." WHERE `sort_order` > ".$aGallery["sort_order"]
+					." ORDER BY `sort_order` ASC"
+				,"row"
+			);
+			
+		$this->dbUpdate(
+			"galleries",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aGallery["id"]
+		);
+		
+		$this->dbUpdate(
+			"galleries",
+			array(
+				"sort_order" => $aGallery["sort_order"]
+			),
+			$aOld["id"]
+		);
+		
+		$this->forward("/admin/galleries/?notice=".urlencode("Sort order saved successfully!"));
 	}
 	function categories_index() {
 		$oGalleries = $this->loadModel("galleries");
@@ -409,11 +451,17 @@ class admin_galleries extends adminController
 		$this->dbDelete("galleries_photos", $aPhoto["id"]);
 		
 		if($aPhoto["gallery_default"] == 1) {
-			$this->dbQuery("UPDATE `galleries_photos` SET `gallery_default` = 1 WHERE `galleryid` = ".$this->urlVars->dynamic["gallery"]." LIMIT 1");
+			$this->dbUpdate(
+				"galleries_photos",
+				array(
+					"gallery_default" => 1
+				),
+				$this->urlVars->dynamic["gallery"], "galleryid"
+			);
 		}
 		
 		echo $this->dbQuery(
-			"SELECT `id` FROM `galleries_photos`"
+			"SELECT `id` FROM `{dbPrefix}galleries_photos`"
 				." WHERE `galleryid` = ".$this->urlVars->dynamic["gallery"]
 				." AND `gallery_default` = 1"
 			,"one"

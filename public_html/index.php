@@ -15,8 +15,8 @@ $site_root = dirname($site_public_root)."/";
 ##############################################
 @include("../inc_config.php");
 
-if(is_file("install.php") && $aConfig["installer"] != 1)
-	die(require("install.php"));
+if(is_dir("installer") && $aConfig["installer_skip"] != 1)
+	die(require("installer/index.php"));
 
 if($aConfig["options"]["pear"] == "folder")
 	ini_set("include_path", ini_get("include_path").":".$site_root.".pear");
@@ -53,8 +53,8 @@ require($site_root."appController.php");
 
 ### ENCRYPTION ###############################
 include($site_root."helpers/hash_crypt.php");
-$oEnc = new hash_crypt($aConfig["encryption"]["key"]);
-$oEnc->set_salt($aConfig["encryption"]["salt"]);
+$oEnc = new hash_crypt(sha1($aConfig["encryption"]["key"]));
+$oEnc->set_salt(sha1($aConfig["encryption"]["salt"]));
 ##############################################
 
 ### FIREPHP ##################################
@@ -110,7 +110,7 @@ if($aConfig["options"]["debug"] == true)
 
 ### DB CONNECTION ############################
 require("MDB2.php");
-$objDB = MDB2::factory($aConfig["database"]["dsn"], $aConfig["database"]["options"]);
+$objDB = MDB2::connect($aConfig["database"]["dsn"], $aConfig["database"]["options"]);
 if (PEAR::isError($objDB))
 	die($objDB->getMessage());
 $objDB->setFetchMode($aConfig["database"]["fetch"]);

@@ -24,7 +24,7 @@ class adminController extends appController
 			$this->forward("/admin/", 401);
 		elseif($this->loggedin()) {
 			$aUser = $this->dbQuery(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$this->dbQuote($_SESSION["admin"]["userid"], "text")
 					." LIMIT 1"
 				,"row"
@@ -45,7 +45,7 @@ class adminController extends appController
 			/*## Menu ##*/
 			if($this->settings->url[1] != "logout") {
 				$aMenuAdmin = $this->dbQuery(
-					"SELECT * FROM `menu_admin`"
+					"SELECT * FROM `{dbPrefix}menu_admin`"
 						." ORDER BY `sort_order`"
 					,"all"
 				);
@@ -53,7 +53,7 @@ class adminController extends appController
 				if(!$this->superAdmin) {
 					foreach($aMenuAdmin as $x => $aMenu) {
 						$aMenuItem = $this->dbQuery(
-							"SELECT * FROM `users_privileges`"
+							"SELECT * FROM `{dbPrefix}users_privileges`"
 								." WHERE `userid` = ".$aUser["id"]
 								." AND `menu` = ".$this->dbQuote($aMenu[tag], "text")
 							,"row"
@@ -104,7 +104,7 @@ class adminController extends appController
 	{
 		if(!empty($_POST["username"]) && !empty($_POST["password"])) {
 			$sUser = $this->dbQuery(
-				"SELECT `id` FROM `users`"
+				"SELECT `id` FROM `{dbPrefix}users`"
 					." WHERE `username` = ".$this->dbQuote($_POST["username"], "text")
 					." AND `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
 					." LIMIT 1"
@@ -115,10 +115,12 @@ class adminController extends appController
 				session_regenerate_id();
 				$_SESSION["admin"]["userid"] = $sUser;
 				
-				$this->dbQuery(
-					"UPDATE `users` SET"
-						." `last_login` = ".$this->dbQuote(time(), "integer")
-						." WHERE `id` = ".$this->dbQuote($sUser, "integer")
+				$this->dbUpdate(
+					"users",
+					array(
+						"last_login" => time()
+					),
+					$sUser
 				);
 				
 				$this->forward("/admin/");
@@ -134,7 +136,7 @@ class adminController extends appController
 	}
 	function passwordReset() {
 		if(!empty($_POST["email"])) {
-			$aUser = $this->dbQuery("SELECT * FROM `users`"
+			$aUser = $this->dbQuery("SELECT * FROM `{dbPrefix}users`"
 				." WHERE `email_address` = ".$this->dbQuote($_POST["email"], "text")
 				,"row"
 			);
@@ -142,9 +144,12 @@ class adminController extends appController
 			if(!empty($aUser)) {
 				$code = sha1($aUser["email"].time());
 				
-				$this->dbQuery("UPDATE `users` SET"
-					."`resetCode` = ".$this->dbQuote($this->settings->encryptSalt."_".$code, "text")
-					." WHERE `id` = ".$aUser["id"]
+				$this->dbUpdate(
+					"users",
+					array(
+						"resetCode" => $this->settings->encryptSalt."_".$code
+					),
+					$aUser["id"]
 				);
 				
 				$aHeaders["To"] = $aUser["email_address"];
@@ -164,7 +169,7 @@ class adminController extends appController
 		$this->forward("/admin/?error=".urlencode("Please enter a valid email address."));
 	}
 	function passwordReset_code() {
-		$aUser = $this->dbQuery("SELECT * FROM `users`"
+		$aUser = $this->dbQuery("SELECT * FROM `{dbPrefix}users`"
 			." WHERE `resetCode` = ".$this->dbQuote($this->settings->encryptSalt."_".$this->urlVars->dynamic["code"], "text")
 			,"row"
 		);
@@ -182,9 +187,12 @@ class adminController extends appController
 		if($_POST["password"] != $_POST["password2"] || empty($_POST["password"]))
 			$this->forward("/admin/passwordReset/".$this->urlVars->dynamic["code"]."/?error=".urlencode("Passwords did not match. Please enter your password twice."));
 		
-		$this->dbQuery("UPDATE `users` SET"
-			." `password` = ".$this->dbQuote(md5($_POST["password"]), "text")
-			." WHERE `resetCode` = ".$this->dbQuote($this->settings->encryptSalt."_".$this->urlVars->dynamic["code"], "text")
+		$this->dbUpdate(
+			"users",
+			array(
+				"password" => sha1($_POST["password"])
+			),
+			$this->settings->encryptSalt."_".$this->urlVars->dynamic["code"], "resetCode"
 		);
 		
 		$this->forward("/admin/?notice=".urlencode("Password successfully reset."));
@@ -211,7 +219,7 @@ class adminController extends appController
 	function loggedin() {
 		if(!empty($_SESSION["admin"]["userid"])) {
 			$aUser = $this->dbQuery(
-				"SELECT * FROM `users`"
+				"SELECT * FROM `{dbPrefix}users`"
 					." WHERE `id` = ".$this->dbQuote($_SESSION["admin"]["userid"], "integer")
 				,"row"
 			);

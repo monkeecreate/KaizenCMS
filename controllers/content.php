@@ -15,7 +15,7 @@ class content extends appController
 		
 		if(preg_match("/[a-z0-9_-]+/i", $sPage) > 0) {
 			$aContent = $this->dbQuery(
-				"SELECT * FROM `content`"
+				"SELECT * FROM `{dbPrefix}content`"
 					." WHERE `tag` = ".$this->dbQuote($sPage, "text")
 					." LIMIT 1"
 				,"row"

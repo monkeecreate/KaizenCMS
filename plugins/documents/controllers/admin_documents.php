@@ -34,12 +34,13 @@ class admin_documents extends adminController
 			);
 		
 		$this->tplAssign("aCategories", $oDocuments->getCategories());
+		$this->tplAssign("sUseCategories", $oDocuments->useCategories);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
 		$oDocuments = $this->loadModel("documents");
 		
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_documents"] = $_POST;
 			$this->forward("/admin/documents/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -57,14 +58,16 @@ class admin_documents extends adminController
 			)
 		);
 		
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"documents_categories_assign",
-				array(
-					"documentid" => $sID,
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"documents_categories_assign",
+					array(
+						"documentid" => $sID,
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		if(!empty($_FILES["document"]["name"])) {
@@ -158,13 +161,14 @@ class admin_documents extends adminController
 		}
 		
 		$this->tplAssign("aCategories", $oDocuments->getCategories());
+		$this->tplAssign("sUseCategories", $oDocuments->useCategories);
 		$this->tplAssign("aDocument", $aDocument);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
 		$oDocuments = $this->loadModel("documents");
 		
-		if(empty($_POST["name"]) || count($_POST["categories"]) == 0) {
+		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_documents"] = $_POST;
 			$this->forward("/admin/documents/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -182,14 +186,16 @@ class admin_documents extends adminController
 		);
 		
 		$this->dbDelete("documents_categories_assign", $_POST["id"], "documentid");
-		foreach($_POST["categories"] as $sCategory) {
-			$this->dbInsert(
-				"documents_categories_assign",
-				array(
-					"documentid" => $_POST["id"],
-					"categoryid" => $sCategory
-				)
-			);
+		if(!empty($_POST["categories"])) {
+			foreach($_POST["categories"] as $sCategory) {
+				$this->dbInsert(
+					"documents_categories_assign",
+					array(
+						"documentid" => $_POST["id"],
+						"categoryid" => $sCategory
+					)
+				);
+			}
 		}
 		
 		if(!empty($_FILES["document"]["name"])) {
@@ -214,7 +220,7 @@ class admin_documents extends adminController
 				
 				if(in_array($file_ext, $oDocuments->allowedExt) || empty($oDocuments->allowedExt)) {
 					$sDocument = $this->dbQuery(
-						"SELECT `{dbPrefix}document` FROM `documents`"
+						"SELECT `{dbPrefix}document` FROM `{dbPrefix}documents`"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 						,"one"
 					);
