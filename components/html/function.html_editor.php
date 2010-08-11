@@ -12,7 +12,8 @@ function smarty_function_html_editor($aParams, &$smarty) {
 	
 	$content = stripslashes($aParams["content"]);
 	
-	$return = "<script type='text/javascript' src='/scripts/tiny_mce/tiny_mce.js'></script>\n";
+	$return = "@@@SMARTY:FOOTER:BEGIN@@@\n";
+	$return .= "<script type='text/javascript' src='/scripts/tiny_mce/tiny_mce.js'></script>\n";
 	$return .= "<script type='text/javascript' src='/scripts/tiny_mce/plugins/tinybrowser/tb_tinymce.js.php'></script>\n";
 	$return .= "<script type='text/javascript'>\n";
 	$return .= "tinyMCE.init({\n";
@@ -35,6 +36,7 @@ function smarty_function_html_editor($aParams, &$smarty) {
 	$return .= "\ttheme_advanced_blockformats : 'p,h3,h4,h5,h6'\n";
 	$return .= "});\n";
 	$return .= "</script>\n";
+	$return .= "@@@SMARTY:FOOTER:END@@@\n";
 	$return .= "<textarea name='".$aParams["name"]."' class='".$aParams["name"]."_editor'>".$content."</textarea><br>";
 	
 	return $return;
