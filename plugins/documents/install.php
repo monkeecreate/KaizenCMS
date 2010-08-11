@@ -8,7 +8,7 @@ if($sPluginStatus == 1) {
 	$this->deleteDir($sFolder);
 }
 
-$aDatabases = array(
+$aTables = array(
 	"documents" => array(
 		"fields" => array(
 			"id" => array(
