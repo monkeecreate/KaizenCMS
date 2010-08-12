@@ -69,39 +69,43 @@ if($_POST["setup"] == 1) {
 			// Add tables
 			$oTable = $objDB->createTable($sTable, $aTable["fields"]);
 			if (PEAR::isError($oTable)) {
-				die($sTable.": ".$oTable->getMessage());
-			}
+				$aUserInfo = preg_split('/\] \[/',str_replace(array("_doQuery: [", "]\n[", "]\n"),array(null, "] [", null),$objDB->userinfo));
+				$aMessage = preg_split('/: /',$aUserInfo[0], 2);
+				$sFail = "Failed to import database: ".$oTable->getMessage();
+			} else {
+				// Add indexes
+				$aDefinitions = array(
+					"fields" => array(
+					)
+				);
 			
-			// Add indexes
-			$aDefinitions = array(
-				"fields" => array(
-				)
-			);
-			
-			if(is_array($aTable["index"])) {
-				foreach($aTable["index"] as $x => $sIndex) {
-					if($x == 0)
-						$sName = $sIndex;
+				if(is_array($aTable["index"])) {
+					foreach($aTable["index"] as $x => $sIndex) {
+						if($x == 0)
+							$sName = $sIndex;
 				
-					$aDefinitions["fields"][$sIndex] = array();
+						$aDefinitions["fields"][$sIndex] = array();
+					}
 				}
-			}
 			
-			if(!empty($sName))
-				$objDB->createIndex($sTable, $sName, $aDefinitions);
+				if(!empty($sName))
+					$objDB->createIndex($sTable, $sName, $aDefinitions);
 			
-			if(is_array($aTable["data"])) {
-				$objDB->loadModule('Extended');
-				foreach($aTable["data"] as $aData) {
-					$oResult = $objDB->extended->autoExecute(
-						$sTable,
-						$aData,
-						MDB2_AUTOQUERY_INSERT
-					);
+				if(is_array($aTable["data"])) {
+					$objDB->loadModule('Extended');
+					foreach($aTable["data"] as $aData) {
+						$oResult = $objDB->extended->autoExecute(
+							$sTable,
+							$aData,
+							MDB2_AUTOQUERY_INSERT
+						);
+					}
 				}
 			}
 		}
-		
+	}
+	
+	if(empty($sFail)) {
 		header("Location: /?step=3");
 		exit;
 	}
