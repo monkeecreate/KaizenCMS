@@ -13,6 +13,11 @@
 			$("#advancedSettings").slideDown("slow");
 			return false;
 		});
+		
+		$("select[name='mail']").change(function() {;
+			$(".mailOption").hide();
+			$("#"+$(this).attr("value")).slideDown("slow");
+		});
 	});
 	</script>
 	<!--[if lt IE 7 ]>
