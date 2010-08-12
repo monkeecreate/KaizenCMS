@@ -15,12 +15,14 @@ include("inc_header.php");
 			</header>
 
 			<section class="inner-content">
-				<p>Congratulations you have successfully installed Kaizen CMS. There are a few things below to tidy up before continuing to the admin area. These steps below are <strong>very important</strong> for the security of your website. As soon as those items are completed you are free to move about the cms. <a href="/admin/" title="Login Here">Admin Login Here</a></p>
+				<p>Congratulations you have successfully installed Kaizen CMS. There are a few things below to tidy up before continuing to the admin area. These steps below are <strong>very important</strong> for the security of your website. As soon as those items are completed you are free to move about the cms.</p>
 
 				<ul>
 					<li><span class="iconic">L</span> Make ./inc_config.php un-writable</li>
 					<li><span class="iconic">t</span> Delete the installer directory</li>
 				</ul>
+				
+				<p><a href="/admin/" title="Login Here" class="gButton right">Admin Login</a></p>
 			</section>
 
 <?php include("inc_footer.php"); ?>

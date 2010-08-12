@@ -61,10 +61,10 @@ include("inc_header.php");
 				<form name="step1" method="get" action="/">
 					<?php
 					if($sFail == true) {
-						echo "<input type=\"submit\" value=\"Check Again\">\n";
+						echo "<input type=\"submit\" value=\"Check Again\" class=\"gButton right\">\n";
 						echo "<input type=\"hidden\" name=\"step\" value=\"1\">\n";
 					} else {
-						echo "<input type=\"submit\" value=\"Step Two\">\n";
+						echo "<input type=\"submit\" value=\"Continue &raquo;\" class=\"gButton right\">\n";
 						echo "<input type=\"hidden\" name=\"step\" value=\"2\">\n";
 					}
 					?>

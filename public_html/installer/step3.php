@@ -85,7 +85,7 @@ include("inc_header.php");
 						<input type="text" name="admin_email" value="<?=$_POST["admin_email"]?>"><br>
 					</p>
 
-					<input type="submit" value="Step Three">
+					<input type="submit" value="Continue &raquo;" class="gButton right">
 					<input type="hidden" name="setup" value="1">
 				</form>
 			</section>

@@ -49,7 +49,7 @@ header h1 {
 
 header h2 {
 	margin: 17px 0 0;
-	font-size:  1.3em;
+	font-size: 1.3em;
 }
 
 /* @end */
@@ -188,6 +188,74 @@ header h2 {
 	padding: 15px;
 	border: 1px solid #ddd;
 	border-top: 0;
+	overflow: hidden;
+}
+
+button.gButton, a.gButton, input[type=submit].gButton {
+	-webkit-border-radius: 2px 2px;
+	border: solid 1px rgb(153, 153, 153);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(221, 221, 221)));
+	color: #333;
+	text-decoration: none;
+	cursor: pointer;
+	display: inline-block;
+	text-align: center;
+	text-shadow: 0px 1px 1px rgba(255,255,255,1);
+	line-height: 1;
+	padding: 7px 20px;
+	font-size: 1.5em;
+	font-weight: bold;
+	clear: both;
+}
+
+form fieldset {
+	margin: 0 0 25px;
+}
+
+form fieldset legend {
+	font-weight: bold;
+	font-size: 1.8em;
+	float: left;
+	width: 100%;
+	margin: 0 0 10px;
+	padding: 0 0 2px;
+	border-bottom: 1px solid #999;
+}
+
+form label {
+	font-size: 1.2em;
+	display: block;
+	float: left;
+	width: 150px;
+	clear: both;
+	padding: 4px 0 0;
+}
+
+form input {
+	margin: 0 0 12px;
+	padding: 3px 5px;
+	font-size: 1.2em;
+	border: 1px solid #888;
+	width: 225px;
+}
+
+form input:hover, form input:focus {
+	border: 1px solid #333;
+}
+
+.content form h3 {
+	margin: 4px 0 6px;
+}
+
+a.showAdvanced:link {
+	font-size: 1.2em;
+	color: #333;
+	text-decoration: none;
+	border-bottom: 1px dashed #333;
+}
+
+a.showAdvanced:hover {
+	border-bottom: 1px solid #333;
 }
 
 /* @end */
@@ -233,7 +301,6 @@ footer a:hover {
 /* Hide from browsers & screenreaders */
 .hidden {
 	display: none;
-	visibility: hidden;
 }
 
 /* Hide from browsers, available to screenreaders */
@@ -244,7 +311,7 @@ footer a:hover {
 }
 
 /* Hide from browsers & screenreaders, maintain layout */
-.invisible { 
+.invisible {
 	visibility: hidden;
 }
 
@@ -258,64 +325,64 @@ footer a:hover {
 
 ::-moz-selection {
 	background: #62aaf2;
-	color:#fff;
+	color: #fff;
 	text-shadow: none;
 }
 
 ::selection {
-	background:#62aaf2;
-	color:#fff;
+	background: #62aaf2;
+	color: #fff;
 	text-shadow: none;
-} 
+}
 
 /* @end */
 
 @media print {
 
-	* {
-		background: transparent !important;
-		color: #444 !important;
-		text-shadow: none;
-	}
-	
-	a, a:visited {
-		color: #444 !important;
-		text-decoration: underline;
-	}
-	
-	a:after {
-		content: " (" attr(href) ")";
-	}
-	
-	abbr:after {
-		content: " (" attr(title) ")";
-	}
-	
-	.ir a:after {
-		content: "";
-	}
-	
-	/* Don't show links for images */
-	
-	pre, blockquote {
-		border: 1px solid #999;
-		page-break-inside: avoid;
-	}
-	
-	img {
-		page-break-inside: avoid;
-	}
+* {
+	background: transparent !important;
+	color: #444 !important;
+	text-shadow: none;
+}
+
+a, a:visited {
+	color: #444 !important;
+	text-decoration: underline;
+}
+
+a:after {
+	content: " (" attr(href) ")";
+}
+
+abbr:after {
+	content: " (" attr(title) ")";
+}
+
+.ir a:after {
+	content: "";
+}
+
+/* Don't show links for images */
+
+pre, blockquote {
+	border: 1px solid #999;
+	page-break-inside: avoid;
+}
+
+img {
+	page-break-inside: avoid;
+}
 	
 	@page { margin: 0.5cm; }
-	
-	p, h2, h3 {
-		orphans: 3;
-		widows: 3;
-	}
-	
-	h2, h3 {
-		page-break-after: avoid;
-	}
+
+p, h2, h3 {
+	orphans: 3;
+	widows: 3;
+}
+
+h2, h3 {
+	page-break-after: avoid;
+}
 
 }
 
@@ -328,13 +395,16 @@ footer a:hover {
 }
 
 @media screen and (max-device-width: 480px) {
-	
-	a:link { -webkit-tap-highlight-color: #; } 
-	
-	/* Prevent iOS, WinMobile from adjusting font size */
-	html {
-		-webkit-text-size-adjust: none;
-		-ms-text-size-adjust: none;
-	}
+
+a:link {
+	-webkit-tap-highlight-color: #;
+}
+
+/* Prevent iOS, WinMobile from adjusting font size */
+
+html {
+	-webkit-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+}
 
 }
