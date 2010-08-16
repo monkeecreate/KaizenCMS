@@ -71,6 +71,18 @@ class news_model extends appModel
 		
 		return $aArticle;
 	}
+	function getURL($sID) {
+		$aArticle = $this->getArticle($sID);
+		
+		$sTitle = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($aArticle["title"])))));
+		
+		if(strlen($sURL) > 50)
+			$sTitle = substr($sTitle, 0, 50)."...";
+		
+		$sURL = "/news/".$aArticle["id"]."/".$sTitle."/";
+		
+		return $sURL;
+	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		
 			$aCategories = $this->dbQuery(

@@ -98,6 +98,13 @@ class directory_model extends appModel
 			
 		return $aListing;
 	}
+	function getURL($sID) {
+		$aListing = $this->getListing($sID);
+		
+		$sURL = "/directory/";
+		
+		return $sURL;
+	}
 	function getCategories($sEmpty = true) {		
 		if($sEmpty == true) {		
 			$aCategories = $this->dbQuery(

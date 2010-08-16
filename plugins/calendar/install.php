@@ -40,7 +40,13 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("allday", "datetime_start", "datetime_end", "datetime_show", "datetime_kill", "use_kill", "active")
+		"index" => array("allday", "datetime_start", "datetime_end", "datetime_show", "datetime_kill", "use_kill", "active"),
+		"fulltext" => array("title", "short_content", "content"),
+		"search" => array(
+			"title" => "title",
+			"content" => "content",
+			"rows" => array("title", "short_content", "content")
+		)
 	),
 	"calendar_categories" => array(
 		"fields" => array(
