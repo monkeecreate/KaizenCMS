@@ -86,11 +86,6 @@ $aTables = array(
 						"title" => "Users",
 						"menu" => array(
 							array(
-								"text" => "Add User",
-								"link" => "/admin/users/add/",
-								"icon" => "circle-plus"
-							),
-							array(
 								"text" => "Manage Users",
 								"link" => "/admin/users/"
 							)
