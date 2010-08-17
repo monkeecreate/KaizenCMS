@@ -126,11 +126,7 @@ class admin_news extends adminController
 			
 			$this->tplAssign("aArticle", $aArticle);
 		} else {
-			$aArticle = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}news`"
-					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aArticle = $oNews->getArticle($this->urlVars->dynamic["id"], true);
 			
 			$aArticle["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}news_categories` AS `categories`"

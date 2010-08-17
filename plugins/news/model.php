@@ -36,13 +36,16 @@ class news_model extends appModel
 		
 		return $aArticles;
 	}
-	function getArticle($sId) {
+	function getArticle($sId, $sAll = false) {
+		if($sAll == false) {
+			$sWhere = " AND `news`.`active` = 1";
+			$sWhere .= " AND `news`.`datetime_show` < ".time();
+			$sWhere .= " AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
+		}
 		$aArticle = $this->dbQuery(
 			"SELECT `news`.* FROM `{dbPrefix}news` AS `news`"
 				." WHERE `news`.`id` = ".$this->dbQuote($sId, "integer")
-				." AND `news`.`active` = 1"
-				." AND `news`.`datetime_show` < ".time()
-				." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")"
+				.$sWhere
 			,"row"
 		);
 		
@@ -65,6 +68,10 @@ class news_model extends appModel
 				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
 			,"all"
 		);
+		
+		foreach($aArticle["categories"] as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		}
 		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aArticle["id"].".jpg")
 		 && $aArticle["photo_x2"] > 0

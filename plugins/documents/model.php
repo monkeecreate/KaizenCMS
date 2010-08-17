@@ -50,6 +50,9 @@ class documents_model extends appModel
 		return $aDocument;
 	}
 	private function _getDocumentInfo($aDocument) {
+		$aDocument["name"] = htmlspecialchars(stripslashes($aDocument["name"]));
+		$aDocument["description"] = nl2br(htmlspecialchars(stripslashes($aDocument["description"])));
+		
 		$aDocument["categories"] = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}documents_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
@@ -57,8 +60,9 @@ class documents_model extends appModel
 			,"all"
 		);
 		
-		$aDocument["name"] = htmlspecialchars(stripslashes($aDocument["name"]));
-		$aDocument["description"] = nl2br(htmlspecialchars(stripslashes($aDocument["description"])));
+		foreach($aDocument["categories"] as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		}
 		
 		return $aDocument;
 	}

@@ -83,13 +83,6 @@ class directory_model extends appModel
 		return $aListings;
 	}
 	private function _getListingInfo($aListing) {
-		$aListing["categories"] = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}directory_categories` AS `categories`"
-				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
-				." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
-			,"all"
-		);
-		
 		$aListing["name"] = htmlspecialchars(stripslashes($aListing["name"]));
 		$aListing["address1"] = htmlspecialchars(stripslashes($aListing["address1"]));
 		$aListing["address2"] = htmlspecialchars(stripslashes($aListing["address"]));
@@ -100,6 +93,17 @@ class directory_model extends appModel
 		$aListing["fax"] = htmlspecialchars(stripslashes($aListing["fax"]));
 		$aListing["email"] = htmlspecialchars(stripslashes($aListing["email"]));
 		$aListing["website"] = htmlspecialchars(stripslashes($aListing["website"]));
+		
+		$aListing["categories"] = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}directory_categories` AS `categories`"
+				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
+				." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
+			,"all"
+		);
+		
+		foreach($aListing["categories"] as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		}
 		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["file"])
 		 && $this->useImage == true)

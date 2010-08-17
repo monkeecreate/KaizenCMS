@@ -41,6 +41,9 @@ class galleries_model extends appModel
 		return $aGallery;
 	}
 	private function _getGalleryInfo($aGallery) {
+		$aGallery["name"] = htmlspecialchars(stripslashes($aGallery["name"]));
+		$aGallery["description"] = nl2br(htmlspecialchars(stripslashes($aGallery["description"])));
+		
 		$aGallery["categories"] = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}galleries_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `categories`.`id`"
@@ -48,8 +51,9 @@ class galleries_model extends appModel
 			,"all"
 		);
 		
-		$aGallery["name"] = htmlspecialchars(stripslashes($aGallery["name"]));
-		$aGallery["description"] = nl2br(htmlspecialchars(stripslashes($aGallery["description"])));
+		foreach($aGallery["categories"] as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		}
 		
 		$aGallery["photo"] = $this->dbQuery(
 			"SELECT `photo` FROM `{dbPrefix}galleries_photos`"
