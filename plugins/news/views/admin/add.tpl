@@ -13,9 +13,9 @@
 
 		<section class="inner-content">
 			<label>*Title:</label><br />
-			<input type="text" name="title" maxlength="100" value="{$aArticle.title|clean_html}"><br />
+			<input type="text" name="title" maxlength="100" value="{$aArticle.title}"><br />
 			<label>Short Content:</label><span class="right"><span id="currentCharacters"></span> of {$sShortContentCount} characters</span><br />
-			<textarea name="short_content" style="height:115px;">{$aArticle.short_content|clean_html}</textarea><br />
+			<textarea name="short_content" style="height:115px;">{$aArticle.short_content}</textarea><br />
 			<label>Content:</label><br />
 			{html_editor content=$aArticle.content name="content"}<br />
 			
@@ -27,7 +27,7 @@
 							<li>
 								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
 								 {if in_array($aCategory.id, $aArticle.categories)} checked="checked"{/if}>
-								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name}</label>
 							</li>
 						{foreachelse}
 							<li>

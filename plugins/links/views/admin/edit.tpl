@@ -13,11 +13,11 @@
 
 		<section class="inner-content">
 			<label>*Name</label><br />
-			<input type="text" name="name" maxlength="100" value="{$aLink.name|clean_html}"><br />
+			<input type="text" name="name" maxlength="100" value="{$aLink.name}"><br />
 			<label>*Link Destination <span style="font-size:0.8em;">(ex: http://www.google.com/)</span></label><br />
-			<input type="text" name="link" maxlength="100" value="{$aLink.link|clean_html}"><br />
+			<input type="text" name="link" maxlength="100" value="{$aLink.link}"><br />
 			<label>Description</label><br />
-			<textarea name="description" style="height:115px;">{$aLink.description|clean_html}</textarea><br />
+			<textarea name="description" style="height:115px;">{$aLink.description}</textarea><br />
 			<fieldset id="fieldset_categories">
 				<legend>Assign link to category</legend>
 				<ul class="categories">
@@ -25,7 +25,7 @@
 						<li>
 							<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
 							 {if in_array($aCategory.id, $aLink.categories)} checked="checked"{/if}>
-							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+							<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name}</label>
 						</li>
 					{foreachelse}
 						<li>
@@ -48,7 +48,7 @@
 		<section>
 			{if !empty($aLink.image) && $sUseImage}
 			<figure class="itemImage" style="max-width: 300px;">
-				<img src="{$imageFolder}{$aLink.image}" alt="{$aLink.name|clean_html} Image"><br />
+				<img src="{$imageFolder}{$aLink.image}" alt="{$aLink.name} Image"><br />
 				<a href="#">Replace Image</a>
 			</figure>
 			{/if}

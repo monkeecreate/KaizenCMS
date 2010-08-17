@@ -1,4 +1,4 @@
-{include file="inc_header.tpl" page_title=$aGallery.name|clean_html menu="galleries"}
+{include file="inc_header.tpl" page_title=$aGallery.name menu="galleries"}
 
 {head}
 <link type="text/css" media="screen" rel="stylesheet" href="/scripts/colorbox/themes/3/colorbox.css" />
@@ -13,17 +13,17 @@ $(document).ready(function(){ldelim}
 {/head}
 
 	<div id="contentItemPage">
-		<h2>{$aGallery.name|clean_html}</h2>
+		<h2>{$aGallery.name}</h2>
 		<small class="timeCat">
-			Categories: {$aGallery.categories|clean_html}
+			Categories: {$aGallery.categories}
 		</small>
 		<p class="content">
-			{$aGallery.description|clean_html}<br />
+			{$aGallery.description}<br />
 		</p>
 
 		{foreach from=$aGallery.photos item=aPhoto}
-			<a href="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=600&height=600" rel="prettyPhoto[gallery]" title="{$aPhoto.description|clean_html}">
-				<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=140&height=140" alt="{$aPhoto.title|clean_html}" class="galleryPics">
+			<a href="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=600&height=600" rel="prettyPhoto[gallery]" title="{$aPhoto.description}">
+				<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=140&height=140" alt="{$aPhoto.title}" class="galleryPics">
 			</a>
 		{/foreach}
 		<div class="clear">&nbsp;</div>

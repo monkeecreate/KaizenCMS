@@ -13,9 +13,9 @@
 
 		<section class="inner-content">
 			<label>*Name:</label><br />
-			<input type="text" name="name" maxlength="100" value="{$aGallery.name|clean_html}"><br />
+			<input type="text" name="name" maxlength="100" value="{$aGallery.name}"><br />
 			<label>Description:</label><br />
-			<textarea name="description" style="height:115px;">{$aGallery.description|clean_html}</textarea><br /><br /><br />
+			<textarea name="description" style="height:115px;">{$aGallery.description}</textarea><br /><br /><br />
 			
 			{if $sUseCategories == true}
 				<fieldset id="fieldset_categories">
@@ -25,7 +25,7 @@
 							<li>
 								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
 								 {if in_array($aCategory.id, $aGallery.categories)} checked="checked"{/if}>
-								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name}</label>
 							</li>
 						{foreachelse}
 							<li>

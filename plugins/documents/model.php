@@ -57,6 +57,9 @@ class documents_model extends appModel
 			,"all"
 		);
 		
+		$aDocument["name"] = htmlspecialchars(stripslashes($aDocument["name"]));
+		$aDocument["description"] = nl2br(htmlspecialchars(stripslashes($aDocument["description"])));
+		
 		return $aDocument;
 	}
 	function getCategories($sEmpty = true) {		
@@ -66,6 +69,10 @@ class documents_model extends appModel
 					." ORDER BY `name`"
 				,"all"
 			);
+		
+			foreach($aCategories as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		} else {
 			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}documents_categories_assign`"
@@ -92,6 +99,8 @@ class documents_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
 	}

@@ -6,7 +6,7 @@
 		<select name="category">
 			<option value="">- All Categories -</option>
 			{foreach from=$aCategories item=aCategory}
-				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|clean_html}</option>
+				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
 		</select>
 		<script type="text/javascript">
@@ -25,32 +25,32 @@
 	<div id="contentList">
 		{foreach from=$aListings item=aListing}
 			<div class="contentListItem">
-				<h2>{$aListing.name|clean_html}</h2>
+				<h2>{$aListing.name}</h2>
 				<small class="timeCat">
 					Categories:
 					{foreach from=$aListing.categories item=aCategory name=category}
-						<a href="/directory/?category={$aCategory.id}" title="Listings in {$aCategory.name|clean_html}">{$aCategory.name|clean_html}</a>{if $smarty.foreach.category.last == false},{/if} 
+						<a href="/directory/?category={$aCategory.id}" title="Listings in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
 					{/foreach}
 				</small>
 				<p class="content">
 					{if !empty($aListing.address1)}
-						{$aListing.address1|clean_html}<br>
+						{$aListing.address1}<br>
 					{/if}
 					{if !empty($aListing.address2)}
-						{$aListing.address2|clean_html}<br>
+						{$aListing.address2}<br>
 					{/if}
-					{$aListing.city|clean_html}, {$aListing.state|clean_html} {$aListing.zip|clean_html}<br>
+					{$aListing.city}, {$aListing.state} {$aListing.zip}<br>
 					{if !empty($aListing.phone)}
-						Phone#: {$aListing.phone|clean_html}<br>
+						Phone#: {$aListing.phone}<br>
 					{/if}
 					{if !empty($aListing.fax)}
-						Fax#: {$aListing.fax|clean_html}<br>
+						Fax#: {$aListing.fax}<br>
 					{/if}
 					{if !empty($aListing.website)}
-						Website: <a href="{$aListing.website|clean_html}" target="_blank">{$aListing.website|clean_html}</a><br>
+						Website: <a href="{$aListing.website}" target="_blank">{$aListing.website}</a><br>
 					{/if}
 					{if !empty($aListing.email)}
-						Email: <a href="mailto:{$aListing.email|clean_html}">{$aListing.email|clean_html}</a><br>
+						Email: <a href="mailto:{$aListing.email}">{$aListing.email}</a><br>
 					{/if}
 				</p>
 			</div>

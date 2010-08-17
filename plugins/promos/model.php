@@ -17,6 +17,10 @@ class promos_model extends appModel
 			,"all"
 		);
 		
+		foreach($aPromos as &$aPromo) {
+			$aPromo["name"] = htmlspecialchars(stripslashes($aPromo["name"]));
+		}
+		
 		return $aPromos;
 	}	
 	function getPromo($sTag = null, $sId = null, $sUsed = null, $sPromoId = null) {
@@ -45,6 +49,8 @@ class promos_model extends appModel
 			,"row"
 		);
 		
+		$aPromo["name"] = htmlspecialchars(stripslashes($aPromo["name"]));
+		
 		if(!empty($aPromo)) {
 			$this->dbUpdate(
 				"promos",
@@ -66,6 +72,10 @@ class promos_model extends appModel
 			,"all"
 		);
 		
+		foreach($aPositions as &$aPosition) {
+			$aPosition["name"] = htmlspecialchars(stripslashes($aPosition["name"]));
+		}
+		
 		return $aPositions;
 	}
 	function getPosition($sTag = null, $sId = null) {
@@ -81,6 +91,8 @@ class promos_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aPosition["name"] = htmlspecialchars(stripslashes($aPosition["name"]));
 		
 		return $aPosition;
 	}

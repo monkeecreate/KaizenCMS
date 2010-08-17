@@ -56,14 +56,14 @@
 							<img src="/images/admin/icons/bullet_red.png" alt="inactive">
 						{/if}
 					</td>
-					<td>{$aDocument.name|clean_html}</td>
-					<td><a href="http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}" title="{$aDocument.name|clean_html}">http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}</a></td>
+					<td>{$aDocument.name}</td>
+					<td><a href="http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}" title="{$aDocument.name}">http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}</a></td>
 					<td class="center">
 						<a href="/admin/documents/edit/{$aDocument.id}/" title="Edit Document">
 							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>
 						<a href="/admin/documents/delete/{$aDocument.id}/"
-						 onclick="return confirm_('Are you sure you would like to delete: {$aDocument.name|clean_html}?');"
+						 onclick="return confirm_('Are you sure you would like to delete: {$aDocument.name}?');"
 						 title="Delete Document">
 							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
 						</a>

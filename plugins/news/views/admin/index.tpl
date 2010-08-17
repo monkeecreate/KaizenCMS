@@ -29,7 +29,7 @@
 				{if $aMenu.menu|@count gt 1}
 					<ul class="pageTabs">
 						{foreach from=$aMenu.menu item=aItem}
-							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text}">{$aItem.text}</a></li>
 						{/foreach}
 					</ul>
 				{/if}
@@ -60,7 +60,7 @@
 							<span class="hidden">not published</span><img src="/images/admin/icons/bullet_yellow.png" alt="not published">
 						{/if}
 					</td>
-					<td>{$aArticle.title|clean_html}</td>
+					<td>{$aArticle.title}</td>
 					<td class="center">{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</td>
 					<td class="center">
 						{if $sUseImage == true}
@@ -73,7 +73,7 @@
 						</a>
 						{if $aPage.perminate != 1}
 							<a href="/admin/news/delete/{$aArticle.id}/"
-							 onclick="return confirm_('Are you sure you would like to delete: {$aArticle.title|clean_html}?');" title="Delete Article">
+							 onclick="return confirm_('Are you sure you would like to delete: {$aArticle.title}?');" title="Delete Article">
 								<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
 							</a>
 						{/if}

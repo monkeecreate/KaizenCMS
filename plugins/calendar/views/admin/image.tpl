@@ -21,14 +21,14 @@
 	</header>
 
 	<section class="inner-content">
-		<h3>{$aEvent.title|clean_html}</h3>
+		<h3>{$aEvent.title}</h3>
 
 		<form name="upload" action="/admin/calendar/image/upload/s/" method="post" enctype="multipart/form-data" {if $aEvent.photo_x2 > 0}style="display:none;"{/if}>
 			<fieldset>
 				{if $aEvent.photo_x2 > 0}
 					<legend>Replace Current Image</legend>				
 					<span class="right">
-						<img src="/image/calendar/{$aEvent.id}/?width=165" alt="{$aEvent.title|clean_html} Image">
+						<img src="/image/calendar/{$aEvent.id}/?width=165" alt="{$aEvent.title} Image">
 					</span>
 				{else}
 					<legend>Upload Image</legend>

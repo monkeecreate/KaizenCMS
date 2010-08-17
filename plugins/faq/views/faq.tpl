@@ -6,7 +6,7 @@
 		<select name="category">
 			<option value="">- All Categories -</option>
 			{foreach from=$aCategories item=aCategory}
-				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|clean_html}</option>
+				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
 		</select>
 		<script type="text/javascript">
@@ -26,15 +26,15 @@
 		{foreach from=$aQuestions item=aQuestion}
 			<div class="contentListItem">
 				<h3>
-					Q: <a href="#{$aQuestion.id}" class="faq-Question">{$aQuestion.question|clean_html}</a>
+					Q: <a href="#{$aQuestion.id}" class="faq-Question">{$aQuestion.question}</a>
 				</h3>
 				<div style="display:none;" id="{$aQuestion.id}">
 					<small>Categories: 
 						{foreach from=$aQuestion.categories item=aCategory name=category}
-							<a href="/faq/?category={$aCategory.id}" title="Questions in {$aCategory.name|clean_html}">{$aCategory.name|clean_html}</a>{if $smarty.foreach.category.last == false},{/if} 
+							<a href="/faq/?category={$aCategory.id}" title="Questions in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
 						{/foreach}
 					</small>
- 					<p>{$aQuestion.answer|stripslashes}</p>
+ 					<p>{$aQuestion.answer}</p>
 				</div>
 			</div>
 		{foreachelse}

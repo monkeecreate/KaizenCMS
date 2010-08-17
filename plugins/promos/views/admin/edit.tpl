@@ -29,9 +29,9 @@
 
 		<section class="inner-content">
 			<label>*Name:</label><br />
-			<input type="text" name="name" maxlength="100" value="{$aPromo.name|clean_html}"><br />
+			<input type="text" name="name" maxlength="100" value="{$aPromo.name}"><br />
 			<label>Link: <span style="font-size:0.8em;">(ex: http://www.google.com/)</span></label><br />
-			<input type="text" name="link" maxlength="100" value="{$aPromo.link|clean_html}"><br />
+			<input type="text" name="link" maxlength="100" value="{$aPromo.link}"><br />
 			<fieldset id="fieldset_positions">
 				<legend>Select Positions:</legend>
 				<table class="dataTable" style="width:578px !important;border-top:1px solid #ddd;">
@@ -45,7 +45,7 @@
 						{foreach from=$aPositions item=aPosition}
 							<tr>
 								<td><input type="checkbox" name="positions[]" value="{$aPosition.id}"
-								{if in_array($aPosition.id, $aPromo.positions)} checked="checked"{/if}> {$aPosition.name|clean_html}</td>
+								{if in_array($aPosition.id, $aPromo.positions)} checked="checked"{/if}> {$aPosition.name}</td>
 								<td class="center">{$aPosition.promo_width}px/{$aPosition.promo_height}px</td>
 							</tr>
 						{/foreach}
@@ -66,7 +66,7 @@
 		<section>
 			{if !empty($aPromo.promo)}
 			<figure class="itemImage" style="max-width: 300px;">
-				<img src="{$imageFolder}{$aPromo.promo}" alt="{$aPromo.name|clean_html} Image"><br />
+				<img src="{$imageFolder}{$aPromo.promo}" alt="{$aPromo.name} Image"><br />
 				<a href="#">Replace Image</a>
 			</figure>
 			{/if}

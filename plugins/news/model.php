@@ -55,6 +55,10 @@ class news_model extends appModel
 		if(!empty($aArticle["created_by"]))
 			$aArticle["user"] = $this->getUser($aArticle["created_by"]);
 		
+		$aArticle["title"] = htmlspecialchars(stripslashes($aArticle["title"]));
+		$aArticle["short_content"] = nl2br(htmlspecialchars(stripslashes($aArticle["short_content"])));
+		$aArticle["content"] = stripslashes($aArticle["content"]);
+		
 		$aArticle["categories"] = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}news_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
@@ -78,6 +82,10 @@ class news_model extends appModel
 					." ORDER BY `name`"
 				,"all"
 			);
+		
+			foreach($aCategories as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		} else {
 			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}news_categories_assign`"
@@ -104,6 +112,8 @@ class news_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
 	}

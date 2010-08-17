@@ -29,7 +29,7 @@
 				{if $aMenu.menu|@count gt 1}
 					<ul class="pageTabs">
 						{foreach from=$aMenu.menu item=aItem}
-							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text}">{$aItem.text}</a></li>
 						{/foreach}
 					</ul>
 				{/if}
@@ -55,13 +55,13 @@
 							<img src="/images/admin/icons/bullet_red.png" alt="inactive">
 						{/if}
 					</td>
-					<td>{$aListing.name|clean_html}</td>
+					<td>{$aListing.name}</td>
 					<td class="center">
 						<a href="/admin/directory/edit/{$aListing.id}/" title="Edit Listing">
 							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>
 						<a href="/admin/directory/delete/{$aListing.id}/"
-						 onclick="return confirm_('Are you sure you would like to delete: {$aListing.name|clean_html}?');"
+						 onclick="return confirm_('Are you sure you would like to delete: {$aListing.name}?');"
 						 title="Delete Listing">
 							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
 						</a>

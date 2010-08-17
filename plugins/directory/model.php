@@ -90,6 +90,17 @@ class directory_model extends appModel
 			,"all"
 		);
 		
+		$aListing["name"] = htmlspecialchars(stripslashes($aListing["name"]));
+		$aListing["address1"] = htmlspecialchars(stripslashes($aListing["address1"]));
+		$aListing["address2"] = htmlspecialchars(stripslashes($aListing["address"]));
+		$aListing["city"] = htmlspecialchars(stripslashes($aListing["city"]));
+		$aListing["state"] = htmlspecialchars(stripslashes($aListing["state"]));
+		$aListing["zip"] = htmlspecialchars(stripslashes($aListing["zip"]));
+		$aListing["phone"] = htmlspecialchars(stripslashes($aListing["phone"]));
+		$aListing["fax"] = htmlspecialchars(stripslashes($aListing["fax"]));
+		$aListing["email"] = htmlspecialchars(stripslashes($aListing["email"]));
+		$aListing["website"] = htmlspecialchars(stripslashes($aListing["website"]));
+		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["file"])
 		 && $this->useImage == true)
 			$aListing["image"] = 1;
@@ -105,6 +116,10 @@ class directory_model extends appModel
 					." ORDER BY `name`"
 				,"all"
 			);
+		
+			foreach($aCategories as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		} else {
 			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}directory_categories_assign`"
@@ -131,6 +146,8 @@ class directory_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
 	}

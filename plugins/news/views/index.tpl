@@ -24,7 +24,7 @@
 		<select name="category">
 			<option value="">- All Categories -</option>
 			{foreach from=$aCategories item=aCategory}
-				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|clean_html}</option>
+				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
 		</select>
 		<script type="text/javascript">
@@ -50,7 +50,7 @@
 				{/if}
 				<h3>
 					<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
-						{$aArticle.title|clean_html}
+						{$aArticle.title}
 					</a>
 				</h3>
 				<small class="timeCat">
@@ -58,12 +58,12 @@
 					| Posted by: {$aArticle.user.fname} {$aArticle.user.lname} 
 					| Categories: 
 					{foreach from=$aArticle.categories item=aCategory name=category}
-						<a href="/news/?category={$aCategory.id}" title="Articles in {$aCategory.name|clean_html}">{$aCategory.name|clean_html}</a>{if $smarty.foreach.category.last == false},{/if} 
+						<a href="/news/?category={$aCategory.id}" title="Articles in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
 					{/foreach}
 				</small>
 				<fb:like href="http://{$smarty.server.SERVER_NAME}/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/" show_faces="false"></fb:like>
 				<p class="content">
-					{$aArticle.short_content|clean_html}<br />
+					{$aArticle.short_content}<br />
 					<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">More Info&raquo;</a>
 				</p>
 			</div>

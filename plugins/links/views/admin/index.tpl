@@ -56,14 +56,14 @@
 							<img src="/images/admin/icons/bullet_red.png" alt="inactive">
 						{/if}
 					</td>
-					<td>{$aLink.name|clean_html}</td>
-					<td class="center"><a href="{$aLink.link}" title="{$aLink.name|clean_html}" target="_blank">{$aLink.link}</a></td>
+					<td>{$aLink.name}</td>
+					<td class="center"><a href="{$aLink.link}" title="{$aLink.name}" target="_blank">{$aLink.link}</a></td>
 					<td class="center">
 						<a href="/admin/links/edit/{$aLink.id}/" title="Edit Link">
 							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>
 						<a href="/admin/links/delete/{$aLink.id}/"
-						 onclick="return confirm_('Are you aLink you would like to delete: {$aLink.name|clean_html}?');"
+						 onclick="return confirm_('Are you aLink you would like to delete: {$aLink.name}?');"
 						 title="Delete Link">
 							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
 						</a>

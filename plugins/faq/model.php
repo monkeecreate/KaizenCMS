@@ -49,6 +49,9 @@ class faq_model extends appModel
 			,"all"
 		);
 		
+		$aQuestion["question"] = htmlspecialchars(stripslashes($aQuestion["question"]));
+		$aQuestion["answwer"] = nl2br(htmlspecialchars(stripslashes($aQuestion["answwer"])));
+		
 		return $aQuestion;
 	}
 	function getCategories($sEmpty = true) {
@@ -58,6 +61,10 @@ class faq_model extends appModel
 					." ORDER BY `name`"
 				,"all"
 			);
+		
+			foreach($aCategories as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		} else {
 			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}faq_categories_assign`"
@@ -84,6 +91,8 @@ class faq_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
 	}

@@ -174,7 +174,7 @@ $(function() {
 		</header>
 
 		<section class="inner-content">
-			<h3>{$aGallery.name|clean_html}</h3>
+			<h3>{$aGallery.name}</h3>
 			<a href="#" id="uploadPhotosBtn">Upload Photos</a> | <a href="/admin/galleries/{$aGallery.id}/photos/manage/" title="Batch Edit">Batch Edit Photos</a> | <a href="#" title="Delete Gallery">Delete Gallery</a>
 
 
@@ -200,9 +200,9 @@ $(function() {
 									<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=245&height=245" width="245px">
 								</figure>
 								<label>*Title:</label><br />
-								<input type="text" name="title" maxlength="100" value="{$aPhoto.title|clean_html}"><br />
+								<input type="text" name="title" maxlength="100" value="{$aPhoto.title}"><br />
 								<label>Description:</label><br />
-								<textarea name="description" class="elastic">{$aPhoto.description|clean_html}</textarea><br />
+								<textarea name="description" class="elastic">{$aPhoto.description}</textarea><br />
 								<input type="submit" value="Save">
 								<input type="button" value="Delete" class="delete">
 								<a class="cancel" href="#" title="Cancel" rel="{$aPhoto.id}">Cancel</a>
@@ -237,9 +237,9 @@ $(function() {
 				<fieldset>
 					<legend>Gallery Info</legend>
 					<label>*Name:</label><br />
-					<input type="text" name="name" maxlength="100" value="{$aGallery.name|clean_html}"><br />
+					<input type="text" name="name" maxlength="100" value="{$aGallery.name}"><br />
 					<label>Description:</label><br />
-					<textarea name="description" style="height:115px;">{$aGallery.description|clean_html}</textarea>
+					<textarea name="description" style="height:115px;">{$aGallery.description}</textarea>
 				</fieldset>
 			
 				<fieldset id="fieldset_categories">
@@ -249,7 +249,7 @@ $(function() {
 							<li>
 								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
 								 {if in_array($aCategory.id, $aGallery.categories)} checked="checked"{/if}>
-								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name}</label>
 							</li>
 						{/foreach}
 					</ul>

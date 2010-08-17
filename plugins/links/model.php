@@ -58,6 +58,9 @@ class links_model extends appModel
 			,"all"
 		);
 		
+		$aLink["name"] = htmlspecialchars(stripslashes($aLink["name"]));
+		$aLink["description"] = nl2br(htmlspecialchars(stripslashes($aLink["description"])));
+		
 		return $aLink;
 	}
 	function getCategories($sEmpty = true) {
@@ -67,6 +70,10 @@ class links_model extends appModel
 					." ORDER BY `name`"
 				,"all"
 			);
+		
+			foreach($aCategories as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		} else {
 			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}links_categories_assign`"
@@ -93,6 +100,8 @@ class links_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
 	}

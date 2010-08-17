@@ -43,10 +43,13 @@ class galleries_model extends appModel
 	private function _getGalleryInfo($aGallery) {
 		$aGallery["categories"] = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}galleries_categories` AS `categories`"
-				." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `categories`.`id`"
+				." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
 			,"all"
 		);
+		
+		$aGallery["name"] = htmlspecialchars(stripslashes($aGallery["name"]));
+		$aGallery["description"] = nl2br(htmlspecialchars(stripslashes($aGallery["description"])));
 		
 		$aGallery["photo"] = $this->dbQuery(
 			"SELECT `photo` FROM `{dbPrefix}galleries_photos`"
@@ -90,6 +93,10 @@ class galleries_model extends appModel
 					." ORDER BY `name`"
 				,"all"
 			);
+		
+			foreach($aCategories as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		} else {
 			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}galleries_categories_assign`"
@@ -116,6 +123,8 @@ class galleries_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
 	}

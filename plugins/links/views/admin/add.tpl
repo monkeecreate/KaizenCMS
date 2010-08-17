@@ -13,11 +13,11 @@
 
 		<section class="inner-content">
 			<label>*Name</label><br />
-			<input type="text" name="name" maxlength="100" value="{$aLink.name|clean_html}"><br />
+			<input type="text" name="name" maxlength="100" value="{$aLink.name}"><br />
 			<label>*Link Destination <span style="font-size:0.8em;">(ex: http://www.google.com/)</span></label><br />
-			<input type="text" name="link" maxlength="100" value="{if !empty($aLink.link)}{$aLink.link|clean_html}{else}http://{/if}"><br />
+			<input type="text" name="link" maxlength="100" value="{if !empty($aLink.link)}{$aLink.link}{else}http://{/if}"><br />
 			<label>Description</label><br />
-			<textarea name="description" style="height:115px;">{$aLink.description|clean_html}</textarea><br />
+			<textarea name="description" style="height:115px;">{$aLink.description}</textarea><br />
 			
 			{if $sUseCategories == true}
 				<fieldset id="fieldset_categories">
@@ -27,7 +27,7 @@
 							<li>
 								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
 								 {if in_array($aCategory.id, $aLink.categories)} checked="checked"{/if}>
-								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name}</label>
 							</li>
 						{foreachelse}
 							<li>
