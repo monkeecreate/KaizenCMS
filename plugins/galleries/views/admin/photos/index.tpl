@@ -202,7 +202,7 @@ $(function() {
 								<label>*Title:</label><br />
 								<input type="text" name="title" maxlength="100" value="{$aPhoto.title}"><br />
 								<label>Description:</label><br />
-								<textarea name="description" class="elastic">{$aPhoto.description}</textarea><br />
+								<textarea name="description" class="elastic">{$aPhoto.description|replace:'<br />':''}</textarea><br />
 								<input type="submit" value="Save">
 								<input type="button" value="Delete" class="delete">
 								<a class="cancel" href="#" title="Cancel" rel="{$aPhoto.id}">Cancel</a>
@@ -239,7 +239,7 @@ $(function() {
 					<label>*Name:</label><br />
 					<input type="text" name="name" maxlength="100" value="{$aGallery.name}"><br />
 					<label>Description:</label><br />
-					<textarea name="description" style="height:115px;">{$aGallery.description}</textarea>
+					<textarea name="description" style="height:115px;">{$aGallery.description|replace:'<br />':''}</textarea>
 				</fieldset>
 			
 				<fieldset id="fieldset_categories">

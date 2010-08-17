@@ -17,7 +17,7 @@
 			<label>*Link Destination <span style="font-size:0.8em;">(ex: http://www.google.com/)</span></label><br />
 			<input type="text" name="link" maxlength="100" value="{$aLink.link}"><br />
 			<label>Description</label><br />
-			<textarea name="description" style="height:115px;">{$aLink.description}</textarea><br />
+			<textarea name="description" style="height:115px;">{$aLink.description|replace:'<br />':''}</textarea><br />
 			<fieldset id="fieldset_categories">
 				<legend>Assign link to category</legend>
 				<ul class="categories">

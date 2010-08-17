@@ -13,7 +13,7 @@
 
 		<section class="inner-content">
 			<label>*Question:</label><br />
-			<textarea name="question" style="height:115px;">{$aQuestion.question}</textarea><br />
+			<textarea name="question" style="height:115px;">{$aQuestion.question|replace:'<br />':''}</textarea><br />
 			<label>Answer:</label><br />
 			{html_editor content=$aQuestion.answer name="answer"}<br />
 			

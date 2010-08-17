@@ -17,7 +17,7 @@
 			<label>Sub-Name:</label><br />
 			<input type="text" name="sub_name" maxlength="100" value="{$aTestimonial.sub_name}"><br />
 			<label>Text:</label><br />
-			<textarea name="text" style="height:115px;">{$aTestimonial.text}</textarea><br />
+			<textarea name="text" style="height:115px;">{$aTestimonial.text|replace:'<br />':''}</textarea><br />
 			
 			{if $sUseCategories == true}
 				<fieldset id="fieldset_categories">

@@ -49,8 +49,8 @@ class faq_model extends appModel
 			,"all"
 		);
 		
-		$aQuestion["question"] = htmlspecialchars(stripslashes($aQuestion["question"]));
-		$aQuestion["answwer"] = nl2br(htmlspecialchars(stripslashes($aQuestion["answwer"])));
+		$aQuestion["question"] = nl2br(htmlspecialchars(stripslashes($aQuestion["question"])));
+		$aQuestion["answwer"] = stripslashes($aQuestion["answwer"]);
 		
 		return $aQuestion;
 	}

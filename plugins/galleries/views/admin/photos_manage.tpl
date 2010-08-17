@@ -27,7 +27,7 @@
 					<label>Title:</label><br />
 					<input type="text" name="photo[{$aPhoto.id}][title]" maxlength="100" value="{$aPhoto.title}" style="width:300px;"><br />
 					<label>Description:</label><br />
-					<textarea name="photo[{$aPhoto.id}][description]" style="width:300px;height:100px;">{$aPhoto.description}</textarea>
+					<textarea name="photo[{$aPhoto.id}][description]" style="width:300px;height:100px;">{$aPhoto.description|replace:'<br />':''}</textarea>
 				</div>
 			{/foreach}
 			<div class="clear">&nbsp;</div>

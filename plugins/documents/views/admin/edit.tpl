@@ -17,7 +17,7 @@
 			<label>Document:</label><br />
 			<input type="file" name="document"><br />
 			<label>Description:</label><br />
-			<textarea name="description" style="height:115px;">{$aDocument.description}</textarea><br />
+			<textarea name="description" style="height:115px;">{$aDocument.description|replace:'<br />':''}</textarea><br />
 
 			{if $sUseCategories == true}
 				<fieldset id="fieldset_categories">

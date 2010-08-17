@@ -15,7 +15,7 @@
 			<label>*Name:</label><br />
 			<input type="text" name="name" maxlength="100" value="{$aGallery.name}"><br />
 			<label>Description:</label><br />
-			<textarea name="description" style="height:115px;">{$aGallery.description}</textarea><br /><br /><br />
+			<textarea name="description" style="height:115px;">{$aGallery.description|replace:'<br />':''}</textarea><br /><br /><br />
 			
 			{if $sUseCategories == true}
 				<fieldset id="fieldset_categories">
