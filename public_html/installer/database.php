@@ -41,11 +41,6 @@ $aTables = array(
 						"title" => "Content",
 						"menu" => array(
 							array(
-								"text" => "Add Page",
-								"link" => "/admin/content/add/",
-								"icon" => "circle-plus"
-							),
-							array(
 								"text" => "Manage Pages",
 								"link" => "/admin/content/"
 							)
