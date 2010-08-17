@@ -17,7 +17,7 @@
 			<label>Answer:</label><br />
 			{html_editor content=$aQuestion.answer name="answer"}<br />
 			
-			{if $aUseCategories == true}
+			{if $sUseCategories == true}
 				<fieldset id="fieldset_categories">
 					<legend>Assign question to category:</legend>
 					<ul class="categories">

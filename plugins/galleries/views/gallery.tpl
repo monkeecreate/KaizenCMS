@@ -15,7 +15,10 @@ $(document).ready(function(){ldelim}
 	<div id="contentItemPage">
 		<h2>{$aGallery.name}</h2>
 		<small class="timeCat">
-			Categories: {$aGallery.categories}
+			Categories: 
+			{foreach from=$aGallery.categories item=aCategory name=category}
+				<a href="/gallery/?category={$aCategory.id}" title="Galleries in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+			{/foreach}
 		</small>
 		<p class="content">
 			{$aGallery.description}<br />

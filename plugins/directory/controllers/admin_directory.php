@@ -108,15 +108,11 @@ class admin_directory extends adminController
 			
 			$this->tplAssign("aListing", $aListing);
 		} else {
-			$aListing = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}directory`"
-					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aListing = $oDirectory->getListing($this->urlVars->dynamic["id"], true);
 			
 			$aListing["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}directory_categories` AS `categories`"
-					." INNER JOIN `directory_categories_assign` AS `directory_assign` ON `categories`.`id` = `directory_assign`.`categoryid`"
+					." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `categories`.`id` = `directory_assign`.`categoryid`"
 					." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
@@ -192,13 +188,7 @@ class admin_directory extends adminController
 		
 		$_SESSION["admin"]["admin_directory_categories"] = null;
 		
-		$aCategories = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}directory_categories`"
-				." ORDER BY `name`"
-			,"all"
-		);
-		
-		$this->tplAssign("aCategories", $aCategories);
+		$this->tplAssign("aCategories", $oDirectory->getCategories());
 		$this->tplAssign("aCategoryEdit", $oDirectory->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}

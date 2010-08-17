@@ -36,11 +36,15 @@ class documents_model extends appModel
 		
 		return $aDocuments;
 	}
-	function getDocument($sId) {
+	function getDocument($sId, $sAll = false) {
+		if($sAll == false) {
+			$sWhere = " AND `documents`.`active` = 1";
+		}
+		
 		$aDocument = $this->dbQuery(
 			"SELECT `documents`.* FROM `{dbPrefix}documents` AS `documents`"
 				." WHERE `documents`.`id` = ".$this->dbQuote($sId, "integer")
-				." AND `documents`.`active` = 1"
+				.$sWhere
 			,"row"
 		);
 		

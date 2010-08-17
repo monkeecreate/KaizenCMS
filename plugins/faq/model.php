@@ -43,7 +43,7 @@ class faq_model extends appModel
 	}
 	private function _getQuestionInfo($aQuestion) {
 		$aQuestion["question"] = nl2br(htmlspecialchars(stripslashes($aQuestion["question"])));
-		$aQuestion["answwer"] = stripslashes($aQuestion["answwer"]);
+		$aQuestion["answer"] = stripslashes($aQuestion["answer"]);
 		
 		$aQuestion["categories"] = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}faq_categories` AS `categories`"

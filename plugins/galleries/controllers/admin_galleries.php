@@ -286,7 +286,7 @@ class admin_galleries extends adminController
 		
 		$aGallery["categories"] = $this->dbQuery(
 			"SELECT `categories`.`id` FROM `{dbPrefix}galleries_categories` AS `categories`"
-				." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `categories`.`id` = `galleries_assign`.`categoryid`"
+				." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `categories`.`id` = `galleries_assign`.`categoryid`"
 				." WHERE `galleries_assign`.`galleryid` = ".$this->urlVars->dynamic["gallery"]
 				." GROUP BY `categories`.`id`"
 				." ORDER BY `categories`.`name`"

@@ -74,6 +74,11 @@ class galleries_model extends appModel
 			,"all"
 		);
 		
+		foreach($aPhotos as &$aPhoto) {
+			$aPhoto["title"] = htmlspecialchars(stripslashes($aPhoto["title"]));
+			$aPhoto["description"] = nl2br(htmlspecialchars(stripslashes($aPhoto["description"])));
+		}
+		
 		return $aPhotos;
 	}
 	function getPhoto($sId, $sDefault = false) {
@@ -87,6 +92,9 @@ class galleries_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aPhoto["title"] = htmlspecialchars(stripslashes($aPhoto["title"]));
+		$aPhoto["description"] = nl2br(htmlspecialchars(stripslashes($aPhoto["description"])));
 		
 		return $aPhoto;
 	}

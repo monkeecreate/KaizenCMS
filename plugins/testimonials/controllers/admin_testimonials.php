@@ -93,15 +93,11 @@ class admin_testimonials extends adminController
 				,"row"
 			);
 		} else {
-			$aTestimonial = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}testimonials`"
-					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aTestimonial = $oTestimonials->getTestimonial($this->urlVars->dynamic["id"], true);
 			
 			$aTestimonial["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}testimonials_categories` AS `categories`"
-					." INNER JOIN `testimonials_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`"
+					." INNER JOIN `{dbPrefix}testimonials_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`"
 					." WHERE `assign`.`testimonialid` = ".$aTestimonial["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"

@@ -112,7 +112,7 @@ class admin_faq extends adminController
 			
 			$aQuestion["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}faq_categories` AS `categories`"
-					." INNER JOIN `faq_categories_assign` AS `faq_assign` ON `categories`.`id` = `faq_assign`.`categoryid`"
+					." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `categories`.`id` = `faq_assign`.`categoryid`"
 					." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"

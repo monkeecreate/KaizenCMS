@@ -23,7 +23,7 @@ class promos_model extends appModel
 		
 		return $aPromos;
 	}	
-	function getPromo($sTag = null, $sId = null, $sUsed = null, $sPromoId = null) {
+	function getPromo($sTag = null, $sId = null, $sUsed = null, $sPromoId = null, $sAll = false, $sImpression = true) {
 		if(!empty($sTag))
 			$sWhere = " WHERE `positions`.`tag` = ".$this->dbQuote($sTag, "text");
 		elseif(!empty($sId))
@@ -36,14 +36,17 @@ class promos_model extends appModel
 		if(!empty($sUsed))
 			$sWhere .= " AND `promos`.`id` NOT IN (".$sUsed.")";
 		
+		if($sAll == false) {
+			$sWhere .= " AND `promos`.`datetime_show` < ".time();
+			$sWhere .= " AND (`promos`.`datetime_kill` > ".time()." OR `promos`.`use_kill` = 0)";
+			$sWhere .= " AND `active` = 1";
+		}
+		
 		$aPromo = $this->dbQuery(
 			"SELECT `promos`.* FROM `{dbPrefix}promos` AS `promos`"
 				." INNER JOIN `{dbPrefix}promos_positions_assign` AS `assign` ON `promos`.`id` = `assign`.`promoid`"
 				." INNER JOIN `{dbPrefix}promos_positions` AS `positions` ON `assign`.`positionid` = `positions`.`id`"
 				.$sWhere
-				." AND `promos`.`datetime_show` < ".time()
-				." AND (`promos`.`datetime_kill` > ".time()." OR `promos`.`use_kill` = 0)"
-				." AND `active` = 1"
 				." ORDER BY rand()"
 				." LIMIT 1"
 			,"row"
@@ -51,7 +54,7 @@ class promos_model extends appModel
 		
 		$aPromo["name"] = htmlspecialchars(stripslashes($aPromo["name"]));
 		
-		if(!empty($aPromo)) {
+		if(!empty($aPromo) && $sImpression == true) {
 			$this->dbUpdate(
 				"promos",
 				array(
