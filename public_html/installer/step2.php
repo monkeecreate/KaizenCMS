@@ -162,7 +162,7 @@ include("inc_header.php");
 						<input type="hidden" name="type" value="mysql">
 						<label>Database Host:</label>
 						<input type="text" name="host" value="<?=$_POST["host"]?>"><br />
-						<label>Database:</label>
+						<label>Database Name:</label>
 						<input type="text" name="database" value="<?=$_POST["database"]?>"><br />
 						<label>Database Username:</label>
 						<input type="text" name="username" value="<?=$_POST["username"]?>"><br />
@@ -213,8 +213,6 @@ include("inc_header.php");
 					
 						<fieldset>
 							<legend>Encryption</legend>
-						
-							<b>Encryption:</b><br />
 							<label>Key:</label>
 							<input type="text" name="enc_key" value="<?=$_POST["enc_key"]?>"><br />
 							<label>Salt:</label>
