@@ -12,6 +12,7 @@ if($_POST["setup"] == 1) {
 	$objDB->query("UPDATE `".$aConfig["database"]["prefix"]."settings` SET `value` = ".$objDB->quote($_POST["contact"], "text")." WHERE `tag` = 'email'");
 	
 	$sConfig = file_get_contents("../inc_config.php");
+	$sConfig = changeConfig("installer", "", "true", $sConfig, false);
 	$sConfig = changeConfig("admin_info", "", "array(\"name\" => \"".addslashes($_POST["admin_fname"]." ".$_POST["admin_lname"])."\", \"email\" => \"".addslashes($_POST["admin_email"])."\")", $sConfig, false);
 	file_put_contents("../inc_config.php", $sConfig);
 	

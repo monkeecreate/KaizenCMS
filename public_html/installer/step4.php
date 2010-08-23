@@ -1,14 +1,4 @@
 <?php
-if(is_writable("../inc_config.php")) {
-	// Use database info, and save to config
-	$sConfig = file_get_contents("../inc_config.php");
-
-	// Force skip to step 4
-	$sConfig = changeConfig("installer", "", "true", $sConfig, false);
-
-	file_put_contents("../inc_config.php", $sConfig);
-}
-	
 include("inc_header.php");
 ?>
 
