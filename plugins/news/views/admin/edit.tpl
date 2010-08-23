@@ -13,9 +13,9 @@
 
 		<section class="inner-content">
 			<label>*Title:</label><br />
-			<input type="text" name="title" maxlength="100" value="{$aArticle.title|clean_html}"><br />
+			<input type="text" name="title" maxlength="100" value="{$aArticle.title}"><br />
 			<label>Short Content:</label><span class="right"><span id="currentCharacters"></span> of {$sShortContentCount} characters</span><br />
-			<textarea name="short_content" style="height:115px;">{$aArticle.short_content|clean_html}</textarea><br />
+			<textarea name="short_content" style="height:115px;">{$aArticle.short_content|replace:'<br />':''}</textarea><br />
 			<label>Content:</label><br />
 			{html_editor content=$aArticle.content name="content"}<br />
 			
@@ -27,7 +27,7 @@
 							<li>
 								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
 								 {if in_array($aCategory.id, $aArticle.categories)} checked="checked"{/if}>
-								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name}</label>
 							</li>
 						{foreachelse}
 							<li>
@@ -52,7 +52,7 @@
 		<section>
 			{if $aArticle.photo_x2 > 0}
 			<figure class="itemImage">
-				<img src="/image/news/{$aArticle.id}/?width=165&rand={$randnum}" alt="{$aArticle.title|clean_html} Image"><br />
+				<img src="/image/news/{$aArticle.id}/?width=165&rand={$randnum}" alt="{$aArticle.title} Image"><br />
 				<input name="submit" type="image" src="/images/admin/icons/pencil.png" value="edit">
 				<input name="submit" type="image" src="/images/admin/icons/bin_closed.png" value="delete">
 			</figure>
@@ -72,7 +72,7 @@
 				<div class="clear">&nbsp;</div>
 								
 				<label>Last Updated:</label><br />
-				<p style="font-size:1.1em;margin-bottom:8px;">{$aArticle.updated_datetime|date_format:"%D @ %I:%M %p"} by {$aArticle.updated_by.fname|clean_html} {$aArticle.updated_by.lname|clean_html}</p>
+				<p style="font-size:1.1em;margin-bottom:8px;">{$aArticle.updated_datetime|date_format:"%D @ %I:%M %p"} by {$aArticle.updated_by.fname} {$aArticle.updated_by.lname}</p>
 			</fieldset>
 			
 			<fieldset>

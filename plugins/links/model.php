@@ -51,12 +51,19 @@ class links_model extends appModel
 		return $aLink;
 	}
 	private function _getLinkInfo($aLink) {
+		$aLink["name"] = htmlspecialchars(stripslashes($aLink["name"]));
+		$aLink["description"] = nl2br(htmlspecialchars(stripslashes($aLink["description"])));
+		
 		$aLink["categories"] = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}links_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `links_assign`.`linkid` = ".$aLink["id"]
 			,"all"
 		);
+		
+		foreach($aLink["categories"] as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		}
 		
 		return $aLink;
 	}
@@ -67,6 +74,10 @@ class links_model extends appModel
 					." ORDER BY `name`"
 				,"all"
 			);
+		
+			foreach($aCategories as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		} else {
 			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}links_categories_assign`"
@@ -93,6 +104,8 @@ class links_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
 	}

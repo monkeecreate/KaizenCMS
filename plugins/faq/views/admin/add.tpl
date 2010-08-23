@@ -13,11 +13,11 @@
 
 		<section class="inner-content">
 			<label>*Question:</label><br />
-			<textarea name="question" style="height:115px;">{$aQuestion.question|clean_html}</textarea><br />
+			<textarea name="question" style="height:115px;">{$aQuestion.question}</textarea><br />
 			<label>Answer:</label><br />
 			{html_editor content=$aQuestion.answer name="answer"}<br />
 			
-			{if $aUseCategories == true}
+			{if $sUseCategories == true}
 				<fieldset id="fieldset_categories">
 					<legend>Assign question to category:</legend>
 					<ul class="categories">
@@ -25,7 +25,7 @@
 							<li>
 								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
 								 {if in_array($aCategory.id, $aQuestion.categories)} checked="checked"{/if}>
-								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name}</label>
 							</li>
 						{foreachelse}
 							<li>

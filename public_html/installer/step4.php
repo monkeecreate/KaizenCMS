@@ -1,11 +1,13 @@
 <?php
-// Use database info, and save to config
-$sConfig = file_get_contents("../inc_config.php");
+if(is_writable("../inc_config.php")) {
+	// Use database info, and save to config
+	$sConfig = file_get_contents("../inc_config.php");
 
-// Database
-$sConfig = changeConfig("installer", "", "true", $sConfig, false);
+	// Force skip to step 4
+	$sConfig = changeConfig("installer", "", "true", $sConfig, false);
 
-file_put_contents("../inc_config.php", $sConfig);
+	file_put_contents("../inc_config.php", $sConfig);
+}
 	
 include("inc_header.php");
 ?>
@@ -18,11 +20,17 @@ include("inc_header.php");
 				<p>Congratulations you have successfully installed Kaizen CMS. There are a few things below to tidy up before continuing to the admin area. These steps below are <strong>very important</strong> for the security of your website. As soon as those items are completed you are free to move about the cms.</p>
 
 				<ul>
-					<li><span class="iconic">L</span> Make ./inc_config.php un-writable</li>
-					<li><span class="iconic">t</span> Delete the installer directory</li>
+					<?php
+					if(is_writable("../inc_config.php")) {
+						echo "<li><span class=\"iconic fail\">x</span> Make ./inc_config.php un-writable</li>";
+					} else {
+						echo "<li><span class=\"iconic success\">y</span> Config is un-writable</li>";
+					}
+					?>
+					<li><span class="iconic fail">x</span> Delete the installer directory</li>
 				</ul>
 				
-				<p><a href="/admin/" title="Login Here" class="gButton right">Admin Login</a></p>
+				<p><a href="/admin/" title="Check Again" class="gButton right">Check Again</a></p>
 			</section>
 
 <?php include("inc_footer.php"); ?>

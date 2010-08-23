@@ -141,15 +141,11 @@ class admin_calendar extends adminController
 				,"row"
 			);
 		} else {
-			$aEvent = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}calendar`"
-					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aEvent = $oCalendar->getEvent($this->urlVars->dynamic["id"], true);
 			
 			$aEvent["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}calendar_categories` AS `categories`"
-					." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `categories`.`id` = `calendar_assign`.`categoryid`"
+					." INNER JOIN `{dbPrefix}calendar_categories_assign` AS `calendar_assign` ON `categories`.`id` = `calendar_assign`.`categoryid`"
 					." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
@@ -187,13 +183,11 @@ class admin_calendar extends adminController
 		
 		$datetime_start = strtotime(
 			$_POST["datetime_start_date"]." "
-			.$_POST["datetime_start_Hour"].":".$_POST["datetime_start_Minute"]." "
-			.$_POST["datetime_start_Meridian"]
+			.((!empty($_POST["datetime_start_Hour"]))?$_POST["datetime_start_Hour"].":".$_POST["datetime_start_Minute"]." ".$_POST["datetime_start_Meridian"]:"")
 		);
 		$datetime_end = strtotime(
 			$_POST["datetime_end_date"]." "
-			.$_POST["datetime_end_Hour"].":".$_POST["datetime_end_Minute"]." "
-			.$_POST["datetime_end_Meridian"]
+			.((!empty($_POST["datetime_end_Hour"]))?$_POST["datetime_end_Hour"].":".$_POST["datetime_end_Minute"]." ".$_POST["datetime_end_Meridian"]:"")
 		);
 		$datetime_show = strtotime(
 			$_POST["datetime_show_date"]." "

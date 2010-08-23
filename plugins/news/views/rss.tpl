@@ -10,12 +10,12 @@
 		<atom:link href="http://{$domain}/news/rss/" rel="self" type="application/rss+xml" />
 		{foreach from=$aArticles item=aArticle}
 		<item>
-			<title>{$aArticle.title|clean_html}</title>
+			<title>{$aArticle.title}</title>
 			<link>http://{$domain}/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/</link>
 			{if !empty($aArticle.short_content)}
-			<description>{$aArticle.short_content|clean_html}</description>
+			<description>{$aArticle.short_content}</description>
 			{else}
-			<description>{$aArticle.content|stripslashes}</description>
+			<description>{$aArticle.content}</description>
 			{/if}
 			<pubDate>{$aArticle.datetime_show|date_format:'%a, %d %b %Y %T %Z'}</pubDate>
 			<guid>http://{$domain}/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/</guid>

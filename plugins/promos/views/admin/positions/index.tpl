@@ -47,14 +47,14 @@
 		<tbody>
 			{foreach from=$aPositions item=aPosition}
 				<tr>
-					<td>{$aPosition.name|clean_html}</td>
+					<td>{$aPosition.name}</td>
 					<td class="center">{$aPosition.promo_width}px/{$aPosition.promo_height}px</td>
 					<td class="center">
 						<a href="/admin/promos/positions/?position={$aPosition.id}" title="Edit Position">
 							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>
 						<a href="/admin/promos/positions/delete/{$aPosition.id}/"
-						 onclick="return confirm('Are you sure you would like to delete: {$aPosition.name|clean_html}?');" title="Delete Position">
+						 onclick="return confirm('Are you sure you would like to delete: {$aPosition.name}?');" title="Delete Position">
 							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
 						</a>
 					</td>
@@ -73,7 +73,7 @@
 		<section>
 			<form method="post" action="/admin/promos/positions/edit/s/">
 				<label>Name</label><br />
-				<input type="text" name="name" maxlength="100" value="{$aPositionEdit.name|clean_html}"><br />
+				<input type="text" name="name" maxlength="100" value="{$aPositionEdit.name}"><br />
 				<label>Tag</label><br />
 				<input type="text" name="tag" maxlength="100" value="{$aPositionEdit.tag}"><br />
 				<span class="left" style="margin-right:85px;">

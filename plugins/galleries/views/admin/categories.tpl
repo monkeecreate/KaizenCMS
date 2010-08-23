@@ -47,13 +47,13 @@
 		<tbody>
 			{foreach from=$aCategories item=aCategory}
 				<tr>
-					<td>{$aCategory.name|clean_html}</td>
+					<td>{$aCategory.name}</td>
 					<td class="center">
 						<a href="/admin/galleries/categories/?category={$aCategory.id}" title="Edit Category">
 							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>
 						<a href="/admin/galleries/categories/delete/{$aCategory.id}/"
-						 onclick="return confirm('Are you sure you would like to delete: {$aCategory.name|clean_html}?');" title="Delete Category">
+						 onclick="return confirm('Are you sure you would like to delete: {$aCategory.name}?');" title="Delete Category">
 							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
 						</a>
 					</td>
@@ -72,7 +72,7 @@
 		<section>
 			<form method="post" action="/admin/galleries/categories/edit/s/">
 				<label>Name:</label>
-				<input class="small" type="text" name="name" maxlength="100" value="{$aCategoryEdit.name|clean_html}"><br />
+				<input class="small" type="text" name="name" maxlength="100" value="{$aCategoryEdit.name}"><br />
 				<input class="submitSml" type="submit" value="Save Changes">
 				<input type="hidden" name="id" value="{$aCategoryEdit.id}">
 			</form>

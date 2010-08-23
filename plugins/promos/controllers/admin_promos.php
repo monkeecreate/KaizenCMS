@@ -27,6 +27,9 @@ class admin_promos extends adminController
 			$aPromo["datetime_show"] = strtotime($aPromo["datetime_show_date"]." ".$aPromo["datetime_show_Hour"].":".$aPromo["datetime_show_Minute"]." ".$aPromo["datetime_show_Meridian"]);
 			$aPromo["datetime_kill"] = strtotime($aPromo["datetime_kill_date"]." ".$aPromo["datetime_kill_Hour"].":".$aPromo["datetime_kill_Minute"]." ".$aPromo["datetime_kill_Meridian"]);
 			
+			if(empty($aPromo["positions"]))
+				$aPromo["positions"] = array();
+			
 			$this->tplAssign("aPromo", $aPromo);
 		} else
 			$this->tplAssign("aPromo",
@@ -145,15 +148,11 @@ class admin_promos extends adminController
 			
 			$this->tplAssign("aPromo", $aPromo);
 		} else {
-			$aPromo = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}promos`"
-					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aPromo = $oPromos->getPromo(null, null, null, $this->urlVars->dynamic["id"], true, false);
 			
 			$aPromo["positions"] = $this->dbQuery(
 				"SELECT `positions`.`id` FROM `{dbPrefix}promos_positions` AS `positions`"
-					." INNER JOIN `promos_positions_assign` AS `assign` ON `positions`.`id` = `assign`.`positionid`"
+					." INNER JOIN `{dbPrefix}promos_positions_assign` AS `assign` ON `positions`.`id` = `assign`.`positionid`"
 					." WHERE `assign`.`promoid` = ".$aPromo["id"]
 					." GROUP BY `positions`.`id`"
 					." ORDER BY `positions`.`name`"

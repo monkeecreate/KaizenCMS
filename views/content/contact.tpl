@@ -14,8 +14,8 @@ if($_GET["captcha_error"] != 1)
 {/php}
 {getContent tag="contact" var="aContent"}
 
-	<h2>{$aContent.title|stripslashes}</h2>
-	{$aContent.content|stripslashes}
+	<h2>{$aContent.title}</h2>
+	{$aContent.content}
 	
 	<div class="form-errors hidden"></div>
 	

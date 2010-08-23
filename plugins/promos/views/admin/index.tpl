@@ -58,7 +58,7 @@
 							<img src="/images/admin/icons/bullet_red.png" alt="inactive">
 						{/if}
 					</td>
-					<td>{$aPromo.name|clean_html}</td>
+					<td>{$aPromo.name}</td>
 					<td class="center">{$aPromo.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</td>
 					<td class="center">{$aPromo.impressions}</td>
 					<td class="center">{$aPromo.clicks}</td>
@@ -67,7 +67,7 @@
 							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>
 						<a href="/admin/promos/delete/{$aPromo.id}/"
-						 onclick="return confirm_('Are you sure you would like to delete: {$aPromo.name|clean_html}?');"
+						 onclick="return confirm_('Are you sure you would like to delete: {$aPromo.name}?');"
 						 title="Delete Promo">
 							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
 						</a>

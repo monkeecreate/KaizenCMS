@@ -12,7 +12,7 @@
 				{if $aMenu.menu|@count gt 1}
 					<ul class="pageTabs">
 						{foreach from=$aMenu.menu item=aItem}
-							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text}">{$aItem.text}</a></li>
 						{/foreach}
 					</ul>
 				{/if}
@@ -21,14 +21,14 @@
 	</header>
 
 	<section class="inner-content">
-		<h3>{$aArticle.title|clean_html}</h3>
+		<h3>{$aArticle.title}</h3>
 
 		<form name="upload" action="/admin/news/image/upload/s/" method="post" enctype="multipart/form-data" {if $aArticle.photo_x2 > 0}style="display:none;"{/if}>
 			<fieldset>
 				{if $aArticle.photo_x2 > 0}
 					<legend>Replace Current Image</legend>				
 					<span class="right">
-						<img src="/image/news/{$aArticle.id}/?width=165" alt="{$aArticle.title|clean_html} Image">
+						<img src="/image/news/{$aArticle.id}/?width=165" alt="{$aArticle.title} Image">
 					</span>
 				{else}
 					<legend>Upload Image</legend>

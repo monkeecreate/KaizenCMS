@@ -42,12 +42,19 @@ class faq_model extends appModel
 		return $aQuestion;
 	}
 	private function _getQuestionInfo($aQuestion) {
+		$aQuestion["question"] = nl2br(htmlspecialchars(stripslashes($aQuestion["question"])));
+		$aQuestion["answer"] = stripslashes($aQuestion["answer"]);
+		
 		$aQuestion["categories"] = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}faq_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
 			,"all"
 		);
+		
+		foreach($aQuestion["categories"] as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		}
 		
 		return $aQuestion;
 	}
@@ -58,6 +65,10 @@ class faq_model extends appModel
 					." ORDER BY `name`"
 				,"all"
 			);
+		
+			foreach($aCategories as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		} else {
 			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}faq_categories_assign`"
@@ -84,6 +95,8 @@ class faq_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
 	}

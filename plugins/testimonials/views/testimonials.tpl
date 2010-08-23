@@ -1,10 +1,10 @@
 {include file="inc_header.tpl" page_title="Testimonials" menu="testimonials"}
 
-{getContent tag="testimonials" var="aContent"}
+	{getContent tag="testimonials" var="aContent"}
 
-	<h2>{$aContent.title|clean_html}</h2>
+	<h2>{$aContent.title}</h2>
 	<p id="testiContent">
-		{$aContent.content|stripslashes}
+		{$aContent.content}
 	</p>
 
 	<p>

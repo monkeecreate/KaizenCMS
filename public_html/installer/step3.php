@@ -29,7 +29,7 @@ if($_POST["setup"] == 1) {
 			.", `updated_by` = 0"
 		);
 		
-		header("Location: /?step=4");
+		header("Location: /admin/");
 		exit;
 	} else {
 		$sFail = "Admin password is required!";

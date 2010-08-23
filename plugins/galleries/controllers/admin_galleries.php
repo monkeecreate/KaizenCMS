@@ -84,45 +84,6 @@ class admin_galleries extends adminController
 		
 		$this->forward("/admin/galleries/?notice=".urlencode("Gallery created successfully!"));
 	}
-	function sort() {
-		$oGalleries = $this->loadModel("galleries");
-		
-		$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["id"]);
-		
-		if($this->urlVars->dynamic["sort"] == "up") {
-			$aOld = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}galleries`"
-					." WHERE `sort_order` < ".$aGallery["sort_order"]
-					." ORDER BY `sort_order` DESC"
-				,"row"
-			);
-		} elseif($this->urlVars->dynamic["sort"] == "down") {
-			$aOld = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}galleries`"
-					." WHERE `sort_order` > ".$aGallery["sort_order"]
-					." ORDER BY `sort_order` ASC"
-				,"row"
-			);
-		}
-		
-		$this->dbUpdate(
-			"galleries",
-			array(
-				"sort_order" => $aOld["sort_order"]
-			),
-			$aGallery["id"]
-		);
-		
-		$this->dbUpdate(
-			"galleries",
-			array(
-				"sort_order" => $aGallery["sort_order"]
-			),
-			$aOld["id"]
-		);
-		
-		$this->forward("/admin/galleries/?notice=".urlencode("Sort order saved successfully!"));
-	}
 	function edit() {
 		$oGalleries = $this->loadModel("galleries");
 		
@@ -325,7 +286,7 @@ class admin_galleries extends adminController
 		
 		$aGallery["categories"] = $this->dbQuery(
 			"SELECT `categories`.`id` FROM `{dbPrefix}galleries_categories` AS `categories`"
-				." INNER JOIN `galleries_categories_assign` AS `galleries_assign` ON `categories`.`id` = `galleries_assign`.`categoryid`"
+				." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `categories`.`id` = `galleries_assign`.`categoryid`"
 				." WHERE `galleries_assign`.`galleryid` = ".$this->urlVars->dynamic["gallery"]
 				." GROUP BY `categories`.`id`"
 				." ORDER BY `categories`.`name`"

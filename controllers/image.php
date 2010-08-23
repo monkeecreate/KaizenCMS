@@ -35,7 +35,7 @@ class image extends appController
 		
 		include($this->settings->root."helpers/makeImage.php");
 		$oImage = new makeImage($sFile, true);
-		$oImage->cropCenter($sNewWidth, $sNewHeight);
+		$oImage->cropCenter($_GET["width"], $_GET["height"]);
 		
 		$oImage->draw(null, 85);
 	}

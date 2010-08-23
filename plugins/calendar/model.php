@@ -59,12 +59,20 @@ class calendar_model extends appModel
 		return $aEvent;
 	}
 	private function _getEventInfo($aEvent) {
+		$aEvent["title"] = htmlspecialchars(stripslashes($aEvent["title"]));
+		$aEvent["short_content"] = nl2br(htmlspecialchars(stripslashes($aEvent["short_content"])));
+		$aEvent["content"] = stripslashes($aEvent["content"]);
+		
 		$aEvent["categories"] = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}calendar_categories` AS `category`"
-				." INNER JOIN `calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
+				." INNER JOIN `{dbPrefix}calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
 				." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
 			,"all"
 		);
+		
+		foreach($aEvent["categories"] as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		}
 		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aEvent["id"].".jpg")
 		 && $aEvent["photo_x2"] > 0
@@ -82,6 +90,10 @@ class calendar_model extends appModel
 					." ORDER BY `name`"
 				,"all"
 			);
+		
+			foreach($aCategories as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		} else {
 			$aCategories = $this->dbQuery(
 				"SELECT DISTINCT(`categoryid`) FROM `{dbPrefix}calendar_categories_assign`"
@@ -107,6 +119,8 @@ class calendar_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
 	}

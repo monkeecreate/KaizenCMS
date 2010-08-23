@@ -13,9 +13,9 @@
 
 		<section class="inner-content">
 			<label>*Title:</label><br />
-			<input type="text" name="title" maxlength="100" value="{$aEvent.title|clean_html}"><br />
+			<input type="text" name="title" maxlength="100" value="{$aEvent.title}"><br />
 			<label>Short Content:</label><span class="right"><span id="currentCharacters"></span> of {$sShortContentCount} characters</span><br />
-			<textarea name="short_content" style="height:115px;">{$aEvent.short_content|clean_html}</textarea><br />
+			<textarea name="short_content" style="height:115px;">{$aEvent.short_content|replace:'<br />':''}</textarea><br />
 			
 			<label>Content:</label><br />
 			{html_editor content=$aEvent.content name="content"}<br />
@@ -28,7 +28,7 @@
 							<li>
 								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
 								 {if in_array($aCategory.id, $aEvent.categories)} checked="checked"{/if}>
-								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name|stripslashes}</label>
+								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name}</label>
 							</li>
 						{foreachelse}
 							<li>
@@ -52,7 +52,7 @@
 		<section>
 			{if $aEvent.photo_x2 > 0}
 			<figure class="itemImage">
-				<img src="/image/calendar/{$aEvent.id}/?width=165&rand={$randnum}" alt="{$aEvent.title|clean_html} Image">
+				<img src="/image/calendar/{$aEvent.id}/?width=165&rand={$randnum}" alt="{$aEvent.title} Image">
 				<input name="submit" type="image" src="/images/admin/icons/pencil.png" value="edit">
 				<input name="submit" type="image" src="/images/admin/icons/bin_closed.png" value="delete">
 			</figure>
@@ -65,7 +65,7 @@
 				<input type="checkbox" name="active" value="1"{if $aEvent.active == 1} checked="checked"{/if}><br />
 				
 				<label>Last Updated:</label><br />
-				<p style="font-size:1.1em;margin-bottom:8px;">{$aEvent.updated_datetime|date_format:"%D @ %I:%M %p"} by {$aEvent.updated_by.fname|clean_html} {$aEvent.updated_by.lname|clean_html}</p>
+				<p style="font-size:1.1em;margin-bottom:8px;">{$aEvent.updated_datetime|date_format:"%D @ %I:%M %p"} by {$aEvent.updated_by.fname} {$aEvent.updated_by.lname}</p>
 			</fieldset>
 			
 			<fieldset>
@@ -147,6 +147,14 @@ $(function(){ldelim}
 			{rdelim});
 		{rdelim}
 	{rdelim});
+	
+	{if $aEvent.allday == 1}
+		$(".eventTime").css('opacity', '0.3');
+		$(".eventTime").css('filter', 'alpha(opacity=30)');
+		$(".eventTime").each(function() {ldelim}
+			$(this).find("select").attr("disabled", true);
+		{rdelim});
+	{/if}
 	
 	$(".eventExpire").click(function() {ldelim}
 		$(this).hide();

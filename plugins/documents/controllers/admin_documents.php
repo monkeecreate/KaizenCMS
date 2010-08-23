@@ -138,15 +138,11 @@ class admin_documents extends adminController
 				,"row"
 			);
 		} else {
-			$aDocument = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}documents`"
-					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
-				,"row"
-			);
+			$aDocument = $oDocuments->getDocument($this->urlVars->dynamic["id"], true);
 			
 			$aDocument["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}documents_categories` AS `categories`"
-					." INNER JOIN `documents_categories_assign` AS `documents_assign` ON `categories`.`id` = `documents_assign`.`categoryid`"
+					." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `categories`.`id` = `documents_assign`.`categoryid`"
 					." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
@@ -220,7 +216,7 @@ class admin_documents extends adminController
 				
 				if(in_array($file_ext, $oDocuments->allowedExt) || empty($oDocuments->allowedExt)) {
 					$sDocument = $this->dbQuery(
-						"SELECT `{dbPrefix}document` FROM `{dbPrefix}documents`"
+						"SELECT `document` FROM `{dbPrefix}documents`"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
 						,"one"
 					);

@@ -9,18 +9,6 @@
 	<section id="content" class="content">
 		<header>
 			<h2>Content Pages &raquo; Add Page</h2>
-
-			{foreach from=$aAdminFullMenu item=aMenu key=k}
-				{if $k == "content"}
-					{if $aMenu.menu|@count gt 1}
-						<ul class="pageTabs">
-							{foreach from=$aMenu.menu item=aItem}
-								<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
-							{/foreach}
-						</ul>
-					{/if}
-				{/if}
-			{/foreach}
 		</header>
 
 		<section class="inner-content">

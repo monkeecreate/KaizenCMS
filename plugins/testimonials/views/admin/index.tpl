@@ -56,8 +56,8 @@
 							<img src="/images/admin/icons/bullet_red.png" alt="inactive">
 						{/if}
 					</td>
-					<td>{$aTestimonial.name|clean_html}</td>
-					<td>{$aTestimonial.sub_name|clean_html}</td>
+					<td>{$aTestimonial.name}</td>
+					<td>{$aTestimonial.sub_name}</td>
 					<td class="center">
 						<a href="/admin/testimonials/edit/{$aTestimonial.id}/">
 							<img src="/images/admin/icons/pencil.png">

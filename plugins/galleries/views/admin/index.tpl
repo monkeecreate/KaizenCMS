@@ -61,7 +61,7 @@
 							<img src="/images/blank.gif" style="width:16px;height:16px;">
 						{/if}
 					</td>
-					<td>{$aGallery.name|clean_html}</td>
+					<td>{$aGallery.name}</td>
 					<td class="center">{if !empty($aGallery.photos)}{$aGallery.photos}{else}No Photos{/if}</td>
 					<td class="center">
 						<a href="/admin/galleries/{$aGallery.id}/photos/" title="Manage Gallery">
@@ -71,7 +71,7 @@
 							<img src="/images/admin/icons/pencil.png" alt="edit gallery">
 						</a> -->
 						<a href="/admin/galleries/delete/{$aGallery.id}/"
-							onclick="return confirm_('Are you sure you would like to delete: {$aGallery.name|clean_html}?');"
+							onclick="return confirm_('Are you sure you would like to delete: {$aGallery.name}?');"
 							title="Delete Gallery">
 							<img src="/images/admin/icons/bin_closed.png" alt="delete gallery">
 						</a>

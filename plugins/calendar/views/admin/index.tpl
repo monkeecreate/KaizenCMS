@@ -60,7 +60,7 @@
 							<span class="hidden">not published</span><img src="/images/admin/icons/bullet_yellow.png" alt="not published">
 						{/if}
 					</td>
-					<td>{$aEvent.title|clean_html}</td>
+					<td>{$aEvent.title}</td>
 					<td class="center">{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</td>
 					<td class="center" style="width:50px;">
 						{if $sUseImage == true}
@@ -72,7 +72,7 @@
 							<img src="/images/admin/icons/pencil.png" alt="edit event">
 						</a>
 						<a href="/admin/calendar/delete/{$aEvent.id}/"
-						 onclick="return confirm_('Are you sure you would like to delete: {$aEvent.title|clean_html}?');"
+						 onclick="return confirm_('Are you sure you would like to delete: {$aEvent.title}?');"
 						 title="Delete Event">
 							<img src="/images/admin/icons/bin_closed.png" alt="delete event">
 						</a>

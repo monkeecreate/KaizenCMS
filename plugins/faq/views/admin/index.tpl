@@ -65,7 +65,7 @@
 							<img src="/images/admin/icons/bullet_red.png" alt="inactive">
 						{/if}
 					</td>
-					<td>{$aQuestion.question|clean_html|substr:0:80}{if strlen($aQuestion.question) > 80}...{/if}</td>
+					<td>{$aQuestion.question|substr:0:80}{if strlen($aQuestion.question) > 80}...{/if}</td>
 					{if empty($sCategory)}
 						<td class="small center">
 							<span class="hidden">{$aQuestion.sort_order}</span>
@@ -86,7 +86,7 @@
 							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>
 						<a href="/admin/faq/delete/{$aQuestion.id}/"
-						 onclick="return confirm_('Are you sure you would like to delete: {$aQuestion.question|clean_html}?');"
+						 onclick="return confirm_('Are you sure you would like to delete: {$aQuestion.question}?');"
 						 title="Delete Question">
 							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
 						</a>

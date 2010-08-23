@@ -82,13 +82,47 @@ class directory_model extends appModel
 		
 		return $aListings;
 	}
+	function getListing($sId, $sAll = false) {
+		// Start the WHERE
+		$sWhere = " WHERE `directory`.`id` > 0";// Allways true
+		
+		if($sAll == false)
+			$sWhere .= " AND `directory`.`active` = 1";
+		
+		$aListing = $this->dbQuery(
+			"SELECT `directory`.* FROM `{dbPrefix}directory` AS `directory`"
+				.$sWhere
+				." LIMIT 1"
+			,"row"
+		);
+	
+		if(!empty($aListing))
+			$aListing = $this->_getListingInfo($aListing);
+		
+		return $aListing;
+	}
 	private function _getListingInfo($aListing) {
+		$aListing["name"] = htmlspecialchars(stripslashes($aListing["name"]));
+		$aListing["address1"] = htmlspecialchars(stripslashes($aListing["address1"]));
+		$aListing["address2"] = htmlspecialchars(stripslashes($aListing["address2"]));
+		$aListing["city"] = htmlspecialchars(stripslashes($aListing["city"]));
+		$aListing["state"] = htmlspecialchars(stripslashes($aListing["state"]));
+		$aListing["zip"] = htmlspecialchars(stripslashes($aListing["zip"]));
+		$aListing["phone"] = htmlspecialchars(stripslashes($aListing["phone"]));
+		$aListing["fax"] = htmlspecialchars(stripslashes($aListing["fax"]));
+		$aListing["email"] = htmlspecialchars(stripslashes($aListing["email"]));
+		$aListing["website"] = htmlspecialchars(stripslashes($aListing["website"]));
+		
 		$aListing["categories"] = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}directory_categories` AS `categories`"
 				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
 				." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
 			,"all"
 		);
+		
+		foreach($aListing["categories"] as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		}
 		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["file"])
 		 && $this->useImage == true)
@@ -105,6 +139,10 @@ class directory_model extends appModel
 					." ORDER BY `name`"
 				,"all"
 			);
+		
+			foreach($aCategories as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		} else {
 			$aCategories = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}directory_categories_assign`"
@@ -131,6 +169,8 @@ class directory_model extends appModel
 				.$sWhere
 			,"row"
 		);
+		
+		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
 	}

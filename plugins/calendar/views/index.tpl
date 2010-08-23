@@ -22,7 +22,7 @@
 		<select name="category">
 			<option value="">- All Categories -</option>
 			{foreach from=$aCategories item=aCategory}
-				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name|clean_html}</option>
+				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
 		</select>
 		<script type="text/javascript">
@@ -40,15 +40,15 @@
 	{foreach from=$aEvents item=aEvent}
 		<article class="events">
 			<h3>
-				<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="{$aEvent.title|clean_html}">
-					{$aEvent.title|clean_html}
+				<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="{$aEvent.title}">
+					{$aEvent.title}
 				</a>
 			</h3>
 			<span class="timeCat">
 				<time>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</time>
 				 | Categories:
 					{foreach from=$aEvent.categories item=aCategory name=category}
-						<a href="/calendar/?category={$aCategory.id}" title="Events in {$aCategory.name|clean_html}">{$aCategory.name|clean_html}</a>{if $smarty.foreach.category.last == false},{/if} 
+						<a href="/calendar/?category={$aCategory.id}" title="Events in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
 					{/foreach}
 			</span>
 			
@@ -56,13 +56,13 @@
 			
 			{if $aEvent.photo_x2 > 0}
 				<figure class="left">
-					<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="{$aEvent.title|clean_html}"><img src="/image/calendar/{$aEvent.id}/?width=140" alt="Calendar Image"></a>
+					<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="{$aEvent.title}"><img src="/image/calendar/{$aEvent.id}/?width=140" alt="Calendar Image"></a>
 				</figure>
 			{/if}
 			
 			<p>
-				{$aEvent.short_content|clean_html}
-				<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="More info for {$aEvent.title|clean_html}">More Info&raquo;</a>
+				{$aEvent.short_content}
+				<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="More info for {$aEvent.title}">More Info&raquo;</a>
 			</p>
 		</article>
 	{foreachelse}

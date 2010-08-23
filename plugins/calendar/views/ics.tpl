@@ -29,7 +29,7 @@ END:VTIMEZONE
 {foreach from=$aEvents item=aEvent}
 BEGIN:VEVENT
 CLASS:PUBLIC
-SUMMARY:{$aEvent.title|clean_html}
+SUMMARY:{$aEvent.title}
 URL:http://{$domain}/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/
 {if $aEvent.allday == 1}
 DTSTART;VALUE=DATE:{$aEvent.datetime_start|date_format:"%Y%m%d"}

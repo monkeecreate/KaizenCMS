@@ -1,9 +1,9 @@
 {include file="inc_header.tpl" page_title="Promo Positions :: Add Position" menu="promos"}
 <form method="post" action="/admin/promos/positions/add/s/" enctype="multipart/form-data">
 	<label>*Name:</label>
-	<input type="text" name="name" maxlength="100" value="{$aPosition.name|clean_html}"><br>
+	<input type="text" name="name" maxlength="100" value="{$aPosition.name}"><br>
 	<label>Tag: <small>(if left blank, it will auto create based on name)</small></label>
-	<input type="text" name="tag" maxlength="100" value="{$aPosition.tag|clean_html}"><br>
+	<input type="text" name="tag" maxlength="100" value="{$aPosition.tag}"><br>
 	<label>Width: (pixels)</label>
 	<input type="text" class="xsmall" name="promo_width" maxlength="100" value="{$aPosition.promo_width}"><br>
 	<label>Height: (pixels)</label>
