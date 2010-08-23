@@ -1,4 +1,5 @@
 <?php
+$currentStep = "Step Four";
 include("inc_header.php");
 ?>
 
