@@ -33,6 +33,12 @@ class adminController extends appController
 			$this->tplAssign("loggedin", 1);
 			$this->tplAssign("user_details", $aUser);
 			
+			/*## Security Check ##*/
+			if(is_writable("../inc_config.php")) {
+				$this->tplAssign("sSecurityError", "Config file is still writable.");
+			}
+			/*## End ##*/
+			
 			/*## Super Admin ##*/
 			if($aUser["id"] == 1)
 				$this->superAdmin = true;
