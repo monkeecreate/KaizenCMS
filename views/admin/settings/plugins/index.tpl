@@ -1,5 +1,5 @@
 {include file="inc_header.tpl" page_title="Manage Plugins" menu="settings" page_style="fullContent"}
-{assign var=subMenu value="Plugins"}
+{assign var=subMenu value="Manage Plugins"}
 {head}
 <script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
 <script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
@@ -21,7 +21,7 @@
 
 <section id="content" class="content">
 	<header>
-		<h2>Contact Pages</h2>
+		<h2>Manage Plugins</h2>
 		
 		{foreach from=$aAdminFullMenu item=aMenu key=k}
 			{if $k == "settings"}

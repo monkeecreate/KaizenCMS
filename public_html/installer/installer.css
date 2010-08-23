@@ -243,6 +243,10 @@ form input:hover, form input:focus {
 	border: 1px solid #333;
 }
 
+form input.errorField {
+	border-color: #cc0000;
+}
+
 .content form h3 {
 	margin: 4px 0 6px;
 }

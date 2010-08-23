@@ -136,6 +136,8 @@ if($_POST["setup"] == 1) {
 	}
 }
 
+$currentStep = "Step Two";
+
 include("inc_header.php");
 ?>
 			<header>
@@ -143,15 +145,17 @@ include("inc_header.php");
 			</header>
 
 			<section class="inner-content">
-				<?php
-				if(!empty($sFail)) {
-					echo "<ul>";
-					echo "<li><span class=\"iconic fail\">x</span> ".$sFail."</li>";
-					echo "</ul>";
-				}
-				?>
+				<div id="formErrors">
+					<?php if(!empty($sFail)) {
+						echo "<ul>";
+						echo "<li><span class=\"iconic fail\">x</span> ".$sFail."</li>";
+						echo "</ul>";
+					} ?>
+				</div>
+				
+				
 
-				<form name="setp2" method="post" action="/?step=2">
+				<form name="step2" method="post" action="/?step=2">
 					<fieldset>
 						<legend>Database Info</legend>
 						
@@ -160,16 +164,16 @@ include("inc_header.php");
 						<option value="mysql">MySQL</option>
 						</select><br> -->
 						<input type="hidden" name="type" value="mysql">
-						<label>Database Host:</label>
-						<input type="text" name="host" value="<?=$_POST["host"]?>"><br />
-						<label>Database:</label>
-						<input type="text" name="database" value="<?=$_POST["database"]?>"><br />
-						<label>Database Username:</label>
-						<input type="text" name="username" value="<?=$_POST["username"]?>"><br />
-						<label>Database Password:</label>
-						<input type="text" name="password" value="<?=$_POST["password"]?>"><br />
-						<label>Database Prefix:</label>
-						<input type="text" name="prefix" value="<?=$_POST["prefix"]?>"><br />
+						<label for="host">Database Host:</label>
+						<input type="text" name="host" value="<?php echo $_POST["host"]; ?>"><br />
+						<label for="database">Database Name:</label>
+						<input type="text" name="database" value="<?php echo $_POST["database"]; ?>"><br />
+						<label for="username">Database Username:</label>
+						<input type="text" name="username" value="<?php echo $_POST["username"]; ?>"><br />
+						<label for="password">Database Password:</label>
+						<input type="text" name="password" value="<?php echo $_POST["password"]; ?>"><br />
+						<label for="prefix">Database Prefix:</label>
+						<input type="text" name="prefix" value="<?php echo $_POST["prefix"]; ?>"><br />
 					</fieldset>
 					
 					<a href="#advancedSettings" class="showAdvanced">Advanced Settings: Mail, Encryption</a>
@@ -178,7 +182,7 @@ include("inc_header.php");
 						<fieldset>
 							<legend>Mail Setup</legend>
 						
-							<label>Mail Delivery Method:</label>
+							<label for="mail">Mail Delivery Method:</label>
 							<select name="mail">
 								<option value="mail">PHP Mail</option>
 								<option value="sendmail"<?php if($_POST["mail"] == "sendmail") echo " selected=\"selected\""; ?>>Sendmail</option>
@@ -187,38 +191,37 @@ include("inc_header.php");
 							
 							<span id="sendmail" class="mailOption hidden">
 								<h3>Sendmail Options</h3>
-								<label>Sendmail Path:</label>
-								<input type="text" name="sendmail_path" value="<?=$_POST["sendmail_path"]?>"><br />
-								<label>Sendmail Arguments:</label>
-								<input type="text" name="sendmail_arg" value="<?=$_POST["sendmail_arg"]?>"><br />
+								<label for="sendmail_path">Sendmail Path:</label>
+								<input type="text" name="sendmail_path" value="<?php echo $_POST["sendmail_path"]; ?>"><br />
+								<label for="sendmail_arg">Sendmail Arguments:</label>
+								<input type="text" name="sendmail_arg" value="<?php echo $_POST["sendmail_arg"]; ?>"><br />
 							</span>
 							
 							<span id="smtp" class="mailOption hidden">
 								<h3>SMTP Options</h3>
-								<label>Host:</label>
-								<input type="text" name="smtp_host" value="<?=$_POST["smtp_host"]?>"><br />
-								<label>Port:</label>
-								<input type="text" name="smtp_port" value="<?=$_POST["smtp_port"]?>"><br />
-								<label>Authentication:</label>
+								<label for="smtp_host">Host:</label>
+								<input type="text" name="smtp_host" value="<?php echo $_POST["smtp_host"]; ?>"><br />
+								<label for="smtp_port">Port:</label>
+								<input type="text" name="smtp_port" value="<?php echo $_POST["smtp_port"]; ?>"><br />
+								<label for="smtp_auth">Authentication:</label>
 								<select name="smtp_auth">
 									<option value="1">Yes</option>
 									<option value="0"<?php if($_POST["smtp_auth"] == false) echo " selected=\"selected\""; ?>>No</option>
 								</select><br />
-								<label>Username:</label>
-								<input type="text" name="smtp_username" value="<?=$_POST["smtp_username"]?>"><br />
-								<label>Password:</label>
-								<input type="text" name="smtp_password" value="<?=$_POST["smtp_password"]?>"><br />
+								<label for="smtp_username">Username:</label>
+								<input type="text" name="smtp_username" value="<?php echo $_POST["smtp_username"]; ?>"><br />
+								<label for="smtp_password">Password:</label>
+								<input type="text" name="smtp_password" value="<?php echo $_POST["smtp_password"]; ?>"><br />
 							</span>
 						</fieldset>
 					
 						<fieldset>
 							<legend>Encryption</legend>
-						
-							<b>Encryption:</b><br />
-							<label>Key:</label>
-							<input type="text" name="enc_key" value="<?=$_POST["enc_key"]?>"><br />
-							<label>Salt:</label>
-							<input type="text" name="enc_salt" value="<?=$_POST["enc_salt"]?>"><br />
+							
+							<label for="enc_key">Key:</label>
+							<input type="text" name="enc_key" value="<?php echo $_POST["enc_key"]; ?>"><br />
+							<label for="enc_salt">Salt:</label>
+							<input type="text" name="enc_salt" value="<?php echo $_POST["enc_salt"]; ?>"><br />
 						</fieldset>
 					</span>
 	
@@ -226,5 +229,16 @@ include("inc_header.php");
 					<input type="hidden" name="setup" value="1">
 				</form>
 			</section>
+			
+			<script type="text/javascript">
+			$(function(){
+				$("form").validateForm([
+					"required,host,Database host is required",
+					"required,database,Database name is required",
+					"required,username,Database username is required",
+					"required,password,Database password is required"
+				]);
+			});
+			</script>
 
 <?php include("inc_footer.php"); ?>

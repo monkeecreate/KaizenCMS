@@ -14,6 +14,8 @@
 	<!--[if gte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css" media="screen, projection" /><![endif]-->
 	<!--[if lte IE 6]><link rel="stylesheet" href="/css/ie6.css" type="text/css" media="screen, projection" /><![endif]-->
 	
+	<script src="/scripts/jquery-1.4.2.min.js"></script>
+	<script src="/scripts/jquery.rsv.js"></script>
 	<script src="/scripts/modernizr-1.5.min.js"></script>
 </head>
 <!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
@@ -27,5 +29,5 @@
 			<h1>Kaizen CMS : Installer</h1>
 			<h2>Making the CMS world awesome one install at a time...</h2>
 		</header>
-		
+
 		<section id="content" class="content installer">
