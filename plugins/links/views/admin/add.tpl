@@ -61,7 +61,7 @@
 					<label>Upload Image:</label><br />
 					<input type="file" name="image"><br />
 					<ul style="font-size:0.8em;">
-						<li>File must be a .jpg</li>
+						<!-- <li>File must be a .jpg</li> -->
 						{if $minWidth != 0}<li>Minimum width is {$minWidth}px</li>{/if}
 						{if $minHeight != 0}<li>Minimum height is {$minHeight}px</li>{/if}
 					</ul>
