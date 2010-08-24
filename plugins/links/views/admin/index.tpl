@@ -59,6 +59,11 @@
 					<td>{$aLink.name}</td>
 					<td class="center"><a href="{$aLink.link}" title="{$aLink.name}" target="_blank">{$aLink.link}</a></td>
 					<td class="center">
+						{if $sUseImage == true}
+							<a href="/admin/links/image/{$aLink.id}/edit/" title="Edit Link Image">
+								<img src="/images/admin/icons/picture.png">
+							</a>
+						{/if}
 						<a href="/admin/links/edit/{$aLink.id}/" title="Edit Link">
 							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>

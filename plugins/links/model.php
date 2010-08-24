@@ -2,9 +2,8 @@
 class links_model extends appModel
 {
 	public $useImage = true;
-	// set MinWidth and MinHeight to 0 to not force min diminsions
-	public $imageMinWidth = 0;
-	public $imageMinHeight = 0;
+	public $imageMinWidth = 140;
+	public $imageMinHeight = 87;
 	public $imageFolder = "/uploads/links/";
 	public $useCategories = true;
 	public $perPage = 5;
@@ -65,6 +64,13 @@ class links_model extends appModel
 			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		}
 		
+		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aLink["id"].".jpg")
+		 && $aLink["photo_x2"] > 0
+		 && $this->useImage == true)
+			$aLink["image"] = 1;
+		else
+			$aLink["image"] = 0;
+		
 		return $aLink;
 	}
 	function getCategories($sEmpty = true) {
@@ -108,5 +114,17 @@ class links_model extends appModel
 		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
+	}
+	function getImage($sId) {
+		$aLink = $this->getLink($sId);
+		
+		$sFile = $this->settings->rootPublic.substr($this->imageFolder, 1).$sId.".jpg";
+		
+		$aImage = array(
+			"file" => $sFile
+			,"info" => $aLink
+		);
+		
+		return $aImage;
 	}
 }
