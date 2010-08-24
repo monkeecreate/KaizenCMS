@@ -48,7 +48,7 @@
 		<section>
 			{if $aLink.photo_x2 > 0}
 			<figure class="itemImage" style="max-width: 300px;">
-				<img src="{$imageFolder}{$aLink.image}" alt="{$aLink.name} Image"><br />
+				<img src="/image/links/{$aLink.id}/?width=165&rand={$randnum}" alt="{$aLink.name} Image"><br />
 				<input name="submit" type="image" src="/images/admin/icons/pencil.png" value="edit">
 				<input name="submit" type="image" src="/images/admin/icons/bin_closed.png" value="delete">
 			</figure>

@@ -85,7 +85,11 @@ class admin_directory extends adminController
 		
 		$_SESSION["admin"]["admin_directory"] = null;
 		
-		$this->forward("/admin/directory/?notice=".urlencode("Listing created successfully!"));
+		if(!empty($_FILES["image"]["type"]) && $oDirectory->useImage == true) {
+			$_POST["id"] = $sID;
+			$this->image_upload_s();
+		} else			
+			$this->forward("/admin/directory/?notice=".urlencode("Listing created successfully!"));
 	}
 	function edit() {
 		$oDirectory = $this->loadModel("directory");
@@ -175,13 +179,115 @@ class admin_directory extends adminController
 		
 		$_SESSION["admin"]["admin_directory"] = null;
 		
-		$this->forward("/admin/directory/?notice=".urlencode("Changes saved successfully!"));
+		if(!empty($_FILES["image"]["type"]) && $oDirectory->useImage == true)
+			$this->image_upload_s();
+		else {
+			if($_POST["submit"] == "Save Changes")
+				$this->forward("/admin/directory/?notice=".urlencode("Changes saved successfully!"));
+			elseif($_POST["submit"] == "edit")
+				$this->forward("/admin/directory/image/".$_POST["id"]."/edit/");
+			elseif($_POST["submit"] == "delete")
+				$this->forward("/admin/directory/image/".$_POST["id"]."/delete/");
+		}
 	}
 	function delete() {
 		$this->dbDelete("directory", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("directory_categories_assign", $this->urlVars->dynamic["id"], "listingid");
 		
 		$this->forward("/admin/directory/?notice=".urlencode("Listing removed successfully!"));
+	}
+	function image_upload_s() {
+		$oDirectory = $this->loadModel("directory");
+		
+		if(!is_dir($this->settings->rootPublic.substr($oDirectory->imageFolder, 1)))
+			mkdir($this->settings->rootPublic.substr($oDirectory->imageFolder, 1), 0777);
+		
+		if($_FILES["image"]["type"] == "image/jpeg"
+		 || $_FILES["image"]["type"] == "image/jpg"
+		 || $_FILES["image"]["type"] == "image/pjpeg"
+		) {
+			$sFile = $this->settings->rootPublic.substr($oDirectory->imageFolder, 1).$_POST["id"].".jpg";
+			
+			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
+			if($aImageSize[0] < $oDirectory->imageMinWidth || $aImageSize[1] < $oDirectory->imageMinHeight) {
+				$this->forward("/admin/directory/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+			}
+			
+			if(move_uploaded_file($_FILES["image"]["tmp_name"], $sFile)) {
+				$this->dbUpdate(
+					"directory",
+					array(
+						"photo_x1" => 0
+						,"photo_y1" => 0
+						,"photo_x2" => $oDirectory->imageMinWidth
+						,"photo_y2" => $oDirectory->imageMinHeight
+						,"photo_width" => $oDirectory->imageMinWidth
+						,"photo_height" => $oDirectory->imageMinHeight
+					),
+					$_POST["id"]
+				);
+
+				$this->forward("/admin/directory/image/".$_POST["id"]."/edit/");
+			} else
+				$this->forward("/admin/directory/image/".$_POST["id"]."/edit/?error=".urlencode("Unable to upload image."));
+		} else
+			$this->forward("/admin/directory/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["image"]["type"].")."));
+	}
+	function image_edit() {
+		$oDirectory = $this->loadModel("directory");
+
+		if($oDirectory->imageMinWidth < 300) {
+			$sPreviewWidth = $oDirectory->imageMinWidth;
+			$sPreviewHeight = $oDirectory->imageMinHeight;
+		} else {
+			$sPreviewWidth = 300;
+			$sPreviewHeight = ceil($oDirectory->imageMinHeight * (300 / $oDirectory->imageMinWidth));
+		}
+		
+		$this->tplAssign("aListing", $oDirectory->getListing($this->urlVars->dynamic["id"]));
+		$this->tplAssign("sFolder", $oDirectory->imageFolder);
+		$this->tplAssign("minWidth", $oDirectory->imageMinWidth);
+		$this->tplAssign("minHeight", $oDirectory->imageMinHeight);
+		$this->tplAssign("previewWidth", $sPreviewWidth);
+		$this->tplAssign("previewHeight", $sPreviewHeight);
+
+		$this->tplDisplay("admin/image.tpl");
+	}
+	function image_edit_s() {
+		$this->dbUpdate(
+			"directory",
+			array(
+				"photo_x1" => $_POST["x1"]
+				,"photo_y1" => $_POST["y1"]
+				,"photo_x2" => $_POST["x2"]
+				,"photo_y2" => $_POST["y2"]
+				,"photo_width" => $_POST["width"]
+				,"photo_height" => $_POST["height"]
+			),
+			$_POST["id"]
+		);
+
+		$this->forward("/admin/directory/?notice=".urlencode("Listing updated."));
+	}
+	function image_delete() {
+		$oDirectory = $this->loadModel("directory");
+		
+		$this->dbUpdate(
+			"directory",
+			array(
+				"photo_x1" => 0
+				,"photo_y1" => 0
+				,"photo_x2" => 0
+				,"photo_y2" => 0
+				,"photo_width" => 0
+				,"photo_height" => 0
+			),
+			$this->urlVars->dynamic["id"]
+		);
+		
+		@unlink($this->settings->rootPublic.substr($oDirectory->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
+
+		$this->forward("/admin/directory/?notice=".urlencode("Image removed successfully!"));
 	}
 	function categories_index() {
 		$oDirectory = $this->loadModel("directory");

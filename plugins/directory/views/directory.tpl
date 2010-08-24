@@ -25,6 +25,9 @@
 	<div id="contentList">
 		{foreach from=$aListings item=aListing}
 			<div class="contentListItem">
+				{if $aListing.image == 1}
+					<img src="/image/directory/{$aListing.id}/?width=140">
+				{/if}
 				<h2>{$aListing.name}</h2>
 				<small class="timeCat">
 					Categories:

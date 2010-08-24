@@ -1,14 +1,14 @@
-{include file="inc_header.tpl" page_title="Links :: Crop Image" menu="links" page_style="fullContent"}
-{assign var=subMenu value="Links"}
+{include file="inc_header.tpl" page_title="Directory :: Crop Image" menu="directory" page_style="fullContent"}
+{assign var=subMenu value="listings"}
 {head}
-	{image_crop load="cropper" preview="true" img="cropimage" previewWidth=$previewWidth previewHeight=$previewHeight rx=$minWidth ry=$minHeight values=$aLink}
+	{image_crop load="cropper" preview="true" img="cropimage" previewWidth=$previewWidth previewHeight=$previewHeight rx=$minWidth ry=$minHeight values=$aListing}
 {/head}
 <section id="content" class="content">
 	<header>
-		<h2>Manage Links &raquo; Crop Image</h2>
+		<h2>Manage Directory &raquo; Crop Image</h2>
 		
 		{foreach from=$aAdminFullMenu item=aMenu key=k}
-			{if $k == "links"}
+			{if $k == "directory"}
 				{if $aMenu.menu|@count gt 1}
 					<ul class="pageTabs">
 						{foreach from=$aMenu.menu item=aItem}
@@ -21,14 +21,14 @@
 	</header>
 
 	<section class="inner-content">
-		<h3>{$aLink.name}</h3>
+		<h3>{$aListing.title}</h3>
 
-		<form name="upload" action="/admin/links/image/upload/s/" method="post" enctype="multipart/form-data" {if $aLink.photo_x2 > 0}style="display:none;"{/if}>
+		<form name="upload" action="/admin/directory/image/upload/s/" method="post" enctype="multipart/form-data" {if $aListing.photo_x2 > 0}style="display:none;"{/if}>
 			<fieldset>
-				{if $aLink.photo_x2 > 0}
+				{if $aListing.photo_x2 > 0}
 					<legend>Replace Current Image</legend>				
 					<span class="right">
-						<img src="/image/links/{$aLink.id}/?width=165&r={$randnum}" alt="{$aLink.name} Image">
+						<img src="/image/directory/{$aListing.id}/?width=165&r={$randnum}" alt="{$aListing.title} Image">
 					</span>
 				{else}
 					<legend>Upload Image</legend>
@@ -44,27 +44,27 @@
 			
 				<input type="submit" value="Upload File">
 				<a class="cancel" href="#" title="Cancel">Cancel</a>
-				<input type="hidden" name="id" value="{$aLink.id}">
+				<input type="hidden" name="id" value="{$aListing.id}">
 			</fieldset>
 		</form>
 		
-		<form name="crop" action="/admin/links/image/edit/s/" method="post" {if $aLink.photo_x2 == 0}style="display:none;"{/if}>
+		<form name="crop" action="/admin/directory/image/edit/s/" method="post" {if $aListing.photo_x2 == 0}style="display:none;"{/if}>
 			<span class="right" style="width:300px;margin-right:8px;">
 				<h4>Image Preview</h4>
 				<div style="width:{$previewWidth}px;height:{$previewHeight}px;overflow:hidden;margin-left:5px;margin-bottom:20px;">
-					<img src="{$sFolder}{$aLink.id}.jpg?{$randnum}" style="width:{$previewWidth}px;height:{$previewHeight}px;" id="preview">
+					<img src="{$sFolder}{$aListing.id}.jpg?{$randnum}" style="width:{$previewWidth}px;height:{$previewHeight}px;" id="preview">
 				</div>
 				<input type="submit" value="Save Changes">
-				<a class="cancel" href="/admin/links/" title="Cancel">Cancel</a>
+				<a class="cancel" href="/admin/directory/" title="Cancel">Cancel</a>
 			</span>
 			
-			<img src="{$sFolder}{$aLink.id}.jpg?{$randnum}" id="cropimage">
+			<img src="{$sFolder}{$aListing.id}.jpg?{$randnum}" id="cropimage">
 			{image_crop load="form"}
 			
 			<p style="font-size:1.0em;margin-top:10px;"><a href="#" title="Upload New Photo" class="replaceImage">Upload New Photo</a> | 
-			<a class="cancel" href="/admin/links/image/{$aLink.id}/delete/" title="Delete Photo">Delete Photo</a></p>
+			<a class="cancel" href="/admin/directory/image/{$aListing.id}/delete/" title="Delete Photo">Delete Photo</a></p>
 			
-			<input type="hidden" name="id" value="{$aLink.id}">
+			<input type="hidden" name="id" value="{$aListing.id}">
 		</form>
 	</section>
 </section>

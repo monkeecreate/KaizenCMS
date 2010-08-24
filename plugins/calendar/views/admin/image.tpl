@@ -28,7 +28,7 @@
 				{if $aEvent.photo_x2 > 0}
 					<legend>Replace Current Image</legend>				
 					<span class="right">
-						<img src="/image/calendar/{$aEvent.id}/?width=165" alt="{$aEvent.title} Image">
+						<img src="/image/calendar/{$aEvent.id}/?width=165&r={$randnum}" alt="{$aEvent.title} Image">
 					</span>
 				{else}
 					<legend>Upload Image</legend>
