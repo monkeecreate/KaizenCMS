@@ -40,7 +40,7 @@
 	<table class="dataTable">
 		<thead>
 			<tr>
-				<th class="empty">&nbsp;</th>
+				<th class="empty itemStatus">&nbsp;</th>
 				<th>Name</th>
 				<th>Publish Date/Time</th>
 				<th>Impressions</th>

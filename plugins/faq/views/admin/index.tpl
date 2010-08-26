@@ -47,7 +47,7 @@
 	<table class="dataTable">
 		<thead>
 			<tr>
-				<th class="empty">&nbsp;</th>
+				<th class="empty itemStatus">&nbsp;</th>
 				<th>Question</th>
 				{if empty($sCategory)}
 					<th>Order</td>

@@ -41,7 +41,7 @@
 		<thead>
 			<tr>
 				<th class="hidden">Category</th>
-				<th class="empty">&nbsp;</th>
+				<th class="empty itemStatus">&nbsp;</th>
 				<th>Title</th>
 				<th>Publish Date/Time</td>
 				<th></th>

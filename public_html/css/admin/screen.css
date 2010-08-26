@@ -1007,6 +1007,10 @@ table.dataTable thead th.hidden {
 	border: 0 !important;
 }
 
+table.dataTable thead tr th.itemStatus {
+	width: 36px !important;
+}
+
 /* @end */
 
 /* @group Photo Upload */

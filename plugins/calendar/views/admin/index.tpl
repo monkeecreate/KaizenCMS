@@ -41,10 +41,10 @@
 		<thead>
 			<tr>
 				<th class="hidden">Category</th>
-				<th class="empty">&nbsp;</th>
+				<th class="empty itemStatus">&nbsp;</th>
 				<th>Title</th>
-				<th>Event Date/Time</th>
-				<th class="sorting_disabled center empty">&nbsp;</th>
+				<th>Date/Time</th>
+				<th class="sorting_disabled center empty">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
