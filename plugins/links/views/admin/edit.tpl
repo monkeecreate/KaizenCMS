@@ -46,10 +46,11 @@
 		</header>
 
 		<section>
-			{if !empty($aLink.image) && $sUseImage}
+			{if $aLink.photo_x2 > 0}
 			<figure class="itemImage" style="max-width: 300px;">
-				<img src="{$imageFolder}{$aLink.image}" alt="{$aLink.name} Image"><br />
-				<a href="#">Replace Image</a>
+				<img src="/image/links/{$aLink.id}/?width=165&rand={$randnum}" alt="{$aLink.name} Image"><br />
+				<input name="submit" type="image" src="/images/admin/icons/pencil.png" value="edit">
+				<input name="submit" type="image" src="/images/admin/icons/bin_closed.png" value="delete">
 			</figure>
 			{/if}
 			
@@ -58,16 +59,16 @@
 				<input type="checkbox" name="active" value="1"{if $aLink.active == 1} checked="checked"{/if}>
 			</fieldset>
 			
-			{if $sUseImage}
-				<fieldset class="uploadImage{if !empty($aLink.image)} hidden{/if}">
+			{if $sUseImage && $aLink.photo_x2 == 0}
+				<fieldset>
 					<legend>Link Image</legend>
 					
 					<label>Upload Image:</label><br />
 					<input type="file" name="image"><br />
 					<ul style="font-size:0.8em;">
-						<!-- <li>File must be a .jpg</li> -->
-						{if $minWidth != 0}<li>Minimum width is {$minWidth}px</li>{/if}
-						{if $minHeight != 0}<li>Minimum height is {$minHeight}px</li>{/if}
+						<li>File must be a .jpg</li>
+						<li>Minimum width is {$minWidth}px</li>
+						<li>Minimum height is {$minHeight}px</li>
 					</ul>
 				</fieldset>
 			{/if}
@@ -79,11 +80,6 @@ $(function(){ldelim}
 	$('input[name=active]').iphoneStyle({ldelim}
 		checkedLabel: 'On',
 		uncheckedLabel: 'Off'
-	{rdelim});
-	
-	$(".itemImage a").click(function() {ldelim}
-		$(".itemImage").slideUp("fast");
-		$(".uploadImage").slideDown("slow");
 	{rdelim});
 	
 	$("form").validateForm([

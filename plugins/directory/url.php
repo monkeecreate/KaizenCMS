@@ -40,6 +40,26 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_directory",
         "action" => "delete"
     ),
+	"/admin/directory/image/{id:[0-9]+}/upload/" => array(
+        "cmd" => "admin_directory",
+        "action" => "image_upload"
+    ),
+	"/admin/directory/image/upload/s/" => array(
+        "cmd" => "admin_directory",
+        "action" => "image_upload_s"
+    ),
+	"/admin/directory/image/{id:[0-9]+}/edit/" => array(
+        "cmd" => "admin_directory",
+        "action" => "image_edit"
+    ),
+	"/admin/directory/image/edit/s/" => array(
+        "cmd" => "admin_directory",
+        "action" => "image_edit_s"
+    ),
+	"/admin/directory/image/{id:[0-9]+}/delete/" => array(
+        "cmd" => "admin_directory",
+        "action" => "image_delete"
+    ),
 	"/admin/directory/categories/" => array(
         "cmd" => "admin_directory",
         "action" => "categories_index"

@@ -28,7 +28,7 @@
 				{if $aArticle.photo_x2 > 0}
 					<legend>Replace Current Image</legend>				
 					<span class="right">
-						<img src="/image/news/{$aArticle.id}/?width=165" alt="{$aArticle.title} Image">
+						<img src="/image/news/{$aArticle.id}/?width=165&r={$randnum}" alt="{$aArticle.title} Image">
 					</span>
 				{else}
 					<legend>Upload Image</legend>

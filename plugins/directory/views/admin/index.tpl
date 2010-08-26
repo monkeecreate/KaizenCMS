@@ -57,6 +57,11 @@
 					</td>
 					<td>{$aListing.name}</td>
 					<td class="center">
+						{if $sUseImage == true}
+							<a href="/admin/directory/image/{$aListing.id}/edit/" title="Edit Listing Image">
+								<img src="/images/admin/icons/picture.png">
+							</a>
+						{/if}
 						<a href="/admin/directory/edit/{$aListing.id}/" title="Edit Listing">
 							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>

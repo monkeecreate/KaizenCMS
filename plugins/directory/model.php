@@ -2,7 +2,9 @@
 class directory_model extends appModel
 {
 	public $useImage = true;
-	public $imageFolder = "/uploads/directory/";
+	public $imageMinWidth = 140;
+	public $imageMinHeight = 87;
+	public $imageFolder = "/uploads/news/";
 	public $useCategories = true;
 	public $perPage = 5;
 	public $aStates = array('AL'=>"Alabama",  
@@ -173,5 +175,17 @@ class directory_model extends appModel
 		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
+	}
+	function getImage($sId) {
+		$aListing = $this->getListing($sId);
+		
+		$sFile = $this->settings->rootPublic.substr($this->imageFolder, 1).$sId.".jpg";
+		
+		$aImage = array(
+			"file" => $sFile
+			,"info" => $aListing
+		);
+		
+		return $aImage;
 	}
 }

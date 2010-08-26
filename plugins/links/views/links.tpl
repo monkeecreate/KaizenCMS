@@ -25,8 +25,8 @@
 	<div id="contentList">
 		{foreach from=$aLinks item=aLink}
 			<div class="contentListItem">
-				{if !empty($aLink.image)}
-					<img src="/uploads/links/{$aLink.image}">
+				{if $aLink.image == 1}
+					<img src="/image/links/{$aLink.id}/?width=140">
 				{/if}
 				<h2>
 					<a href="{$aLink.link}" target="_blank">

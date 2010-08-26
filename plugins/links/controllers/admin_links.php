@@ -17,6 +17,8 @@ class admin_links extends adminController
 		$this->tplAssign("aCategories", $oLinks->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
 		$this->tplAssign("aLinks", $oLinks->getLinks($_GET["category"], true));
+		$this->tplAssign("sUseImage", $oLinks->useImage);
+		
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
@@ -74,59 +76,13 @@ class admin_links extends adminController
 			}
 		}
 		
-		if(!is_dir($this->settings->rootPublic.substr($oLinks->imageFolder, 1)))
-			mkdir($this->settings->rootPublic.substr($oLinks->imageFolder, 1), 0777);
-		
-		if(!empty($_FILES["image"]["name"])) {			
-			if($_FILES["image"]["error"] == 1) {
-				$this->dbUpdate(
-					"links",
-					array(
-						"active" => 0
-					),
-					$sID
-				);
-				
-				$_SESSION["admin"]["admin_links"] = $_POST;
-				$this->forward("/admin/links/add/?error=".urlencode("Image file size was too large!"));
-			} else {
-				$upload_dir = $this->settings->rootPublic."uploads/links/";
-				$file_ext = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-				$upload_file = $sID.".".strtolower($file_ext);
-		
-				if(move_uploaded_file($_FILES["image"]["tmp_name"], $upload_dir.$upload_file)) {
-					if($oLinks->imageMinWidth != 0 && $oLinks->imageMinHeight != 0) {
-						$aImageSize = getimagesize($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
-						if($aImageSize[0] < $oLinks->imageMinWidth || $aImageSize[1] < $oLinks->imageMinHeight) {
-							@unlink($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
-							$_SESSION["admin"]["admin_links"] = $_POST;
-							$this->forward("/admin/links/add/?error=".urlencode("Image does not meet the minimum width and height requirements."));
-						}
-					}
-					$this->dbUpdate(
-						"links",
-						array(
-							"image" => $upload_file
-						),
-						$sID
-					);
-				} else {
-					$this->dbUpdate(
-						"links",
-						array(
-							"active" => 0
-						),
-						$sID
-					);
-
-					$this->forward("/admin/links/?notice=".urlencode("Failed to upload image!"));
-				}
-			}
-		}
-		
 		$_SESSION["admin"]["admin_links"] = null;
 		
-		$this->forward("/admin/links/?notice=".urlencode("Link created successfully!"));
+		if(!empty($_FILES["image"]["type"]) && $oLinks->useImage == true) {
+			$_POST["id"] = $sID;
+			$this->image_upload_s();
+		} else			
+			$this->forward("/admin/links/?notice=".urlencode("Link created successfully!"));
 	}
 	function edit() {
 		$oLinks = $this->loadModel("links");
@@ -207,62 +163,18 @@ class admin_links extends adminController
 			}
 		}
 		
-		if(!empty($_FILES["image"]["name"])) {
-			if($_FILES["image"]["error"] == 1) {
-				$this->dbUpdate(
-					"links",
-					array(
-						"active" => 0
-					),
-					$sID
-				);
-				
-				$this->forward("/admin/links/?notice=".urlencode("Image file size was too large!"));
-			} else {
-				$upload_dir = $this->settings->rootPublic."uploads/links/";
-				$file_ext = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-				$upload_file = $_POST["id"].".".strtolower($file_ext);
-				
-				$sImage = $this->dbQuery(
-					"SELECT `image` FROM `{dbPrefix}links`"
-						." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
-					,"one"
-				);
-				@unlink($upload_dir.$sImage);
-			
-				if(move_uploaded_file($_FILES["image"]["tmp_name"], $upload_dir.$upload_file)) {
-					if($oLinks->imageMinWidth != 0 && $oLinks->imageMinHeight != 0) {
-						$aImageSize = getimagesize($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
-						if($aImageSize[0] < $oLinks->imageMinWidth || $aImageSize[1] < $oLinks->imageMinHeight) {
-							@unlink($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$upload_file);
-							$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Image does not meet the minimum width and height requirements."));
-						}
-					}
-					
-					$this->dbUpdate(
-						"links",
-						array(
-							"image" => $upload_file
-						),
-						$sID
-					);
-				} else {
-					$this->dbUpdate(
-						"links",
-						array(
-							"active" => 0
-						),
-						$sID
-					);
-					
-					$this->forward("/admin/links/?notice=".urlencode("Failed to upload image!"));
-				}
-			}
-		}
-		
 		$_SESSION["admin"]["admin_links"] = null;
 		
-		$this->forward("/admin/links/?notice=".urlencode("Changes saved successfully!"));
+		if(!empty($_FILES["image"]["type"]) && $oLinks->useImage == true)
+			$this->image_upload_s();
+		else {
+			if($_POST["submit"] == "Save Changes")
+				$this->forward("/admin/links/?notice=".urlencode("Changes saved successfully!"));
+			elseif($_POST["submit"] == "edit")
+				$this->forward("/admin/links/image/".$_POST["id"]."/edit/");
+			elseif($_POST["submit"] == "delete")
+				$this->forward("/admin/links/image/".$_POST["id"]."/delete/");
+		}
 	}
 	function delete() {
 		$oLinks = $this->loadModel("links");
@@ -275,6 +187,99 @@ class admin_links extends adminController
 		@unlink($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$aLink["image"]);
 		
 		$this->forward("/admin/links/?notice=".urlencode("Link removed successfully!"));
+	}
+	function image_upload_s() {
+		$oLinks = $this->loadModel("links");
+		
+		if(!is_dir($this->settings->rootPublic.substr($oLinks->imageFolder, 1)))
+			mkdir($this->settings->rootPublic.substr($oLinks->imageFolder, 1), 0777);
+
+		if($_FILES["image"]["type"] == "image/jpeg"
+		 || $_FILES["image"]["type"] == "image/jpg"
+		 || $_FILES["image"]["type"] == "image/pjpeg"
+		) {
+			$sFile = $this->settings->rootPublic.substr($oLinks->imageFolder, 1).$_POST["id"].".jpg";
+			
+			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
+			if($aImageSize[0] < $oLinks->imageMinWidth || $aImageSize[1] < $oLinks->imageMinHeight) {
+				$this->forward("/admin/links/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+			}
+
+			if(move_uploaded_file($_FILES["image"]["tmp_name"], $sFile)) {
+				$this->dbUpdate(
+					"links",
+					array(
+						"photo_x1" => 0
+						,"photo_y1" => 0
+						,"photo_x2" => $oLinks->imageMinWidth
+						,"photo_y2" => $oLinks->imageMinHeight
+						,"photo_width" => $oLinks->imageMinWidth
+						,"photo_height" => $oLinks->imageMinHeight
+					),
+					$_POST["id"]
+				);
+
+				$this->forward("/admin/links/image/".$_POST["id"]."/edit/");
+			} else
+				$this->forward("/admin/links/image/".$_POST["id"]."/edit/?error=".urlencode("Unable to upload image."));
+		} else
+			$this->forward("/admin/links/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["image"]["type"].")."));
+	}
+	function image_edit() {
+		$oLinks = $this->loadModel("links");
+
+		if($oLinks->imageMinWidth < 300) {
+			$sPreviewWidth = $oLinks->imageMinWidth;
+			$sPreviewHeight = $oLinks->imageMinHeight;
+		} else {
+			$sPreviewWidth = 300;
+			$sPreviewHeight = ceil($oLinks->imageMinHeight * (300 / $oLinks->imageMinWidth));
+		}
+		
+		$this->tplAssign("aLink", $oLinks->getLink($this->urlVars->dynamic["id"]));
+		$this->tplAssign("sFolder", $oLinks->imageFolder);
+		$this->tplAssign("minWidth", $oLinks->imageMinWidth);
+		$this->tplAssign("minHeight", $oLinks->imageMinHeight);
+		$this->tplAssign("previewWidth", $sPreviewWidth);
+		$this->tplAssign("previewHeight", $sPreviewHeight);
+
+		$this->tplDisplay("admin/image.tpl");
+	}
+	function image_edit_s() {
+		$this->dbUpdate(
+			"links",
+			array(
+				"photo_x1" => $_POST["x1"]
+				,"photo_y1" => $_POST["y1"]
+				,"photo_x2" => $_POST["x2"]
+				,"photo_y2" => $_POST["y2"]
+				,"photo_width" => $_POST["width"]
+				,"photo_height" => $_POST["height"]
+			),
+			$_POST["id"]
+		);
+
+		$this->forward("/admin/links/?notice=".urlencode("Link updated."));
+	}
+	function image_delete() {
+		$oLinks = $this->loadModel("links");
+		
+		$this->dbUpdate(
+			"links",
+			array(
+				"photo_x1" => 0
+				,"photo_y1" => 0
+				,"photo_x2" => 0
+				,"photo_y2" => 0
+				,"photo_width" => 0
+				,"photo_height" => 0
+			),
+			$this->urlVars->dynamic["id"]
+		);
+		
+		@unlink($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
+
+		$this->forward("/admin/links/?notice=".urlencode("Image removed successfully!"));
 	}
 	function categories_index() {
 		$oLinks = $this->loadModel("links");

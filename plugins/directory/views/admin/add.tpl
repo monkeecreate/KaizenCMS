@@ -84,6 +84,20 @@
 				<legend>Listing Status</legend>
 				<input type="checkbox" name="active" value="1"{if $aListing.active == 1} checked="checked"{/if}><br />
 			</fieldset>
+			
+			{if $sUseImage}
+				<fieldset>
+					<legend>Listing Image</legend>
+					
+					<label>Upload Image:</label><br />
+					<input type="file" name="image"><br />
+					<ul style="font-size:0.8em;">
+						<li>File must be a .jpg</li>
+						<li>Minimum width is {$minWidth}px</li>
+						<li>Minimum height is {$minHeight}px</li>
+					</ul>
+				</fieldset>
+			{/if}
 		</section>
 	</section>
 </form>
