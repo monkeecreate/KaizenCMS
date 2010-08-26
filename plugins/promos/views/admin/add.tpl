@@ -114,7 +114,8 @@ $(function(){ldelim}
 	
 	$("form").validateForm([
 		"required,name,Promo name is required",
-		"required,promo,Promo is required"
+		"required,promo,Promo is required",
+		"required,positions[],You must select at least one position"
 	]);
 {rdelim});
 </script>

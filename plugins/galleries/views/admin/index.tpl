@@ -50,6 +50,7 @@
 			{foreach from=$aGalleries item=aGallery}
 				<tr>
 					<td style="width:30px !important;">
+						<span class="hidden">{$aGallery.sort_order}</span>
 						{if $aGallery.sort_order != 1}
 							<a href="/admin/galleries/sort/{$aGallery.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png"></a>
 						{else}

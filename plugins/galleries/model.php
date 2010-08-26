@@ -11,7 +11,7 @@ class galleries_model extends appModel
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 			
 		if($sAll == false)	
-			$sWhere = " AND `galleries`.`active` = 1";
+			$sWhere .= " AND `galleries`.`active` = 1";
 		
 		// Get all gallerys for paging
 		$aGalleries = $this->dbQuery(

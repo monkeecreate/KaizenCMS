@@ -1,6 +1,6 @@
 {include file="inc_header.tpl" page_title=$aGallery.name menu="galleries"}
 
-{head}
+{footer}
 <link type="text/css" media="screen" rel="stylesheet" href="/scripts/colorbox/themes/3/colorbox.css" />
 <script src="/scripts/colorbox/jquery.colorbox-min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
@@ -10,16 +10,18 @@ $(document).ready(function(){ldelim}
 	{rdelim});
 {rdelim});
 </script>
-{/head}
+{/footer}
 
 	<div id="contentItemPage">
 		<h2>{$aGallery.name}</h2>
-		<small class="timeCat">
-			Categories: 
-			{foreach from=$aGallery.categories item=aCategory name=category}
-				<a href="/gallery/?category={$aCategory.id}" title="Galleries in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-			{/foreach}
-		</small>
+		{if !empty($aGallery.categories)}
+			<small class="timeCat">
+				Categories: 
+				{foreach from=$aGallery.categories item=aCategory name=category}
+					<a href="/galleries/?category={$aCategory.id}" title="Galleries in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+				{/foreach}
+			</small>
+		{/if}
 		<p class="content">
 			{$aGallery.description}<br />
 		</p>

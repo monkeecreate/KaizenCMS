@@ -8,14 +8,7 @@
 			{foreach from=$aCategories item=aCategory}
 				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
-		</select>
-		<script type="text/javascript">
-		$(function(){ldelim}
-			$('select[name=category]').change(function(){ldelim}
-				$('form[name=category]').submit();
-			{rdelim});
-		{rdelim});
-		</script>
+		</select>f
 	</form>
 	{/if}
 
@@ -29,12 +22,14 @@
 					<img src="/image/directory/{$aListing.id}/?width=140">
 				{/if}
 				<h2>{$aListing.name}</h2>
-				<small class="timeCat">
-					Categories:
-					{foreach from=$aListing.categories item=aCategory name=category}
-						<a href="/directory/?category={$aCategory.id}" title="Listings in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-					{/foreach}
-				</small>
+				{if !empty($aListing.categories)}
+					<small class="timeCat">
+						Categories:
+						{foreach from=$aListing.categories item=aCategory name=category}
+							<a href="/directory/?category={$aCategory.id}" title="Listings in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+						{/foreach}
+					</small>
+				{/if}
 				<p class="content">
 					{if !empty($aListing.address1)}
 						{$aListing.address1}<br>
@@ -42,7 +37,7 @@
 					{if !empty($aListing.address2)}
 						{$aListing.address2}<br>
 					{/if}
-					{$aListing.city}, {$aListing.state} {$aListing.zip}<br>
+					{if !empty($aListing.city)}{$aListing.city}{/if}{if !empty($aListing.city) && !empty($aListing.state)}, {/if}{if !empty($aListing.state)}{$aListing.state}{/if} {$aListing.zip}<br>
 					{if !empty($aListing.phone)}
 						Phone#: {$aListing.phone}<br>
 					{/if}

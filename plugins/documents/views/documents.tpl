@@ -9,6 +9,7 @@
 				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
 		</select>
+		{footer}
 		<script type="text/javascript">
 		$(function(){ldelim}
 			$('select[name=category]').change(function(){ldelim}
@@ -16,6 +17,7 @@
 			{rdelim});
 		{rdelim});
 		</script>
+		{/footer}
 	</form>
 	{/if}
 
@@ -30,12 +32,14 @@
 						{$aDocument.name}
 					</a>
 				</h2>
-				<small class="timeCat">
-					Categories: 
-					{foreach from=$aDocument.categories item=aCategory name=category}
-						<a href="/documents/?category={$aCategory.id}" title="Documents in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-					{/foreach}
-				</small>
+				{if !empty($aDocument.categories)}
+					<small class="timeCat">
+						Categories: 
+						{foreach from=$aDocument.categories item=aCategory name=category}
+							<a href="/documents/?category={$aCategory.id}" title="Documents in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+						{/foreach}
+					</small>
+				{/if}
 				<p class="content">
 					{$aDocument.description}
 				</p>
