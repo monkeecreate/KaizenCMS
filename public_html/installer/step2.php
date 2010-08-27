@@ -16,7 +16,7 @@ if($_POST["setup"] == 1) {
 	$sConfig = changeConfig("encryption", "salt", $_POST["enc_salt"], $sConfig);
 	
 	// Mail
-	$sConfig = changeConfig("mail", "type", $_POST["location"], $sConfig);
+	$sConfig = changeConfig("mail", "type", $_POST["mail"], $sConfig);
 	switch($_POST["mail"]) {
 		case "mail":
 			$sConfig = preg_replace(
