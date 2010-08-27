@@ -9,6 +9,7 @@
 				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
 		</select>
+		{footer}
 		<script type="text/javascript">
 		$(function(){ldelim}
 			$('select[name=category]').change(function(){ldelim}
@@ -16,6 +17,7 @@
 			{rdelim});
 		{rdelim});
 		</script>
+		{/footer}
 	</form>
 	{/if}
 
@@ -33,12 +35,14 @@
 						{$aLink.name}
 					</a>
 				</h2>
-				<small class="timeCat">
-					Categories: 
-					{foreach from=$aLink.categories item=aCategory name=category}
-						<a href="/links/?category={$aCategory.id}" title="Links in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-					{/foreach}
-				</small>
+				{if !empty($aLink.categories)}
+					<small class="timeCat">
+						Categories: 
+						{foreach from=$aLink.categories item=aCategory name=category}
+							<a href="/links/?category={$aCategory.id}" title="Links in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+						{/foreach}
+					</small>
+				{/if}
 				<p class="content">
 					{$aLink.description}<br />
 				</p>

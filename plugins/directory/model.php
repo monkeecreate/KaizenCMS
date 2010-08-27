@@ -7,7 +7,8 @@ class directory_model extends appModel
 	public $imageFolder = "/uploads/news/";
 	public $useCategories = true;
 	public $perPage = 5;
-	public $aStates = array('AL'=>"Alabama",  
+	public $aStates = array(''=>"",
+							'AL'=>"Alabama",  
 							'AK'=>"Alaska",  
 							'AZ'=>"Arizona",  
 							'AR'=>"Arkansas",  
@@ -85,14 +86,12 @@ class directory_model extends appModel
 		return $aListings;
 	}
 	function getListing($sId, $sAll = false) {
-		// Start the WHERE
-		$sWhere = " WHERE `directory`.`id` > 0";// Allways true
-		
 		if($sAll == false)
 			$sWhere .= " AND `directory`.`active` = 1";
 		
 		$aListing = $this->dbQuery(
 			"SELECT `directory`.* FROM `{dbPrefix}directory` AS `directory`"
+				." WHERE `directory`.`id` = ".$this->dbQuote($sId, "integer")
 				.$sWhere
 				." LIMIT 1"
 			,"row"
@@ -177,7 +176,7 @@ class directory_model extends appModel
 		return $aCategory;
 	}
 	function getImage($sId) {
-		$aListing = $this->getListing($sId);
+		$aListing = $this->getListing($sId, true);
 		
 		$sFile = $this->settings->rootPublic.substr($this->imageFolder, 1).$sId.".jpg";
 		

@@ -25,6 +25,7 @@
 				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
 		</select>
+		{footer}
 		<script type="text/javascript">
 		$(function(){ldelim}
 			$('select[name=category]').change(function(){ldelim}
@@ -32,6 +33,7 @@
 			{rdelim});
 		{rdelim});
 		</script>
+		{/footer}
 	</form>
 	{/if}
 
@@ -46,10 +48,12 @@
 			</h3>
 			<span class="timeCat">
 				<time>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</time>
-				 | Categories:
-					{foreach from=$aEvent.categories item=aCategory name=category}
-						<a href="/calendar/?category={$aCategory.id}" title="Events in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-					{/foreach}
+				{if !empty($aEvent.categories)}
+					 | Categories:
+						{foreach from=$aEvent.categories item=aCategory name=category}
+							<a href="/calendar/?category={$aCategory.id}" title="Events in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+						{/foreach}
+				{/if}
 			</span>
 			
 			<fb:like href="http://{$smarty.server.SERVER_NAME}/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" show_faces="false"></fb:like>

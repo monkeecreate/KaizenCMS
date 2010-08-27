@@ -13,7 +13,7 @@ class links_model extends appModel
 		$sWhere = " WHERE `links`.`id` > 0";// Allways true
 		
 		if($sAll == false)	
-			$sWhere = " AND `links`.`active` = 1";
+			$sWhere .= " AND `links`.`active` = 1";
 			
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");

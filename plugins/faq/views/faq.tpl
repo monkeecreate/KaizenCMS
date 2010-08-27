@@ -29,12 +29,14 @@
 					Q: <a href="#{$aQuestion.id}" class="faq-Question">{$aQuestion.question}</a>
 				</h3>
 				<div style="display:none;" id="{$aQuestion.id}">
-					<small>Categories: 
-						{foreach from=$aQuestion.categories item=aCategory name=category}
-							<a href="/faq/?category={$aCategory.id}" title="Questions in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-						{/foreach}
-					</small>
- 					<p>{$aQuestion.answer}</p>
+					{if !empty($aQuestion.categories)}
+						<small>Categories: 
+							{foreach from=$aQuestion.categories item=aCategory name=category}
+								<a href="/faq/?category={$aCategory.id}" title="Questions in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+							{/foreach}
+						</small>
+					{/if}
+ 					{$aQuestion.answer}
 				</div>
 			</div>
 		{foreachelse}

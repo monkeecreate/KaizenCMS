@@ -28,7 +28,7 @@ if($_POST["setup"] == 1) {
 		case "sendmail":
 			$sConfig = preg_replace(
 				'/\$aConfig\["mail"\]\["params"\] = array\(\);/',
-				'$aConfig["mail"]["params"] = array();',
+				'$aConfig["mail"]["params"] = array("sendmail_path" => "'.trim($_POST["sendmail_path"]).'", "sendmail_args" => "'.trim($_POST["sendmail_args"]).'");',
 				$sConfig, 1
 			);
 			break;

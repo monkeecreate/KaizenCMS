@@ -69,7 +69,7 @@
 				</fieldset><br />
 			{/if}
 			
-			<input type="submit" value="Save Listing">
+			<input type="submit" name="submit" value="Save Changes">
 			<a class="cancel" href="/admin/directory/" title="Cancel">Cancel</a>
 			<input type="hidden" name="id" value="{$aListing.id}">
 		</section>

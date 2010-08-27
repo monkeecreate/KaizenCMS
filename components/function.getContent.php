@@ -16,7 +16,7 @@ function smarty_function_getContent($aParams, &$oSmarty) {
 		);
 	
 	$aContent["title"] = htmlspecialchars(stripslashes($aContent["title"]));
-	$aContent["content"] = stripslashes($aContent["title"]);
+	$aContent["content"] = stripslashes($aContent["content"]);
 	
 	if(empty($aParams["var"]))
 		return $aContent["content"];

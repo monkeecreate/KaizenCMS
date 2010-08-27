@@ -65,12 +65,12 @@ $aTables = array(
 								"type" => "super"
 							),
 							array(
-								"text" => "Manage Plugins",
+								"text" => "Plugins",
 								"link" => "/admin/settings/plugins/",
 								"type" => "super"
 							),
 							array(
-								"text" => "Manage Admin Menu",
+								"text" => "Admin Menu",
 								"link" => "/admin/settings/admin-menu/",
 								"type" => "super"
 							)

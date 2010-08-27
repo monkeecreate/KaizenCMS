@@ -132,7 +132,7 @@ $(function(){ldelim}
 	$(".eventExpire").click(function() {ldelim}
 		$(this).hide();
 		$('input[name=use_kill]').attr('checked', true);
-		$(".expireDate").slideDown("slow");
+		$(".expireDate").fadeIn("slow");
 	{rdelim});
 	
 	$(".cancelExpire").click(function() {ldelim}

@@ -37,12 +37,14 @@
 						{$aGallery.name}
 					</a>
 				</h2>
-				<small class="timeCat">
-					Categories: 
-					{foreach from=$aGallery.categories item=aCategory name=category}
-						<a href="/gallery/?category={$aCategory.id}" title="Galleries in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-					{/foreach}
-				</small>
+				{if !empty($aGallery.categories)}
+					<small class="timeCat">
+						Categories: 
+						{foreach from=$aGallery.categories item=aCategory name=category}
+							<a href="/galleries/?category={$aCategory.id}" title="Galleries in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+						{/foreach}
+					</small>
+				{/if}
 				<p class="content">
 					{$aGallery.description}
 				</p>

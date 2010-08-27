@@ -23,10 +23,12 @@
 		<h2>{$aEvent.title}</h2>
 		<small class="timeCat">
 			<time>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</time>
-			 | Categories: 
-				{foreach from=$aEvent.categories item=aCategory name=category}
-					<a href="/calendar/?category={$aCategory.id}" title="Events in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-				{/foreach}
+			{if !empty($aEvent.categories)}
+				 | Categories:
+					{foreach from=$aEvent.categories item=aCategory name=category}
+						<a href="/calendar/?category={$aCategory.id}" title="Events in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+					{/foreach}
+			{/if}
 		</small>
 		
 		<fb:like show_faces="false"></fb:like>

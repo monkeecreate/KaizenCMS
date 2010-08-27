@@ -27,6 +27,7 @@
 				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
 		</select>
+		{footer}
 		<script type="text/javascript">
 		$(function(){ldelim}
 			$('select[name=category]').change(function(){ldelim}
@@ -34,6 +35,7 @@
 			{rdelim});
 		{rdelim});
 		</script>
+		{/footer}
 	</form>
 	{/if}
 
@@ -56,10 +58,12 @@
 				<small class="timeCat">
 					<time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time>
 					| Posted by: {$aArticle.user.fname} {$aArticle.user.lname} 
-					| Categories: 
-					{foreach from=$aArticle.categories item=aCategory name=category}
-						<a href="/news/?category={$aCategory.id}" title="Articles in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-					{/foreach}
+					{if !empty($aArticle.categories)}
+						| Categories: 
+						{foreach from=$aArticle.categories item=aCategory name=category}
+							<a href="/news/?category={$aCategory.id}" title="Articles in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+						{/foreach}
+					{/if}
 				</small>
 				<fb:like href="http://{$smarty.server.SERVER_NAME}/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/" show_faces="false"></fb:like>
 				<p class="content">
@@ -89,7 +93,7 @@
 	<div class="clear">&nbsp;</div>
 
 	<div style="text-align:center;margin-top:10px">
-		<a href="/news/rss/">
+		<a href="/news/rss/{if !empty($smarty.get.category)}?category={$smarty.get.category}{/if}">
 			<img src="/images/admin/icons/feed.png"> RSS Feed
 		</a>
 	</div>

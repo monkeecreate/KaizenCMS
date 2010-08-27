@@ -125,7 +125,7 @@ class news_model extends appModel
 		return $aCategory;
 	}
 	function getImage($sId) {
-		$aArticle = $this->getArticle($sId);
+		$aArticle = $this->getArticle($sId, true);
 		
 		$sFile = $this->settings->rootPublic.substr($this->imageFolder, 1).$sId.".jpg";
 		

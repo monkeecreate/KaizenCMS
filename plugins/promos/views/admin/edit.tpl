@@ -126,7 +126,8 @@ $(function(){ldelim}
 	{rdelim});
 	
 	$("form").validateForm([
-		"required,name,Promo name is required"
+		"required,name,Promo name is required",
+		"required,positions[],You must select at least one position"
 	]);
 {rdelim});
 </script>

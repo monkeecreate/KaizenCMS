@@ -24,6 +24,7 @@ class testimonials_model extends appModel
 				." LEFT JOIN `{dbPrefix}testimonials_categories_assign` AS `testimonials_assign` ON `testimonials`.`id` = `testimonials_assign`.`testimonialid`"
 				." LEFT JOIN `{dbPrefix}testimonials_categories` AS `categories` ON `testimonials_assign`.`categoryid` = `categories`.`id`"
 				.$sWhere
+				." GROUP BY `testimonials`.`id`"
 				.$sOrder
 			,"all"
 		);
