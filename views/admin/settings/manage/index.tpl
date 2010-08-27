@@ -38,8 +38,7 @@
 			{rdelim}, //row grouping
 			"bStateSave": true, //whether to save a cookie with the current table state
 			"iDisplayLength": 10, //how many items to display on each page
-			"aaSortingFixed": [[ 0, 'asc' ]],
-			"aaSorting": [[4, "asc"]] //which column to sort by (0-X)
+			"bSort": false //which column to sort by (0-X)
 		{rdelim});
 	{rdelim});
 </script>
@@ -49,6 +48,7 @@
 	<header>
 		<h2>Manage Settings</h2>
 		<a href="/admin/settings/manage/add/" title="Add Setting" class="button">Add Setting &raquo;</a>
+		<a href="/admin/settings/manage/groups/" title="Manage Groups" class="button">Manage Groups &raquo;</a>
 	
 		{foreach from=$aAdminFullMenu item=aMenu key=k}
 			{if $k == "settings"}

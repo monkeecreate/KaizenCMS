@@ -57,7 +57,26 @@ $aTables = array(
 	)
 );
 
-$aSettings = array();
+$aSettings = array(
+	array(
+		"group" => "Test"
+		,"tag" => "test"
+		,"title" => "FAQ Test"
+		,"text" => "Something something darkside"
+		,"value" => ""
+		,"type" => "text"
+		,"sortOrder" => 1
+	),
+	array(
+		"group" => "Test"
+		,"tag" => "test2"
+		,"title" => "FAQ Test2"
+		,"text" => "Something something darkside"
+		,"value" => ""
+		,"type" => "text"
+		,"sortOrder" => 2
+	)
+);
 
 $aMenuAdmin = array(
 	"title" => "FAQ",
