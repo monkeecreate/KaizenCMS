@@ -27,9 +27,6 @@
 </head>
 <body class="{$page_style}">
 	<div id="wrapper">
-		{if !empty($sSecurityError)}
-			{$sSecurityError}
-		{/if}
 		<header>
 			{if !empty($user_details)}
 				<div class="loggedIn">Logged in as <b>{$user_details.fname} {$user_details.lname}</b> <span class="divider">|</span> <a href="/admin/users/edit/{$user_details.id}/">Edit Profile</a> <span class="divider">|</span> <a href="/admin/logout/" title="Logout">Logout</a></div>
@@ -61,6 +58,12 @@
 		</header>
 		
 		<div id="wrapper-inner">
+			{if !empty($sSecurityError)}
+				<div class="ui-state-error ui-corner-all notice">
+					<span class="icon ui-icon ui-icon-alert"></span>
+					{$sSecurityError}
+				</div>
+			{/if}
 			{if !empty($page_error)}
 				<div class="ui-state-error ui-corner-all notice">
 					<span class="icon ui-icon ui-icon-alert"></span>
