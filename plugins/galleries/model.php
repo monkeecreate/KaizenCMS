@@ -10,14 +10,17 @@ class galleries_model extends appModel
 		if(!empty($sCategory))
 			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 			
-		if($sAll == false)	
+		if($sAll == false) {
 			$sWhere .= " AND `galleries`.`active` = 1";
+			$sPhotos = " INNER JOIN `{dbPrefix}galleries_photos` AS `photos` ON `galleries`.`id` = `photos`.`galleryid`";
+		}
 		
 		// Get all gallerys for paging
 		$aGalleries = $this->dbQuery(
 			"SELECT `galleries`.* FROM `{dbPrefix}galleries` AS `galleries`"
 				." LEFT JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries`.`id` = `galleries_assign`.`galleryid`"
 				." LEFT JOIN `{dbPrefix}galleries_categories` AS `categories` ON `galleries_assign`.`categoryid` = `categories`.`id`"
+				.$sPhotos
 				.$sWhere
 				." GROUP BY `galleries`.`sort_order`"
 			,"all"
