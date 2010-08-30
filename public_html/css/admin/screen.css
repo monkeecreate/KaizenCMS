@@ -177,6 +177,12 @@ nav ul li ul.dropdown li a:hover {
 	color: #fff;
 }
 
+@-moz-document url-prefix() {
+	nav ul li ul.dropdown li a {
+		line-height: 1.2em;
+	}
+}
+
 /* @end */
 
 /* @end */
