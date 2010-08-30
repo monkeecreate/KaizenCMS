@@ -126,6 +126,16 @@ nav ul li.adminSubMenu a:hover {
 	color: #fff;
 }
 
+@-moz-document url-prefix() {
+	nav {
+		margin-top: 2px;
+	}
+    nav ul li.adminSubMenu a {
+		line-height: 0.8em;
+		padding-bottom: 6px;
+	}
+}
+
 ul.dropdown {
 	margin: 0;
 	padding: 0;
@@ -547,6 +557,17 @@ figure.itemImage {
 	font-size: 1.6em;
 	border: 1px solid #e5e5e5;
 	border-bottom: 0;
+}
+
+@-moz-document url-prefix() {
+    .fullContent form fieldset {
+		padding: 9px 0 0 13px;
+	}
+
+	.halfContent form fieldset {
+		padding: 10px 0 15px 15px;
+		margin-right: 15px;
+	}
 }
 
 ul.categories {
