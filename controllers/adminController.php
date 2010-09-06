@@ -35,7 +35,7 @@ class adminController extends appController
 			
 			/*## Security Check ##*/
 			if(is_writable("../inc_config.php")) {
-				$this->tplAssign("sSecurityError", "Config file is still writable.");
+				$this->tplAssign("sSecurityError", "Config file is still writable. This poses a security risk.");
 			}
 			/*## End ##*/
 			

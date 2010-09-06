@@ -39,7 +39,7 @@
 	<table class="dataTable">
 		<thead>
 			<tr>
-				<th class="empty">&nbsp;</th>
+				<th class="empty itemStatus">&nbsp;</th>
 				<th>Plugin</th>
 				<th>Author</th>
 				<th>Version</th>

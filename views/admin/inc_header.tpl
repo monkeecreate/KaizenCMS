@@ -20,13 +20,13 @@
 	<script src="/scripts/jquery.rsv.js"></script>
 	<script src="/scripts/jquery.validateForm.js"></script>
 	<script src="/scripts/common_admin.js"></script>	
-	<!--[if IE]><script type="text/javascript" src="/scripts/html5.js"></script><![endif]-->
+	<!--[if IE]>
+		<script src="/scripts/firebug-lite.js"></script>
+		<script src="/scripts/html5.js"></script>
+	<![endif]-->
 </head>
 <body class="{$page_style}">
 	<div id="wrapper">
-		{if !empty($sSecurityError)}
-			{$sSecurityError}
-		{/if}
 		<header>
 			{if !empty($user_details)}
 				<div class="loggedIn">Logged in as <b>{$user_details.fname} {$user_details.lname}</b> <span class="divider">|</span> <a href="/admin/users/edit/{$user_details.id}/">Edit Profile</a> <span class="divider">|</span> <a href="/admin/logout/" title="Logout">Logout</a></div>
@@ -58,6 +58,12 @@
 		</header>
 		
 		<div id="wrapper-inner">
+			{if !empty($sSecurityError)}
+				<div class="ui-state-error ui-corner-all notice">
+					<span class="icon ui-icon ui-icon-alert"></span>
+					{$sSecurityError}
+				</div>
+			{/if}
 			{if !empty($page_error)}
 				<div class="ui-state-error ui-corner-all notice">
 					<span class="icon ui-icon ui-icon-alert"></span>

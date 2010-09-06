@@ -4,7 +4,8 @@ $sFail = false;
 if(!is_file("../inc_config.php")) {
 	$sFail = true;
 } else {
-	if(!is_writable($aConfig["smarty"]["dir"]["compile"])
+	if(!is_writable("../inc_config.php")
+	 || !is_writable($aConfig["smarty"]["dir"]["compile"])
 	 || ($aConfig["smarty"]["cache"]["type"] != false && !is_writable($aConfig["smarty"]["dir"]["cache"]))
 	 || !is_writable("uploads/")) {
 		$sFail = true;

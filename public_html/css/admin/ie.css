@@ -1,3 +1,7 @@
+input.checkbox {
+	border: 0 !important;
+}
+
 form#login {
 	overflow: hidden;
 }
