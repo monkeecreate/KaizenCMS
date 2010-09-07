@@ -172,6 +172,10 @@ $aUrlPatterns = array(
         "cmd" => "admin_settings_social",
         "action" => "twitter_connect"
     ),
+	"/admin/settings/twitter/unlink/" => array(
+        "cmd" => "admin_settings_social",
+        "action" => "twitter_unlink"
+    ),
 	"/admin/users/" => array(
         "cmd" => "admin_users",
         "action" => "index"

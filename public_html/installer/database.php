@@ -201,12 +201,23 @@ $aTables = array(
 			array(
 				"id" => 8,
 				"group" => 4,
+				"tag" => "twitter_connect",
+				"title" => "Twitter Connect",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 1,
+				"active" => 1
+			),
+			array(
+				"id" => 8,
+				"group" => 4,
 				"tag" => "twitterUser",
 				"title" => "Twitter Username",
 				"text" => NULL,
 				"value" => "",
 				"type" => "text",
-				"sortOrder" => 1,
+				"sortOrder" => 2,
 				"active" => 1
 			),
 			array(
@@ -217,7 +228,7 @@ $aTables = array(
 				"text" => NULL,
 				"value" => "",
 				"type" => "text",
-				"sortOrder" => 2,
+				"sortOrder" => 3,
 				"active" => 1
 			),
 			array(
@@ -229,6 +240,28 @@ $aTables = array(
 				"value" => "",
 				"type" => "text",
 				"sortOrder" => 4,
+				"active" => 1
+			),
+			array(
+				"id" => 10,
+				"group" => 5,
+				"tag" => "twitter_consumer_key",
+				"title" => "Twitter - Consumer Key",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 1,
+				"active" => 1
+			),
+			array(
+				"id" => 10,
+				"group" => 5,
+				"tag" => "twitter_consumer_secret",
+				"title" => "Twitter- Consumer Secret",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 2,
 				"active" => 1
 			)
 		)
@@ -270,6 +303,12 @@ $aTables = array(
 				"id" => 4,
 				"name" => "Social",
 				"sort_order" => 4,
+				"active" => 1
+			),
+			array(
+				"id" => 4,
+				"name" => "Social Dev",
+				"sort_order" => 5,
 				"active" => 1
 			)
 		)
