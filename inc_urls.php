@@ -164,6 +164,14 @@ $aUrlPatterns = array(
 		"cmd" => "admin_settings",
 		"action" => "admin_menu_s"
 	),
+	"/admin/settings/twitter/redirect/" => array(
+        "cmd" => "admin_settings_social",
+        "action" => "twitter_redirect"
+    ),
+	"/admin/settings/twitter/connect/" => array(
+        "cmd" => "admin_settings_social",
+        "action" => "twitter_connect"
+    ),
 	"/admin/users/" => array(
         "cmd" => "admin_users",
         "action" => "index"

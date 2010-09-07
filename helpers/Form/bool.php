@@ -5,7 +5,7 @@ class Form_bool extends Form_Field
 	private $_setting;
 	
 	/* __constructor */
-	public function Form_bool($aSetting) {
+	public function __construct($aSetting) {
 		$this->_setting = $aSetting;
 		$this->_options = $this->getOptions($aSetting["type"]);
 	}
