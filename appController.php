@@ -153,6 +153,35 @@ class appController
 			rmdir($sFolder);
 		}
 	}
+	function loadTwitter($sDecode = true) {
+		require_once($this->settings->root."helpers/twitteroauth.php");
+		
+		$sConsumerKey = $this->getSetting("twitter_consumer_key");
+		$sConsumerSecret = $this->getSetting("twitter_consumer_secret");
+		$aAccess = $this->getSetting("twitter_connect");
+		
+		$oTwitter = new TwitterOAuth($sConsumerKey, $sConsumerSecret, $aAccess["oauth_token"], $aAccess["oauth_token_secret"]);
+		
+		if($sDecode == false) {
+			$oTwitter->decode_json = false;
+		}
+		
+		/* Check authentication */
+		$aUser = $oTwitter->get("account/verify_credentials");
+		if($oTwitter->http_code != 200) {
+			$this->dbUpdate(
+				"settings",
+				array(
+					"value" => ""
+				),
+				"twitter_connect", "tag", "text"
+			);
+			return false;
+			//$this->sendError("Twitter Connection", $aUser->error);
+		}
+		
+		return $oTwitter;
+	}
 	##################################
 	
 	### Database #####################

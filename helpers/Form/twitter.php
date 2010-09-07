@@ -12,11 +12,7 @@ class Form_twitter extends Form_Field
 	public function html() {
 		$aValue = $this->value();
 		
-		if(empty($aValue) || empty($aValue["screen_name"])) {		
-			$sHTML = "<a href=\"/admin/settings/twitter/redirect/\">";
-			$sHTML .= "<img src=\"/images/admin/social/twitter_lighter.png\">";
-			$sHTML .= "</a>\n";
-		} else {
+		if(!empty($aValue) && !empty($aValue["screen_name"])) {
 			global $objDB, $site_root, $aConfig;
 			
 			$sConsumerKey = $objDB->query("SELECT `value` FROM `".$aConfig["database"]["prefix"]."settings`"
@@ -30,8 +26,24 @@ class Form_twitter extends Form_Field
 			
 			$connection = new TwitterOAuth($sConsumerKey, $sConsumerSecret, $aValue["oauth_token"], $aValue["oauth_token_secret"]);
 			$connection->decode_json = false;
-			$aUser = json_decode($connection->get("account/verify_credentials"), true);
+			$sUser = $connection->get("account/verify_credentials");
 			
+			if($connection->http_code != 200) {
+				$objDB->query("UPDATE `".$aConfig["database"]["prefix"]."settings` SET "
+					." `value` = ''"
+					." WHERE `tag` = ".$objDB->quote("twitter_connect", "text")
+				);
+				$aValue = "";
+			} else {
+				$aUser = json_decode($sUser, true);
+			}
+		}
+		
+		if(empty($aValue) || empty($aValue["screen_name"])) {		
+			$sHTML = "<a href=\"/admin/settings/twitter/redirect/\">";
+			$sHTML .= "<img src=\"/images/admin/social/twitter_lighter.png\">";
+			$sHTML .= "</a>\n";
+		} else {
 			$sHTML = $this->getLabel("Signed in as: <a href=\"http://twitter.com/".$aUser["screen_name"]."\"><img src=\"".$aUser["profile_image_url"]."\"> ".$aUser["screen_name"]."</a> <a href=\"/admin/settings/twitter/unlink/\">Unlink</a>");
 		}
 		
