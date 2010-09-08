@@ -32,7 +32,7 @@ class Form_twitter extends Form_Field
 			$connection->decode_json = false;
 			$aUser = json_decode($connection->get("account/verify_credentials"), true);
 			
-			$sHTML = $this->getLabel("Signed in as: <a href=\"http://twitter.com/".$aUser["screen_name"]."\"><img src=\"".$aUser["profile_image_url"]."\"> ".$aUser["screen_name"]."</a> <a href=\"/admin/settings/twitter/unlink/\">Unlink</a>");
+			$sHTML = $this->getLabel("Connected as <a href=\"http://twitter.com/".$aUser["screen_name"]."\"><img src=\"".$aUser["profile_image_url"]."\"> ".$aUser["screen_name"]."</a> <a href=\"/admin/settings/twitter/unlink/\">Unlink</a>");
 		}
 		
 		$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value=\"".$this->value(false)."\" /><br /><br />\n";

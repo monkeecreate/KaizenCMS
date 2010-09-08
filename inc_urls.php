@@ -172,6 +172,14 @@ $aUrlPatterns = array(
         "cmd" => "admin_settings_social",
         "action" => "twitter_connect"
     ),
+	"/admin/settings/facebook/redirect/" => array(
+		"cmd" => "admin_settings_social",
+		"action" => "facebook_redirect"
+	),
+	"/admin/settings/facebook/connect/" => array(
+		"cmd" => "admin_settings_social",
+		"action" => "facebook_connect"
+	),
 	"/admin/users/" => array(
         "cmd" => "admin_users",
         "action" => "index"

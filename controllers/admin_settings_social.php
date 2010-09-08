@@ -68,4 +68,35 @@ class admin_settings_social extends appController
 			header("Location: /admin/settings/?error=".urlencode("Error"));
 		}
 	}
+	function facebook_redirect() {
+		require_once($this->settings->root."helpers/facebook.php");
+		
+		$facebook = new Facebook(array(
+	    	'appId'  => $this->getSetting("facebook_app_id"),
+	      	'secret' => $this->getSetting("facebook_app_secret"),
+	      	'cookie' => true, // enable optional cookie support
+	    ));
+		
+		$sPrefix = 'http';
+		if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
+		$sPrefix .= "://";
+		
+		header("Location: ".$facebook->getLoginUrl(array("req_perms" => "user_photos,user_videos,user_status,create_event,rsvp_event,publish_stream,manage_pages,offline_access" , "next" => $sPrefix.$_SERVER["HTTP_HOST"]."/admin/settings/facebook/connect/")));
+	}
+	function facebook_connect() {		
+		$authorizeSession = json_decode(stripslashes($_GET["session"]), true);
+				
+		$this->dbUpdate(
+			"settings",
+			array(
+				"value" => json_encode(array("user_access_token" => $this->encrypt($authorizeSession["access_token"]), "post_access_token" => $this->encrypt($authorizeSession["access_token"])))
+			),
+			"facebook_connect", "tag", "text"
+		);
+		
+		header("Location: /admin/settings/");
+	}
+	function facebook_unlink() {
+		
+	}
 }
