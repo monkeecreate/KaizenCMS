@@ -12,11 +12,7 @@ class Form_twitter extends Form_Field
 	public function html() {
 		$aValue = $this->value();
 		
-		if(empty($aValue) || empty($aValue["screen_name"])) {		
-			$sHTML = "<a href=\"/admin/settings/twitter/redirect/\">";
-			$sHTML .= "<img src=\"/images/admin/social/twitter_lighter.png\">";
-			$sHTML .= "</a>\n";
-		} else {
+		if(!empty($aValue) && !empty($aValue["screen_name"])) {
 			global $objDB, $site_root, $aConfig;
 			
 			$sConsumerKey = $objDB->query("SELECT `value` FROM `".$aConfig["database"]["prefix"]."settings`"
@@ -30,12 +26,29 @@ class Form_twitter extends Form_Field
 			
 			$connection = new TwitterOAuth($sConsumerKey, $sConsumerSecret, $aValue["oauth_token"], $aValue["oauth_token_secret"]);
 			$connection->decode_json = false;
-			$aUser = json_decode($connection->get("account/verify_credentials"), true);
+			$sUser = $connection->get("account/verify_credentials");
 			
 			$sHTML = $this->getLabel("Connected as <a href=\"http://twitter.com/".$aUser["screen_name"]."\"><img src=\"".$aUser["profile_image_url"]."\"> ".$aUser["screen_name"]."</a> <a href=\"/admin/settings/twitter/unlink/\">Unlink</a>");
+			if($connection->http_code != 200) {
+				$objDB->query("UPDATE `".$aConfig["database"]["prefix"]."settings` SET "
+					." `value` = ''"
+					." WHERE `tag` = ".$objDB->quote("twitter_connect", "text")
+				);
+				$aValue = "";
+			} else {
+				$aUser = json_decode($sUser, true);
+			}
 		}
 		
-		$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value=\"".$this->value(false)."\" /><br /><br />\n";
+		if(empty($aValue) || empty($aValue["screen_name"])) {		
+			$sHTML = "<a href=\"/admin/settings/twitter/redirect/\">";
+			$sHTML .= "<img src=\"/images/admin/social/twitter_lighter.png\">";
+			$sHTML .= "</a>\n";
+		} else {
+			$sHTML = $this->getLabel("Signed in as: <a href=\"http://twitter.com/".$aUser["screen_name"]."\"><img src=\"".$aUser["profile_image_url"]."\"> ".$aUser["screen_name"]."</a> <a href=\"/admin/settings/twitter/unlink/\">Unlink</a>");
+		}
+		
+		$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value='".$this->value(false)."' /><br /><br />\n";
 	
 		if(!empty($this->_setting["text"]))
 			$sHTML .= $this->getText($this->_setting["text"])."\n";
@@ -44,11 +57,11 @@ class Form_twitter extends Form_Field
 	}
 	public function value($sDecode = true) {
 		if($sDecode == true)
-			return json_decode($this->_setting["value"], true);
+			return json_decode(stripslashes($this->_setting["value"]), true);
 		else
 			return $this->_setting["value"];
 	}
 	public function save($value) {
-		return $value;
+		return stripslashes($value);
 	}
 }

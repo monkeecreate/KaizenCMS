@@ -63,10 +63,20 @@ class admin_settings_social extends appController
 				),
 				"twitter_connect", "tag", "text"
 			);
-			header("Location: /admin/settings/");
+			header("Location: /admin/settings/?notice=".urlencode("Your Twitter account has now been actived with your website."));
 		} else {
 			header("Location: /admin/settings/?error=".urlencode("Error"));
 		}
+	}
+	function twitter_unlink() {
+		$this->dbUpdate(
+			"settings",
+			array(
+				"value" => ""
+			),
+			"twitter_connect", "tag", "text"
+		);
+		header("Location: /admin/settings/?notice=".urlencode("Your Twitter account access has been removed from your website."));
 	}
 	function facebook_redirect() {
 		require_once($this->settings->root."helpers/facebook.php");
@@ -95,8 +105,5 @@ class admin_settings_social extends appController
 		);
 		
 		header("Location: /admin/settings/");
-	}
-	function facebook_unlink() {
-		
 	}
 }
