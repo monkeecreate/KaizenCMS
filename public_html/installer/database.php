@@ -243,7 +243,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"id" => 10,
+				"id" => 11,
 				"group" => 5,
 				"tag" => "twitter_consumer_key",
 				"title" => "Twitter - Consumer Key",
@@ -254,7 +254,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"id" => 10,
+				"id" => 12,
 				"group" => 5,
 				"tag" => "twitter_consumer_secret",
 				"title" => "Twitter- Consumer Secret",
@@ -262,6 +262,28 @@ $aTables = array(
 				"value" => "",
 				"type" => "text",
 				"sortOrder" => 2,
+				"active" => 1
+			)
+			array(
+				"id" => 13,
+				"group" => 5,
+				"tag" => "bitly_user",
+				"title" => "Bit.ly User",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 3,
+				"active" => 1
+			),
+			array(
+				"id" => 14,
+				"group" => 5,
+				"tag" => "bitly_key",
+				"title" => "Bit.ly Key",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 4,
 				"active" => 1
 			)
 		)

@@ -182,6 +182,33 @@ class appController
 		
 		return $oTwitter;
 	}
+	function urlShorten($sUrl) {
+		$sUser = $this->getSetting("bitly_user");
+		$sKey = $this->getSetting("bitly_key");
+		
+		$sUrl = "http://api.bit.ly/v3/shorten?login=".urlencode($sUser)."&apiKey=".$sKey."&longUrl=".urlencode($sUrl)."&format=json";
+		
+		$ch = curl_init();
+		
+		curl_setopt($ch, CURLOPT_URL, $sUrl);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		
+		$sResults = curl_exec($ch);
+		$aInfo = curl_getinfo($ch);
+		
+		curl_close($ch);
+		
+		// Throw error
+		if($aInfo["http_code"] != 200) {
+			return false;
+		}
+		
+		$aResults = json_decode($sResults, true);
+		
+		$sUrl = $aResults["data"]["url"];
+		
+		return $sUrl;
+	}
 	##################################
 	
 	### Database #####################

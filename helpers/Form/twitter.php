@@ -47,7 +47,7 @@ class Form_twitter extends Form_Field
 			$sHTML = $this->getLabel("Signed in as: <a href=\"http://twitter.com/".$aUser["screen_name"]."\"><img src=\"".$aUser["profile_image_url"]."\"> ".$aUser["screen_name"]."</a> <a href=\"/admin/settings/twitter/unlink/\">Unlink</a>");
 		}
 		
-		$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value=\"".$this->value(false)."\" /><br /><br />\n";
+		$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value='".$this->value(false)."' /><br /><br />\n";
 	
 		if(!empty($this->_setting["text"]))
 			$sHTML .= $this->getText($this->_setting["text"])."\n";
@@ -56,11 +56,11 @@ class Form_twitter extends Form_Field
 	}
 	public function value($sDecode = true) {
 		if($sDecode == true)
-			return json_decode($this->_setting["value"], true);
+			return json_decode(stripslashes($this->_setting["value"]), true);
 		else
 			return $this->_setting["value"];
 	}
 	public function save($value) {
-		return $value;
+		return stripslashes($value);
 	}
 }
