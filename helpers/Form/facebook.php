@@ -41,7 +41,7 @@ class Form_facebook extends Form_Field
 			    $aFacebookResult = $facebook->api('/me/', 'get', array("access_token" => $oEnc->decrypt($aValue["user_access_token"])));
 				$aFacebookAccounts = $facebook->api('/me/accounts', 'get', array("access_token" => $oEnc->decrypt($aValue["user_access_token"])));
 			  } catch (FacebookApiException $e) {
-				print_r($e);
+				//print_r($e);
 			    error_log($e);
 			  }
 			
