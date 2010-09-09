@@ -1,14 +1,10 @@
 <?php
 class admin_settings extends adminController
 {
-	public $errors;
-	
 	function __construct() {
 		parent::__construct();
 		
 		$this->menuPermission("settings");
-		
-		$this->errors = array();
 	}
 	
 	### DISPLAY ######################
@@ -43,30 +39,19 @@ class admin_settings extends adminController
 		
 		include($this->settings->root."helpers/Form.php");
 		foreach($aSettings as $aSetting) {
-			$bError = false;
-			$oField = new Form($aSetting);
-			
-			try {
-				$sValue = $oField->setting->save($_POST["settings"][$aSetting["tag"]]);
-			} catch (Exception $e) {
-				$bError = true;
-				$this->errors[] = "errors[]=".urlencode($e->getMessage());
-			}
-			
-			if($bError == false) {
-				$this->dbUpdate(
-					"settings",
-					array(
-						"value" => $sValue
-					),
-					$aSetting["tag"],
-					"tag",
-					"text"
-				);
-			}
+			$oField = new Form($aSetting);	
+			$this->dbUpdate(
+				"settings",
+				array(
+					"value" => $oField->setting->save($_POST["settings"][$aSetting["tag"]])
+				),
+				$aSetting["tag"],
+				"tag",
+				"text"
+			);
 		}
 		
-		$this->forward("/admin/settings/?notice=".urlencode("Settings saved successfully!")."&".implode("&", $this->errors));
+		$this->forward("/admin/settings/?notice=".urlencode("Settings saved successfully!"));
 	}
 	function manageIndex() {
 		if($this->superAdmin == false)

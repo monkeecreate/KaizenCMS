@@ -2,7 +2,7 @@
 class Form
 {
 	public function Form($aSetting) {
-		$sType = $aSetting["type"];
+		$sType = preg_replace("/(\[.*)/", "", $aSetting["type"]);
 		$site_root = dirname(__FILE__);
 		
 		if(!class_exists("Form_Field"))
