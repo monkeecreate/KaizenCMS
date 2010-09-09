@@ -15,13 +15,7 @@ abstract class Form_Field
 		
 		return $sText;
 	}
-	protected function getOptions($sType) {
-		preg_match_all("/\[([^=]+)=([^\]]+)\]/", $sType, $aValues, PREG_SET_ORDER);
-		
-		$aOptions = array();
-		foreach($aValues as $aValue)
-			$aOptions[$aValue[1]] = $aValue[2];
-		
-		return $aOptions;
+	protected function getOptions($sOptions) {
+		return json_decode($sOptions, true);
 	}
 }
