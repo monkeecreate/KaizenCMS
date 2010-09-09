@@ -10,6 +10,7 @@ class Form_twitter extends Form_Field
 	}
 	
 	public function html() {
+		$sError = false;
 		$aValue = $this->value();
 		
 		if(!empty($aValue) && !empty($aValue["screen_name"])) {
@@ -29,7 +30,7 @@ class Form_twitter extends Form_Field
 			$sUser = $connection->get("account/verify_credentials");
 			
 			if($connection->http_code != 200) {
-				$aValue = "";
+				$sError = true;
 			} else {
 				$aUser = json_decode($sUser, true);
 			}
@@ -42,7 +43,13 @@ class Form_twitter extends Form_Field
 		} else {
 			$sHTML = '<div class="twitterConnect socialConnect">';
 			$sHTML .= '<h4><img src="/images/admin/social/twitter.png" height="20px"> Twitter Connect</h4>';
-			$sHTML .= '<figure><img src="'.$aUser["profile_image_url"].'"></figure> <p>Connected as <strong>'.$aUser["screen_name"].'</strong></p>';
+			
+			if(!$sError) {
+				$sHTML .= '<figure><img src="'.$aUser["profile_image_url"].'"></figure> <p>Connected as <strong>'.$aUser["screen_name"].'</strong></p>';
+			} else {
+				$sHTML .= '<p class="small">We were unable to connect to your Twitter account. This could be due to Twitter being down or an invalid connection with your account. If the problem persists remove the connection below and Connect to Twitter again.</p>';
+			}
+			
 			$sHTML .= '<p class="small"><a href="/admin/settings/twitter/unlink/" title="Remove Twitter Connection">Remove Connection to Twitter</a></p></div>';
 		}
 		
