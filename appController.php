@@ -169,13 +169,6 @@ class appController
 		/* Check authentication */
 		$aUser = $oTwitter->get("account/verify_credentials");
 		if($oTwitter->http_code != 200) {
-			$this->dbUpdate(
-				"settings",
-				array(
-					"value" => ""
-				),
-				"twitter_connect", "tag", "text"
-			);
 			return false;
 			//$this->sendError("Twitter Connection", $aUser->error);
 		}

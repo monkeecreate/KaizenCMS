@@ -30,10 +30,6 @@ class Form_twitter extends Form_Field
 			
 			$sHTML = $this->getLabel("Connected as <a href=\"http://twitter.com/".$aUser["screen_name"]."\"><img src=\"".$aUser["profile_image_url"]."\"> ".$aUser["screen_name"]."</a> <a href=\"/admin/settings/twitter/unlink/\">Unlink</a>");
 			if($connection->http_code != 200) {
-				$objDB->query("UPDATE `".$aConfig["database"]["prefix"]."settings` SET "
-					." `value` = ''"
-					." WHERE `tag` = ".$objDB->quote("twitter_connect", "text")
-				);
 				$aValue = "";
 			} else {
 				$aUser = json_decode($sUser, true);
