@@ -21,7 +21,28 @@ class content extends appController
 				}
 				$sRows = implode(",", $aRows);
 				
-				$aSearchTables[] = "SELECT `id`, `".$aSearch["column_title"]."` AS `title`".((!empty($aSearch["column_content"]))?", `".$aSearch["column_content"]."` AS `content`":", '' AS `content`").", '".$aSearch["plugin"]."' as `plugin`, MATCH(".$sRows.") AGAINST (".$sQuery." IN BOOLEAN MODE) AS `score` FROM `".$aSearch["table"]."` AS `table` WHERE MATCH(".$sRows.") AGAINST (".$sQuery." IN BOOLEAN MODE)";
+				if(!empty($aSearch["filter"])) {
+					$sFilter = "AND ";
+					$aFilters = array();
+					$aSearchFilters = json_decode($aSearch["filter"], true);
+					
+					foreach($aSearchFilters as $sCol => $aValue) {
+						$aFilters[] = "`".$sCol."` = ".$aValue;
+					}
+					
+					$sFilter .= implode(" AND ".$aFilters);
+				}
+				
+				$aSearchTables[] = "SELECT"
+					." `id`"
+					.", `".$aSearch["column_title"]."` AS `title`".
+					((!empty($aSearch["column_content"]))?", `".$aSearch["column_content"]."` AS `content`":", '' AS `content`")
+					.", '".$aSearch["plugin"]."' as `plugin`"
+					.", MATCH(".$sRows.") AGAINST (".$sQuery.") AS `score`"
+					." FROM `".$aSearch["table"]."` AS `table`"
+					." WHERE MATCH(".$sRows.") AGAINST (".$sQuery.")"
+					.$sFilter
+				;
 			}
 			
 			$sSQL = implode(" UNION ", $aSearchTables)." ORDER BY `score` DESC";
