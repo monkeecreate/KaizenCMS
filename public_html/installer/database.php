@@ -119,11 +119,11 @@ $aTables = array(
 			"sortOrder" => array("type" => "integer"),
 			"active" => array("type" => "boolean")
 		),
-		"index" => array("group", "tag", "sort_order"),
+		"index" => array("group", "tag", "sortOrder", "active"),
 		"data" => array(
 			array(
 				"id" => 1,
-				"group" => "SEO",
+				"group" => 2,
 				"tag" => "keywords",
 				"title" => "Keywords",
 				"text" => NULL,
@@ -134,7 +134,7 @@ $aTables = array(
 			),
 			array(
 				"id" => 2,
-				"group" => "SEO",
+				"group" => 2,
 				"tag" => "description",
 				"title" => "Description",
 				"text" => NULL,
@@ -145,7 +145,7 @@ $aTables = array(
 			),
 			array(
 				"id" => 3,
-				"group" => "Analytics",
+				"group" => 1,
 				"tag" => "analytics_google",
 				"title" => "Google Analytics",
 				"text" => NULL,
@@ -156,7 +156,7 @@ $aTables = array(
 			),
 			array(
 				"id" => 4,
-				"group" => "Analytics",
+				"group" => 1,
 				"tag" => "analytics_woopra",
 				"title" => "Woopra",
 				"text" => NULL,
@@ -167,7 +167,7 @@ $aTables = array(
 			),
 			array(
 				"id" => 5,
-				"group" => "SEO",
+				"group" => 2,
 				"tag" => "title",
 				"title" => "Site Title",
 				"text" => NULL,
@@ -178,7 +178,7 @@ $aTables = array(
 			),
 			array(
 				"id" => 6,
-				"group" => "Contact Info",
+				"group" => 3,
 				"tag" => "email",
 				"title" => "Email Address",
 				"text" => NULL,
@@ -189,7 +189,7 @@ $aTables = array(
 			),
 			array(
 				"id" => 7,
-				"group" => "Contact Info",
+				"group" => 3,
 				"tag" => "contact-subject",
 				"title" => "Contact Form Subject",
 				"text" => NULL,
@@ -200,7 +200,7 @@ $aTables = array(
 			),
 			array(
 				"id" => 8,
-				"group" => "Social",
+				"group" => 4,
 				"tag" => "twitterUser",
 				"title" => "Twitter Username",
 				"text" => NULL,
@@ -211,7 +211,7 @@ $aTables = array(
 			),
 			array(
 				"id" => 9,
-				"group" => "Social",
+				"group" => 4,
 				"tag" => "facebookUser",
 				"title" => "Facebook Username",
 				"text" => NULL,
@@ -222,13 +222,54 @@ $aTables = array(
 			),
 			array(
 				"id" => 10,
-				"group" => "Social",
+				"group" => 4,
 				"tag" => "flickrEmail",
 				"title" => "Flickr Email Address",
 				"text" => NULL,
 				"value" => "",
 				"type" => "text",
 				"sortOrder" => 4,
+				"active" => 1
+			)
+		)
+	),
+	"settings_groups" => array(
+		"fields" => array(
+			"id" => array(
+				"type" => "integer",
+				"unsigned" => 1,
+				"notnull" => 1,
+				"default" => 0,
+				"autoincrement" => 1
+			),
+			"name" => array("type" => "text","length" => 100),
+			"sort_order" => array("type" => "integer"),
+			"active" => array("type" => "boolean")
+		),
+		"index" => array("sort_order", "active"),
+		"data" => array(
+			array(
+				"id" => 1,
+				"name" => "Analytics",
+				"sort_order" => 1,
+				"active" => 1
+			),
+			array(
+				"id" => 2,
+				"name" => "SEO",
+				"sort_order" => 2,
+				"active" => 1
+			),
+			array(
+				"id" => 3,
+				"name" => "Contact Info",
+				"sort_order" => 3,
+				"active" => 1
+			),
+			array(
+				"id" => 4,
+				"name" => "Social",
+				"sort_order" => 4,
 				"active" => 1
 			)
 		)

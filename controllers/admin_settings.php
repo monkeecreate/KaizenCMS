@@ -10,9 +10,11 @@ class admin_settings extends adminController
 	### DISPLAY ######################
 	function index() {
 		$aSettingsFull = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}settings`"
-				." WHERE `active` = 1"
-				." ORDER BY `group`, `sortOrder`, `title`"
+			"SELECT `settings`.*, `groups`.`name` AS `group` FROM `{dbPrefix}settings` AS `settings`"
+				." LEFT JOIN `{dbPrefix}settings_groups` as `groups` ON `settings`.`group` = `groups`.`id`"
+				." WHERE `settings`.`active` = 1"
+				." AND `groups`.`active` = 1"
+				." ORDER BY `groups`.`sort_order`, `sortOrder`, `title`"
 			,"all"
 		);
 		
@@ -59,8 +61,9 @@ class admin_settings extends adminController
 		$_SESSION["admin"]["admin_settings"] = null;
 		
 		$aSettings = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}settings`"
-				." ORDER BY `group`, `sortOrder`, `title`"
+			"SELECT `settings`.*, `groups`.`name` AS `group` FROM `{dbPrefix}settings` AS `settings`"
+				." LEFT JOIN `{dbPrefix}settings_groups` as `groups` ON `settings`.`group` = `groups`.`id`"
+				." ORDER BY `groups`.`sort_order`, `settings`.`sortOrder`, `settings`.`title`"
 			,"all"
 		);
 		
@@ -82,7 +85,7 @@ class admin_settings extends adminController
 		}
 		
 		$aSettingGroups = $this->dbQuery(
-			"SELECT distinct `group` FROM `{dbPrefix}settings`"
+			"SELECT * FROM `{dbPrefix}settings_groups`"
 			,"all"
 		);
 
@@ -132,7 +135,7 @@ class admin_settings extends adminController
 		}
 		
 		$aSettingGroups = $this->dbQuery(
-			"SELECT distinct `group` FROM `{dbPrefix}settings`"
+			"SELECT * FROM `{dbPrefix}settings_groups`"
 			,"all"
 		);
 
@@ -168,6 +171,162 @@ class admin_settings extends adminController
 		$this->dbDelete("settings", $this->urlVars->dynamic["id"]);
 		
 		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting removed successfully!"));
+	}
+	
+	function manageGroupsIndex() {
+		if($this->superAdmin == false)
+			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
+		
+		// Clear saved form info
+		$_SESSION["admin"]["admin_settings_groups"] = null;
+		
+		$aGroups = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}settings_groups`"
+				." ORDER BY `sort_order`, `name`"
+			,"all"
+		);
+		
+		$sMinSort = $this->dbQuery(
+			"SELECT MIN(`sort_order`) FROM `{dbPrefix}settings_groups`"
+			,"one"
+		);
+		$sMaxSort = $this->dbQuery(
+			"SELECT MAX(`sort_order`) FROM `{dbPrefix}settings_groups`"
+			,"one"
+		);
+		
+		$this->tplAssign("aGroups", $aGroups);
+		$this->tplAssign("minSort", $sMinSort);
+		$this->tplAssign("maxSort", $sMaxSort);
+		$this->tplDisplay("settings/manage/groups/index.tpl");
+	}
+	function manageGroupsAdd() {
+		if($this->superAdmin == false)
+			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
+		
+		if(!empty($_SESSION["admin"]["admin_settings_groups"]))
+			$this->tplAssign("aGroup", $_SESSION["admin"]["admin_settings_groups"]);
+		else {
+			$this->tplAssign("aGroup",
+				array(
+					"active" => 1
+				)
+			);
+		}
+		
+		$this->tplDisplay("settings/manage/groups/add.tpl");
+	}
+	function manageGroupsAdd_s() {
+		if(empty($_POST["name"])) {
+			$_SESSION["admin"]["admin_settings_groups"] = $_POST;
+			$this->forward("/admin/settings/manage/groups/add/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		$sOrder = $this->dbQuery(
+			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}settings_groups`"
+			,"one"
+		);
+		
+		if(empty($sOrder))
+			$sOrder = 1;
+		
+		$sID = $this->dbInsert(
+			"settings_groups",
+			array(
+				"name" => $_POST["name"]
+				,"sort_order" => $sOrder
+				,"active" => $this->boolCheck($_POST["active"])
+			)
+		);
+		
+		$_SESSION["admin"]["admin_settings_groups"] = null;
+		
+		$this->forward("/admin/settings/manage/groups/?notice=".urlencode("Group created successfully!"));
+	}
+	function manageGroupsEdit() {
+		if($this->superAdmin == false)
+			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
+		
+		if(!empty($_SESSION["admin"]["admin_settings_groups"])) {
+			$aGroup = $_SESSION["admin"]["admin_settings_groups"];
+			
+			$this->tplAssign("aGroup", $aGroup);
+		} else {
+			$aGroup = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}settings_groups`"
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
+				,"row"
+			);
+			
+			$this->tplAssign("aGroup", $aGroup);
+		}
+		
+		$this->tplDisplay("settings/manage/groups/edit.tpl");
+	}
+	function manageGroupsEdit_s() {
+		if(empty($_POST["name"])) {
+			$_SESSION["admin"]["admin_settings_groups"] = $_POST;
+			$this->forward("/admin/settings/manage/groups/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		$this->dbUpdate(
+			"settings_groups",
+			array(
+				"name" => $_POST["name"]
+				,"active" => $this->boolCheck($_POST["active"])
+			),
+			$_POST["id"]
+		);
+		
+		$_SESSION["admin"]["admin_settings_groups"] = null;
+		
+		$this->forward("/admin/settings/manage/groups/?notice=".urlencode("Changes saved successfully!"));
+	}
+	function manageGroupsDelete() {
+		$this->dbDelete("settings_groups", $this->urlVars->dynamic["id"]);
+		
+		$this->forward("/admin/settings/manage/groups/?notice=".urlencode("Group removed successfully!"));
+	}
+	function manageGroupsSort() {
+		$aGroup = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}settings_groups`"
+				." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
+			,"row"
+		);
+		
+		if($this->urlVars->dynamic["sort"] == "up") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}settings_groups`"
+					." WHERE `sort_order` < ".$aGroup["sort_order"]
+					." ORDER BY `sort_order` DESC"
+				,"row"
+			);
+		} elseif($this->urlVars->dynamic["sort"] == "down") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}settings_groups`"
+					." WHERE `sort_order` > ".$aGroup["sort_order"]
+					." ORDER BY `sort_order` ASC"
+				,"row"
+			);
+		}
+			
+		$this->dbUpdate(
+			"settings_groups",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aGroup["id"]
+		);
+		
+		$this->dbUpdate(
+			"settings_groups",
+			array(
+				"sort_order" => $aGroup["sort_order"]
+			),
+			$aOld["id"]
+		);
+		
+		$this->forward("/admin/settings/manage/groups/?notice=".urlencode("Sort order saved successfully!"));
 	}
 	function plugins_index() {
 		if($this->superAdmin == false)
@@ -259,10 +418,34 @@ class admin_settings extends adminController
 		
 		// Settings
 		foreach($aSettings as $aSetting) {
+			$sGroup = $this->dbQuery("SELECT `id` FROM `{dbPrefix}settings_groups`"
+					." WHERE `name` = ".$this->dbQuote($aSetting["group"], "text")
+				, "one"
+			);
+			
+			if(empty($sGroup)) {
+				$sOrder = $this->dbQuery(
+					"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}settings_groups`"
+					,"one"
+				);
+	
+				if(empty($sOrder))
+					$sOrder = 1;
+				
+				$sGroup = $this->dbInsert(
+					"settings_groups",
+					array(
+						"name" => $aSetting["group"],
+						"sort_order" => $sOrder,
+						"active" => 1
+					)
+				);
+			}
+			
 			$this->dbInsert(
 				"settings",
 				array(
-					"group" => $aSetting["group"]
+					"group" => $sGroup
 					,"tag" => $aSetting["tag"]
 					,"title" => $aSetting["title"]
 					,"text" => $aSetting["text"]
