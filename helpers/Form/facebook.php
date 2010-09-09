@@ -34,13 +34,16 @@ class Form_facebook extends Form_Field
 			$facebook = new Facebook(array(
 				'appId'  => $sAppId,
 			  	'secret' => $sAppSecret,
-			  	'cookie' => true,
+			  	'cookie' => false,
 			));
 			
-			$oEnc->decrypt($aValue["user_access_token"]);
-			
-			$aFacebookResult = $facebook->api('/me/', 'get', array("access_token" => $oEnc->decrypt($aValue["user_access_token"])));
-			$aFacebookAccounts = $facebook->api('/me/accounts', 'get', array("access_token" => $oEnc->decrypt($aValue["user_access_token"])));
+			try {
+			    $aFacebookResult = $facebook->api('/me/', 'get', array("access_token" => $oEnc->decrypt($aValue["user_access_token"])));
+				$aFacebookAccounts = $facebook->api('/me/accounts', 'get', array("access_token" => $oEnc->decrypt($aValue["user_access_token"])));
+			  } catch (FacebookApiException $e) {
+				print_r($e);
+			    error_log($e);
+			  }
 			
 			//print_r($aFacebookAccounts);
 			$sHTML = '<div class="facebookConnect" style="background:#fff; padding: 15px; border: 1px solid #bbb; overflow: hidden; width: 350px;">';

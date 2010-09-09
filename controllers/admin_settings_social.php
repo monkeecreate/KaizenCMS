@@ -84,7 +84,7 @@ class admin_settings_social extends appController
 		$facebook = new Facebook(array(
 	    	'appId'  => $this->getSetting("facebook_app_id"),
 	      	'secret' => $this->getSetting("facebook_app_secret"),
-	      	'cookie' => true, // enable optional cookie support
+	      	'cookie' => false, // enable optional cookie support
 	    ));
 		
 		$sPrefix = 'http';
