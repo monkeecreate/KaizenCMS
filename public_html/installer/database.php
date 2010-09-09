@@ -205,7 +205,7 @@ $aTables = array(
 				"title" => "Twitter Connect",
 				"text" => NULL,
 				"value" => "",
-				"type" => "text",
+				"type" => "twitter",
 				"sortOrder" => 1,
 				"active" => 1
 			),
@@ -284,6 +284,39 @@ $aTables = array(
 				"value" => "",
 				"type" => "text",
 				"sortOrder" => 4,
+				"active" => 1
+			),
+			array(
+				"id" => 15,
+				"group" => 5,
+				"tag" => "facebook_app_id",
+				"title" => "Facebook - App ID",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 1,
+				"active" => 1
+			),
+			array(
+				"id" => 16,
+				"group" => 5,
+				"tag" => "facebook_app_secret",
+				"title" => "Facebook - App Secret",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 1,
+				"active" => 1
+			),
+			array(
+				"id" => 17,
+				"group" => 4,
+				"tag" => "facebook_connect",
+				"title" => "Facebook Connect",
+				"text" => NULL,
+				"value" => "",
+				"type" => "facebook",
+				"sortOrder" => 1,
 				"active" => 1
 			)
 		)
