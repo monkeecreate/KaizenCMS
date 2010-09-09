@@ -694,6 +694,33 @@ form.settings textarea {
 	font-size: inherit;
 }
 
+.socialConnect {
+	background: #fff;
+	width: 350px;
+	padding: 15px 15px 5px;
+	border: 1px solid #bbb;
+	overflow: hidden;
+}
+
+.socialConnect figure {
+	display: block;
+	float: left;
+	margin: 0 10px 10px 0;
+}
+
+.socialConnect p {
+	margin: 0 0 10px;
+}
+
+.socialConnect label {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.socialConnect p.small {
+	font-size: 1.1em;
+}
+
 /* @end
 
 */

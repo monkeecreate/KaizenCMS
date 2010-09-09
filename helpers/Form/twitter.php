@@ -28,7 +28,6 @@ class Form_twitter extends Form_Field
 			$connection->decode_json = false;
 			$sUser = $connection->get("account/verify_credentials");
 			
-			$sHTML = $this->getLabel("Connected as <a href=\"http://twitter.com/".$aUser["screen_name"]."\"><img src=\"".$aUser["profile_image_url"]."\"> ".$aUser["screen_name"]."</a> <a href=\"/admin/settings/twitter/unlink/\">Unlink</a>");
 			if($connection->http_code != 200) {
 				$aValue = "";
 			} else {
@@ -41,7 +40,10 @@ class Form_twitter extends Form_Field
 			$sHTML .= "<img src=\"/images/admin/social/twitter_lighter.png\">";
 			$sHTML .= "</a>\n";
 		} else {
-			$sHTML = $this->getLabel("Signed in as: <a href=\"http://twitter.com/".$aUser["screen_name"]."\"><img src=\"".$aUser["profile_image_url"]."\"> ".$aUser["screen_name"]."</a> <a href=\"/admin/settings/twitter/unlink/\">Unlink</a>");
+			$sHTML = '<div class="twitterConnect socialConnect">';
+			$sHTML .= '<h4><img src="/images/admin/social/twitter.png" height="20px"> Twitter Connect</h4>';
+			$sHTML .= '<figure><img src="'.$aUser["profile_image_url"].'"></figure> <p>Connected as <strong>'.$aUser["screen_name"].'</strong></p>';
+			$sHTML .= '<p class="small"><a href="/admin/settings/twitter/unlink/" title="Remove Twitter Connection">Remove Connection to Twitter</a></p></div>';
 		}
 		
 		$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value='".$this->value(false)."' /><br /><br />\n";
