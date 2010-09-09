@@ -64,6 +64,14 @@
 					{$sSecurityError}
 				</div>
 			{/if}
+			{if !empty($smarty.get.errors)}
+				{foreach from=$smarty.get.errors item=sPageError}
+					<div class="ui-state-error ui-corner-all notice">
+						<span class="icon ui-icon ui-icon-alert"></span>
+						{$sPageError|urldecode}
+					</div>
+				{/foreach}
+			{/if}
 			{if !empty($page_error)}
 				<div class="ui-state-error ui-corner-all notice">
 					<span class="icon ui-icon ui-icon-alert"></span>
