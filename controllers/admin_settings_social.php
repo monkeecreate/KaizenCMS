@@ -76,7 +76,7 @@ class admin_settings_social extends appController
 			),
 			"twitter_connect", "tag", "text"
 		);
-		header("Location: /admin/settings/?notice=".urlencode("Your Twitter account access has been removed from your website."));
+		header("Location: /admin/settings/?notice=".urlencode("Your Twitter account access has been removed from this site."));
 	}
 	function facebook_redirect() {
 		require_once($this->settings->root."helpers/facebook.php");
@@ -84,7 +84,7 @@ class admin_settings_social extends appController
 		$facebook = new Facebook(array(
 	    	'appId'  => $this->getSetting("facebook_app_id"),
 	      	'secret' => $this->getSetting("facebook_app_secret"),
-	      	'cookie' => true, // enable optional cookie support
+	      	'cookie' => false, // enable optional cookie support
 	    ));
 		
 		$sPrefix = 'http';
@@ -105,5 +105,15 @@ class admin_settings_social extends appController
 		);
 		
 		header("Location: /admin/settings/");
+	}
+	function facebook_unlink() {
+		$this->dbUpdate(
+			"settings",
+			array(
+				"value" => ""
+			),
+			"facebook_connect", "tag", "text"
+		);
+		header("Location: /admin/settings/?notice=".urlencode("Your Facebook account access has been removed from this site."));
 	}
 }
