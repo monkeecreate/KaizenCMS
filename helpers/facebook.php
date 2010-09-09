@@ -566,6 +566,7 @@ class Facebook
     }
 
     $opts = self::$CURL_OPTS;
+	$opts[CURLOPT_SSL_VERIFYPEER] = false; //added by James Fleeting
     if ($this->useFileUploadSupport()) {
       $opts[CURLOPT_POSTFIELDS] = $params;
     } else {

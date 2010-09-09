@@ -28,8 +28,6 @@ class Form_facebook extends Form_Field
 			)->fetchOne();
 			
 			require_once($site_root."helpers/facebook.php");
-			Facebook::$CURL_OPTS[CURLOPT_SSL_VERIFYPEER] = false;
-			Facebook::$CURL_OPTS[CURLOPT_SSL_VERIFYHOST] = 2;
 			
 			$facebook = new Facebook(array(
 				'appId'  => $sAppId,
