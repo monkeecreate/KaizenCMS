@@ -4,7 +4,8 @@ class Form_text extends Form_Field
 	private $_options;
 	private $_setting;
 	
-	public function __construct($aSetting) {
+	/* __constructor */
+	public function Form_text($aSetting) {
 		$this->_setting = $aSetting;
 		$this->_options = $this->getOptions($aSetting["type"]);
 	}
