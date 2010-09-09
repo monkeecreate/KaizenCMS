@@ -202,6 +202,21 @@ class appController
 		
 		return $sUrl;
 	}
+	function loadFacebook() {
+		require_once($this->settings->root."helpers/facebook.php");
+		
+		$oFacebook = new Facebook(array(
+			'appId'  => $this->getSetting("facebook_app_id"),
+		  	'secret' => $this->getSetting("facebook_app_secret"),
+		  	'cookie' => false,
+		));
+		
+		$aFacebookConnect = $this->getSetting("facebook_connect");
+		
+		$aFacebook = array("obj" => $oFacebook, "access_token" => $this->decrypt($aFacebookConnect["post_access_token"]));	
+		
+		return $aFacebook;
+	}
 	##################################
 	
 	### Database #####################
