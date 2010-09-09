@@ -15,8 +15,11 @@ function smarty_function_getContent($aParams, &$oSmarty) {
 			,"row"
 		);
 	
+	$aContent["title"] = htmlspecialchars(stripslashes($aContent["title"]));
+	$aContent["content"] = stripslashes($aContent["content"]);
+	
 	if(empty($aParams["var"]))
-		return stripslashes($aContent["content"]);
+		return $aContent["content"];
 	else
 		$oApp->tplAssign($aParams["var"], $aContent);
 }

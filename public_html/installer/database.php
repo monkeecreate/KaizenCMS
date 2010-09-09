@@ -41,11 +41,6 @@ $aTables = array(
 						"title" => "Content",
 						"menu" => array(
 							array(
-								"text" => "Add Page",
-								"link" => "/admin/content/add/",
-								"icon" => "circle-plus"
-							),
-							array(
 								"text" => "Manage Pages",
 								"link" => "/admin/content/"
 							)
@@ -70,12 +65,12 @@ $aTables = array(
 								"type" => "super"
 							),
 							array(
-								"text" => "Manage Plugins",
+								"text" => "Plugins",
 								"link" => "/admin/settings/plugins/",
 								"type" => "super"
 							),
 							array(
-								"text" => "Manage Admin Menu",
+								"text" => "Admin Menu",
 								"link" => "/admin/settings/admin-menu/",
 								"type" => "super"
 							)
@@ -90,11 +85,6 @@ $aTables = array(
 					array(
 						"title" => "Users",
 						"menu" => array(
-							array(
-								"text" => "Add User",
-								"link" => "/admin/users/add/",
-								"icon" => "circle-plus"
-							),
 							array(
 								"text" => "Manage Users",
 								"link" => "/admin/users/"

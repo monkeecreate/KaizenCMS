@@ -67,11 +67,11 @@
 		<thead>
 			<tr>
 				<th class="hidden">Group</th>
-				<th class="empty">&nbsp;</th>
+				<th class="empty itemStatus">&nbsp;</th>
 				<th>Title</th>
 				<th>Tag</th>
 				<th class="hidden">Order</th>
-				<th class="sorting_disabled center empty">&nbsp;</th>
+				<th class="sorting_disabled center empty">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
