@@ -1,18 +1,5 @@
 {include file="inc_header.tpl" page_title="Manage Settings" menu="settings" page_style="fullContent"}
 {assign var=subMenu value="Manage Settings"}
-{head}
-<script type="text/javascript">
-$(function(){ldelim}
-	var availableTags = new Array();
-	{foreach from=$aSettingGroups item=aGroup}
-		availableTags.push("{$aGroup.group}");
-	{/foreach}
-	$("input[name=group]").autocomplete({ldelim}
-		source: availableTags
-	{rdelim});
-{rdelim});
-</script>
-{/head}
 
 <section id="content" class="content">
 	<header>
@@ -47,7 +34,11 @@ $(function(){ldelim}
 				{if $aSetting.type == "bool"}<span class="input-info">0: UnChecked, 1: Checked</span>{/if}
 			
 				<label>Group:</label><br />
-				<input type="text" name="group" maxlength="100" value="{$aSetting.group|clean_html}"><br>
+				<select name="group">
+					{foreach from=$aSettingGroups item=aGroup}
+						<option value="{$aGroup.id}"{if $aSetting.group == $aGroup.id} selected="selected"{/if}>{$aGroup.name|clean_html}</option>
+					{/foreach}
+				</select><br />
 			
 				<label>Text:</label><br />
 				<input type="text" name="text" maxlength="100" value="{$aSetting.text|clean_html}"><br>

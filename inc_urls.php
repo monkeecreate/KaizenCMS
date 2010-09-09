@@ -120,6 +120,34 @@ $aUrlPatterns = array(
         "cmd" => "admin_settings",
         "action" => "manageDelete"
     ),
+	"/admin/settings/manage/groups/" => array(
+        "cmd" => "admin_settings",
+        "action" => "manageGroupsIndex"
+    ),
+	"/admin/settings/manage/groups/add/" => array(
+        "cmd" => "admin_settings",
+        "action" => "manageGroupsAdd"
+    ),
+	"/admin/settings/manage/groups/add/s/" => array(
+        "cmd" => "admin_settings",
+        "action" => "manageGroupsAdd_s"
+    ),
+	"/admin/settings/manage/groups/edit/{id:[0-9]+}/" => array(
+        "cmd" => "admin_settings",
+        "action" => "manageGroupsEdit"
+    ),
+	"/admin/settings/manage/groups/edit/s/" => array(
+        "cmd" => "admin_settings",
+        "action" => "manageGroupsEdit_s"
+    ),
+	"/admin/settings/manage/groups/delete/{id:[0-9]+}/" => array(
+        "cmd" => "admin_settings",
+        "action" => "manageGroupsDelete"
+    ),
+	"/admin/settings/manage/groups/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+        "cmd" => "admin_settings",
+        "action" => "manageGroupsSort"
+    ),
 	"/admin/settings/plugins/" => array(
         "cmd" => "admin_settings",
         "action" => "plugins_index"
