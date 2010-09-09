@@ -323,7 +323,7 @@ class admin_settings extends adminController
 		
 		// Settings
 		foreach($aSettings as $aSetting) {
-			$this->dbDelete("settings", $aSetting["tag"], "tag");
+			$this->dbDelete("settings", $aSetting["tag"], "tag", "text");
 		}
 		
 		// Admin Menu

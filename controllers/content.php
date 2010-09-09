@@ -21,6 +21,9 @@ class content extends appController
 				,"row"
 			);
 			
+			$aContent["title"] = htmlspecialchars(stripslashes($aContent["title"]));
+			$aContent["content"] = stripslashes($aContent["content"]);
+			
 			$this->tplAssign("aContent", $aContent);
 			
 			if($this->tplExists("content/".$sPage.".tpl"))
