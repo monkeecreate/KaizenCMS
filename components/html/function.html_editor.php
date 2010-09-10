@@ -20,7 +20,7 @@ function smarty_function_html_editor($aParams, &$smarty) {
 	$return .= "\tmode : 'textareas',\n";
 	$return .= "\ttheme : 'advanced',\n";
 	$return .= "\tskin : 'thebigreason',\n";
-	$return .= "\tplugins : 'inlinesourceeditor,embed,imagemanager,filemanager,advimage,advlink,paste,table,preview,fullscreen',\n";
+	$return .= "\tplugins : 'safari,contextmenu,advlist,embed,imagemanager,filemanager,advimage,advlink,paste,table,preview,fullscreen',\n";
 	$return .= "\teditor_selector : '".$aParams["name"]."_editor',\n";
 	$return .= "\textended_valid_elements : 'object[width|height|classid|codebase]"
 		.",param[name|value],embed[src|type|width|height|flashvars|wmode]"
@@ -30,7 +30,7 @@ function smarty_function_html_editor($aParams, &$smarty) {
 	$return .= "\twidth: '".$width."',\n";
 	$return .= "\theight: '".$height."',\n";
 	$return .= "\tcontent_css: '/css/editor.css',\n";
-	$return .= "\ttheme_advanced_buttons1 : 'pastetext,pasteword,|,undo,redo,|,formatselect,|,bold,italic,underline,strikethrough,|,numlist,bullist,|,inlinesourceeditor,fullscreen',\n";
+	$return .= "\ttheme_advanced_buttons1 : 'pastetext,pasteword,|,undo,redo,|,formatselect,|,bold,italic,underline,strikethrough,|,numlist,bullist,|,fullscreen',\n";
 	$return .= "\ttheme_advanced_buttons2 : 'embed,image,link,unlink,|,justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,sub,sup,|,charmap',\n";
 	$return .= "\ttheme_advanced_buttons3 : '',\n";
 	$return .= "\ttheme_advanced_toolbar_location : 'top',\n";
