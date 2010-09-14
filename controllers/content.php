@@ -21,8 +21,10 @@ class content extends appController
 				,"row"
 			);
 			
-			$aContent["title"] = htmlspecialchars(stripslashes($aContent["title"]));
-			$aContent["content"] = stripslashes($aContent["content"]);
+			if(!empty($aContent)) {
+				$aContent["title"] = htmlspecialchars(stripslashes($aContent["title"]));
+				$aContent["content"] = stripslashes($aContent["content"]);
+			}
 			
 			$this->tplAssign("aContent", $aContent);
 			
