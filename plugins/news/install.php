@@ -37,13 +37,7 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("use_kill", "sticky", "active"),
-		"fulltext" => array("title", "short_content", "content"),
-		"search" => array(
-			"title" => "title",
-			"content" => "content",
-			"rows" => array("title", "short_content", "content")
-		)
+		"index" => array("use_kill", "sticky", "active")
 	),
 	"news_categories" => array(
 		"fields" => array(

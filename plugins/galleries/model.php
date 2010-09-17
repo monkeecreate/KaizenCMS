@@ -69,13 +69,6 @@ class galleries_model extends appModel
 		
 		return $aGallery;
 	}
-	function getURL($sID) {
-		$aGallery = $this->getGallery($sID);
-		
-		$sURL = "/galleries/".$aGallery["id"]."/";
-		
-		return $sURL;
-	}
 	function getPhotos($sId) {
 		$aPhotos = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}galleries_photos`"
