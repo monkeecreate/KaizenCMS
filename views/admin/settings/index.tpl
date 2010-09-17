@@ -18,7 +18,7 @@
 			{/foreach}
 		{/if}
 	</header>
-
+	
 	<section class="inner-content">
 		<form method="post" action="/admin/settings/save/" enctype="multipart/form-data" class="settings">
 			{foreach from=$aSettings item=aGroup key=name}

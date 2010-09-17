@@ -153,6 +153,70 @@ class appController
 			rmdir($sFolder);
 		}
 	}
+	function loadTwitter($sDecode = true) {
+		require_once($this->settings->root."helpers/twitteroauth.php");
+		
+		$sConsumerKey = $this->getSetting("twitter_consumer_key");
+		$sConsumerSecret = $this->getSetting("twitter_consumer_secret");
+		$aAccess = $this->getSetting("twitter_connect");
+		
+		$oTwitter = new TwitterOAuth($sConsumerKey, $sConsumerSecret, $aAccess["oauth_token"], $aAccess["oauth_token_secret"]);
+		
+		if($sDecode == false) {
+			$oTwitter->decode_json = false;
+		}
+		
+		/* Check authentication */
+		$aUser = $oTwitter->get("account/verify_credentials");
+		if($oTwitter->http_code != 200) {
+			return false;
+			//$this->sendError("Twitter Connection", $aUser->error);
+		}
+		
+		return $oTwitter;
+	}
+	function urlShorten($sUrl) {
+		$sUser = $this->getSetting("bitly_user");
+		$sKey = $this->getSetting("bitly_key");
+		
+		$sUrl = "http://api.bit.ly/v3/shorten?login=".urlencode($sUser)."&apiKey=".$sKey."&longUrl=".urlencode($sUrl)."&format=json";
+		
+		$ch = curl_init();
+		
+		curl_setopt($ch, CURLOPT_URL, $sUrl);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		
+		$sResults = curl_exec($ch);
+		$aInfo = curl_getinfo($ch);
+		
+		curl_close($ch);
+		
+		// Throw error
+		if($aInfo["http_code"] != 200) {
+			return false;
+		}
+		
+		$aResults = json_decode($sResults, true);
+		
+		$sUrl = $aResults["data"]["url"];
+		
+		return $sUrl;
+	}
+	function loadFacebook() {
+		require_once($this->settings->root."helpers/facebook.php");
+		
+		$oFacebook = new Facebook(array(
+			'appId'  => $this->getSetting("facebook_app_id"),
+		  	'secret' => $this->getSetting("facebook_app_secret"),
+		  	'cookie' => false,
+		));
+		
+		$aFacebookConnect = $this->getSetting("facebook_connect");
+		
+		$aFacebook = array("obj" => $oFacebook, "access_token" => $this->decrypt($aFacebookConnect["post_access_token"]));	
+		
+		return $aFacebook;
+	}
 	##################################
 	
 	### Database #####################

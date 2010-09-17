@@ -45,6 +45,7 @@
 				<input type="submit" value="Upload File">
 				<a class="cancel" href="#" title="Cancel">Cancel</a>
 				<input type="hidden" name="id" value="{$aArticle.id}">
+				<input type="hidden" name="post_facebook" value="{$smarty.get.post_facebook}">
 			</fieldset>
 		</form>
 		
@@ -65,6 +66,7 @@
 			<a class="cancel" href="/admin/news/image/{$aArticle.id}/delete/" title="Delete Photo">Delete Photo</a></p>
 			
 			<input type="hidden" name="id" value="{$aArticle.id}">
+			<input type="hidden" name="post_facebook" value="{$smarty.get.post_facebook}">
 		</form>
 	</section>
 </section>
