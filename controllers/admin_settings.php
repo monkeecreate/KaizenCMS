@@ -414,6 +414,22 @@ class admin_settings extends adminController
 			
 			if(!empty($sName))
 				$objDB->createIndex($sTable, $sName, $aDefinitions);
+			
+			if(is_array($aTable["fulltext"]))
+				$this->dbQuery("ALTER TABLE  `".$sTable."` ADD FULLTEXT (`".implode("`,`", $aTable["fulltext"])."`);", "alter");
+			
+			if(is_array($aTable["search"])) {
+				$this->dbInsert(
+					"search",
+					array(
+						"plugin" => $sPlugin
+						,"table" => $sTable
+						,"column_title" => $aTable["search"]["title"]
+						,"column_content" => $aTable["search"]["content"]
+						,"rows" => json_encode($aTable["search"]["rows"])
+					)
+				);
+			}
 		}
 		
 		// Settings
@@ -508,6 +524,9 @@ class admin_settings extends adminController
 		foreach($aSettings as $aSetting) {
 			$this->dbDelete("settings", $aSetting["tag"], "tag", "text");
 		}
+		
+		//Search
+		$this->dbDelete("search", $sPlugin, "plugin", "text");
 		
 		// Admin Menu
 		$this->dbDelete("menu_admin", $sPlugin, "tag", "text");

@@ -16,6 +16,10 @@ $aUrlPatterns = array(
         "cmd" => "content",
         "action" => "index"
     ),
+	"/search/" => array(
+		"cmd" => "content",
+		"action" => "search"
+	),
 	"/sendform/" => array(
 		"cmd" => "content",
 		"action" => "form_submit"
@@ -163,6 +167,30 @@ $aUrlPatterns = array(
 	"/admin/settings/admin-menu/s/" => array(
 		"cmd" => "admin_settings",
 		"action" => "admin_menu_s"
+	),
+	"/admin/settings/twitter/redirect/" => array(
+        "cmd" => "admin_settings_social",
+        "action" => "twitter_redirect"
+    ),
+	"/admin/settings/twitter/connect/" => array(
+        "cmd" => "admin_settings_social",
+        "action" => "twitter_connect"
+    ),
+	"/admin/settings/twitter/unlink/" => array(
+	    "cmd" => "admin_settings_social",
+	    "action" => "twitter_unlink"
+	),
+	"/admin/settings/facebook/redirect/" => array(
+		"cmd" => "admin_settings_social",
+		"action" => "facebook_redirect"
+	),
+	"/admin/settings/facebook/connect/" => array(
+		"cmd" => "admin_settings_social",
+		"action" => "facebook_connect"
+	),
+	"/admin/settings/facebook/unlink/" => array(
+		"cmd" => "admin_settings_social",
+		"action" => "facebook_unlink"
 	),
 	"/admin/users/" => array(
         "cmd" => "admin_users",

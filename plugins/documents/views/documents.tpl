@@ -1,0 +1,68 @@
+{include file="inc_header.tpl" page_title="Documents" menu="documents"}
+
+	{if $aCategories|@count gt 1}
+	<form name="category" method="get" action="/documents/" class="sortCat">
+		Category: 
+		<select name="category">
+			<option value="">- All Categories -</option>
+			{foreach from=$aCategories item=aCategory}
+				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
+			{/foreach}
+		</select>
+		{footer}
+		<script type="text/javascript">
+		$(function(){ldelim}
+			$('select[name=category]').change(function(){ldelim}
+				$('form[name=category]').submit();
+			{rdelim});
+		{rdelim});
+		</script>
+		{/footer}
+	</form>
+	{/if}
+
+	<h2>Documents</h2>
+	<div class="clear"></div>
+
+	<div id="contentList">
+		{foreach from=$aDocuments item=aDocument}
+			<div class="contentListItem">
+				<h2>
+					<a href="{$documentFolder}{$aDocument.document}" target="_blank">
+						{$aDocument.name}
+					</a>
+				</h2>
+				{if !empty($aDocument.categories)}
+					<small class="timeCat">
+						Categories: 
+						{foreach from=$aDocument.categories item=aCategory name=category}
+							<a href="/documents/?category={$aCategory.id}" title="Documents in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+						{/foreach}
+					</small>
+				{/if}
+				<p class="content">
+					{$aDocument.description}
+				</p>
+			</div>
+		{foreachelse}
+			<div class="contentListEmpty">
+				No documents.
+			</div>
+		{/foreach}
+	</div>
+
+	<div id="paging">
+		{if $aPaging.next.use == true}
+			<div class="right">
+				<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
+			</div>
+		{/if}
+		{if $aPaging.back.use == true}
+			<div class="left">
+				<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
+			</div>
+		{/if}
+	</div>
+	<div class="clear">&nbsp;</div>
+
+{include file="inc_footer.tpl"}
