@@ -1,10 +1,14 @@
 <?php
 class admin_news extends adminController
 {
+	public $errors;
+	
 	function __construct() {
 		parent::__construct("news");
 		
 		$this->menuPermission("news");
+		
+		$this->errors = array();
 	}
 	
 	### DISPLAY ######################
@@ -87,7 +91,7 @@ class admin_news extends adminController
 		
 		if(!empty($_POST["categories"])) {
 			foreach($_POST["categories"] as $sCategory) {
-				$sID = $this->dbInsert(
+				$this->dbInsert(
 					"news_categories_assign",
 					array(
 						"articleid" => $sID
@@ -99,11 +103,19 @@ class admin_news extends adminController
 		
 		$_SESSION["admin"]["admin_news"] = null;
 		
+		if($_POST["post_twitter"] == 1) {
+			$this->postTwitter($sID, $_POST["title"]);
+		}
+		
 		if(!empty($_FILES["image"]["type"]) && $oNews->useImage == true) {
 			$_POST["id"] = $sID;
 			$this->image_upload_s();
-		} else			
-			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!"));
+		} else {	
+			if($_POST["post_facebook"] == 1)
+				$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $oNews->shortContentCharacters), false);
+				
+			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!")."&".implode("&", $this->errors));
+		}
 	}
 	function edit() {
 		$oNews = $this->loadModel("news");
@@ -208,9 +220,16 @@ class admin_news extends adminController
 		
 		$_SESSION["admin"]["admin_news"] = null;
 		
+		if($_POST["post_twitter"] == 1) {
+			$this->postTwitter($_POST["id"], $_POST["title"]);
+		}
+		
 		if(!empty($_FILES["image"]["type"]) && $oNews->useImage == true)
 			$this->image_upload_s();
 		else {
+			if($_POST["post_facebook"] == 1)
+				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $oNews->shortContentCharacters), false);
+			
 			if($_POST["submit"] == "Save Changes")
 				$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!"));
 			elseif($_POST["submit"] == "edit")
@@ -231,6 +250,11 @@ class admin_news extends adminController
 	}
 	function image_upload_s() {
 		$oNews = $this->loadModel("news");
+		
+		if(!empty($_GET["post_facebook"]))
+			$sPostFacebook = $_GET["post_facebook"];
+		else
+			$sPostFacebook = $_POST["post_facebook"];
 		
 		if(!is_dir($this->settings->rootPublic.substr($oNews->imageFolder, 1)))
 			mkdir($this->settings->rootPublic.substr($oNews->imageFolder, 1), 0777);
@@ -260,15 +284,15 @@ class admin_news extends adminController
 					$_POST["id"]
 				);
 
-				$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
+				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?post_facebook=".$sPostFacebook);
 			} else
-				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Unable to upload image."));
+				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Unable to upload image.")."&post_facebook=".$sPostFacebook);
 		} else
-			$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["image"]["type"].")."));
+			$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["image"]["type"].").")."&post_facebook=".$sPostFacebook);
 	}
 	function image_edit() {
 		$oNews = $this->loadModel("news");
-
+		
 		if($oNews->imageMinWidth < 300) {
 			$sPreviewWidth = $oNews->imageMinWidth;
 			$sPreviewHeight = $oNews->imageMinHeight;
@@ -287,6 +311,8 @@ class admin_news extends adminController
 		$this->tplDisplay("admin/image.tpl");
 	}
 	function image_edit_s() {
+		$oNews = $this->loadModel("news");
+		
 		$this->dbUpdate(
 			"news",
 			array(
@@ -299,6 +325,11 @@ class admin_news extends adminController
 			),
 			$_POST["id"]
 		);
+		
+		$aArticle = $oNews->getArticle($_POST["id"]);
+		
+		if($_POST["post_facebook"] == 1)
+			$this->postFacebook($aArticle["id"], $aArticle["title"], $aArticle["short_content"], true);
 
 		$this->forward("/admin/news/?notice=".urlencode("Article updated."));
 	}
@@ -359,4 +390,54 @@ class admin_news extends adminController
 		$this->forward("/admin/news/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
+	
+	function postTwitter($sID, $sTitle) {
+		$oTwitter = $this->loadTwitter();
+		
+		if($oTwitter != false) {
+			$sPrefix = 'http';
+			if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
+				$sPrefix .= "://";
+			
+			$sTitle = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($sTitle)))));
+
+			if(strlen($sTitle) > 50)
+				$sTitle = substr($sTitle, 0, 50)."...";
+			
+			$sUrl = $this->urlShorten($sPrefix.$_SERVER["HTTP_HOST"]."/news/".$sID."/".$sTitle."/");
+			
+			$aParameters = array("status" => $_POST["title"]." ".$sUrl);
+			$status = $oTwitter->post("statuses/update", $aParameters);
+			
+			if($connection->http_code != 200) {
+				$this->errors[] = "errors[]=".urlencode("Error posting to Twitter. Please try again later.");
+			}
+		} else {
+			$this->errors[] = "errors[]=".urlencode("Unable to connect with Twitter. Please try again later.");
+		}
+	}
+	function postFacebook($sID, $sTitle, $sShortContent, $sImage) {
+		$aFacebook = $this->loadFacebook();
+		
+		$sPrefix = 'http';
+		if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
+			$sPrefix .= "://";
+			
+		$sTitleUrl = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($sTitle)))));
+		
+		if(strlen($sTitleUrl) > 50)
+			$sTitleUrl = substr($sTitleUrl, 0, 50)."...";
+		
+		if($sImage == false)
+			$sImage = $sPrefix.$_SERVER["HTTP_HOST"].'/images/facebookConnect.png';
+		else
+			$sImage = $sPrefix.$_SERVER["HTTP_HOST"].'/image/news/'.$sID.'/?width=90';
+		
+		try {
+			$aFacebook["obj"]->api('/me/feed/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent, "link" => $sPrefix.$_SERVER["HTTP_HOST"].'/news/'.$sID.'/'.$sTitleUrl.'/', "picture" => $sImage));
+		} catch (FacebookApiException $e) {
+			error_log($e);
+			$this->errors[] = "errors[]=".urlencode("Error posting to Facebook. Please try again later.");
+		}
+	}
 }

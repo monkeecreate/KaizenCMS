@@ -73,6 +73,13 @@ class links_model extends appModel
 		
 		return $aLink;
 	}
+	function getURL($sID) {
+		$aLink = $this->getLink($sID);
+		
+		$sURL = "/links/";
+		
+		return $sURL;
+	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		
 			$aCategories = $this->dbQuery(

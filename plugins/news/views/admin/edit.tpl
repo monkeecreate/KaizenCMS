@@ -76,6 +76,18 @@
 			</fieldset>
 			
 			<fieldset>
+				<legend>Post to</legend>
+				
+				<img src="/images/admin/social/twitter.png" class="left" style="width:28px;margin-right: 10px;">
+				<input type="checkbox" name="post_twitter" value="1"><br />
+				
+				<div class="clear">&nbsp;</div>
+				
+				<img src="/images/admin/social/facebook_32.png" class="left" style="width:28px;margin-right: 10px;">
+				<input type="checkbox" name="post_facebook" value="1"><br />
+			</fieldset>
+			
+			<fieldset>
 				<legend>Publish Dates</legend>
 				<span>
 					<label>Publish On</label><br />
@@ -114,7 +126,7 @@ $(function(){ldelim}
 		uncheckedLabel: 'Off'
 	{rdelim});
 	
-	$('input[name=sticky]').iphoneStyle({ldelim}
+	$('input[name=sticky], input[name=post_twitter], input[name=post_facebook]').iphoneStyle({ldelim}
 		checkedLabel: 'Yes',
 		uncheckedLabel: 'No'
 	{rdelim});

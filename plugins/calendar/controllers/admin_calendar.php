@@ -13,7 +13,7 @@ class admin_calendar extends adminController
 		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_calendar"] = null;
-
+		
 		$this->tplAssign("aCategories", $oCalendar->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
 		$this->tplAssign("aEvents", $oCalendar->getEvents($_GET["category"], true));
@@ -110,6 +110,14 @@ class admin_calendar extends adminController
 					)
 				);
 			}
+		}
+		
+		if($_POST["post_twitter"] == 1) {
+			$this->postTwitter($sID, $_POST["title"]);
+		}
+		
+		if($_POST["post_facebook"] == 1) {
+			$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $oCalendar->shortContentCharacters), $datetime_start, $datetime_end);
 		}
 		
 		$_SESSION["admin"]["admin_calendar"] = null;
@@ -228,6 +236,10 @@ class admin_calendar extends adminController
 					)
 				);
 			}
+		}
+		
+		if($_POST["post_facebook"] == 1 || !empty($_POST["facebook_id"])) {
+			$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $oCalendar->shortContentCharacters), $datetime_start, $datetime_end, $_POST["facebook_id"]);
 		}
 		
 		$_SESSION["admin"]["admin_calendar"] = null;
@@ -384,4 +396,33 @@ class admin_calendar extends adminController
 		$this->forward("/admin/calendar/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
+	function postFacebook($sID, $sTitle, $sShortContent, $sStartTime, $sEndTime, $sFacebookID) {
+		$aFacebook = $this->loadFacebook();
+		
+		$sPrefix = 'http';
+		if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
+			$sPrefix .= "://";
+			
+		$sTitleUrl = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($sTitle)))));
+		
+		if(strlen($sTitleUrl) > 50)
+			$sTitleUrl = substr($sTitleUrl, 0, 50)."...";
+		
+		try {
+			$aFacebookResult = $aFacebook["obj"]->api('/me/events/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].'/calendar/'.$sID.'/'.$sTitleUrl.'/', "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
+			
+			if(empty($sFacebookID)) {
+				$this->dbUpdate(
+					"calendar",
+					array(
+						"facebook_id" => sprintf("%30.0f", $aFacebookResult["id"])
+					),
+					$sID
+				);
+			}
+		} catch (FacebookApiException $e) {
+			error_log($e);
+			$this->errors[] = "errors[]=".urlencode("Error posting to Facebook. Please try again later.");
+		}
+	}
 }
