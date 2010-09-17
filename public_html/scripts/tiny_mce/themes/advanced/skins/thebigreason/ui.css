@@ -131,8 +131,8 @@
 .thebigreasonSkin span.mce_undo {background-position:-160px 0}
 .thebigreasonSkin span.mce_redo {background-position:-100px 0}
 .thebigreasonSkin span.mce_cleanup {background-position:-40px 0}
-.thebigreasonSkin span.mce_bullist {background-position:-20px 0}
-.thebigreasonSkin span.mce_numlist {background-position:-80px 0}
+.thebigreasonSkin .mceSplitButton a.mceAction span.mce_bullist, .thebigreasonSkin span.mce_bullist {background-position:-20px 0}
+.thebigreasonSkin .mceSplitButton a.mceAction span.mce_numlist, .thebigreasonSkin span.mce_numlist {background-position:-80px 0}
 .thebigreasonSkin span.mce_justifyleft {background-position:-460px 0}
 .thebigreasonSkin span.mce_justifyright {background-position:-480px 0}
 .thebigreasonSkin span.mce_justifycenter {background-position:-420px 0}
