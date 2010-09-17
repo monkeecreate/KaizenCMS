@@ -122,14 +122,11 @@ $(function(){ldelim}
 		uncheckedLabel: 'Off'
 	{rdelim});
 	
-<<<<<<< HEAD
 	$('input[name=post_twitter], input[name=post_facebook]').iphoneStyle({ldelim}
 		checkedLabel: 'Yes',
 		uncheckedLabel: 'No'
 	{rdelim});
 	
-=======
->>>>>>> 2.0
 	$('#currentCharacters').html($('textarea[name=short_content]').val().length);
 	
 	$('textarea[name=short_content]').keyup(function() {ldelim}
