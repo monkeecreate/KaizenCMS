@@ -1,14 +1,20 @@
 <?php
 class admin_news extends adminController
 {
+<<<<<<< HEAD
 	public $errors;
 	
+=======
+>>>>>>> 2.0
 	function __construct() {
 		parent::__construct("news");
 		
 		$this->menuPermission("news");
+<<<<<<< HEAD
 		
 		$this->errors = array();
+=======
+>>>>>>> 2.0
 	}
 	
 	### DISPLAY ######################
@@ -91,7 +97,11 @@ class admin_news extends adminController
 		
 		if(!empty($_POST["categories"])) {
 			foreach($_POST["categories"] as $sCategory) {
+<<<<<<< HEAD
 				$this->dbInsert(
+=======
+				$sID = $this->dbInsert(
+>>>>>>> 2.0
 					"news_categories_assign",
 					array(
 						"articleid" => $sID
@@ -103,6 +113,7 @@ class admin_news extends adminController
 		
 		$_SESSION["admin"]["admin_news"] = null;
 		
+<<<<<<< HEAD
 		if($_POST["post_twitter"] == 1) {
 			$this->postTwitter($sID, $_POST["title"]);
 		}
@@ -116,6 +127,13 @@ class admin_news extends adminController
 				
 			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!")."&".implode("&", $this->errors));
 		}
+=======
+		if(!empty($_FILES["image"]["type"]) && $oNews->useImage == true) {
+			$_POST["id"] = $sID;
+			$this->image_upload_s();
+		} else			
+			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!"));
+>>>>>>> 2.0
 	}
 	function edit() {
 		$oNews = $this->loadModel("news");
@@ -220,6 +238,7 @@ class admin_news extends adminController
 		
 		$_SESSION["admin"]["admin_news"] = null;
 		
+<<<<<<< HEAD
 		if($_POST["post_twitter"] == 1) {
 			$this->postTwitter($_POST["id"], $_POST["title"]);
 		}
@@ -230,6 +249,11 @@ class admin_news extends adminController
 			if($_POST["post_facebook"] == 1)
 				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $oNews->shortContentCharacters), false);
 			
+=======
+		if(!empty($_FILES["image"]["type"]) && $oNews->useImage == true)
+			$this->image_upload_s();
+		else {
+>>>>>>> 2.0
 			if($_POST["submit"] == "Save Changes")
 				$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!"));
 			elseif($_POST["submit"] == "edit")
@@ -251,11 +275,14 @@ class admin_news extends adminController
 	function image_upload_s() {
 		$oNews = $this->loadModel("news");
 		
+<<<<<<< HEAD
 		if(!empty($_GET["post_facebook"]))
 			$sPostFacebook = $_GET["post_facebook"];
 		else
 			$sPostFacebook = $_POST["post_facebook"];
 		
+=======
+>>>>>>> 2.0
 		if(!is_dir($this->settings->rootPublic.substr($oNews->imageFolder, 1)))
 			mkdir($this->settings->rootPublic.substr($oNews->imageFolder, 1), 0777);
 
@@ -284,6 +311,7 @@ class admin_news extends adminController
 					$_POST["id"]
 				);
 
+<<<<<<< HEAD
 				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?post_facebook=".$sPostFacebook);
 			} else
 				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Unable to upload image.")."&post_facebook=".$sPostFacebook);
@@ -293,6 +321,17 @@ class admin_news extends adminController
 	function image_edit() {
 		$oNews = $this->loadModel("news");
 		
+=======
+				$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
+			} else
+				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Unable to upload image."));
+		} else
+			$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["image"]["type"].")."));
+	}
+	function image_edit() {
+		$oNews = $this->loadModel("news");
+
+>>>>>>> 2.0
 		if($oNews->imageMinWidth < 300) {
 			$sPreviewWidth = $oNews->imageMinWidth;
 			$sPreviewHeight = $oNews->imageMinHeight;
@@ -311,8 +350,11 @@ class admin_news extends adminController
 		$this->tplDisplay("admin/image.tpl");
 	}
 	function image_edit_s() {
+<<<<<<< HEAD
 		$oNews = $this->loadModel("news");
 		
+=======
+>>>>>>> 2.0
 		$this->dbUpdate(
 			"news",
 			array(
@@ -325,11 +367,14 @@ class admin_news extends adminController
 			),
 			$_POST["id"]
 		);
+<<<<<<< HEAD
 		
 		$aArticle = $oNews->getArticle($_POST["id"]);
 		
 		if($_POST["post_facebook"] == 1)
 			$this->postFacebook($aArticle["id"], $aArticle["title"], $aArticle["short_content"], true);
+=======
+>>>>>>> 2.0
 
 		$this->forward("/admin/news/?notice=".urlencode("Article updated."));
 	}
@@ -390,6 +435,7 @@ class admin_news extends adminController
 		$this->forward("/admin/news/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
+<<<<<<< HEAD
 	
 	function postTwitter($sID, $sTitle) {
 		$oTwitter = $this->loadTwitter();
@@ -440,4 +486,6 @@ class admin_news extends adminController
 			$this->errors[] = "errors[]=".urlencode("Error posting to Facebook. Please try again later.");
 		}
 	}
+=======
+>>>>>>> 2.0
 }

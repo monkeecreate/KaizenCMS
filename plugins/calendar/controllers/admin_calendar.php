@@ -396,6 +396,7 @@ class admin_calendar extends adminController
 		$this->forward("/admin/calendar/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
+	
 	function postFacebook($sID, $sTitle, $sShortContent, $sStartTime, $sEndTime, $sFacebookID) {
 		$aFacebook = $this->loadFacebook();
 		

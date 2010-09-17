@@ -52,6 +52,7 @@ if($_GET["captcha_error"] != 1)
 
 		<input type="submit" value="Send" class="send">
 	</form>
+	{footer}
 	<script type="text/javascript">
 	$(function(){ldelim}
 		{if !empty($smarty.get.captcha_error)}
@@ -65,4 +66,5 @@ if($_GET["captcha_error"] != 1)
 		], "Please fix the following errors:", ".form-errors", "errorField");
 	{rdelim});
 	</script>
+	{/footer}
 {include file="inc_footer.tpl"}
