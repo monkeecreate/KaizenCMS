@@ -76,16 +76,6 @@
 			</fieldset>
 			
 			<fieldset>
-				<legend>Post to</legend>
-				
-				<span class="left">
-					<img src="http://lavrusik.com/wp-content/uploads/2010/04/twitter.png" style="width:50px;margin-right: 15px;">
-				</span>
-				<label>Twitter</label><br />
-				<input type="checkbox" name="post_twitter" value="1"><br />
-			</fieldset>
-			
-			<fieldset>
 				<legend>Publish Dates</legend>
 				<span>
 					<label>Publish On</label><br />

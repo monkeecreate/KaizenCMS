@@ -63,16 +63,6 @@
 			</fieldset>
 			
 			<fieldset>
-				<legend>Post to</legend>
-				
-				<span class="left">
-					<img src="/images/admin/social/twitter.png" style="width:50px;margin-right: 15px;">
-				</span>
-				<label>Twitter</label><br />
-				<input type="checkbox" name="post_twitter" value="1"><br />
-			</fieldset>
-			
-			<fieldset>
 				<legend>Publish Dates</legend>
 				<span>
 					<label>Publish On</label><br />
@@ -111,7 +101,7 @@ $(function(){ldelim}
 		uncheckedLabel: 'Off'
 	{rdelim});
 	
-	$('input[name=sticky], input[name=twitter], input[name=facebook]').iphoneStyle({ldelim}
+	$('input[name=sticky]').iphoneStyle({ldelim}
 		checkedLabel: 'Yes',
 		uncheckedLabel: 'No'
 	{rdelim});

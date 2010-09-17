@@ -1,14 +1,10 @@
 <?php
 class admin_news extends adminController
 {
-	public $errors;
-	
 	function __construct() {
 		parent::__construct("news");
 		
 		$this->menuPermission("news");
-		
-		$this->errors = array();
 	}
 	
 	### DISPLAY ######################
@@ -101,23 +97,13 @@ class admin_news extends adminController
 			}
 		}
 		
-		if($_POST["post_to_facebook"] == 1) {
-			$aFacebook = $this->loadFacebook();
-		
-			$aFacebook["obj"]->api('/me/feed/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $_POST["title"], "description" => (string)substr($_POST["short_content"], 0, $oNews->shortContentCharacters), "link" => $_SERVER["SERVER_NAME"].'/news/'.$sID.'/'.urlencode($_POST["title"]).'/'));
-		}
-		
 		$_SESSION["admin"]["admin_news"] = null;
-		
-		if($_POST["post_twitter"] == 1) {
-			$this->postTwitter($sId, $_POST["title"]);
-		}
 		
 		if(!empty($_FILES["image"]["type"]) && $oNews->useImage == true) {
 			$_POST["id"] = $sID;
 			$this->image_upload_s();
 		} else			
-			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!")."&".implode("&", $this->errors));
+			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!"));
 	}
 	function edit() {
 		$oNews = $this->loadModel("news");
@@ -221,10 +207,6 @@ class admin_news extends adminController
 		}
 		
 		$_SESSION["admin"]["admin_news"] = null;
-		
-		if($_POST["post_twitter"] == 1) {
-			$this->postTwitter($sId, $_POST["title"]);
-		}
 		
 		if(!empty($_FILES["image"]["type"]) && $oNews->useImage == true)
 			$this->image_upload_s();
@@ -377,30 +359,4 @@ class admin_news extends adminController
 		$this->forward("/admin/news/categories/?notice=".urlencode("Category removed successfully!"));
 	}
 	##################################
-	
-	function postTwitter($sId, $sTitle) {
-		$oTwitter = $this->loadTwitter();
-		
-		if($oTwitter != false) {
-			$sPrefix = 'http';
-			if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
-				$sPrefix .= "://";
-			
-			$sTitle = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($sTitle)))));
-
-			if(strlen($sTitle) > 50)
-				$sTitle = substr($sTitle, 0, 50)."...";
-			
-			$sUrl = $this->urlShorten($sPrefix.$_SERVER["HTTP_HOST"]."/news/".$sID."/".$sTitle."/");
-			
-			$aParameters = array("status" => $_POST["title"]." ".$sUrl);
-			$status = $oTwitter->post("statuses/update", $aParameters);
-			
-			if($connection->http_code != 200) {
-				$this->errors[] = "errors[]=".urlencode("Error posting to Twitter. Please try again later.");
-			}
-		} else {
-			$this->errors[] = "errors[]=".urlencode("Unable to connect with Twitter. Please try again later.");
-		}
-	}
 }
