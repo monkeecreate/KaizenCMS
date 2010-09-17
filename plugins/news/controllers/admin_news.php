@@ -235,6 +235,7 @@ class admin_news extends adminController
 		else {
 			if($_POST["post_facebook"] == 1)
 				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $oNews->shortContentCharacters), false);
+		}
 		
 		if(!empty($_FILES["image"]["type"]) && $oNews->useImage == true)
 			$this->image_upload_s();
