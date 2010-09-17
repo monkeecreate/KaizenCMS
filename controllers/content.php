@@ -5,6 +5,76 @@ class content extends appController
 	function index() {
 		$this->tplDisplay("index.tpl");
 	}
+	function search() {
+		if(!empty($_GET["query"])) {
+			$sSearch = strip_tags($_GET["query"]);
+			$sQuery = $this->dbQuote($sSearch, "text");
+			
+			$aTables = $this->dbQuery("SELECT * FROM `{dbPrefix}search`", "all");
+			$aSearchTables = array();
+			
+			foreach($aTables as $aSearch) {
+				$aSearch["rows"] = json_decode($aSearch["rows"], true);
+				$aRows = array();
+				foreach($aSearch["rows"] as $sRow) {
+					$aRows[] = "`table`.`".$sRow."`";
+				}
+				$sRows = implode(",", $aRows);
+				
+				if(!empty($aSearch["filter"])) {
+					$sFilter = "AND ";
+					$aFilters = array();
+					$aSearchFilters = json_decode($aSearch["filter"], true);
+					
+					foreach($aSearchFilters as $sCol => $aValue) {
+						$aFilters[] = "`".$sCol."` = ".$aValue;
+					}
+					
+					$sFilter .= implode(" AND ".$aFilters);
+				}
+				
+				$aSearchTables[] = "SELECT"
+					." `id`"
+					.", `".$aSearch["column_title"]."` AS `title`".
+					((!empty($aSearch["column_content"]))?", `".$aSearch["column_content"]."` AS `content`":", '' AS `content`")
+					.", '".$aSearch["plugin"]."' as `plugin`"
+					.", MATCH(".$sRows.") AGAINST (".$sQuery.") AS `score`"
+					." FROM `".$aSearch["table"]."` AS `table`"
+					." WHERE MATCH(".$sRows.") AGAINST (".$sQuery.")"
+					.$sFilter
+				;
+			}
+			
+			$sSQL = implode(" UNION ", $aSearchTables)." ORDER BY `score` DESC";
+			
+			$aSearch = $this->dbQuery($sSQL, "all");
+			
+			foreach($aSearch as &$aItem) {
+				// Content
+				$aItem["content"] = implode(". ", array_slice(explode(". ", strip_tags(stripslashes($aItem["content"]))), 0, 2)).".";
+				if(strlen($aItem["content"]) > 150)
+					$aItem["content"] = substr($aItem["content"], 0, 150)."...";
+				
+				// Score
+				$aItem["score"] = round($aItem["score"], 3);
+				
+				// Link
+				if($aItem["plugin"] == "content") {
+					$sTag = $this->dbQuery("SELECT `tag` FROM `{dbPrefix}content` WHERE `id` = ".$this->dbQuote($aItem["id"], "integer"), "one");
+					$aItem["link"] = "/".$sTag."/";
+				} else {
+					$oModel = $this->loadModel($aItem["plugin"]);
+					$aItem["link"] = $oModel->getURL($aItem["id"]);
+				}
+			}
+			
+			$this->tplAssign("sSearched", 1);
+			$this->tplAssign("aSearch", $aSearch);
+			$this->tplAssign("sQuery", $sSearch);
+		}
+		
+		$this->tplDisplay("search.tpl");
+	}
 	function view() {
 		if(!empty($this->urlVars->dynamic["page"]))
 			$sPage = $this->urlVars->dynamic["page"];
