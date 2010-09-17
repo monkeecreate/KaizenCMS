@@ -42,7 +42,24 @@ $aTables = array(
 		"search" => array(
 			"title" => "title",
 			"content" => "content",
-			"rows" => array("title", "short_content", "content")
+			"rows" => array("title", "short_content", "content"),
+			"filter" => array(
+				array(
+					"col" => "active",
+					"operator" => "=",
+					"value" => 1
+				),
+				array(
+					"col" => "datetime_show",
+					"operator" => "<",
+					"value" => "{time}"
+				),
+				array(
+					"col" => "datetime_kill",
+					"operator" => ">",
+					"value" => "{time}"
+				)
+			)
 		)
 	),
 	"news_categories" => array(

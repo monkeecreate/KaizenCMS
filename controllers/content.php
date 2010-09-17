@@ -14,6 +14,7 @@ class content extends appController
 			$aSearchTables = array();
 			
 			foreach($aTables as $aSearch) {
+				$sFilter = "";
 				$aSearch["rows"] = json_decode($aSearch["rows"], true);
 				$aRows = array();
 				foreach($aSearch["rows"] as $sRow) {
@@ -22,15 +23,32 @@ class content extends appController
 				$sRows = implode(",", $aRows);
 				
 				if(!empty($aSearch["filter"])) {
-					$sFilter = "AND ";
+					$sFilter = " AND ";
 					$aFilters = array();
 					$aSearchFilters = json_decode($aSearch["filter"], true);
 					
-					foreach($aSearchFilters as $sCol => $aValue) {
-						$aFilters[] = "`".$sCol."` = ".$aValue;
+					foreach($aSearchFilters as $aColFilter) {
+						
+						if(empty($aColFilter["col"]) && is_array($aColFilter)) {
+							$aFiltersGroup = array();
+							
+							foreach($aColFilter as $aColFilterGroup) {
+								// Filter functions
+								$aColFilterGroup["value"] = str_replace("{time}", time(), $aColFilterGroup["value"]);
+								
+								$aFiltersGroup[] = "`table`.`".$aColFilterGroup["col"]."` ".$aColFilterGroup["operator"]." ".$aColFilterGroup["value"];
+							}
+							
+							$aFilters[] = "(".implode(" OR ", $aFiltersGroup).")";
+						} else {
+							// Filter functions
+							$aColFilter["value"] = str_replace("{time}", time(), $aColFilter["value"]);
+							
+							$aFilters[] = "`table`.`".$aColFilter["col"]."` ".$aColFilter["operator"]." ".$aColFilter["value"];
+						}
 					}
 					
-					$sFilter .= implode(" AND ".$aFilters);
+					$sFilter .= implode(" AND ", $aFilters);
 				}
 				
 				$aSearchTables[] = "SELECT"
