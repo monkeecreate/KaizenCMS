@@ -116,12 +116,6 @@ class admin_news extends adminController
 				
 			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!")."&".implode("&", $this->errors));
 		}
-		
-		if(!empty($_FILES["image"]["type"]) && $oNews->useImage == true) {
-			$_POST["id"] = $sID;
-			$this->image_upload_s();
-		} else			
-			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!"));
 	}
 	function edit() {
 		$oNews = $this->loadModel("news");
@@ -235,11 +229,7 @@ class admin_news extends adminController
 		else {
 			if($_POST["post_facebook"] == 1)
 				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $oNews->shortContentCharacters), false);
-		}
-		
-		if(!empty($_FILES["image"]["type"]) && $oNews->useImage == true)
-			$this->image_upload_s();
-		else {
+
 			if($_POST["submit"] == "Save Changes")
 				$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!"));
 			elseif($_POST["submit"] == "edit")
@@ -340,7 +330,7 @@ class admin_news extends adminController
 		
 		if($_POST["post_facebook"] == 1)
 			$this->postFacebook($aArticle["id"], $aArticle["title"], $aArticle["short_content"], true);
-
+		
 		$this->forward("/admin/news/?notice=".urlencode("Article updated."));
 	}
 	function image_delete() {
