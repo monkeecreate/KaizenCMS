@@ -83,18 +83,6 @@ class calendar_model extends appModel
 			
 		return $aEvent;
 	}
-	function getURL($sID) {
-		$aEvent = $this->getEvent($sID);
-		
-		$sTitle = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($aEvent["title"])))));
-		
-		if(strlen($sURL) > 50)
-			$sTitle = substr($sTitle, 0, 50)."...";
-		
-		$sURL = "/events/".$aEvent["id"]."/".$sTitle."/";
-		
-		return $sURL;
-	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		
 			$aCategories = $this->dbQuery(
