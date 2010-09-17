@@ -70,13 +70,6 @@ class documents_model extends appModel
 		
 		return $aDocument;
 	}
-	function getURL($sID) {
-		$aDocument = $this->getDocument($sID);
-		
-		$sURL = "/documents/";
-		
-		return $sURL;
-	}
 	function getCategories($sEmpty = true) {		
 		if($sEmpty == true) {		
 			$aCategories = $this->dbQuery(

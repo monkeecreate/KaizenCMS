@@ -27,13 +27,7 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("sort_order"),
-		"fulltext" => array("name", "description"),
-		"search" => array(
-			"title" => "name",
-			"content" => "description",
-			"rows" => array("name", "description")
-		)
+		"index" => array("sort_order")
 	),
 	"galleries_categories" => array(
 		"fields" => array(

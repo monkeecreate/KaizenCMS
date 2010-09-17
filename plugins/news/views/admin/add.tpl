@@ -113,7 +113,11 @@ $(function(){ldelim}
 		uncheckedLabel: 'Off'
 	{rdelim});
 	
+<<<<<<< HEAD
 	$('input[name=sticky], input[name=post_twitter], input[name=post_facebook]').iphoneStyle({ldelim}
+=======
+	$('input[name=sticky]').iphoneStyle({ldelim}
+>>>>>>> 2.0
 		checkedLabel: 'Yes',
 		uncheckedLabel: 'No'
 	{rdelim});
