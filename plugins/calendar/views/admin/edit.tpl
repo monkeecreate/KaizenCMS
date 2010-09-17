@@ -106,7 +106,7 @@
 					<label>Expire On</label> <span class="cancelExpire right cursor-pointer"><img src="/images/admin/icons/delete.png" width="14px" alt="cancel expire"></span><br />
 					<input type="input" name="datetime_kill_date" class="xsmall datepicker" value="{$aEvent.datetime_kill_date}" style="width:80px;">
 					{html_select_time time=$aEvent.datetime_kill prefix="datetime_kill_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
-					<input type="checkbox" name="use_kill" value="1" class="hidden">
+					<input type="checkbox" name="use_kill" value="1" class="hidden"{if $aEvent.use_kill == 0} checked="checked"{/if}>
 				</span>
 				<p class="eventExpire cursor-pointer{if $aEvent.use_kill == 1} hidden{/if}">Set Expire Date</p>
 			</fieldset>
