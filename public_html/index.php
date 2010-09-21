@@ -15,18 +15,22 @@ $site_root = dirname($site_public_root)."/";
 ##############################################
 @include("../inc_config.php");
 
+// Use local copy of PEAR
 if($aConfig["options"]["pear"] == "folder")
 	ini_set("include_path", ini_get("include_path").":".$site_root.".pear");
 
+// Check if installer still exists or skipped for dev reasons
 if(is_dir("installer") && $aConfig["installer_skip"] != 1)
 	die(require("installer/index.php"));
 
+// Set timezone
 putenv("TZ=".$aConfig["options"]["timezone"]);
 ##############################################
 
 ### NON-DEBUG ################################
 if($aConfig["options"]["debug"] == false)
 {
+	// Hide errors and log in file
 	ini_set("display_errors", 0);
 	ini_set("log_errors", 1);
 	ini_set("error_log", $site_root."php_errors.log");
@@ -34,19 +38,26 @@ if($aConfig["options"]["debug"] == false)
 ##############################################
 
 ### URL VARIABLES ############################
+// Remove _GET parameters from url
 $sURL = array_shift(explode("?", $_SERVER["REQUEST_URI"]));
+
+// Force ending slash
 if(substr($sURL, -1) != "/" && substr($sURL,-4,1) != "." && substr($sURL,-3,1) != ".")
 {
+	// Save _GET parameters
 	if(!empty($_SERVER["QUERY_STRING"]))
 		$sQueryString .= "?".$_SERVER["QUERY_STRING"];
 	
+	// Permanently redirect page
 	header("HTTP/1.1 301 Moved Permanently");
 	header("Location: ".$sURL."/".$sQueryString);
 	exit;
 }
+
+// Break URL into peices
 $aUrl = explode("/", $sURL);
-array_shift($aUrl);
-array_pop($aUrl);
+array_shift($aUrl); // Remove first array item, always empty
+array_pop($aUrl); // Remove last array item, always empty
 ##############################################
 
 ### AUTO CLASSES #############################
@@ -62,11 +73,13 @@ $oEnc->set_salt(sha1($aConfig["encryption"]["salt"]));
 ### FIREPHP ##################################
 if($aConfig["options"]["debug"] == true && $aConfig["software"]["firephp"] == true)
 {
+	// Load FirePHP to send development messages to the browser in the header response
 	require("FirePHPCore/FirePHP.class.php");
 	$oFirePHP = FirePHP::getInstance(true);
 }
 else
 {
+	// Load empty FirePHP so no errors thrown when trying to access
 	include($site_root."helpers/emptyFirePHP.php");
 	$oFirePHP = new emptyFirePHP;
 }
@@ -74,12 +87,16 @@ else
 
 ### PREPARE URL PATTERN ######################
 require("../inc_urls.php");
+
+// Split patterns into chunks to not choke the server
 $patterns = array_chunk($aUrlPatterns, 80, TRUE);
 
+// Run just created pattern chunks
 foreach($patterns as $urlPattern)
 {
 	$aPatterns = Array();
 	$i=0;
+	
 	/* Prepare patterns for matching */
 	foreach($urlPattern as $key => $value)
 	{
@@ -89,7 +106,7 @@ foreach($patterns as $urlPattern)
 		$i++;
 	}
 
-	/* Run all patterns at once */
+	/* Run pattern chunk */
 	preg_match("/".str_replace("/","\/",implode("|",$aPatterns))."/i", $sURL, $matches);
 
 	/* See if one of the patterns stuck */
@@ -97,11 +114,16 @@ foreach($patterns as $urlPattern)
 	{
 		if(!is_numeric($x) && !empty($value))
 		{
+			// Pattern is found
 			$pattern = str_replace("url",null,$x);
 			$pattern = $aKeys[$pattern];
+			
+			// Leave this foreach
 			break;
 		}
 	}
+	
+	// If pattern is found, don't try anymore chunks
 	if(!empty($pattern))
 		break;
 }
@@ -159,13 +181,15 @@ $oSmarty->register_object("appController", $oApp);
 ##############################################
 
 ### INCLUDE CLASS WITH CMD NAME ##############
-/* Check Url Pattern for usable pattern */
+// Check Url Pattern for usable pattern
 ob_start();
 if(count($aUrlPatterns[$pattern]) > 0)
 {
+	// Pull dynamic variables from url
 	$pattern_tmp = preg_replace("/\{([a-z]+):([^}]+)\}/i", "(?P<$1>$2)", $pattern);
 	preg_match("/".str_replace("/","\/",$pattern_tmp)."/i", $sURL, $matches);
 	
+	// Put dynamic variables into usable array
 	$urlParams = Array();
 	foreach($matches as $key => $value)
 	{
@@ -173,17 +197,33 @@ if(count($aUrlPatterns[$pattern]) > 0)
 			$urlParams[$key] = $value;
 	}
 	
+	// Combine dynamic and manual url variables to be loaded into the appController
 	$aURLVars = (object) array(
 		"dynamic" => $urlParams,
 		"manual" => $aUrlPatterns[$pattern]["params"]
 	);
 	
-	$oClass = $oApp->loadController($aUrlPatterns[$pattern]["cmd"]);
+	// Find controller given by url pattern
+	$oClass = $oApp->loadController($aUrlPatterns[$pattern]["cmd"], true);
+	
+	// Check if controller was loaded, and method exists
+	if($oClass == false || !method_exists($oClass, $aUrlPatterns[$pattern]["action"])) {
+		// Choose 404 pased on location in site
+		if($aUrl[0] == "admin")
+			$oApp = new adminController;
+		else
+			$oApp = new appController;
+	
+		$oApp->error('404');
+	}
+	
+	// Call method given by url pattern
 	$oClass->$aUrlPatterns[$pattern]["action"]();
 }
-/* Complete failure, throw 404 */
+// Complete failure, throw 404
 else
 {
+	// Choose 404 pased on location in site
 	if($aUrl[0] == "admin")
 		$oApp = new adminController;
 	else
@@ -193,6 +233,7 @@ else
 }
 ##############################################
 
+// Close connection to database
 $objDB->disconnect();
 
 if($aConfig["options"]["debug"] == true) {
