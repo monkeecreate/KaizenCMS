@@ -20,6 +20,8 @@ if($aConfig["options"]["pear"] == "folder")
 
 if(is_dir("installer") && $aConfig["installer_skip"] != 1)
 	die(require("installer/index.php"));
+
+putenv("TZ=".$aConfig["options"]["timezone"]);
 ##############################################
 
 ### NON-DEBUG ################################

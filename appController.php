@@ -75,8 +75,8 @@ class appController
 			
 			if(is_file($this->settings->root."controllers/".$sControllerFile.".php"))
 				require($this->settings->root."controllers/".$sControllerFile.".php");
-			elseif(is_file($this->settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php"))
-				require($this->settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php");
+			elseif(is_file($this->settings->root."plugins/".preg_replace('/(?:admin_)([a-z0-9-.]+)(?:_*)(?:.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php"))
+				require($this->settings->root."plugins/".preg_replace('/(?:admin_)([a-z0-9-.]+)(?:_*)(?:.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php");
 			else
 				return false;
 		}
