@@ -67,8 +67,6 @@ class Form_facebook extends Form_Field
 			}
 			
 			$sHTML .= '<p class="small"><a href="/admin/settings/facebook/unlink/" title="Remove Facebook Connection">Remove Connection to Facebook</a></p></div>';
-			
-			//$aFacebookResult = $facebook->api('/me/feed/', 'post', array("access_token" => "127471297263601|d036dacb5bc836e5460ec9d8-644594809|6233220339|s-r1692tDVxms7l36yynyPUJT4k." ,"message" => "test from the api, ignore this post"));
 		}
 		
 		$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value=\"".$this->value(false)."\" /><br /><br />\n";
