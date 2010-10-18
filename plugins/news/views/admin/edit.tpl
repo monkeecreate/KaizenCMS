@@ -75,17 +75,23 @@
 				<p style="font-size:1.1em;margin-bottom:8px;">{$aArticle.updated_datetime|date_format:"%D @ %I:%M %p"} by {$aArticle.updated_by.fname} {$aArticle.updated_by.lname}</p>
 			</fieldset>
 			
+			{if !empty($sFacebookConnect) || !empty($sTwitterConnect)}
 			<fieldset>
 				<legend>Post to</legend>
 				
-				<img src="/images/admin/social/twitter.png" class="left" style="width:28px;margin-right: 10px;">
-				<input type="checkbox" name="post_twitter" value="1"><br />
+				{if !empty($sTwitterConnect)}
+					<img src="/images/admin/social/twitter.png" class="left" style="width:28px;margin-right: 10px;">
+					<input type="checkbox" name="post_twitter" value="1"><br />
+				{/if}
 				
 				<div class="clear">&nbsp;</div>
-				
-				<img src="/images/admin/social/facebook_32.png" class="left" style="width:28px;margin-right: 10px;">
-				<input type="checkbox" name="post_facebook" value="1"><br />
+				{if !empty($sFacebookConnect)}
+					<img src="/images/admin/social/facebook_32.png" class="left" style="width:28px;margin-right: 10px;">
+					<input type="checkbox" name="post_facebook" value="1"><br />
+					<input type="hidden" name="facebook_id" value="{$aEvent.facebook_id}">
+				{/if}
 			</fieldset>
+			{/if}
 			
 			<fieldset>
 				<legend>Publish Dates</legend>

@@ -50,6 +50,8 @@ class admin_news extends adminController
 		$this->tplAssign("minWidth", $oNews->imageMinWidth);
 		$this->tplAssign("minHeight", $oNews->imageMinHeight);
 		$this->tplAssign("sShortContentCount", $oNews->shortContentCharacters);
+		$this->tplAssign("sTwitterConnect", $this->getSetting("twitter_connect"));
+		$this->tplAssign("sFacebookConnect", $this->getSetting("facebook_connect"));
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
@@ -167,6 +169,8 @@ class admin_news extends adminController
 		$this->tplAssign("minWidth", $oNews->imageMinWidth);
 		$this->tplAssign("minHeight", $oNews->imageMinHeight);
 		$this->tplAssign("sShortContentCount", $oNews->shortContentCharacters);
+		$this->tplAssign("sTwitterConnect", $this->getSetting("twitter_connect"));
+		$this->tplAssign("sFacebookConnect", $this->getSetting("facebook_connect"));
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {

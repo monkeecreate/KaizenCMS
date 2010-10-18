@@ -50,6 +50,8 @@ class admin_calendar extends adminController
 		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
 		$this->tplAssign("sShortContentCount", $oCalendar->shortContentCharacters);
+		$this->tplAssign("sTwitterConnect", $this->getSetting("twitter_connect"));
+		$this->tplAssign("sFacebookConnect", $this->getSetting("facebook_connect"));
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
@@ -177,6 +179,8 @@ class admin_calendar extends adminController
 		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
 		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
 		$this->tplAssign("sShortContentCount", $oCalendar->shortContentCharacters);
+		$this->tplAssign("sTwitterConnect", $this->getSetting("twitter_connect"));
+		$this->tplAssign("sFacebookConnect", $this->getSetting("facebook_connect"));
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
@@ -408,15 +412,17 @@ class admin_calendar extends adminController
 		
 		if(strlen($sTitleUrl) > 50)
 			$sTitleUrl = substr($sTitleUrl, 0, 50)."...";
-		
-		try {
-			$aFacebookResult = $aFacebook["obj"]->api('/me/events/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].'/calendar/'.$sID.'/'.$sTitleUrl.'/', "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
 			
-			if(empty($sFacebookID)) {
+		try {
+			if(!empty($sFacebookID)) {
+				$aFacebookResult = $aFacebook["obj"]->api('/'.$sFacebookID.'/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].'/calendar/'.$sID.'/'.$sTitleUrl.'/', "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
+			} else {
+				$aFacebookResult = $aFacebook["obj"]->api('/me/events/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].'/calendar/'.$sID.'/'.$sTitleUrl.'/', "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
+				
 				$this->dbUpdate(
 					"calendar",
 					array(
-						"facebook_id" => sprintf("%30.0f", $aFacebookResult["id"])
+						"facebook_id" => trim(sprintf("%30.0f", $aFacebookResult["id"]))
 					),
 					$sID
 				);
