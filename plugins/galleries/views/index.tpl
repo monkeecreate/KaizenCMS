@@ -22,39 +22,27 @@
 	<h2>Photo Gallery</h2>
 	<div class="clear">&nbsp;</div>
 
-	<div id="contentList">
-		{foreach from=$aGalleries item=aGallery}
-			<div class="contentListItem">
-				{if $aGallery.photo > 0}
-					<div class="galleryPics">
-						<a href="/galleries/{$aGallery.id}">
-							<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aGallery.photo}&width=140&height=140">
-						</a>
-					</div>
-				{/if}
-				<h2>
-					<a href="/galleries/{$aGallery.id}/">
-						{$aGallery.name}
-					</a>
-				</h2>
-				{if !empty($aGallery.categories)}
-					<small class="timeCat">
-						Categories: 
-						{foreach from=$aGallery.categories item=aCategory name=category}
-							<a href="/galleries/?category={$aCategory.id}" title="Galleries in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-						{/foreach}
-					</small>
-				{/if}
-				<p class="content">
-					{$aGallery.description}
-				</p>
-			</div>
-		{foreachelse}
-			<div class="contentListEmpty">
-				No galleries.
-			</div>
-		{/foreach}
-	</div>
+	{foreach from=$aGalleries item=aGallery}
+		<article>
+			{if $aGallery.photo > 0}
+				<figure>
+					<a href="/galleries/{$aGallery.id}" title="{$aGallery.name}"><img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aGallery.photo}&width=140&height=140" alt="{$aGallery.name}"></a>
+				</figure>
+			{/if}
+			<h3><a href="/galleries/{$aGallery.id}/" title="{$aGallery.name}">{$aGallery.name}</a></h3>
+			{if !empty($aGallery.categories)}
+				<small class="timeCat">
+					Categories: 
+					{foreach from=$aGallery.categories item=aCategory name=category}
+						<a href="/galleries/?category={$aCategory.id}" title="Galleries in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+					{/foreach}
+				</small>
+			{/if}
+			<p>{$aGallery.description}</p>
+		</article>
+	{foreachelse}
+		<p>No galleries.</p>
+	{/foreach}
 
 	<div id="paging">
 		{if $aPaging.next.use == true}

@@ -17,7 +17,6 @@
   {rdelim}());
 </script>
 
-
 	<h2>{$aArticle.title}</h2>
 	<small class="timeCat">
 		<time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time>
@@ -30,10 +29,6 @@
 		{/if}
 	</small>
 	<fb:like show_faces="false"></fb:like>
-	<p>
-		{$aArticle.content}
-	</p>
-
-
+	<p>{$aArticle.content}</p>
 
 {include file="inc_footer.tpl"}
