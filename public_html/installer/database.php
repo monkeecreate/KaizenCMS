@@ -200,7 +200,7 @@ $aTables = array(
 			),
 			array(
 				"id" => 8,
-				"group" => 4,``
+				"group" => 4,
 				"tag" => "twitter_connect",
 				"title" => "Twitter Connect",
 				"text" => NULL,
@@ -222,7 +222,7 @@ $aTables = array(
 			),
 			array(
 				"id" => 9,
-				"group" => 4,
+				"group" => "Social",
 				"tag" => "facebookUser",
 				"title" => "Facebook Username",
 				"text" => NULL,
@@ -233,7 +233,7 @@ $aTables = array(
 			),
 			array(
 				"id" => 10,
-				"group" => 4,
+				"group" => "Social",
 				"tag" => "flickrEmail",
 				"title" => "Flickr Email Address",
 				"text" => NULL,

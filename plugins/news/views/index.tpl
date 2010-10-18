@@ -42,41 +42,30 @@
 	<h2>News</h2>
 	<div class="clear">&nbsp;</div>
 
-	<div id="contentList">
-		{foreach from=$aArticles item=aArticle}
-			<div class="contentList">
-				{if $aArticle.image == 1}
-					<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
-						<img src="/image/news/{$aArticle.id}/?width=140">
-					</a>
+	{foreach from=$aArticles item=aArticle}
+		<article>
+			{if $aArticle.image == 1}
+				<figure>
+					<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/" title="{$aArticle.title}"><img src="/image/news/{$aArticle.id}/?width=140" alt="{$aArticle.title}"></a>
+				</figure>
+			{/if}
+			<h3><a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/" title="{$aArticle.title}">{$aArticle.title}</a></h3>
+			<small class="timeCat">
+				<time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time>
+				| Posted by: {$aArticle.user.fname} {$aArticle.user.lname} 
+				{if !empty($aArticle.categories)}
+					| Categories: 
+					{foreach from=$aArticle.categories item=aCategory name=category}
+						<a href="/news/?category={$aCategory.id}" title="Articles in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+					{/foreach}
 				{/if}
-				<h3>
-					<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">
-						{$aArticle.title}
-					</a>
-				</h3>
-				<small class="timeCat">
-					<time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time>
-					| Posted by: {$aArticle.user.fname} {$aArticle.user.lname} 
-					{if !empty($aArticle.categories)}
-						| Categories: 
-						{foreach from=$aArticle.categories item=aCategory name=category}
-							<a href="/news/?category={$aCategory.id}" title="Articles in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-						{/foreach}
-					{/if}
-				</small>
-				<fb:like href="http://{$smarty.server.SERVER_NAME}/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/" show_faces="false"></fb:like>
-				<p class="content">
-					{$aArticle.short_content}<br />
-					<a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/">More Info&raquo;</a>
-				</p>
-			</div>
-		{foreachelse}
-			<div class="contentListEmpty">
-				No news articles.
-			</div>
-		{/foreach}
-	</div>
+			</small>
+			<fb:like href="http://{$smarty.server.SERVER_NAME}/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/" show_faces="false"></fb:like>
+			<p>{$aArticle.short_content}<br /><a href="/news/{$aArticle.id}/{$aArticle.title|special_urlencode}/" title="{$aArticle.title}">More Info&raquo;</a></p>
+		</article>
+	{foreachelse}
+		<p>No news articles.</p>
+	{/foreach}
 
 	<div id="paging">
 		{if $aPaging.next.use == true}

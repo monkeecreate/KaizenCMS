@@ -24,32 +24,22 @@
 	<h2>Documents</h2>
 	<div class="clear"></div>
 
-	<div id="contentList">
-		{foreach from=$aDocuments item=aDocument}
-			<div class="contentListItem">
-				<h2>
-					<a href="{$documentFolder}{$aDocument.document}" target="_blank">
-						{$aDocument.name}
-					</a>
-				</h2>
-				{if !empty($aDocument.categories)}
-					<small class="timeCat">
-						Categories: 
-						{foreach from=$aDocument.categories item=aCategory name=category}
-							<a href="/documents/?category={$aCategory.id}" title="Documents in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-						{/foreach}
-					</small>
-				{/if}
-				<p class="content">
-					{$aDocument.description}
-				</p>
-			</div>
-		{foreachelse}
-			<div class="contentListEmpty">
-				No documents.
-			</div>
-		{/foreach}
-	</div>
+	{foreach from=$aDocuments item=aDocument}
+		<article>
+			<h3><a href="{$documentFolder}{$aDocument.document}" target="_blank">{$aDocument.name}</a></h3>
+			{if !empty($aDocument.categories)}
+				<small class="timeCat">
+					Categories: 
+					{foreach from=$aDocument.categories item=aCategory name=category}
+						<a href="/documents/?category={$aCategory.id}" title="Documents in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+					{/foreach}
+				</small>
+			{/if}
+			<p>{$aDocument.description}</p>
+		</article>
+	{foreachelse}
+		<p>No documents.</p>
+	{/foreach}
 
 	<div id="paging">
 		{if $aPaging.next.use == true}
