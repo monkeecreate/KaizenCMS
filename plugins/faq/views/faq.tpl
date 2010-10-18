@@ -22,29 +22,23 @@
 	<h2>FAQ</h2>
 	<div class="clear">&nbsp;</div>
 
-	<div id="contentList">
-		{foreach from=$aQuestions item=aQuestion}
-			<div class="contentListItem">
-				<h3>
-					Q: <a href="#{$aQuestion.id}" class="faq-Question">{$aQuestion.question}</a>
-				</h3>
-				<div style="display:none;" id="{$aQuestion.id}">
-					{if !empty($aQuestion.categories)}
-						<small>Categories: 
-							{foreach from=$aQuestion.categories item=aCategory name=category}
-								<a href="/faq/?category={$aCategory.id}" title="Questions in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-							{/foreach}
-						</small>
-					{/if}
- 					{$aQuestion.answer}
-				</div>
+	{foreach from=$aQuestions item=aQuestion}
+		<article>
+			<h3>Q: <a href="#{$aQuestion.id}" class="faq-Question" title="{$aQuestion.question}">{$aQuestion.question}</a></h3>
+			<div style="display:none;" id="{$aQuestion.id}">
+				{if !empty($aQuestion.categories)}
+					<small>Categories: 
+						{foreach from=$aQuestion.categories item=aCategory name=category}
+							<a href="/faq/?category={$aCategory.id}" title="Questions in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+						{/foreach}
+					</small>
+				{/if}
+					{$aQuestion.answer}
 			</div>
-		{foreachelse}
-			<div class="contentListEmpty">
-				No FAQ's.
-			</div>
-		{/foreach}
-	</div>
+		</article>
+	{foreachelse}
+		<p>No FAQ's.</p>
+	{/foreach}
 
 	<div id="paging">
 		{if $aPaging.next.use == true}

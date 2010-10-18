@@ -66,7 +66,7 @@ class appController
 		
 		phpinfo();
 	}
-	function loadController($sController) {
+	function loadController($sController, $firstCall = false) {
 		if(!class_exists($sController)) {
 			if(substr($sController, -1) == "_")
 				$sControllerFile = substr($sController, 0, -1);
@@ -75,10 +75,28 @@ class appController
 			
 			if(is_file($this->settings->root."controllers/".$sControllerFile.".php"))
 				require($this->settings->root."controllers/".$sControllerFile.".php");
-			elseif(is_file($this->settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php"))
-				require($this->settings->root."plugins/".preg_replace('/admin_(.*)$/i', "$1", $sControllerFile)."/controllers/".$sControllerFile.".php");
-			else
-				return false;
+			else {
+				$sPlugin = preg_replace('/(?:admin_)([a-z0-9-.]+)(?:_*)(?:.*)$/i', "$1", $sControllerFile);
+				
+				if($firstCall == true) {
+					$sPluginInstalled = $this->dbQuery("SELECT `plugin` FROM `{dbPrefix}plugins`"
+						." WHERE `plugin` = ".$this->dbQuote($sPlugin, "text")
+						." LIMIT 1",
+						"one"
+					);
+					
+					if($sPluginInstalled == $sPlugin)
+						$sLoadController = true;
+					else
+						$sLoadController = false;
+				} else
+					$sLoadController = true;
+				
+				if(is_file($this->settings->root."plugins/".$sPlugin."/controllers/".$sControllerFile.".php") && $sLoadController == true)
+					require($this->settings->root."plugins/".$sPlugin."/controllers/".$sControllerFile.".php");
+				else
+					return false;
+			}
 		}
 		
 		$oController = new $sController;

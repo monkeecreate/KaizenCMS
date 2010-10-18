@@ -75,17 +75,23 @@
 				<p style="font-size:1.1em;margin-bottom:8px;">{$aArticle.updated_datetime|date_format:"%D @ %I:%M %p"} by {$aArticle.updated_by.fname} {$aArticle.updated_by.lname}</p>
 			</fieldset>
 			
+			{if !empty($sFacebookConnect) || !empty($sTwitterConnect)}
 			<fieldset>
 				<legend>Post to</legend>
 				
-				<img src="/images/admin/social/twitter.png" class="left" style="width:28px;margin-right: 10px;">
-				<input type="checkbox" name="post_twitter" value="1"><br />
+				{if !empty($sTwitterConnect)}
+					<img src="/images/admin/social/twitter.png" class="left" style="width:28px;margin-right: 10px;">
+					<input type="checkbox" name="post_twitter" value="1"><br />
+				{/if}
 				
 				<div class="clear">&nbsp;</div>
-				
-				<img src="/images/admin/social/facebook_32.png" class="left" style="width:28px;margin-right: 10px;">
-				<input type="checkbox" name="post_facebook" value="1"><br />
+				{if !empty($sFacebookConnect)}
+					<img src="/images/admin/social/facebook_32.png" class="left" style="width:28px;margin-right: 10px;">
+					<input type="checkbox" name="post_facebook" value="1"><br />
+					<input type="hidden" name="facebook_id" value="{$aEvent.facebook_id}">
+				{/if}
 			</fieldset>
+			{/if}
 			
 			<fieldset>
 				<legend>Publish Dates</legend>
@@ -98,7 +104,7 @@
 					<label>Expire On</label> <span class="cancelExpire right cursor-pointer"><img src="/images/admin/icons/delete.png" width="14px" alt="cancel expire"></span><br />
 					<input type="input" name="datetime_kill_date" class="xsmall datepicker" value="{$aArticle.datetime_kill_date}" style="width:80px;">
 					{html_select_time time=$aArticle.datetime_kill prefix="datetime_kill_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
-					<input type="checkbox" name="use_kill" value="1" class="hidden">
+					<input type="checkbox" name="use_kill" value="1" class="hidden" {if $aArticle.use_kill == 1} checked="checked"{/if}>
 				</span>
 				<p class="eventExpire cursor-pointer{if $aArticle.use_kill == 1} hidden{/if}">Set Expire Date</p>
 			</fieldset>
