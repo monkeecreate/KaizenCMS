@@ -12,26 +12,22 @@ $(document).ready(function(){ldelim}
 </script>
 {/footer}
 
-	<div id="contentItemPage">
-		<h2>{$aGallery.name}</h2>
-		{if !empty($aGallery.categories)}
-			<small class="timeCat">
-				Categories: 
-				{foreach from=$aGallery.categories item=aCategory name=category}
-					<a href="/galleries/?category={$aCategory.id}" title="Galleries in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-				{/foreach}
-			</small>
-		{/if}
-		<p class="content">
-			{$aGallery.description}<br />
-		</p>
+	<h2>{$aGallery.name}</h2>
+	{if !empty($aGallery.categories)}
+		<small class="timeCat">
+			Categories: 
+			{foreach from=$aGallery.categories item=aCategory name=category}
+				<a href="/galleries/?category={$aCategory.id}" title="Galleries in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+			{/foreach}
+		</small>
+	{/if}
+	<p>{$aGallery.description}</p>
 
-		{foreach from=$aGallery.photos item=aPhoto}
-			<a href="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=600&height=600" rel="prettyPhoto[gallery]" title="{$aPhoto.description}">
-				<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=140&height=140" alt="{$aPhoto.title}" class="galleryPics">
-			</a>
-		{/foreach}
-		<div class="clear">&nbsp;</div>
-	</div>
+	{foreach from=$aGallery.photos item=aPhoto}
+		<a href="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=600&height=600" rel="prettyPhoto[gallery]" title="{$aPhoto.description}">
+			<img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=140&height=140" alt="{$aPhoto.title}" class="galleryPics">
+		</a>
+	{/foreach}
+	<div class="clear">&nbsp;</div>
 
 {include file="inc_footer.tpl"}

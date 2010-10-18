@@ -24,35 +24,27 @@
 	<h2>Links</h2>
 	<div class="clear">&nbsp;</div>
 
-	<div id="contentList">
-		{foreach from=$aLinks item=aLink}
-			<div class="contentListItem">
-				{if $aLink.image == 1}
-					<img src="/image/links/{$aLink.id}/?width=140">
-				{/if}
-				<h2>
-					<a href="{$aLink.link}" target="_blank">
-						{$aLink.name}
-					</a>
-				</h2>
-				{if !empty($aLink.categories)}
-					<small class="timeCat">
-						Categories: 
-						{foreach from=$aLink.categories item=aCategory name=category}
-							<a href="/links/?category={$aCategory.id}" title="Links in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
-						{/foreach}
-					</small>
-				{/if}
-				<p class="content">
-					{$aLink.description}<br />
-				</p>
-			</div>
-		{foreachelse}
-			<div class="contentListEmtpy">
-				No links.
-			</div>
-		{/foreach}
-	</div>
+	{foreach from=$aLinks item=aLink}
+		<article>
+			{if $aLink.image == 1}
+				<figure>
+					<img src="/image/links/{$aLink.id}/?width=140" alt="{$aLink.name}">
+				</figure>
+			{/if}
+			<h3><a href="{$aLink.link}" title="{$aLink.name}" target="_blank">{$aLink.name}</a></h3>
+			{if !empty($aLink.categories)}
+				<small class="timeCat">
+					Categories: 
+					{foreach from=$aLink.categories item=aCategory name=category}
+						<a href="/links/?category={$aCategory.id}" title="Links in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+					{/foreach}
+				</small>
+			{/if}
+			<p>{$aLink.description}</p>
+		</article>
+	{foreachelse}
+		<p>No links.</p>
+	{/foreach}
 
 	<div id="paging">
 		{if $aPaging.next.use == true}

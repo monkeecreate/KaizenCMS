@@ -1,20 +1,15 @@
 {include file="inc_header.tpl" page_title="Testimonials" menu="testimonials"}
 
-	{getContent tag="testimonials" var="aContent"}
-
-	<h2>{$aContent.title}</h2>
-	<p id="testiContent">
-		{$aContent.content}
-	</p>
-
-	<p>
-		{foreach from=$aTestimonials item=aTestimonial}
+	<h2>Testimonials</h2>
+	
+	{foreach from=$aTestimonials item=aTestimonial}
+		<article>
 			<h3>{$aTestimonial.name} - <small>{$aTestimonial.sub_name}</small></h3>
 			<blockquote>
 				{$aTestimonial.text}
 			</blockquote>
-		{/foreach}
-	</p>
+		</article>
+	{/foreach}
 	<div class="clear">&nbsp;</div>
 		
 {include file="inc_footer.tpl"}
