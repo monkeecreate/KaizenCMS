@@ -45,7 +45,8 @@ $aTables = array(
 		"search" => array(
 			"title" => "title",
 			"content" => "content",
-			"rows" => array("title", "short_content", "content")
+			"rows" => array("title", "short_content", "content"),
+			"filter" => "`active` = 1 AND `datetime_end` > {time} AND `datetime_show` < {time} AND (`use_kill` = 0 OR `datetime_kill` > {time})"
 		)
 	),
 	"calendar_categories" => array(

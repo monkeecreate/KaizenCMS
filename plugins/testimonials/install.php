@@ -29,7 +29,8 @@ $aTables = array(
 		"search" => array(
 			"title" => "name",
 			"content" => "text",
-			"rows" => array("name", "sub_name", "text")
+			"rows" => array("name", "sub_name", "text"),
+			"filter" => "`active` = 1"
 		)
 	),
 	"testimonials_categories" => array(

@@ -43,23 +43,7 @@ $aTables = array(
 			"title" => "title",
 			"content" => "content",
 			"rows" => array("title", "short_content", "content"),
-			"filter" => array(
-				array(
-					"col" => "active",
-					"operator" => "=",
-					"value" => 1
-				),
-				array(
-					"col" => "datetime_show",
-					"operator" => "<",
-					"value" => "{time}"
-				),
-				array(
-					"col" => "datetime_kill",
-					"operator" => ">",
-					"value" => "{time}"
-				)
-			)
+			"filter" => "`active` = 1 AND `datetime_show` < {time} AND (`use_kill` = 0 OR `datetime_kill` > {time})"
 		)
 	),
 	"news_categories" => array(

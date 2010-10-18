@@ -29,7 +29,8 @@ $aTables = array(
 		"search" => array(
 			"title" => "question",
 			"content" => "answer",
-			"rows" => array("question", "answer")
+			"rows" => array("question", "answer"),
+			"filter" => "`active` = 1"
 		)
 	),
 	"faq_categories" => array(

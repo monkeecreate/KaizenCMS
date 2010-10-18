@@ -21,8 +21,8 @@ $aTables = array(
 			"name" => array("type" => "text","length" => 100),
 			"description" => array("type" => "clob"),
 			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
-			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"active" => array("type" => "boolean"),
+			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
@@ -32,7 +32,8 @@ $aTables = array(
 		"search" => array(
 			"title" => "name",
 			"content" => "description",
-			"rows" => array("name", "description")
+			"rows" => array("name", "description"),
+			"filter" => "`active` = 1"
 		)
 	),
 	"galleries_categories" => array(

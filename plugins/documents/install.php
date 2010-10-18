@@ -32,7 +32,8 @@ $aTables = array(
 		"search" => array(
 			"title" => "name",
 			"content" => "description",
-			"rows" => array("name", "description")
+			"rows" => array("name", "description"),
+			"filter" => "`active` = 1"
 		)
 	),
 	"documents_categories" => array(
