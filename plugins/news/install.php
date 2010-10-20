@@ -37,7 +37,14 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("use_kill", "sticky", "active")
+		"index" => array("use_kill", "sticky", "active"),
+		"fulltext" => array("title", "short_content", "content"),
+		"search" => array(
+			"title" => "title",
+			"content" => "content",
+			"rows" => array("title", "short_content", "content"),
+			"filter" => "`active` = 1 AND `datetime_show` < {time} AND (`use_kill` = 0 OR `datetime_kill` > {time})"
+		)
 	),
 	"news_categories" => array(
 		"fields" => array(

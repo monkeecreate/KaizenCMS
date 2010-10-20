@@ -14,6 +14,7 @@ class content extends appController
 			$aSearchTables = array();
 			
 			foreach($aTables as $aSearch) {
+				$sFilter = "";
 				$aSearch["rows"] = json_decode($aSearch["rows"], true);
 				$aRows = array();
 				foreach($aSearch["rows"] as $sRow) {
@@ -22,15 +23,8 @@ class content extends appController
 				$sRows = implode(",", $aRows);
 				
 				if(!empty($aSearch["filter"])) {
-					$sFilter = "AND ";
-					$aFilters = array();
-					$aSearchFilters = json_decode($aSearch["filter"], true);
-					
-					foreach($aSearchFilters as $sCol => $aValue) {
-						$aFilters[] = "`".$sCol."` = ".$aValue;
-					}
-					
-					$sFilter .= implode(" AND ".$aFilters);
+					$aSearch["filter"] = str_replace("{time}", time(), $aSearch["filter"]);
+					$sFilter = " AND ".$aSearch["filter"];
 				}
 				
 				$aSearchTables[] = "SELECT"

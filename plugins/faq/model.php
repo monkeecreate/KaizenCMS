@@ -58,6 +58,13 @@ class faq_model extends appModel
 		
 		return $aQuestion;
 	}
+	function getURL($sID) {
+		$aQuestion = $this->getQuestion($sID);
+		
+		$sURL = "/faq/";
+		
+		return $sURL;
+	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {
 			$aCategories = $this->dbQuery(

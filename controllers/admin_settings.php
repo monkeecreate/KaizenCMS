@@ -426,6 +426,7 @@ class admin_settings extends adminController
 						,"column_title" => $aTable["search"]["title"]
 						,"column_content" => $aTable["search"]["content"]
 						,"rows" => json_encode($aTable["search"]["rows"])
+						,"filter" => $aTable["search"]["filter"]
 					)
 				);
 			}

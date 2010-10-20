@@ -27,7 +27,14 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("active")
+		"index" => array("active"),
+		"fulltext" => array("name", "description"),
+		"search" => array(
+			"title" => "name",
+			"content" => "description",
+			"rows" => array("name", "description"),
+			"filter" => "`active` = 1"
+		)
 	),
 	"documents_categories" => array(
 		"fields" => array(
