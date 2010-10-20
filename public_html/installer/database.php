@@ -122,30 +122,7 @@ $aTables = array(
 		"index" => array("group", "tag", "sortOrder", "active"),
 		"data" => array(
 			array(
-				"id" => 1,
-				"group" => "SEO",
-				"tag" => "keywords",
-				"title" => "Keywords",
-				"text" => NULL,
-				"value" => "",
-				"type" => "textarea",
-				"sortOrder" => 3,
-				"active" => 1
-			),
-			array(
-				"id" => 2,
-				"group" => "SEO",
-				"tag" => "description",
-				"title" => "Description",
-				"text" => NULL,
-				"value" => "",
-				"type" => "textarea",
-				"sortOrder" => 2,
-				"active" => 1
-			),
-			array(
-				"id" => 3,
-				"group" => "Analytics",
+				"group" => 1,
 				"tag" => "analytics_google",
 				"title" => "Google Analytics",
 				"text" => NULL,
@@ -155,8 +132,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"id" => 4,
-				"group" => "Analytics",
+				"group" => 1,
 				"tag" => "analytics_woopra",
 				"title" => "Woopra",
 				"text" => NULL,
@@ -166,8 +142,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"id" => 5,
-				"group" => "SEO",
+				"group" => 2,
 				"tag" => "title",
 				"title" => "Site Title",
 				"text" => NULL,
@@ -177,8 +152,27 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"id" => 6,
-				"group" => "Contact Info",
+				"group" => 2,
+				"tag" => "keywords",
+				"title" => "Keywords",
+				"text" => NULL,
+				"value" => "",
+				"type" => "textarea",
+				"sortOrder" => 3,
+				"active" => 1
+			),
+			array(
+				"group" => 2,
+				"tag" => "description",
+				"title" => "Description",
+				"text" => NULL,
+				"value" => "",
+				"type" => "textarea",
+				"sortOrder" => 2,
+				"active" => 1
+			),
+			array(
+				"group" => 3,
 				"tag" => "email",
 				"title" => "Email Address",
 				"text" => NULL,
@@ -188,8 +182,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"id" => 7,
-				"group" => "Contact Info",
+				"group" => 3,
 				"tag" => "contact-subject",
 				"title" => "Contact Form Subject",
 				"text" => NULL,
@@ -199,10 +192,39 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"id" => 8,
-				"group" => "Social",
+				"group" => 4,
+				"tag" => "twitter_connect",
+				"title" => "Twitter Connect",
+				"text" => NULL,
+				"value" => "",
+				"type" => "twitter",
+				"sortOrder" => 1,
+				"active" => 1
+			),
+			array(
+				"group" => 4,
+				"tag" => "facebook_connect",
+				"title" => "Facebook Connect",
+				"text" => NULL,
+				"value" => "",
+				"type" => "facebook",
+				"sortOrder" => 1,
+				"active" => 1
+			),
+			array(
+				"group" => 4,
 				"tag" => "twitterUser",
 				"title" => "Twitter Username",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 1,
+				"active" => 1
+			),
+			array(
+				"group" => 4,
+				"tag" => "facebookUser",
+				"title" => "Facebook Username",
 				"text" => NULL,
 				"value" => "",
 				"type" => "text",
@@ -210,10 +232,39 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"id" => 9,
-				"group" => "Social",
-				"tag" => "facebookUser",
-				"title" => "Facebook Username",
+				"group" => 4,
+				"tag" => "flickrEmail",
+				"title" => "Flickr Email Address",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 4,
+				"active" => 1
+			),
+			array(
+				"group" => 5,
+				"tag" => "twitter_consumer_key",
+				"title" => "Twitter - Consumer Key",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 1,
+				"active" => 1
+			),
+			array(
+				"group" => 5,
+				"tag" => "twitter_consumer_secret",
+				"title" => "Twitter- Consumer Secret",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 2,
+				"active" => 1
+			),
+			array(
+				"group" => 5,
+				"tag" => "bitly_user",
+				"title" => "Bit.ly User",
 				"text" => NULL,
 				"value" => "",
 				"type" => "text",
@@ -221,14 +272,80 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"id" => 10,
-				"group" => "Social",
-				"tag" => "flickrEmail",
-				"title" => "Flickr Email Address",
+				"group" => 5,
+				"tag" => "bitly_key",
+				"title" => "Bit.ly Key",
 				"text" => NULL,
 				"value" => "",
 				"type" => "text",
 				"sortOrder" => 4,
+				"active" => 1
+			),
+			array(
+				"group" => 5,
+				"tag" => "facebook_app_id",
+				"title" => "Facebook - App ID",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 1,
+				"active" => 1
+			),
+			array(
+				"group" => 5,
+				"tag" => "facebook_app_secret",
+				"title" => "Facebook - App Secret",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 1,
+				"active" => 1
+			)
+		)
+	),
+	"settings_groups" => array(
+		"fields" => array(
+			"id" => array(
+				"type" => "integer",
+				"unsigned" => 1,
+				"notnull" => 1,
+				"default" => 0,
+				"autoincrement" => 1
+			),
+			"name" => array("type" => "text","length" => 100),
+			"sort_order" => array("type" => "integer"),
+			"active" => array("type" => "boolean")
+		),
+		"index" => array("sort_order", "active"),
+		"data" => array(
+			array(
+				"id" => 1,
+				"name" => "Analytics",
+				"sort_order" => 1,
+				"active" => 1
+			),
+			array(
+				"id" => 2,
+				"name" => "SEO",
+				"sort_order" => 2,
+				"active" => 1
+			),
+			array(
+				"id" => 3,
+				"name" => "Contact Info",
+				"sort_order" => 3,
+				"active" => 1
+			),
+			array(
+				"id" => 4,
+				"name" => "Social",
+				"sort_order" => 4,
+				"active" => 1
+			),
+			array(
+				"id" => 5,
+				"name" => "Social Dev",
+				"sort_order" => 5,
 				"active" => 1
 			)
 		)
