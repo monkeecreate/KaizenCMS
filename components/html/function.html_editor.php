@@ -50,7 +50,7 @@ function smarty_function_html_editor($aParams, &$smarty) {
 	$return .= "@@@SMARTY:FOOTER:END@@@\n";
 	$return .= "<div id=\"tinymce_editor\">\n";
 	$return .= "\t<a href=\"javascript:toggleEditorVisual('".$aParams["name"]."2');\">Visual</a> - <a href=\"javascript:toggleEditorHTML('".$aParams["name"]."2');\">HTML</a><br>\n";
-	$return .= "\t<textarea name='".$aParams["name"]."2' class='".$aParams["name"]."_editor' style=\"width: ".$width."px;height: ".($height - 15)."px;\">".$content."</textarea><br>\n";
+	$return .= "\t<textarea id='".$aParams["name"]."2' name='".$aParams["name"]."' class='".$aParams["name"]."_editor' style=\"width: ".$width."px;height: ".($height - 15)."px;\">".$content."</textarea><br>\n";
 	$return .= "</div>\n";
 	
 	return $return;
