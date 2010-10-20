@@ -171,8 +171,6 @@ class appController
 			rmdir($sFolder);
 		}
 	}
-<<<<<<< HEAD
-=======
 	function loadTwitter($sDecode = true) {
 		require_once($this->settings->root."helpers/twitteroauth.php");
 		
@@ -237,7 +235,6 @@ class appController
 		
 		return $aFacebook;
 	}
->>>>>>> 2.1
 	##################################
 	
 	### Database #####################
