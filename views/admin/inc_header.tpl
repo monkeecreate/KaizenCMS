@@ -19,6 +19,7 @@
 	<script src="/scripts/jquery.qtip-1.0.0-rc3.min.js"></script>
 	<script src="/scripts/jquery.rsv.js"></script>
 	<script src="/scripts/jquery.validateForm.js"></script>
+	<script src="/scripts/jquery.cookie.js"></script>
 	<script src="/scripts/common_admin.js"></script>	
 	<!--[if IE]>
 		<script src="/scripts/firebug-lite.js"></script>

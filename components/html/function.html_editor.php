@@ -17,7 +17,12 @@ function smarty_function_html_editor($aParams, &$smarty) {
 	$return .= "<script type='text/javascript' src='/scripts/tiny_mce/plugins/tinybrowser/tb_tinymce.js.php'></script>\n";
 	$return .= "<script type='text/javascript'>\n";
 	$return .= "tinyMCE.init({\n";
-	$return .= "\tmode : 'textareas',\n";
+	
+	if($_COOKIE[$aParams["name"]."_editor"] == "html")
+		$return .= "\tmode : 'none',\n";
+	else
+		$return .= "\tmode : 'textareas',\n";
+	
 	$return .= "\ttheme : 'advanced',\n";
 	$return .= "\tskin : 'thebigreason',\n";
 	$return .= "\tplugins : 'safari,contextmenu,advlist,embed,imagemanager,filemanager,advimage,advlink,paste,table,preview,fullscreen',\n";
@@ -41,16 +46,18 @@ function smarty_function_html_editor($aParams, &$smarty) {
 	$return .= "\tinvalid_elements : 'script'\n";
 	$return .= "});\n";
 	$return .= "function toggleEditorVisual(id) {\n";
+	$return .= "\t\t$.cookie('".$aParams["name"]."_editor', 'visual', {path: '".array_shift(explode("?", $_SERVER["REQUEST_URI"]))."', expires: 7});\n";
 	$return .= "\t\ttinyMCE.execCommand('mceAddControl', false, id);\n";
 	$return .= "}\n";
 	$return .= "function toggleEditorHTML(id) {\n";
-	$return .= "\ttinyMCE.execCommand('mceRemoveControl', false, id);\n";
+	$return .= "\t\t$.cookie('".$aParams["name"]."_editor', 'html', {path: '".array_shift(explode("?", $_SERVER["REQUEST_URI"]))."', expires: 7});\n";
+	$return .= "\t\ttinyMCE.execCommand('mceRemoveControl', false, id);\n";
 	$return .= "}\n";
 	$return .= "</script>\n";
 	$return .= "@@@SMARTY:FOOTER:END@@@\n";
 	$return .= "<div id=\"tinymce_editor\">\n";
-	$return .= "\t<a href=\"javascript:toggleEditorVisual('".$aParams["name"]."2');\">Visual</a> - <a href=\"javascript:toggleEditorHTML('".$aParams["name"]."2');\">HTML</a><br>\n";
-	$return .= "\t<textarea name='".$aParams["name"]."2' class='".$aParams["name"]."_editor' style=\"width: ".$width."px;height: ".($height - 15)."px;\">".$content."</textarea><br>\n";
+	$return .= "\t<a href=\"javascript:toggleEditorVisual('".$aParams["name"]."_editor');\">Visual</a> - <a href=\"javascript:toggleEditorHTML('".$aParams["name"]."_editor');\">HTML</a><br>\n";
+	$return .= "\t<textarea id='".$aParams["name"]."_editor' name='".$aParams["name"]."' class='".$aParams["name"]."_editor' style=\"width: ".$width."px;height: ".($height - 15)."px;\">".$content."</textarea><br>\n";
 	$return .= "</div>\n";
 	
 	return $return;
