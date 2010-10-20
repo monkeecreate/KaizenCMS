@@ -42,7 +42,7 @@ $aTables = array(
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
 		"index" => array("active"),
-		"fulltext" => array("name"),
+		"fulltext" => array("name", "address1", "address2", "city", "state", "zip", "phone", "fax", "website", "email"),
 		"search" => array(
 			"title" => "name",
 			"content" => null,
