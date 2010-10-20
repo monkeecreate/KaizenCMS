@@ -61,8 +61,9 @@ class admin_settings extends adminController
 		$_SESSION["admin"]["admin_settings"] = null;
 		
 		$aSettings = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}settings`"
-				." ORDER BY `group`, `sortOrder`, `title`"
+			"SELECT `settings`.*, `groups`.`name` AS `group` FROM `{dbPrefix}settings` AS `settings`"
+				." LEFT JOIN `{dbPrefix}settings_groups` as `groups` ON `settings`.`group` = `groups`.`id`"
+				." ORDER BY `groups`.`sort_order`, `settings`.`sortOrder`, `settings`.`title`"
 			,"all"
 		);
 		
