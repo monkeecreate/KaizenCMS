@@ -37,7 +37,7 @@
 					{foreach from=$aSettingGroups item=aGroup}
 						<option value="{$aGroup.id}"{if $aSetting.group == $aGroup.id} selected="selected"{/if}>{$aGroup.name|clean_html}</option>
 					{/foreach}
-				</select>
+				</select><br>
 		
 				<label>Text:</label><br />
 				<input type="text" name="text" maxlength="100" value="{$aSetting.text|clean_html}"><br />
