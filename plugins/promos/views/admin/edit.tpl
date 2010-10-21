@@ -24,7 +24,7 @@
 <form method="post" action="/admin/promos/edit/s/" enctype="multipart/form-data">
 	<section id="content" class="content">
 		<header>
-			<h2>Manage Promos &raquo; Edit Link</h2>
+			<h2>Manage Promos &raquo; Edit Promo</h2>
 		</header>
 
 		<section class="inner-content">

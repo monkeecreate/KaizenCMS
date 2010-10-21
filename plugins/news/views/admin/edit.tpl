@@ -8,7 +8,7 @@
 <form method="post" action="/admin/news/edit/s/" enctype="multipart/form-data">
 	<section id="content" class="content">
 		<header>
-			<h2>Manage News &raquo; Add Article</h2>
+			<h2>Manage News &raquo; Edit Article</h2>
 		</header>
 
 		<section class="inner-content">
