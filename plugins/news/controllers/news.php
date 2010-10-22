@@ -37,9 +37,9 @@ class news extends appController
 		$this->tplAssign("aArticles", $aArticles);
 		$this->tplAssign("aPaging", $aPaging);
 		
-		if(!empty($_GET["category"]) && $this->tplExists("news/category-".$_GET["category"]."tpl"))
+		if(!empty($_GET["category"]) && $this->tplExists("category-".$_GET["category"].".tpl"))
 			$this->tplDisplay("category-".$_GET["category"].".tpl");
-		elseif(!empty($_GET["category"]) && $this->tplExists("news/category.tpl"))
+		elseif(!empty($_GET["category"]) && $this->tplExists("category.tpl"))
 			$this->tplDisplay("category.tpl");
 		else
 			$this->tplDisplay("index.tpl");
