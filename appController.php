@@ -330,7 +330,10 @@ class appController
 	
 	### Template #####################
 	function tplExists($template_file) {
-		$template_file = $this->_smarty->template_dir."/".$template_file;
+		if(!empty($this->_plugin))
+			$template_file = $this->settings->root."plugins/".$this->_plugin."/views/".$template_file;
+		else		
+			$template_file = $this->_smarty->template_dir."/".$template_file;
 		
 		return is_file($template_file);
 	}
