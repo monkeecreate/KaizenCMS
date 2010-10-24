@@ -351,6 +351,24 @@ $aTables = array(
 			)
 		)
 	),
+	"search" => array(
+		"fields" => array(
+			"id" => array(
+				"type" => "integer",
+				"unsigned" => 1,
+				"notnull" => 1,
+				"default" => 0,
+				"autoincrement" => 1
+			),
+			"plugin" => array("type" => "text","length" => 50),
+			"table" => array("type" => "text","length" => 64),
+			"column_title" => array("type" => "text","length" => 64),
+			"column_content" => array("type" => "text","length" => 64),
+			"rows" => array("type" => "clob"),
+			"filter" => array("type" => "clob")
+		),
+		"index" => array("plugin")
+	),
 	"users" => array(
 		"fields" => array(
 			"id" => array(
