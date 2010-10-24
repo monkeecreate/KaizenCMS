@@ -391,6 +391,7 @@ class admin_settings extends adminController
 		$objDB->loadModule('Manager');
 
 		foreach($aTables as $sTable => $aTable) {
+			$sTableRaw = $sTable;
 			$sTable = $this->settings->dbPrefix.$sTable;
 			
 			// Add database
@@ -422,7 +423,7 @@ class admin_settings extends adminController
 					"search",
 					array(
 						"plugin" => $sPlugin
-						,"table" => $sTable
+						,"table" => $sTableRaw
 						,"column_title" => $aTable["search"]["title"]
 						,"column_content" => $aTable["search"]["content"]
 						,"rows" => json_encode($aTable["search"]["rows"])

@@ -320,12 +320,6 @@ $aTables = array(
 		"index" => array("sort_order", "active"),
 		"data" => array(
 			array(
-				"id" => 1,
-				"name" => "Analytics",
-				"sort_order" => 3,
-				"active" => 1
-			),
-			array(
 				"id" => 2,
 				"name" => "SEO",
 				"sort_order" => 1,
@@ -335,6 +329,12 @@ $aTables = array(
 				"id" => 3,
 				"name" => "Contact Info",
 				"sort_order" => 2,
+				"active" => 1
+			),
+			array(
+				"id" => 1,
+				"name" => "Analytics",
+				"sort_order" => 3,
 				"active" => 1
 			),
 			array(
@@ -367,7 +367,17 @@ $aTables = array(
 			"rows" => array("type" => "clob"),
 			"filter" => array("type" => "clob")
 		),
-		"index" => array("plugin")
+		"index" => array("plugin"),
+		"data" => array(
+			array(
+				"plugin" => "content",
+				"table" => "content",
+				"column_title" => "title",
+				"column_content" => "content",
+				"rows" => json_encode(array("title", "content")),
+				"filter" => "`perminate` != 1"
+			)
+		)
 	),
 	"users" => array(
 		"fields" => array(
