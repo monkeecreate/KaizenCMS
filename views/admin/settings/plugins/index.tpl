@@ -1,5 +1,5 @@
 {include file="inc_header.tpl" page_title="Manage Plugins" menu="settings" page_style="fullContent"}
-{assign var=subMenu value="Manage Plugins"}
+{assign var=subMenu value="Plugins"}
 {head}
 <script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
 <script src="/scripts/dataTables/plugins/paging-plugin.js"></script>

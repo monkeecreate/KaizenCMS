@@ -35,6 +35,7 @@ $aTables = array(
 			"photo_y2" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"photo_width" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"photo_height" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"facebook_id" => array("type" => "clob"),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
