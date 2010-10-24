@@ -188,6 +188,10 @@ $aUrlPatterns = array(
 		"cmd" => "admin_settings_social",
 		"action" => "facebook_connect"
 	),
+	"/admin/settings/facebook/unlink/" => array(
+		"cmd" => "admin_settings_social",
+		"action" => "facebook_unlink"
+	),
 	"/admin/users/" => array(
 		"cmd" => "admin_users",
 		"action" => "index"

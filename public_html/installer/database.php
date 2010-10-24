@@ -322,19 +322,19 @@ $aTables = array(
 			array(
 				"id" => 1,
 				"name" => "Analytics",
-				"sort_order" => 1,
+				"sort_order" => 3,
 				"active" => 1
 			),
 			array(
 				"id" => 2,
 				"name" => "SEO",
-				"sort_order" => 2,
+				"sort_order" => 1,
 				"active" => 1
 			),
 			array(
 				"id" => 3,
 				"name" => "Contact Info",
-				"sort_order" => 3,
+				"sort_order" => 2,
 				"active" => 1
 			),
 			array(

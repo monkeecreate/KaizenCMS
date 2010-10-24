@@ -46,6 +46,8 @@
 			
 				<label>Field Type:</label>
 				<select name="type">
+					{if $aSetting.type == "facebook"}<option value="facebook" selected="selected">Facebook</option>{/if}
+					{if $aSetting.type == "twitter"}<option value="twitter" selected="selected">Twitter</option>{/if}
 					<option value="text"{if $aSetting.type == "text"} selected="selected"{/if}>Text Field</option>
 					<option value="textarea"{if $aSetting.type == "textarea"} selected="selected"{/if}>Textarea</option>
 					<option value="bool"{if $aSetting.type == "bool"} selected="selected"{/if}>Checkbox</option>

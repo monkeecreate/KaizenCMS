@@ -36,24 +36,26 @@ class Form_twitter extends Form_Field
 			}
 		}
 		
-		if(empty($aValue) || empty($aValue["screen_name"])) {		
-			$sHTML = "<a href=\"/admin/settings/twitter/redirect/\">";
-			$sHTML .= "<img src=\"/images/admin/social/twitter_lighter.png\">";
-			$sHTML .= "</a>\n";
-		} else {
-			$sHTML = '<div class="twitterConnect socialConnect">';
-			$sHTML .= '<h4><img src="/images/admin/social/twitter.png" height="20px"> Twitter Connect</h4>';
-			
-			if(!$sError) {
-				$sHTML .= '<figure><img src="'.$aUser["profile_image_url"].'"></figure> <p>Connected as <strong>'.$aUser["screen_name"].'</strong></p>';
+		if(!empty($sConsumerKey) && !empty($sConsumerSecret)) {
+			if(empty($aValue) || empty($aValue["screen_name"])) {		
+				$sHTML = "<a href=\"/admin/settings/twitter/redirect/\">";
+				$sHTML .= "<img src=\"/images/admin/social/twitter_lighter.png\">";
+				$sHTML .= "</a>\n";
 			} else {
-				$sHTML .= '<p class="small">We were unable to connect to your Twitter account. This could be due to Twitter being down or an invalid connection with your account. If the problem persists remove the connection below and Connect to Twitter again.</p>';
+				$sHTML = '<div class="twitterConnect socialConnect">';
+				$sHTML .= '<h4><img src="/images/admin/social/twitter.png" height="20px"> Twitter Connect</h4>';
+			
+				if(!$sError) {
+					$sHTML .= '<figure><img src="'.$aUser["profile_image_url"].'"></figure> <p>Connected as <strong>'.$aUser["screen_name"].'</strong></p>';
+				} else {
+					$sHTML .= '<p class="small">We were unable to connect to your Twitter account. This could be due to Twitter being down or an invalid connection with your account. If the problem persists remove the connection below and Connect to Twitter again.</p>';
+				}
+			
+				$sHTML .= '<p class="small"><a href="/admin/settings/twitter/unlink/" title="Remove Twitter Connection">Remove Connection to Twitter</a></p></div>';
 			}
 			
-			$sHTML .= '<p class="small"><a href="/admin/settings/twitter/unlink/" title="Remove Twitter Connection">Remove Connection to Twitter</a></p></div>';
-		}
-		
-		$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value='".$this->value(false)."' /><br /><br />\n";
+			$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value='".$this->value(false)."' /><br /><br />\n";
+		}		
 	
 		if(!empty($this->_setting["text"]))
 			$sHTML .= $this->getText($this->_setting["text"])."\n";

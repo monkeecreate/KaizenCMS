@@ -1,6 +1,5 @@
 <?php
-abstract class Form_Field
-{
+abstract class Form_Field {
 	abstract protected function html();
 	abstract protected function value();
 	abstract protected function save($value);

@@ -1,6 +1,5 @@
 <?php
-class appController
-{
+class appController {
 	private $_db;
 	private $_mail;
 	private $_smarty;
