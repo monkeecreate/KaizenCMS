@@ -233,7 +233,7 @@ class admin_news extends adminController
 		else {
 			if($_POST["post_facebook"] == 1)
 				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $oNews->shortContentCharacters), false);
-			
+
 			if($_POST["submit"] == "Save Changes")
 				$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!"));
 			elseif($_POST["submit"] == "edit")

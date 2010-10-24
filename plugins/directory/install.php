@@ -41,7 +41,14 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("active")
+		"index" => array("active"),
+		"fulltext" => array("name", "address1", "address2", "city", "state", "zip", "phone", "fax", "website", "email"),
+		"search" => array(
+			"title" => "name",
+			"content" => null,
+			"rows" => array("name", "address1", "address2", "city", "state", "zip", "phone", "fax", "website", "email"),
+			"filter" => "`active` = 1"
+		)
 	),
 	"directory_categories" => array(
 		"fields" => array(

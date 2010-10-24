@@ -24,7 +24,14 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("active")
+		"index" => array("active"),
+		"fulltext" => array("name", "sub_name", "text"),
+		"search" => array(
+			"title" => "name",
+			"content" => "text",
+			"rows" => array("name", "sub_name", "text"),
+			"filter" => "`active` = 1"
+		)
 	),
 	"testimonials_categories" => array(
 		"fields" => array(

@@ -90,6 +90,9 @@ if($_POST["setup"] == 1) {
 			
 				if(!empty($sName))
 					$objDB->createIndex($sTable, $sName, $aDefinitions);
+				
+				if(is_array($aTable["fulltext"]))
+					$objDB->dbQuery("ALTER TABLE  `".$sTable."` ADD FULLTEXT (`".implode("`,`", $aTable["fulltext"])."`);");
 			
 				if(is_array($aTable["data"])) {
 					$objDB->loadModule('Extended');

@@ -24,7 +24,14 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("sort_order", "active")
+		"index" => array("sort_order", "active"),
+		"fulltext" => array("question", "answer"),
+		"search" => array(
+			"title" => "question",
+			"content" => "answer",
+			"rows" => array("question", "answer"),
+			"filter" => "`active` = 1"
+		)
 	),
 	"faq_categories" => array(
 		"fields" => array(

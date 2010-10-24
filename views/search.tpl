@@ -16,6 +16,10 @@
 		</p>
 	{foreachelse}
 		<p>No results found for your search.</p>
+		<ul>
+			<li>Make sure your search is longer than 3 characters.</li>
+			<li>Try not to use any generic words.</li>
+		</ul>
 	{/foreach}
 {/if}
 

@@ -23,7 +23,7 @@
 	<!--[if lt IE 7 ]>
 		<script src="/scripts/dd_belatedpng.js"></script>
 	<![endif]-->
-	
+
 {getSetting tag="analytics_google" assign="aSettingGoogle"}
 {if !empty($aSettingGoogle)}
 <script type="text/javascript">
@@ -38,6 +38,7 @@
   {rdelim})();
 </script>
 {/if}
+
 {getSetting tag="analytics_woopra" assign="aSettingWoopra"}
 {if $aSettingWoopra == 1}
 <script type="text/javascript" src="//static.woopra.com/js/woopra.v2.js"></script> 
@@ -45,5 +46,6 @@
 woopraTracker.track(); 
 </script> 
 {/if}
+
 </body>
 </html>
