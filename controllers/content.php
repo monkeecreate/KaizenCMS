@@ -7,8 +7,15 @@ class content extends appController
 	}
 	function search() {
 		if(!empty($_GET["query"])) {
-			$sSearch = strip_tags($_GET["query"]);
-			$sQuery = $this->dbQuote($sSearch, "text");
+			$sSearch = $_GET["query"];
+			$sSearchInclude = $_GET["query_include"];
+			$sSearchExclude = $_GET["query_exclude"];
+			
+			if((!$sSearchInclude) || ($sSearchInclude == "")) { $sSearchInclude = ""; } else { $sSearchInclude = "+(".$sSearchInclude.")"; } 
+			if((!$sSearch) || ($sSearch == "")) { $sSearch = ""; }  
+			if((!$sSearchExclude) || ($sSearchExclude == "")) { $sSearchExclude = ""; } else { $sSearchExclude = "-(".$sSearchExclude.")"; }
+			
+			$sQuery = $this->dbQuote($sSearchInclude." ".$sSearchExclude." ".$sSearch, "text");
 			
 			$aTables = $this->dbQuery("SELECT * FROM `{dbPrefix}search`", "all");
 			$aSearchTables = array();
@@ -32,14 +39,14 @@ class content extends appController
 					.", `".$aSearch["column_title"]."` AS `title`".
 					((!empty($aSearch["column_content"]))?", `".$aSearch["column_content"]."` AS `content`":", '' AS `content`")
 					.", '".$aSearch["plugin"]."' as `plugin`"
-					.", MATCH(".$sRows.") AGAINST (".$sQuery.") AS `score`"
-					." FROM `".$aSearch["table"]."` AS `table`"
-					." WHERE MATCH(".$sRows.") AGAINST (".$sQuery.")"
+					.", MATCH(".$sRows.") AGAINST (".$sQuery." IN BOOLEAN MODE) AS `score`"
+					." FROM `{dbPrefix}".$aSearch["table"]."` AS `table`"
+					." WHERE MATCH(".$sRows.") AGAINST (".$sQuery." IN BOOLEAN MODE)"
 					.$sFilter
 				;
 			}
 			
-			$sSQL = implode(" UNION ", $aSearchTables)." ORDER BY `score` DESC";
+			$sSQL = implode(" UNION ", $aSearchTables)/*." ORDER BY `score` DESC"*/;
 			
 			$aSearch = $this->dbQuery($sSQL, "all");
 			
@@ -64,7 +71,9 @@ class content extends appController
 			
 			$this->tplAssign("sSearched", 1);
 			$this->tplAssign("aSearch", $aSearch);
-			$this->tplAssign("sQuery", $sSearch);
+			$this->tplAssign("sQuery", $_GET["query"]);
+			$this->tplAssign("sQueryInclude", $_GET["query_include"]);
+			$this->tplAssign("sQueryExclude", $_GET["query_exclude"]);
 		}
 		
 		$this->tplDisplay("search.tpl");

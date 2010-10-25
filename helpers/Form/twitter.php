@@ -10,19 +10,19 @@ class Form_twitter extends Form_Field
 	}
 	
 	public function html() {
+		global $objDB, $site_root, $aConfig;
+		
 		$sError = false;
 		$aValue = $this->value();
+			
+		$sConsumerKey = $objDB->query("SELECT `value` FROM `".$aConfig["database"]["prefix"]."settings`"
+			." WHERE `tag` = ".$objDB->quote("twitter_consumer_key", "text")
+		)->fetchOne();
+		$sConsumerSecret = $objDB->query("SELECT `value` FROM `".$aConfig["database"]["prefix"]."settings`"
+			." WHERE `tag` = ".$objDB->quote("twitter_consumer_secret", "text")
+		)->fetchOne();
 		
 		if(!empty($aValue) && !empty($aValue["screen_name"])) {
-			global $objDB, $site_root, $aConfig;
-			
-			$sConsumerKey = $objDB->query("SELECT `value` FROM `".$aConfig["database"]["prefix"]."settings`"
-				." WHERE `tag` = ".$objDB->quote("twitter_consumer_key", "text")
-			)->fetchOne();
-			$sConsumerSecret = $objDB->query("SELECT `value` FROM `".$aConfig["database"]["prefix"]."settings`"
-				." WHERE `tag` = ".$objDB->quote("twitter_consumer_secret", "text")
-			)->fetchOne();
-			
 			require_once($site_root."helpers/twitteroauth.php");
 			
 			$connection = new TwitterOAuth($sConsumerKey, $sConsumerSecret, $aValue["oauth_token"], $aValue["oauth_token_secret"]);
@@ -55,7 +55,9 @@ class Form_twitter extends Form_Field
 			}
 			
 			$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value='".$this->value(false)."' /><br /><br />\n";
-		}		
+		} else {
+			$sHTML .= $sConsumerKey." - ".$sConsumerSecret;
+		}
 	
 		if(!empty($this->_setting["text"]))
 			$sHTML .= $this->getText($this->_setting["text"])."\n";

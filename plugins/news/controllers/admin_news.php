@@ -235,11 +235,11 @@ class admin_news extends adminController
 				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $oNews->shortContentCharacters), false);
 
 			if($_POST["submit"] == "Save Changes")
-				$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!"));
+				$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!")."&".implode("&", $this->errors));
 			elseif($_POST["submit"] == "edit")
-				$this->forward("/admin/news/image/".$_POST["id"]."/edit/");
+				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?".implode("&", $this->errors));
 			elseif($_POST["submit"] == "delete")
-				$this->forward("/admin/news/image/".$_POST["id"]."/delete/");
+				$this->forward("/admin/news/image/".$_POST["id"]."/delete/?".implode("&", $this->errors));
 		}
 	}
 	function delete() {
@@ -413,7 +413,7 @@ class admin_news extends adminController
 			$aParameters = array("status" => $_POST["title"]." ".$sUrl);
 			$status = $oTwitter->post("statuses/update", $aParameters);
 			
-			if($connection->http_code != 200) {
+			if($oTwitter->http_code != 200) {
 				$this->errors[] = "errors[]=".urlencode("Error posting to Twitter. Please try again later.");
 			}
 		} else {
