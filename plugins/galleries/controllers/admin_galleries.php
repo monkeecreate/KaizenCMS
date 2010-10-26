@@ -292,9 +292,9 @@ class admin_galleries extends adminController
 				." ORDER BY `categories`.`name`"
 			,"col"
 		);
-		
+
 		$this->tplAssign("aPhotos", $oGalleries->getPhotos($this->urlVars->dynamic["gallery"]));
-		$this->tplAssign("aDefaultPhoto", $oGalleries->getPhoto(null, true));
+		$this->tplAssign("aDefaultPhoto", $oGalleries->getPhoto($this->urlVars->dynamic["gallery"], true));
 		$this->tplAssign("aGallery", $aGallery);
 		$this->tplAssign("aCategories", $oGalleries->getCategories());
 		$this->tplAssign("sessionID", session_id());

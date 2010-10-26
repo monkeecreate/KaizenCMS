@@ -92,9 +92,10 @@ class galleries_model extends appModel
 		return $aPhotos;
 	}
 	function getPhoto($sId, $sDefault = false) {
-		if($sDefault == true)
+		if($sDefault == true) {
 			$sWhere = " WHERE `gallery_default` = 1";
-		else
+			$sWhere .= " AND `galleryid` = ".$sId;
+		} else
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
 		
 		$aPhoto = $this->dbQuery(

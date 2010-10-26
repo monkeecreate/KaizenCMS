@@ -644,6 +644,19 @@ form input.submit {
 	margin: 0;
 }
 
+a.delete:link, a.delete:active, a.delete:visited {
+	background: #e40600 !important;
+	color: #fff !important;
+	border: 0 !important;
+	padding: 4px 6px;
+}
+
+a.delete:hover {
+	background: #c61712 !important;
+	color: #fff !important;
+	border: 0 !important;
+}
+
 form a.cancel {
 	font-size: 1.1em;
 	color: #cc0000;

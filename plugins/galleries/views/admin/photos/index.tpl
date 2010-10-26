@@ -204,8 +204,10 @@ $(function() {
 								<label>Description:</label><br />
 								<textarea name="description" class="elastic">{$aPhoto.description|replace:'<br />':''}</textarea><br />
 								<input type="submit" value="Save">
-								<input type="button" value="Delete" class="delete">
+								
 								<a class="cancel" href="#" title="Cancel" rel="{$aPhoto.id}">Cancel</a>
+								<a href="/admin/galleries/{$aGallery.id}/photos/delete/{$aPhoto.id}/" onclick="return confirm_('Are you sure you would like to delete: {$aPhoto.title}?');" title="Delete Photo" class="delete right ui-corner-all">Delete Photo</a>
+								<!-- <input type="button" value="Delete Photo" class="delete right"> -->
 								<input type="hidden" name="id" value="{$aPhoto.id}">
 							</form>
 						</span>
@@ -225,9 +227,11 @@ $(function() {
 		<form name="sort" class="photo_sort" method="post" action="/admin/galleries/edit/">
 			
 			<section>
+				{if !empty($aDefaultPhoto.photo)}
 				<div id="defaultPhoto" style="margin:0 0 10px;">
 					<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aDefaultPhoto.photo}&width=273&height=200" class="image" style="margin:0 4px;" id="photo_{$aDefaultPhoto.id}" width="273px">
 				</div>
+				{/if}
 			
 				<fieldset>
 					<legend>Status</legend>
