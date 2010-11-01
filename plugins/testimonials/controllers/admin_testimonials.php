@@ -1,6 +1,5 @@
 <?php
-class admin_testimonials extends adminController
-{
+class admin_testimonials extends adminController {
 	function __construct(){
 		parent::__construct("testimonials");
 		
@@ -16,7 +15,7 @@ class admin_testimonials extends adminController
 		
 		$this->tplAssign("aCategories", $oTestimonials->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aTestimonials", $oTestimonials->getTestimonials(true));
+		$this->tplAssign("aTestimonials", $oTestimonials->getTestimonials(null, false, true));
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {

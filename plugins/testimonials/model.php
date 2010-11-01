@@ -6,7 +6,8 @@ class testimonials_model extends appModel
 	function getTestimonials($sCategory = null, $sRandom = false, $sAll = false) {
 		$aWhere = array();
 		
-		$aWhere[] = "`active` = 1";
+		if($sAll == false)
+			$aWhere[] = "`active` = 1";
 		
 		if(!empty($sCategory))
 			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($sCategory, "integer");
