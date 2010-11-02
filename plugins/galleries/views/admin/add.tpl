@@ -19,7 +19,7 @@
 			
 			{if $sUseCategories == true}
 				<fieldset id="fieldset_categories">
-					<legend>Assign question to category:</legend>
+					<legend>Assign gallery to category:</legend>
 					<ul class="categories">
 						{foreach from=$aCategories item=aCategory}
 							<li>
