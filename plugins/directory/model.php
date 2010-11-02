@@ -107,7 +107,8 @@ class directory_model extends appModel
 		$aListing["address1"] = htmlspecialchars(stripslashes($aListing["address1"]));
 		$aListing["address2"] = htmlspecialchars(stripslashes($aListing["address2"]));
 		$aListing["city"] = htmlspecialchars(stripslashes($aListing["city"]));
-		$aListing["state"] = htmlspecialchars(stripslashes($aListing["state"]));
+		$aListing["stateFull"] = array_pop(explode(",", htmlspecialchars(stripslashes($aListing["state"]))));
+		$aListing["state"] = array_shift(explode(",", htmlspecialchars(stripslashes($aListing["state"]))));
 		$aListing["zip"] = htmlspecialchars(stripslashes($aListing["zip"]));
 		$aListing["phone"] = htmlspecialchars(stripslashes($aListing["phone"]));
 		$aListing["fax"] = htmlspecialchars(stripslashes($aListing["fax"]));
