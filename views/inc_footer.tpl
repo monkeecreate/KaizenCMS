@@ -10,7 +10,7 @@
 			   <li>Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.</li>
 			</ul>
 		</aside>
-
+		
 		<footer>
 			<p>&copy; Copyright {$smarty.now|date_format:"%Y"} Your Company, All Rights Reserved.</p>
 		</footer>
