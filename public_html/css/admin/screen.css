@@ -370,6 +370,28 @@ ul#photos li {
 	height: 95px;
 }
 
+#tinymce_editor .tinymce_tabs {
+	float: right;
+	overflow: hidden;
+}
+
+#tinymce_editor .tinymce_tabs a:link, #tinymce_editor .tinymce_tabs a:active, #tinymce_editor .tinymce_tabs a:visited {
+	background: #e1e1e1;
+	display: block;
+	float: left;
+	padding: 6px 12px;
+}
+
+#tinymce_editor .tinymce_tabs a:hover {
+	background: #ccc;
+	text-decoration: none;
+}
+
+#tinymce_editor .tinymce_tabs a.current {
+	background: #666;
+	color: #fff;
+}
+
 /* @group login */
 
 .loginContent #wrapper-inner {
