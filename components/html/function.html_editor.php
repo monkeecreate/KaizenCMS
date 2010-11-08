@@ -48,15 +48,19 @@ function smarty_function_html_editor($aParams, &$smarty) {
 	$return .= "function toggleEditorVisual(id) {\n";
 	$return .= "\t\t$.cookie('".$aParams["name"]."_editor', 'visual', {path: '".array_shift(explode("?", $_SERVER["REQUEST_URI"]))."', expires: 7});\n";
 	$return .= "\t\ttinyMCE.execCommand('mceAddControl', false, id);\n";
+	$return .= "\t\t$('#tinymce_editor .html_tab').removeClass('current');\n";
+	$return .= "\t\t$('#tinymce_editor .visual_tab').addClass('current');\n";
 	$return .= "}\n";
 	$return .= "function toggleEditorHTML(id) {\n";
 	$return .= "\t\t$.cookie('".$aParams["name"]."_editor', 'html', {path: '".array_shift(explode("?", $_SERVER["REQUEST_URI"]))."', expires: 7});\n";
 	$return .= "\t\ttinyMCE.execCommand('mceRemoveControl', false, id);\n";
+	$return .= "\t\t$('#tinymce_editor .visual_tab').removeClass('current');\n";
+	$return .= "\t\t$('#tinymce_editor .html_tab').addClass('current');\n";
 	$return .= "}\n";
 	$return .= "</script>\n";
 	$return .= "@@@SMARTY:FOOTER:END@@@\n";
 	$return .= "<div id=\"tinymce_editor\">\n";
-	$return .= "\t<a href=\"javascript:toggleEditorVisual('".$aParams["name"]."_editor');\">Visual</a> - <a href=\"javascript:toggleEditorHTML('".$aParams["name"]."_editor');\">HTML</a><br>\n";
+	$return .= "\t<div class=\"tinymce_tabs\"><a href=\"javascript:toggleEditorVisual('".$aParams["name"]."_editor');\" class=\"visual_tab current\">Visual</a> <a href=\"javascript:toggleEditorHTML('".$aParams["name"]."_editor');\" class=\"html_tab\">HTML</a><br></div>\n";
 	$return .= "\t<textarea id='".$aParams["name"]."_editor' name='".$aParams["name"]."' class='".$aParams["name"]."_editor' style=\"width: ".$width."px;height: ".($height - 15)."px;\">".$content."</textarea><br>\n";
 	$return .= "</div>\n";
 	
