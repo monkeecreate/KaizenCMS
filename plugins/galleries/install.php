@@ -28,7 +28,8 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("tag", "sort_order"),
+		"index" => array("sort_order"),
+		"unique" => array("tag"),
 		"fulltext" => array("name", "description"),
 		"search" => array(
 			"title" => "name",
