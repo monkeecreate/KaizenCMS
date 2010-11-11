@@ -21,6 +21,7 @@ $aTables = array(
 			"name" => array("type" => "text","length" => 100),
 			"description" => array("type" => "clob"),
 			"link" => array("type" => "text","length" => 255),
+			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"active" => array("type" => "boolean"),
 			"photo_x1" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"photo_y1" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
@@ -34,6 +35,7 @@ $aTables = array(
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
 		"index" => array("active"),
+		"unique" => array("sort_order"),
 		"fulltext" => array("name", "description"),
 		"search" => array(
 			"title" => "name",

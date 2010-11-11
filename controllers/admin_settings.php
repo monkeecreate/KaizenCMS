@@ -398,22 +398,31 @@ class admin_settings extends adminController
 			$oTable = $objDB->createTable($sTable, $aTable["fields"]);
 			
 			// Add indexes
-			$aDefinitions = array(
-				"fields" => array(
-				)
-			);
-			
 			if(is_array($aTable["index"])) {
+				$aDefinitions = array(
+					"fields" => array(
+					)
+				);
 				foreach($aTable["index"] as $x => $sIndex) {
-					if($x == 0)
-						$sName = $sIndex;
-				
 					$aDefinitions["fields"][$sIndex] = array();
 				}
+				
+				$objDB->createIndex($sTable, "Indexes", $aDefinitions);
 			}
 			
-			if(!empty($sName))
-				$objDB->createIndex($sTable, $sName, $aDefinitions);
+			// Add unique indexes
+			if(is_array($aTable["unique"])) {
+				$aUnique = array(
+					"unique" => true,
+					"fields" => array()
+				);
+				
+				foreach($aTable["unique"] as $x => $sUnique) {
+					$aUnique["fields"][$sUnique] = array();
+				}
+				
+				$objDB->createConstraint($sTable, "Uniques", $aUnique);
+			}
 			
 			if(is_array($aTable["fulltext"]))
 				$this->dbQuery("ALTER TABLE  `".$sTable."` ADD FULLTEXT (`".implode("`,`", $aTable["fulltext"])."`);", "alter");

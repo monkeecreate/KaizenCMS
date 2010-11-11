@@ -28,10 +28,6 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_faq",
         "action" => "add_s"
     ),
-	"/admin/faq/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
-        "cmd" => "admin_faq",
-        "action" => "sort"
-    ),
 	"/admin/faq/edit/{id:[0-9]+}/" => array(
         "cmd" => "admin_faq",
         "action" => "edit"
@@ -43,6 +39,10 @@ $aPluginUrlPatterns = array(
 	"/admin/faq/delete/{id:[0-9]+}/" => array(
         "cmd" => "admin_faq",
         "action" => "delete"
+    ),
+	"/admin/faq/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+        "cmd" => "admin_faq",
+        "action" => "sort"
     ),
 	"/admin/faq/categories/" => array(
         "cmd" => "admin_faq",

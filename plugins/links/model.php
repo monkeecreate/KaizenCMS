@@ -7,33 +7,69 @@ class links_model extends appModel
 	public $imageFolder = "/uploads/links/";
 	public $useCategories = true;
 	public $perPage = 5;
+	public $sort = "name-asc"; // manual, name, created, updated, random - asc, desc
 	
-	function getLinks($sCategory = null, $sAll = false, $sRandom = false) {
-		// Start the WHERE
-		$sWhere = " WHERE `links`.`id` > 0";// Allways true
+	function getLinks($sCategory = null, $sAll = false) {
+		$aWhere = array();
+		$sJoin = "";
 		
-		if($sAll == false)	
-			$sWhere .= " AND `links`.`active` = 1";
-			
-		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
-			
-		if($sRandom != false)
-			$sOrderBy = " ORDER BY rand()";
+		// Filter those that are only active, unless told otherwise
+		if($sAll == false) {
+			$aWhere[] = "`links`.`active` = 1";
+		}
 		
-		// Get all links for paging
+		// Filter by category if given
+		if(!empty($sCategory)) {
+			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+			$sJoin .= " LEFT JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links`.`id` = `links_assign`.`linkid`";
+			$sJoin .= " LEFT JOIN `{dbPrefix}links_categories` AS `categories` ON `links_assign`.`categoryid` = `categories`.`id`";
+		}
+		
+		// Combine filters if atleast one was added
+		if(!empty($aWhere)) {
+			$sWhere = " WHERE ".implode(" AND ", $aWhere);
+		}
+		
+		// Check if sort direction is set, and clean it up for SQL use
+		$sSortDirection = array_pop(explode("-", $this->sort));
+		if(empty($sSortDirection) || !in_array(strtolower($sSortDirection), array("asc", "desc"))) {
+			$sSortDirection = "ASC";
+		} else {
+			$sSortDirection = strtoupper($sSortDirection);
+		}
+		
+		// Choose sort method based on model setting
+		switch(array_shift(explode("-", $this->sort))) {
+			case "manual":
+				$sOrderBy = " ORDER BY `sort_order` ".$sSortDirection;
+				break;
+			case "created":
+				$sOrderBy = " ORDER BY `created_datetime` ".$sSortDirection;
+				break;
+			case "updated":
+				$sOrderBy = " ORDER BY `updated_datetime` ".$sSortDirection;
+				break;
+			case "random":
+				$sOrderBy = " ORDER BY RAND()";
+				break;
+			// Default to sort by name
+			default:
+				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
+		}
+		
+		// Get all links pased on filters given
 		$aLinks = $this->dbQuery(
 			"SELECT `links`.* FROM `{dbPrefix}links` AS `links`"
-				." LEFT JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links`.`id` = `links_assign`.`linkid`"
-				." LEFT JOIN `{dbPrefix}links_categories` AS `categories` ON `links_assign`.`categoryid` = `categories`.`id`"
+				.$sJoin
 				.$sWhere
 				." GROUP BY `links`.`id`"
 				.$sOrderBy
 			,"all"
 		);
 		
-		foreach($aLinks as $x => &$aLink)
+		foreach($aLinks as $x => &$aLink) {
 			$aLink = $this->_getLinkInfo($aLink);
+		}
 		
 		return $aLinks;
 	}
@@ -44,8 +80,9 @@ class links_model extends appModel
 			,"row"
 		);
 		
-		if(!empty($aLink))
+		if(!empty($aLink)) {
 			$aLink = $this->_getLinkInfo($aLink);
+		}
 		
 		return $aLink;
 	}
@@ -66,10 +103,11 @@ class links_model extends appModel
 		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aLink["id"].".jpg")
 		 && $aLink["photo_x2"] > 0
-		 && $this->useImage == true)
+		 && $this->useImage == true) {
 			$aLink["image"] = 1;
-		else
+		} else {
 			$aLink["image"] = 0;
+		}
 		
 		return $aLink;
 	}
@@ -98,19 +136,21 @@ class links_model extends appModel
 				,"all"
 			);
 			
-			foreach($aCategories as $x => $aCategory)
+			foreach($aCategories as $x => $aCategory) {
 				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+			}
 		}
 		
 		return $aCategories;
 	}
 	function getCategory($sId = null, $sName = null) {
-		if(!empty($sId))
+		if(!empty($sId)) {
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
-		elseif(!empty($sName))
+		} elseif(!empty($sName)) {
 			$sWhere = " WHERE `name` LIKE ".$this->dbQuote($sName, "text");
-		else
+		} else {
 			return false;
+		}
 		
 		$aCategory = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}links_categories`"

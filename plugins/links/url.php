@@ -40,6 +40,10 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_links",
         "action" => "delete"
     ),
+	"/admin/links/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+        "cmd" => "admin_links",
+        "action" => "sort"
+    ),
 	"/admin/links/image/{id:[0-9]+}/upload/" => array(
         "cmd" => "admin_links",
         "action" => "image_upload"
