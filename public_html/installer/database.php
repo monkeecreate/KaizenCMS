@@ -9,7 +9,7 @@ $aTables = array(
 				"default" => 0,
 				"autoincrement" => 1
 			),
-			"tag" => array("type" => "text","length" => 30),
+			"tag" => array("type" => "text","length" => 100),
 			"title" => array("type" => "text","length" => 100),
 			"content" => array("type" => "clob"),
 			"perminate" => array("type" => "boolean"),
