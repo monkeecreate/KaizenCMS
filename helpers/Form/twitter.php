@@ -55,8 +55,6 @@ class Form_twitter extends Form_Field
 			}
 			
 			$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value='".$this->value(false)."' /><br /><br />\n";
-		} else {
-			$sHTML .= $sConsumerKey." - ".$sConsumerSecret;
 		}
 	
 		if(!empty($this->_setting["text"]))
