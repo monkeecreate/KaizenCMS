@@ -73,10 +73,29 @@ class admin_news extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,100);
+	
+		$aArticles = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}news`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aArticles)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aArticles);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$sID = $this->dbInsert(
 			"news",
 			array(
 				"title" => $_POST["title"]
+				,"tag" => $sTag
 				,"short_content" => (string)substr($_POST["short_content"], 0, $oNews->shortContentCharacters)
 				,"content" => $_POST["content"]
 				,"datetime_show" => $datetime_show
@@ -140,7 +159,7 @@ class admin_news extends adminController
 			
 			$this->tplAssign("aArticle", $aArticle);
 		} else {
-			$aArticle = $oNews->getArticle($this->urlVars->dynamic["id"], true);
+			$aArticle = $oNews->getArticle($this->urlVars->dynamic["id"], null, true);
 			
 			$aArticle["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}news_categories` AS `categories`"

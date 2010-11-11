@@ -19,6 +19,7 @@ $aTables = array(
 				"autoincrement" => 1
 			),
 			"title" => array("type" => "text","length" => 100),
+			"tag" => array("type" => "text","length" => 100),
 			"short_content" => array("type" => "clob"),
 			"content" => array("type" => "clob"),
 			"datetime_show" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
