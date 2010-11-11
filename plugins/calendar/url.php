@@ -20,11 +20,11 @@ $aPluginUrlPatterns = array(
 		"cmd" => "calendar",
 		"action" => "ics"
 	),
-	"/calendar/{id:[0-9]+}/{title:[^/]+}/" => array(
+	"/calendar/{tag:[^/]+}/" => array(
 		"cmd" => "calendar",
 		"action" => "event"
 	),
-	"/calendar/{id:[0-9]+}/{title:[^/]+}/ics/" => array(
+	"/calendar/{tag:[^/]+}/ics/" => array(
 		"cmd" => "calendar",
 		"action" => "event_ics"
 	),
