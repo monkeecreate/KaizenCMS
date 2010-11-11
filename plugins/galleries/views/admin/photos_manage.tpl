@@ -21,7 +21,7 @@
 	<section class="inner-content">
 		<h3>{$aGallery.name}</h3>
 		<form method="post" action="/admin/galleries/{$aGallery.id}/photos/manage/s/" enctype="multipart/form-data" style="width:685px;position:relative;">
-			{foreach from=$aPhotos item=aPhoto}
+			{foreach from=$aGallery.photos item=aPhoto}
 				<div style="margin: 0 40px 30px 0;padding: 0 0 15px;border-bottom: 1px solid #aaa;overflow:hidden;">
 					<img width="300px" src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=300&height=300" class="image" style="float:left;margin-right:15px;">
 					<label>Title:</label><br />

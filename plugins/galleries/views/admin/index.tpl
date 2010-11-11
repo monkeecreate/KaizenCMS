@@ -63,7 +63,7 @@
 						{/if}
 					</td>
 					<td>{$aGallery.name}</td>
-					<td class="center">{if !empty($aGallery.photos)}{$aGallery.photos}{else}No Photos{/if}</td>
+					<td class="center">{if !empty($aGallery.photos)}{$aGallery.photos|@count}{else}No Photos{/if}</td>
 					<td class="center">
 						<a href="/admin/galleries/{$aGallery.id}/photos/" title="Manage Gallery">
 							<img src="/images/admin/icons/pictures.png" alt="manage gallery">

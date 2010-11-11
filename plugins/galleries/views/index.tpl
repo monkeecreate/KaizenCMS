@@ -26,10 +26,10 @@
 		<article>
 			{if $aGallery.photo > 0}
 				<figure>
-					<a href="/galleries/{$aGallery.id}" title="{$aGallery.name}"><img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aGallery.photo}&width=140&height=140" alt="{$aGallery.name}"></a>
+					<a href="/galleries/{$aGallery.tag}" title="{$aGallery.name}"><img src="/image/resize/?file=/uploads/galleries/{$aGallery.id}/{$aGallery.photo}&width=140&height=140" alt="{$aGallery.name}"></a>
 				</figure>
 			{/if}
-			<h3><a href="/galleries/{$aGallery.id}/" title="{$aGallery.name}">{$aGallery.name}</a></h3>
+			<h3><a href="/galleries/{$aGallery.tag}/" title="{$aGallery.name}">{$aGallery.name}</a></h3>
 			{if !empty($aGallery.categories)}
 				<small class="timeCat">
 					Categories: 

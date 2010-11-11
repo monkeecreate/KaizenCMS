@@ -45,12 +45,10 @@ class galleries extends appController
 			$this->tplDisplay("index.tpl");
 	}
 	function gallery() {
-		$aGallery = $this->model->getGallery($this->urlVars->dynamic["id"]);
+		$aGallery = $this->model->getGallery(null, $this->urlVars->dynamic["tag"]);
 		
 		if(empty($aGallery))
 			$this->error('404');
-		
-		$aGallery["photos"] = $this->model->getPhotos($this->urlVars->dynamic["id"]);
 		
 		$this->tplAssign("aGallery", $aGallery);
 	

@@ -191,7 +191,7 @@ $(function() {
 			</div>
 			
 			<ul id="photos">
-				{foreach from=$aPhotos item=aPhoto}
+				{foreach from=$aGallery.photos item=aPhoto}
 					<li id="{$aPhoto.id}">
 						<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=273&height=200" class="image" width="95px" height="95px">
 						<span id="{$aPhoto.id}_form" style="display:none;" title="Edit Photo">

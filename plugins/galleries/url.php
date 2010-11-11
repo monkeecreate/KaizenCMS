@@ -16,7 +16,7 @@ $aPluginUrlPatterns = array(
 		"cmd" => "galleries",
 		"action" => "index"
 	),
-	"/galleries/{id:[0-9]+}/" => array(
+	"/galleries/{tag:[^/]+}/" => array(
 		"cmd" => "galleries",
 		"action" => "gallery"
 	),

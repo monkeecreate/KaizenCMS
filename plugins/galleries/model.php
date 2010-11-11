@@ -31,10 +31,19 @@ class galleries_model extends appModel
 		
 		return $aGalleries;
 	}
-	function getGallery($sId) {
+	function getGallery($sId, $sTag, $sAll = false) {
+		if(!empty($sId))
+			$sWhere = " WHERE `galleries`.`id` = ".$this->dbQuote($sId, "integer");
+		else
+			$sWhere = " WHERE `galleries`.`tag` = ".$this->dbQuote($sTag, "text");
+			
+		if($sAll == false) {
+			$sWhere .= " AND `galleries`.`active` = 1";
+		}
+	
 		$aGallery = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}galleries`"
-				." WHERE `id` = ".$this->dbQuote($sId, "integer")
+			"SELECT `galleries`.* FROM `{dbPrefix}galleries` AS `galleries`"
+			.$sWhere
 			,"row"
 		);
 		
@@ -58,14 +67,24 @@ class galleries_model extends appModel
 			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		}
 		
-		$aGallery["photo"] = $this->dbQuery(
+		$aGallery["defaultPhoto"] = $this->dbQuery(
 			"SELECT `photo` FROM `{dbPrefix}galleries_photos`"
 				." WHERE `galleryid` = ".$aGallery["id"]
 				." AND `gallery_default` = 1"
 			,"one"
 		);
 		
-		$aGallery["photos"] = count($this->getPhotos($aGallery["id"]));
+		$aGallery["photos"] = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}galleries_photos`"
+				." WHERE `galleryid` = ".$this->dbQuote($aGallery["id"], "integer")
+				." ORDER BY `sort_order`"
+			,"all"
+		);
+		
+		foreach($aGallery["photos"] as &$aPhoto) {
+			$aPhoto["title"] = htmlspecialchars(stripslashes($aPhoto["title"]));
+			$aPhoto["description"] = nl2br(htmlspecialchars(stripslashes($aPhoto["description"])));
+		}
 		
 		return $aGallery;
 	}
@@ -75,21 +94,6 @@ class galleries_model extends appModel
 		$sURL = "/galleries/".$aGallery["id"]."/";
 		
 		return $sURL;
-	}
-	function getPhotos($sId) {
-		$aPhotos = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}galleries_photos`"
-				." WHERE `galleryid` = ".$this->dbQuote($sId, "integer")
-				." ORDER BY `sort_order`"
-			,"all"
-		);
-		
-		foreach($aPhotos as &$aPhoto) {
-			$aPhoto["title"] = htmlspecialchars(stripslashes($aPhoto["title"]));
-			$aPhoto["description"] = nl2br(htmlspecialchars(stripslashes($aPhoto["description"])));
-		}
-		
-		return $aPhotos;
 	}
 	function getPhoto($sId, $sDefault = false) {
 		if($sDefault == true) {

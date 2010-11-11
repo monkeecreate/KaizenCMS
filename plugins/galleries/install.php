@@ -19,6 +19,7 @@ $aTables = array(
 				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 100),
+			"tag" => array("type" => "text","length" => 100),
 			"description" => array("type" => "clob"),
 			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"active" => array("type" => "boolean"),
@@ -27,7 +28,7 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("sort_order"),
+		"index" => array("tag", "sort_order"),
 		"fulltext" => array("name", "description"),
 		"search" => array(
 			"title" => "name",
