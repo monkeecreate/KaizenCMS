@@ -9,21 +9,29 @@ class admin_links extends adminController
 	
 	### DISPLAY ######################
 	function index() {
-		$oLinks = $this->loadModel("links");
-		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_links"] = null;
 		
-		$this->tplAssign("aCategories", $oLinks->getCategories());
+		$sMinSort = $this->dbQuery(
+			"SELECT MIN(`sort_order`) FROM `{dbPrefix}links`"
+			,"one"
+		);
+		$sMaxSort = $this->dbQuery(
+			"SELECT MAX(`sort_order`) FROM `{dbPrefix}links`"
+			,"one"
+		);
+		
+		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aLinks", $oLinks->getLinks($_GET["category"], true));
-		$this->tplAssign("sUseImage", $oLinks->useImage);
+		$this->tplAssign("aLinks", $this->model->getLinks($_GET["category"], true));
+		$this->tplAssign("minSort", $sMinSort);
+		$this->tplAssign("maxSort", $sMaxSort);
+		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("sSort", array_shift(explode("-", $this->model->sort)));
 		
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
-		$oLinks = $this->loadModel("links");
-		
 		if(!empty($_SESSION["admin"]["admin_links"]))
 			$this->tplAssign("aLink", $_SESSION["admin"]["admin_links"]);
 		
@@ -35,20 +43,26 @@ class admin_links extends adminController
 				)
 			);
 		
-		$this->tplAssign("aCategories", $oLinks->getCategories());
-		$this->tplAssign("sUseCategories", $oLinks->useCategories);
-		$this->tplAssign("sUseImage", $oLinks->useImage);
-		$this->tplAssign("minWidth", $oLinks->imageMinWidth);
-		$this->tplAssign("minHeight", $oLinks->imageMinHeight);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
+		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
-		$oLinks = $this->loadModel("links");
-		
 		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_links"] = $_POST;
 			$this->forward("/admin/links/add/?error=".urlencode("Please fill in all required fields!"));
 		}
+		
+		$sOrder = $this->dbQuery(
+			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}links`"
+			,"one"
+		);
+		
+		if(empty($sOrder))
+			$sOrder = 1;
 		
 		$sID = $this->dbInsert(
 			"links",
@@ -56,6 +70,7 @@ class admin_links extends adminController
 				"name" => $_POST["name"]
 				,"description" => $_POST["description"]
 				,"link" => $_POST["link"]
+				,"sort_order" => $sOrder
 				,"active" => $this->boolCheck($_POST["active"])
 				,"created_datetime" => time()
 				,"created_by" => $_SESSION["admin"]["userid"]
@@ -78,17 +93,15 @@ class admin_links extends adminController
 		
 		$_SESSION["admin"]["admin_links"] = null;
 		
-		if(!empty($_FILES["image"]["type"]) && $oLinks->useImage == true) {
+		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true) {
 			$_POST["id"] = $sID;
 			$this->image_upload_s();
 		} else			
 			$this->forward("/admin/links/?notice=".urlencode("Link created successfully!"));
 	}
 	function edit() {
-		$oLinks = $this->loadModel("links");
-		
 		if(!empty($_SESSION["admin"]["admin_links"])) {
-			$aLinkRow = $oLinks->getLink($this->urlVars->dynamic["id"]);
+			$aLinkRow = $this->model->getLink($this->urlVars->dynamic["id"]);
 			
 			$aLink = $_SESSION["admin"]["admin_links"];
 			
@@ -101,7 +114,7 @@ class admin_links extends adminController
 			
 			$this->tplAssign("aLink", $aLink);
 		} else {
-			$aLink = $oLinks->getLink($this->urlVars->dynamic["id"]);
+			$aLink = $this->model->getLink($this->urlVars->dynamic["id"]);
 			
 			$aLink["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}links_categories` AS `categories`"
@@ -121,17 +134,15 @@ class admin_links extends adminController
 			$this->tplAssign("aLink", $aLink);
 		}
 		
-		$this->tplAssign("aCategories", $oLinks->getCategories());
-		$this->tplAssign("sUseCategories", $oLinks->useCategories);
-		$this->tplAssign("sUseImage", $oLinks->useImage);
-		$this->tplAssign("minWidth", $oLinks->imageMinWidth);
-		$this->tplAssign("minHeight", $oLinks->imageMinHeight);
-		$this->tplAssign("imageFolder", $oLinks->imageFolder);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
+		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
+		$this->tplAssign("imageFolder", $this->model->imageFolder);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
-		$oLinks = $this->loadModel("links");
-		
 		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_links"] = $_POST;
 			$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
@@ -165,7 +176,7 @@ class admin_links extends adminController
 		
 		$_SESSION["admin"]["admin_links"] = null;
 		
-		if(!empty($_FILES["image"]["type"]) && $oLinks->useImage == true)
+		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true)
 			$this->image_upload_s();
 		else {
 			if($_POST["submit"] == "Save Changes")
@@ -177,31 +188,64 @@ class admin_links extends adminController
 		}
 	}
 	function delete() {
-		$oLinks = $this->loadModel("links");
-		
-		$aLink = $oLinks->getLink($this->urlVars->dynamic["id"]);
+		$aLink = $this->model->getLink($this->urlVars->dynamic["id"]);
 		
 		$this->dbDelete("links", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("links_categories_assign", $this->urlVars->dynamic["id"], "linkid");
 		
-		@unlink($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$aLink["image"]);
+		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$aLink["image"]);
 		
 		$this->forward("/admin/links/?notice=".urlencode("Link removed successfully!"));
 	}
-	function image_upload_s() {
-		$oLinks = $this->loadModel("links");
+	function sort() {
+		$aLink = $this->model->getLink($this->urlVars->dynamic["id"], "integer");
 		
-		if(!is_dir($this->settings->rootPublic.substr($oLinks->imageFolder, 1)))
-			mkdir($this->settings->rootPublic.substr($oLinks->imageFolder, 1), 0777);
+		if($this->urlVars->dynamic["sort"] == "up") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}links`"
+					." WHERE `sort_order` < ".$aLink["sort_order"]
+					." ORDER BY `sort_order` DESC"
+				,"row"
+			);
+		} elseif($this->urlVars->dynamic["sort"] == "down") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}links`"
+					." WHERE `sort_order` > ".$aLink["sort_order"]
+					." ORDER BY `sort_order` ASC"
+				,"row"
+			);
+		}
+			
+		$this->dbUpdate(
+			"links",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aLink["id"]
+		);
+		
+		$this->dbUpdate(
+			"links",
+			array(
+				"sort_order" => $aLink["sort_order"]
+			),
+			$aOld["id"]
+		);
+		
+		$this->forward("/admin/links/?notice=".urlencode("Sort order saved successfully!"));
+	}
+	function image_upload_s() {
+		if(!is_dir($this->settings->rootPublic.substr($this->model->imageFolder, 1)))
+			mkdir($this->settings->rootPublic.substr($this->model->imageFolder, 1), 0777);
 
 		if($_FILES["image"]["type"] == "image/jpeg"
 		 || $_FILES["image"]["type"] == "image/jpg"
 		 || $_FILES["image"]["type"] == "image/pjpeg"
 		) {
-			$sFile = $this->settings->rootPublic.substr($oLinks->imageFolder, 1).$_POST["id"].".jpg";
+			$sFile = $this->settings->rootPublic.substr($this->model->imageFolder, 1).$_POST["id"].".jpg";
 			
 			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
-			if($aImageSize[0] < $oLinks->imageMinWidth || $aImageSize[1] < $oLinks->imageMinHeight) {
+			if($aImageSize[0] < $this->model->imageMinWidth || $aImageSize[1] < $this->model->imageMinHeight) {
 				$this->forward("/admin/links/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 			}
 
@@ -211,10 +255,10 @@ class admin_links extends adminController
 					array(
 						"photo_x1" => 0
 						,"photo_y1" => 0
-						,"photo_x2" => $oLinks->imageMinWidth
-						,"photo_y2" => $oLinks->imageMinHeight
-						,"photo_width" => $oLinks->imageMinWidth
-						,"photo_height" => $oLinks->imageMinHeight
+						,"photo_x2" => $this->model->imageMinWidth
+						,"photo_y2" => $this->model->imageMinHeight
+						,"photo_width" => $this->model->imageMinWidth
+						,"photo_height" => $this->model->imageMinHeight
 					),
 					$_POST["id"]
 				);
@@ -226,20 +270,18 @@ class admin_links extends adminController
 			$this->forward("/admin/links/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["image"]["type"].")."));
 	}
 	function image_edit() {
-		$oLinks = $this->loadModel("links");
-
-		if($oLinks->imageMinWidth < 300) {
-			$sPreviewWidth = $oLinks->imageMinWidth;
-			$sPreviewHeight = $oLinks->imageMinHeight;
+		if($this->model->imageMinWidth < 300) {
+			$sPreviewWidth = $this->model->imageMinWidth;
+			$sPreviewHeight = $this->model->imageMinHeight;
 		} else {
 			$sPreviewWidth = 300;
-			$sPreviewHeight = ceil($oLinks->imageMinHeight * (300 / $oLinks->imageMinWidth));
+			$sPreviewHeight = ceil($this->model->imageMinHeight * (300 / $this->model->imageMinWidth));
 		}
 		
-		$this->tplAssign("aLink", $oLinks->getLink($this->urlVars->dynamic["id"]));
-		$this->tplAssign("sFolder", $oLinks->imageFolder);
-		$this->tplAssign("minWidth", $oLinks->imageMinWidth);
-		$this->tplAssign("minHeight", $oLinks->imageMinHeight);
+		$this->tplAssign("aLink", $this->model->getLink($this->urlVars->dynamic["id"]));
+		$this->tplAssign("sFolder", $this->model->imageFolder);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
 		$this->tplAssign("previewWidth", $sPreviewWidth);
 		$this->tplAssign("previewHeight", $sPreviewHeight);
 
@@ -262,8 +304,6 @@ class admin_links extends adminController
 		$this->forward("/admin/links/?notice=".urlencode("Link updated."));
 	}
 	function image_delete() {
-		$oLinks = $this->loadModel("links");
-		
 		$this->dbUpdate(
 			"links",
 			array(
@@ -277,17 +317,15 @@ class admin_links extends adminController
 			$this->urlVars->dynamic["id"]
 		);
 		
-		@unlink($this->settings->rootPublic.substr($oLinks->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 
 		$this->forward("/admin/links/?notice=".urlencode("Image removed successfully!"));
 	}
 	function categories_index() {
-		$oLinks = $this->loadModel("links");
-		
 		$_SESSION["admin"]["admin_links_categories"] = null;
 		
-		$this->tplAssign("aCategories", $oLinks->getCategories());
-		$this->tplAssign("aCategoryEdit", $oLinks->getCategory($_GET["category"]));
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("aCategoryEdit", $this->model->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {

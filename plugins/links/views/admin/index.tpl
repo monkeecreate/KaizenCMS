@@ -13,7 +13,18 @@
 			/* CAN CHANGE */
 			"bStateSave": true, //whether to save a cookie with the current table state
 			"iDisplayLength": 10, //how many items to display on each page
-			"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
+			{if $sSort == "manual"}
+				"aaSorting": [[3, "asc"]], //which column to sort by (0-X)
+				"aoColumns": [
+					null,
+					null,
+					null,
+					{ldelim} "sType": "num-html" {rdelim},
+					null
+				]
+			{else}
+				"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
+			{/if}
 		{rdelim});
 	{rdelim});
 </script>
@@ -43,6 +54,9 @@
 				<th class="empty itemStatus">&nbsp;</th>
 				<th>Name</th>
 				<th>Link</th>
+				{if $sSort == "manual"}
+					<th>Order</th>
+				{/if}
 				<th></th>
 			</tr>
 		</thead>
@@ -58,19 +72,34 @@
 					</td>
 					<td>{$aLink.name}</td>
 					<td class="center"><a href="{$aLink.link}" title="{$aLink.name}" target="_blank">{$aLink.link}</a></td>
+					{if $sSort == "manual"}
+						<td class="small center">
+							<span class="hidden">{$aLink.sort_order}</span>
+							{if $aLink.sort_order != $minSort}
+								<a href="/admin/links/sort/{$aLink.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png" style="width:16px;height:16px;"></a>
+							{else}
+								<img src="/images/blank.gif" style="width:16px;height:16px;">
+							{/if}
+							{if $aLink.sort_order != $maxSort && count($aLink) > 1}
+								<a href="/admin/links/sort/{$aLink.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png" style="width:16px;height:16px;"></a>
+							{else}
+								<img src="/images/blank.gif" style="width:16px;height:16px;">
+							{/if}
+						</td>
+					{/if}
 					<td class="center">
 						{if $sUseImage == true}
 							<a href="/admin/links/image/{$aLink.id}/edit/" title="Edit Link Image">
-								<img src="/images/admin/icons/picture.png">
+								<img src="/images/admin/icons/picture.png" style="width:16px;height:16px;">
 							</a>
 						{/if}
 						<a href="/admin/links/edit/{$aLink.id}/" title="Edit Link">
-							<img src="/images/admin/icons/pencil.png" alt="edit icon">
+							<img src="/images/admin/icons/pencil.png" alt="edit icon" style="width:16px;height:16px;">
 						</a>
 						<a href="/admin/links/delete/{$aLink.id}/"
 						 onclick="return confirm_('Are you aLink you would like to delete: {$aLink.name}?');"
 						 title="Delete Link">
-							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
+							<img src="/images/admin/icons/bin_closed.png" alt="delete icon" style="width:16px;height:16px;">
 						</a>
 					</td>
 				</tr>
