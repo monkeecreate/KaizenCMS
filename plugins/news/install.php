@@ -38,7 +38,7 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("use_kill", "sticky", "active"),
+		"index" => array("tag", "use_kill", "sticky", "active"),
 		"fulltext" => array("title", "short_content", "content"),
 		"search" => array(
 			"title" => "title",
