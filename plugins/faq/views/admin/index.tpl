@@ -50,7 +50,7 @@
 				<th class="empty itemStatus">&nbsp;</th>
 				<th>Question</th>
 				{if empty($sCategory)}
-					<th>Order</td>
+					<th>Order</th>
 				{/if}
 				<th></th>
 			</tr>
