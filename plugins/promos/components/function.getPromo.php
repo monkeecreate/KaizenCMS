@@ -1,7 +1,7 @@
 <?php
 function smarty_function_getPromo($aParams, &$oSmarty) {
-	$oApp = $oSmarty->get_registered_object("appController");
-	$aDisplayedPromos = $oSmarty->get_template_vars("aDisplayedPromos");
+	$oApp = $oSmarty->getRegisteredObject("appController");
+	$aDisplayedPromos = $oSmarty->getTemplateVars("aDisplayedPromos");
 	
 	if(empty($aDisplayedPromos))
 		$aDisplayedPromos = array();

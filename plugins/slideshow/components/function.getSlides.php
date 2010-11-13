@@ -1,6 +1,6 @@
 <?php
 function smarty_function_getSlides($aParams, &$oSmarty) {
-	$oApp = $oSmarty->get_registered_object("appController");
+	$oApp = $oSmarty->getRegisteredObject("appController");
 	$oSlideshow = $oApp->loadModel("slideshow");
 	
 	if(!empty($aParams["assign"]))

@@ -1,6 +1,6 @@
 <?php
 function smarty_function_getEvents($aParams, &$oSmarty) {
-	$oApp = $oSmarty->get_registered_object("appController");
+	$oApp = $oSmarty->getRegisteredObject("appController");
 	$oCalendar = $oApp->loadModel("calendar");
 	
 	if(empty($aParams["assign"])) {

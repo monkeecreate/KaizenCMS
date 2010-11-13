@@ -354,7 +354,7 @@ class appController {
 		$this->_smarty->assign($sVariable, $sValue);
 	}
 	function tplDisplay($sTemplate, $sSkipPlugin = false) {
-		$this->_smarty->register_object("appController", $this);
+		$this->_smarty->registerObject("appController", $this);
 		
 		if(!empty($this->_plugin) && $sSkipPlugin == false) {
 			$sTemplate = $this->settings->root."plugins/".$this->_plugin."/views/".$sTemplate;

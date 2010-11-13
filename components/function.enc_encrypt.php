@@ -1,6 +1,6 @@
 <?php
 function smarty_function_enc_encrypt($aParams, &$oSmarty) {
-	$oApp = $oSmarty->get_registered_object("appController");
+	$oApp = $oSmarty->getRegisteredObject("appController");
 	
 	return $oApp->encrypt($aParams["value"]);
 }

@@ -1,6 +1,6 @@
 <?php
 function smarty_function_getContent($aParams, &$oSmarty) {
-	$oApp = $oSmarty->get_registered_object("appController");
+	$oApp = $oSmarty->getRegisteredObject("appController");
 	
 	if(!empty($aParams["tag"]))
 		$aContent = $oApp->dbQuery(

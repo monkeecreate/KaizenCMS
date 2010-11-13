@@ -138,21 +138,16 @@ require($aConfig["smarty"]["dir"]["smarty"]);
 $oSmarty = new Smarty();
 $oSmarty->template_dir = $aConfig["smarty"]["dir"]["templates"];
 $oSmarty->compile_dir = $aConfig["smarty"]["dir"]["compile"];
-
-/* Plugins */
-foreach($aConfig["smarty"]["dir"]["plugins"] as $plugin)
-	$oSmarty->plugins_dir[] = $plugin;
+$oSmarty->plugins_dir = $aConfig["smarty"]["dir"]["plugins"];
 
 /* Caching */
 $oSmarty->cache_dir = $aConfig["smarty"]["dir"]["cache"];
 $oSmarty->caching = $aConfig["smarty"]["cache"]["type"];
 
 /* Filters */
-foreach($aConfig["smarty"]["filters"] as $filter)
-	$oSmarty->load_filter($filter[0], $filter[1]);
+$oSmarty->autoload_filters = $aConfig["smarty"]["filters"];
 	
 /* Settings */
-$oSmarty->us_sub_dirs = $aConfig["smarty"]["subdirs"];
 $oSmarty->debugging = $aConfig["smarty"]["debug"];
 $oSmarty->debugging_ctrl = $aConfig["smarty"]["debug_ctrl"];
 ##############################################
