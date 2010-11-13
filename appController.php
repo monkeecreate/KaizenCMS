@@ -359,8 +359,7 @@ class appController {
 		if(!empty($this->_plugin) && $sSkipPlugin == false) {
 			$sTemplate = $this->settings->root."plugins/".$this->_plugin."/views/".$sTemplate;
 			if(is_file($sTemplate)) {
-				$this->tplAssign("sPluginView", $sTemplate);
-				$this->_smarty->display("plugin.tpl");
+				echo $this->_smarty->fetch($sTemplate);
 			} else {
 				$this->sendError("appController->tplDisplay", "Can't find template - (".$sTemplate.")");
 			}
