@@ -42,7 +42,7 @@
 	{foreach from=$aEvents item=aEvent}
 		<article class="events">
 			<h3>
-				<a href="/calendar/{$aEvent.tag}/" title="{$aEvent.title}">
+				<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="{$aEvent.title}">
 					{$aEvent.title}
 				</a>
 			</h3>
@@ -56,17 +56,17 @@
 				{/if}
 			</span>
 			
-			<fb:like href="http://{$smarty.server.SERVER_NAME}/calendar/{$aEvent.tag}/" show_faces="false"></fb:like>
+			<fb:like href="http://{$smarty.server.SERVER_NAME}/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" show_faces="false"></fb:like>
 			
 			{if $aEvent.photo_x2 > 0}
 				<figure class="left">
-					<a href="/calendar/{$aEvent.tag}/" title="{$aEvent.title}"><img src="/image/calendar/{$aEvent.id}/?width=140" alt="Calendar Image"></a>
+					<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="{$aEvent.title}"><img src="/image/calendar/{$aEvent.id}/?width=140" alt="Calendar Image"></a>
 				</figure>
 			{/if}
 			
 			<p>
 				{$aEvent.short_content}
-				<a href="/calendar/{$aEvent.tag}/" title="More info for {$aEvent.title}">More Info&raquo;</a>
+				<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="More info for {$aEvent.title}">More Info&raquo;</a>
 			</p>
 		</article>
 	{foreachelse}
