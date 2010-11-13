@@ -1,6 +1,5 @@
 <?php
-class news extends appController
-{
+class news extends appController {
 	function __construct() {
 		// Load model when creating appController
 		parent::__construct("news");
@@ -54,7 +53,7 @@ class news extends appController
 		$this->tplDisplay("rss.tpl");
 	}
 	function article() {
-		$aArticle = $this->model->getArticle($this->urlVars->dynamic["id"]);
+		$aArticle = $this->model->getArticle(null, $this->urlVars->dynamic["tag"]);
 		
 		if(empty($aArticle))
 			$this->error('404');

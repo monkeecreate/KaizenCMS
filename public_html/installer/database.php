@@ -9,7 +9,7 @@ $aTables = array(
 				"default" => 0,
 				"autoincrement" => 1
 			),
-			"tag" => array("type" => "text","length" => 30),
+			"tag" => array("type" => "text","length" => 100),
 			"title" => array("type" => "text","length" => 100),
 			"content" => array("type" => "clob"),
 			"perminate" => array("type" => "boolean"),
@@ -23,7 +23,8 @@ $aTables = array(
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("tag", "perminate", "has_sub_menu", "sub_item_of", "sort_order", "module"),
+		"index" => array("perminate", "has_sub_menu", "sub_item_of", "sort_order", "module"),
+		"unique" => array("tag"),
 		"fulltext" => array("title", "content")
 	),
 	"menu_admin" => array(

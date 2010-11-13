@@ -36,7 +36,7 @@ class admin_content extends adminController
 		if($this->superAdmin && !empty($_POST["tag"]))
 			$sTag = $_POST["tag"];
 		else
-			$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,30);
+			$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,100);
 		
 		$aPages = $this->dbQuery(
 			"SELECT `tag` FROM `{dbPrefix}content`"
@@ -47,7 +47,7 @@ class admin_content extends adminController
 		if (in_array(array('tag' => $sTag), $aPages)) {
 			$i = 1;
 			do {
-				$sTempTag = substr($sTag, 0, 30-(strlen($i)+1)).'-'.$i;
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
 				$i++;
 				$checkDuplicate = in_array(array('tag' => $sTempTag), $aPages);
 			} while ($checkDuplicate);
@@ -142,7 +142,7 @@ class admin_content extends adminController
 			if(!empty($_POST["tag"]))
 				$sTag = $_POST["tag"];
 			else
-				$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,30);
+				$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,100);
 			
 			$this->dbUpdate(
 				"content",

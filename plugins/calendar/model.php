@@ -38,9 +38,14 @@ class calendar_model extends appModel
 		
 		return $aEvents;
 	}
-	function getEvent($sId, $sAll = false) {
+	function getEvent($sId, $sTag, $sAll = false) {
+		if(!empty($sId))
+			$sWhere = " WHERE `calendar`.`id` = ".$this->dbQuote($sId, "integer");
+		else
+			$sWhere = " WHERE `calendar`.`tag` = ".$this->dbQuote($sTag, "text");
+		
 		if($sAll == false) {
-			$sWhere = " AND `calendar`.`active` = 1";
+			$sWhere .= " AND `calendar`.`active` = 1";
 			$sWhere .= " AND `calendar`.`datetime_show` < ".time();
 			$sWhere .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
 			$sWhere .= " AND `calendar`.`datetime_end` > ".time();
@@ -48,7 +53,6 @@ class calendar_model extends appModel
 		
 		$aEvent = $this->dbQuery(
 			"SELECT `calendar`.* FROM `{dbPrefix}calendar` AS `calendar`"
-				." WHERE `calendar`.`id` = ".$this->dbQuote($sId, "integer")
 				.$sWhere
 			,"row"
 		);

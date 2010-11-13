@@ -8,7 +8,7 @@
 			{foreach from=$aCategories item=aCategory}
 				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
-		</select>f
+		</select>
 	</form>
 	{/if}
 

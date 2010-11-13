@@ -81,11 +81,29 @@ class admin_calendar extends adminController
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,100);
+	
+		$aEvents = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}calendar`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aEvents)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aEvents);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$sID = $this->dbInsert(
 			"calendar",
 			array(
 				"title" => $_POST["title"]
-				,"title" => $_POST["title"]
+				,"tag" => $sTag
 				,"short_content" => (string)substr($_POST["short_content"], 0, $oCalendar->shortContentCharacters)
 				,"content" => $_POST["content"]
 				,"allday" => $this->boolCheck($_POST["allday"])
@@ -149,7 +167,7 @@ class admin_calendar extends adminController
 				,"row"
 			);
 		} else {
-			$aEvent = $oCalendar->getEvent($this->urlVars->dynamic["id"], true);
+			$aEvent = $oCalendar->getEvent($this->urlVars->dynamic["id"], null, true);
 			
 			$aEvent["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}calendar_categories` AS `categories`"

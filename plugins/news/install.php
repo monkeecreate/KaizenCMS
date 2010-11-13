@@ -19,6 +19,7 @@ $aTables = array(
 				"autoincrement" => 1
 			),
 			"title" => array("type" => "text","length" => 100),
+			"tag" => array("type" => "text","length" => 100),
 			"short_content" => array("type" => "clob"),
 			"content" => array("type" => "clob"),
 			"datetime_show" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
@@ -38,6 +39,7 @@ $aTables = array(
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
 		"index" => array("use_kill", "sticky", "active"),
+		"unique" => array("tag"),
 		"fulltext" => array("title", "short_content", "content"),
 		"search" => array(
 			"title" => "title",

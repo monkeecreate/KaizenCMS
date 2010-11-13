@@ -50,11 +50,30 @@ class admin_galleries extends adminController
 		
 		if(empty($sOrder))
 			$sOrder = 1;
+			
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aGalleries = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}galleries`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aGalleries)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aGalleries);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
 		
 		$sID = $this->dbInsert(
 			"galleries",
 			array(
 				"name" => $_POST["name"]
+				,"tag" => $sTag
 				,"description" => $_POST["description"]
 				,"sort_order" => $sOrder
 				,"active" => $this->boolCheck($_POST["active"])
@@ -88,7 +107,7 @@ class admin_galleries extends adminController
 		$oGalleries = $this->loadModel("galleries");
 		
 		if(!empty($_SESSION["admin"]["admin_galleries"])) {	
-			$aGalleryRow = $oGalleries->getGallery($this->urlVars->dynamic["id"]);
+			$aGalleryRow = $oGalleries->getGallery($this->urlVars->dynamic["id"], null, true);
 			
 			$aGallery = $_SESSION["admin"]["admin_galleries"];
 			
@@ -101,7 +120,7 @@ class admin_galleries extends adminController
 			
 			$this->tplAssign("aGallery", $aGallery);
 		} else {
-			$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["id"]);
+			$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["id"], null, true);
 			
 			$aGallery["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}galleries_categories` AS `categories`"
@@ -208,7 +227,7 @@ class admin_galleries extends adminController
 	function sort() {
 		$oGalleries = $this->loadModel("galleries");
 		
-		$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["id"]);
+		$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["id"], null, true);
 		
 		if($this->urlVars->dynamic["sort"] == "up")
 			$aOld = $this->dbQuery(
@@ -282,7 +301,7 @@ class admin_galleries extends adminController
 	function photos_index() {
 		$oGalleries = $this->loadModel("galleries");
 		
-		$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["gallery"]);
+		$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["gallery"], null, true);
 		
 		$aGallery["categories"] = $this->dbQuery(
 			"SELECT `categories`.`id` FROM `{dbPrefix}galleries_categories` AS `categories`"
@@ -293,7 +312,6 @@ class admin_galleries extends adminController
 			,"col"
 		);
 
-		$this->tplAssign("aPhotos", $oGalleries->getPhotos($this->urlVars->dynamic["gallery"]));
 		$this->tplAssign("aDefaultPhoto", $oGalleries->getPhoto($this->urlVars->dynamic["gallery"], true));
 		$this->tplAssign("aGallery", $aGallery);
 		$this->tplAssign("aCategories", $oGalleries->getCategories());
@@ -316,8 +334,8 @@ class admin_galleries extends adminController
 				if(empty($sOrder))
 					$sOrder = 1;
 				
-				$aPhotos = $oGalleries->getPhotos($this->urlVars->dynamic["gallery"]);
-				if(empty($aPhotos))
+				$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["gallery"]);
+				if(empty($aGallery["photos"]))
 					$sDefault = 1;
 				else
 					$sDefault = 0;
@@ -373,7 +391,7 @@ class admin_galleries extends adminController
 		);
 		
 		$this->tplAssign("aPhotos", $aPhotos);
-		$this->tplAssign("aGallery", $oGalleries->getGallery($this->urlVars->dynamic["gallery"]));
+		$this->tplAssign("aGallery", $oGalleries->getGallery($this->urlVars->dynamic["gallery"], null, true));
 		$this->tplDisplay("admin/photos_manage.tpl");
 	}
 	function photos_manage_s() {

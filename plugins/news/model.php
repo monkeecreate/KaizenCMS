@@ -1,6 +1,5 @@
 <?php
-class news_model extends appModel
-{
+class news_model extends appModel {
 	public $useImage = true;
 	public $imageMinWidth = 140;
 	public $imageMinHeight = 87;
@@ -36,15 +35,20 @@ class news_model extends appModel
 		
 		return $aArticles;
 	}
-	function getArticle($sId, $sAll = false) {
+	function getArticle($sId, $sTag, $sAll = false) {
+		if(!empty($sId))
+			$sWhere = " WHERE `news`.`id` = ".$this->dbQuote($sId, "integer");
+		else
+			$sWhere = " WHERE `news`.`tag` = ".$this->dbQuote($sTag, "text");
+			
 		if($sAll == false) {
-			$sWhere = " AND `news`.`active` = 1";
+			$sWhere .= " AND `news`.`active` = 1";
 			$sWhere .= " AND `news`.`datetime_show` < ".time();
 			$sWhere .= " AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
 		}
+		
 		$aArticle = $this->dbQuery(
 			"SELECT `news`.* FROM `{dbPrefix}news` AS `news`"
-				." WHERE `news`.`id` = ".$this->dbQuote($sId, "integer")
 				.$sWhere
 			,"row"
 		);
