@@ -3,7 +3,6 @@ class appController {
 	private $_db;
 	private $_mail;
 	private $_smarty;
-	private $_firephp;
 	private $_enc;
 	private $_plugin;
 	public $settings;
@@ -11,11 +10,10 @@ class appController {
 	public $model;
 	
 	function __construct($sModel = null) {
-		global $objDB, $objMail, $oFirePHP, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl, $aURLVars;
+		global $objDB, $objMail, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl, $aURLVars;
 		
 		$this->_db = $objDB;
 		$this->_mail = $objMail;
-		$this->_firephp = $oFirePHP;
 		$this->_enc = $oEnc;
 		$this->_smarty = $oSmarty;
 		$this->settings = (object) array(
@@ -67,14 +65,15 @@ class appController {
 	}
 	function loadController($sController, $firstCall = false) {
 		if(!class_exists($sController)) {
-			if(substr($sController, -1) == "_")
+			if(substr($sController, -1) == "_") {
 				$sControllerFile = substr($sController, 0, -1);
-			else
+			} else {
 				$sControllerFile = $sController;
+			}
 			
-			if(is_file($this->settings->root."controllers/".$sControllerFile.".php"))
+			if(is_file($this->settings->root."controllers/".$sControllerFile.".php")) {
 				require($this->settings->root."controllers/".$sControllerFile.".php");
-			else {
+			} else {
 				$sPlugin = preg_replace('/(?:admin_)([a-z0-9-.]+)(?:_*)(?:.*)$/i', "$1", $sControllerFile);
 				
 				if($firstCall == true) {
@@ -84,17 +83,20 @@ class appController {
 						"one"
 					);
 					
-					if($sPluginInstalled == $sPlugin)
+					if($sPluginInstalled == $sPlugin) {
 						$sLoadController = true;
-					else
+					} else {
 						$sLoadController = false;
-				} else
+					}
+				} else {
 					$sLoadController = true;
+				}
 				
-				if(is_file($this->settings->root."plugins/".$sPlugin."/controllers/".$sControllerFile.".php") && $sLoadController == true)
+				if(is_file($this->settings->root."plugins/".$sPlugin."/controllers/".$sControllerFile.".php") && $sLoadController == true) {
 					require($this->settings->root."plugins/".$sPlugin."/controllers/".$sControllerFile.".php");
-				else
+				} else {
 					return false;
+				}
 			}
 		}
 		
@@ -103,14 +105,16 @@ class appController {
 		return $oController;
 	}
 	function loadModel($sModel) {
-		if(!class_exists("appModel"))
+		if(!class_exists("appModel")) {
 			require($this->settings->root."appModel.php");
+		}
 		
 		if(!class_exists($sModel."_model")) {
-			if(is_file($this->settings->root."plugins/".$sModel."/model.php"))
+			if(is_file($this->settings->root."plugins/".$sModel."/model.php")) {
 				require($this->settings->root."plugins/".$sModel."/model.php");
-			else
+			} else {
 				return false;
+			}
 		}
 		$sModel = $sModel."_model";
 		
@@ -119,8 +123,9 @@ class appController {
 		return $sModel;
 	}
 	function getSetting($sTag) {
-		if(empty($sTag))
+		if(empty($sTag)) {
 			$this->sendError("getSetting", "Setting tag not passed", null, debug_backtrace());
+		}
 		
 		$aSetting = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}settings`"
@@ -128,19 +133,22 @@ class appController {
 			,"row"
 		);
 		
-		if(empty($aSetting))
+		if(empty($aSetting)) {
 			$this->sendError("getSetting", "Could not find setting", null, debug_backtrace());
+		}
 		
-		if(!class_exists("Form"))
+		if(!class_exists("Form")) {
 			include($this->settings->root."helpers/Form.php");
+		}
 		
 		$oField = new Form($aSetting);
 		
 		return $oField->setting->value();
 	}
 	function getUser($sId) {
-		if(empty($sId))
+		if(empty($sId)) {
 			$this->sendError("getUser", "User id missing", null, debug_backtrace());
+		}
 			
 		$aUser = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}users`"
@@ -148,8 +156,9 @@ class appController {
 			,"row"
 		);
 		
-		if(empty($aUser))
+		if(empty($aUser)) {
 			$this->sendError("getUser", "Could not find user", null, debug_backtrace());
+		}
 			
 		return $aUser;
 	}
@@ -242,8 +251,9 @@ class appController {
 		
 		$oResult = $this->_db->query($sSQL);
 		
-		if(PEAR::isError($oResult))
+		if(PEAR::isError($oResult)) {
 			$this->sendError("dbQuery", "dberror", $oResult, debug_backtrace());
+		}
 			
 		switch($return) {
 			case "all":
@@ -275,8 +285,9 @@ class appController {
 	function dbQuote($sValue, $sType) {
 		$sReturn = $this->_db->quote($sValue, $sType);
 		
-		if(PEAR::isError($sReturn))
+		if(PEAR::isError($sReturn)) {
 			$this->sendError("dbQuote", $sReturn->userinfo, null, debug_backtrace());
+		}
 		
 		return $sReturn;
 	}
@@ -289,8 +300,9 @@ class appController {
 			MDB2_AUTOQUERY_INSERT
 		);
 		
-		if(PEAR::isError($oResult))
+		if(PEAR::isError($oResult)) {
 			$this->sendError("dbInsert", "dberror", $oResult, debug_backtrace());
+		}
 		
 		return $this->_db->lastInsertID();
 	}
@@ -304,8 +316,9 @@ class appController {
 			$sIdField." = ".$this->dbQuote($sId, $sIdType)
 		);
 		
-		if(PEAR::isError($oResult))
+		if(PEAR::isError($oResult)) {
 			$this->sendError("dbUpdate", "dberror", $oResult, debug_backtrace());
+		}
 		
 		return $oResult;
 	}
@@ -319,8 +332,9 @@ class appController {
 			$sIdField." = ".$this->dbQuote($sId, $sIdType)
 		);
 		
-		if(PEAR::isError($oResult))
+		if(PEAR::isError($oResult)) {
 			$this->sendError("dbDelete", "dberror", $oResult, debug_backtrace());
+		}
 		
 		return $oResult;
 	}
@@ -328,29 +342,34 @@ class appController {
 	
 	### Template #####################
 	function tplExists($template_file) {
-		if(!empty($this->_plugin))
+		if(!empty($this->_plugin)) {
 			$template_file = $this->settings->root."plugins/".$this->_plugin."/views/".$template_file;
-		else		
+		} else {
 			$template_file = $this->_smarty->template_dir."/".$template_file;
+		}
 		
 		return is_file($template_file);
 	}
 	function tplAssign($sVariable, $sValue) {
 		$this->_smarty->assign($sVariable, $sValue);
 	}
-	function tplDisplay($sTemplate) {
-		if(!empty($this->_plugin)) {
+	function tplDisplay($sTemplate, $sSkipPlugin = false) {
+		$this->_smarty->register_object("appController", $this);
+		
+		if(!empty($this->_plugin) && $sSkipPlugin == false) {
 			$sTemplate = $this->settings->root."plugins/".$this->_plugin."/views/".$sTemplate;
 			if(is_file($sTemplate)) {
 				$this->tplAssign("sPluginView", $sTemplate);
 				$this->_smarty->display("plugin.tpl");
-			} else
+			} else {
 				$this->sendError("appController->tplDisplay", "Can't find template - (".$sTemplate.")");
+			}
 		} else {	
-			if($this->tplExists($sTemplate))
+			if($this->tplExists($sTemplate)) {
 				$this->_smarty->display($sTemplate);
-			else
+			} else {
 				$this->sendError("appController->tplDisplay", "Can't find template - (".$sTemplate.")");
+			}
 		}
 	}
 	function tplVariableGet($sVariable) {
@@ -363,8 +382,10 @@ class appController {
 	
 	### Mail ##########################
 	function mail($aHeaders, $bodyText, $bodyHTML = null, $aAttachment = array()) {
-		if(!class_exists("Mail_mime"))
+		if(!class_exists("Mail_mime")) {
 			include("Mail/mime.php");
+		}
+		
 		$oMime = new Mail_mime("\n");
 		
 		//Build Recipients
@@ -373,8 +394,9 @@ class appController {
 			if(isset($aHeaders[$sHeader])) {
 				preg_match_all('/\b[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}\b/i', $aHeaders[$sHeader], $aTempRecipients);
 				foreach($aTempRecipients[0] as $x => $sRecipient) {
-					if(!in_array($sRecipient, $aRecipients))
+					if(!in_array($sRecipient, $aRecipients)) {
 						$aRecipients[] = $sRecipient;
+					}
 				}
 			}
 		}
@@ -385,12 +407,14 @@ class appController {
 		$oMime->setTXTBody($bodyText);
 		
 		// Set HTML message for body
-		if(!empty($bodyHTML))
+		if(!empty($bodyHTML)) {
 			$oMime->setHTMLBody($bodyHTML);
+		}
 		
 		// Add attachments to message
-		foreach($aAttachment as $aFile)
+		foreach($aAttachment as $aFile) {
 			$oMime->addAttachment($aFile[0], $aFile[1]);
+		}
 			
 		$sBody = $oMime->get();
 		$aHeaders = $oMime->headers($aHeaders);
@@ -398,9 +422,9 @@ class appController {
 		// Send message
 		$oMail = $this->_mail->send($sRecipients, $aHeaders, $sBody);
 		
-		if(PEAR::iserror($oMail))
+		if(PEAR::iserror($oMail)) {
 			$this->sendError("Mail - ".$aHeaders["Subject"], $oMail->message);
-		else {
+		} else {
 			unset($oMime, $sBody, $sHeaders, $oMail);
 			return true;
 		}
@@ -417,29 +441,27 @@ class appController {
 	##################################
 
 	### Errors #######################
-	function log($log) {
-		$this->_fireftp->log($log);
-	}
 	function error($error = "404") {
 		switch($error) {
 			case "403":
 				header('HTTP/1.1 403 Forbidden');
-				$this->tplDisplay("error/403.tpl");
+				$this->tplDisplay("error/403.tpl", true);
 				break;
 			case "404":
 				header("HTTP/1.1 404 Not Found");
-				$this->tplDisplay("error/404.tpl");
+				$this->tplDisplay("error/404.tpl", true);
 				break;
 			case "500":
 				header("HTTP/1.1 500 Internal Server Error");
-				$this->tplDisplay("error/500.tpl");
+				$this->tplDisplay("error/500.tpl", true);
 				break;
 		}
 		exit;
 	}
 	protected function sendError($section, $error, $db = null, $aTrace = array()) {
-		if(empty($aTrace))
+		if(empty($aTrace)) {
 			$aTrace = debug_backtrace();
+		}
 		
 		$headers["To"] = $this->settings->adminInfo["email"];
 		$headers["From"] = $this->settings->adminInfo["email"];
@@ -452,8 +474,9 @@ class appController {
 			$body .= "Error: ".$db->message."\n";
 			$body .= $aMessage[1]."\n";
 			$body .= "Query: ".$this->_db->last_query."\n";
-		} else
+		} else {
 			$body .= "Error: ".$error."\n";
+		}
 		
 		$body .= "File: ".$aTrace[0]["file"]."\n";
 		$body .= "Line: ".$aTrace[0]["line"]."\n";
@@ -463,10 +486,11 @@ class appController {
 		$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
 		$body .= "Time: ".date("M j,Y - h:i:s a")."\n";
 		
-		if($this->settings->debug == true)
+		if($this->settings->debug == true) {
 			die(str_replace("\n","<br />",$body));
-		else
+		} else {
 			$this->mail($headers, $body);
+		}
 		
 		$this->error("500");
 	}
