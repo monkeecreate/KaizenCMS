@@ -31,7 +31,7 @@
 					<img src="/image/links/{$aLink.id}/?width=140" alt="{$aLink.name}">
 				</figure>
 			{/if}
-			<h3><a href="{$aLink.link}" title="{$aLink.name}" target="_blank">{$aLink.name}</a></h3>
+			<h3><a href="{$aLink.link}" title="{$aLink.name}" target="_blank" rel="nofollow">{$aLink.name}</a></h3>
 			{if !empty($aLink.categories)}
 				<small class="timeCat">
 					Categories: 
