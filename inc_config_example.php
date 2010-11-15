@@ -47,6 +47,7 @@ $aConfig["smarty"]["dir"]["templates"] = $site_root."views";
 $aConfig["smarty"]["dir"]["compile"] = $site_root.".compiled";
 $aConfig["smarty"]["dir"]["cache"] = $site_root.".cache";
 $aConfig["smarty"]["dir"]["plugins"] = array(
+	$site_root.".smarty/plugins/",
 	$site_root."components",
 	$site_root."components/html"
 );
