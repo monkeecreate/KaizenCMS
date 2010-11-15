@@ -16,8 +16,11 @@ class documents_model extends appModel
 			$aWhere[] = "`documents`.`active` = 1";
 		}
 		
+		// Filter by category if given
 		if(!empty($sCategory)) {
 			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+			$sJoin .= " LEFT JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents`.`id` = `documents_assign`.`documentid`";
+			$sJoin .= " LEFT JOIN `{dbPrefix}documents_categories` AS `categories` ON `documents_assign`.`categoryid` = `categories`.`id`";
 		}
 		
 		// Combine filters if atleast one was added
