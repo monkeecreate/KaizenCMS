@@ -126,7 +126,7 @@ class directory_model extends appModel {
 		
 		return $aListings;
 	}
-	function getListing($sId, $sTag, $sAll = false) {
+	function getListing($sId, $sTag = null, $sAll = false) {
 		if(!empty($sId))
 			$sWhere = " WHERE `directory`.`id` = ".$this->dbQuote($sId, "integer");
 		else
@@ -172,7 +172,8 @@ class directory_model extends appModel {
 			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		}
 		
-		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["file"])
+		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["id"].".jpg")
+		 && $aListing["photo_x2"] > 0
 		 && $this->useImage == true) {
 			$aListing["image"] = 1;
 		} else {

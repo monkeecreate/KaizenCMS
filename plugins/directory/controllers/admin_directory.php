@@ -166,6 +166,8 @@ class admin_directory extends adminController {
 		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
 		$this->tplAssign("aStates", $this->model->aStates);
 		$this->tplDisplay("admin/edit.tpl");
 	}

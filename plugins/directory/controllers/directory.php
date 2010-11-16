@@ -32,16 +32,13 @@ class directory_ extends appController {
 			$aPaging["next"]["use"] = false;
 		#########################
 		
-		echo "<pre>";
-		print_r($aListings);
-		die;
-		
 		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aListings", $aListings);
 		$this->tplAssign("aPaging", $aPaging);
 		$this->tplDisplay("directory.tpl");
 	}
 	function listing() {
-		
+		$this->tplAssign("aListing", $this->model->getListing(null, $this->urlVars->dynamic["tag"]));
+		$this->tplDisplay("listing.tpl");
 	}
 }

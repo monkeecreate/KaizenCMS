@@ -17,12 +17,14 @@
 
 	{foreach from=$aListings item=aListing}
 		<article>
+			<h3><a href="/directory/{$aListing.tag}/" title="{$aListing.name}">{$aListing.name}</a></h3>
+			
 			{if $aListing.image == 1}
 				<figure>
 					<img src="/image/directory/{$aListing.id}/?width=140">
 				</figure>
 			{/if}
-			<h3>{$aListing.name}</h3>
+			
 			{if !empty($aListing.categories)}
 				<small class="timeCat">
 					Categories:
@@ -31,6 +33,7 @@
 					{/foreach}
 				</small>
 			{/if}
+			
 			<p>
 				{if !empty($aListing.address1)}
 					{$aListing.address1}<br />
