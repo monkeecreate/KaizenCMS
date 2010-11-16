@@ -19,6 +19,7 @@ $aTables = array(
 				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 100),
+			"tag" => array("type" => "text","length" => 100),
 			"address1" => array("type" => "text","length" => 100),
 			"address2" => array("type" => "text","length" => 100),
 			"city" => array("type" => "text","length" => 100),
@@ -42,6 +43,7 @@ $aTables = array(
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
 		"index" => array("active"),
+		"unique" => array("tag"),
 		"fulltext" => array("name", "address1", "address2", "city", "state", "zip", "phone", "fax", "website", "email"),
 		"search" => array(
 			"title" => "name",

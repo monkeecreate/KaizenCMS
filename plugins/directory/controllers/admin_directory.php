@@ -1,6 +1,5 @@
 <?php
-class admin_directory extends adminController
-{
+class admin_directory extends adminController {
 	function __construct() {
 		parent::__construct("directory");
 		
@@ -49,10 +48,29 @@ class admin_directory extends adminController
 			$this->forward("/admin/directory/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aListings = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}directory`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aListings)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aListings);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$sID = $this->dbInsert(
 			"directory",
 			array(
 				"name" => $_POST["name"]
+				,"tag" => $sTag
 				,"address1" => $_POST["address1"]
 				,"address2" => $_POST["address2"]
 				,"city" => $_POST["city"]
@@ -112,7 +130,7 @@ class admin_directory extends adminController
 			
 			$this->tplAssign("aListing", $aListing);
 		} else {
-			$aListing = $oDirectory->getListing($this->urlVars->dynamic["id"], true);
+			$aListing = $oDirectory->getListing($this->urlVars->dynamic["id"], null, true);
 			
 			$aListing["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}directory_categories` AS `categories`"
@@ -144,10 +162,29 @@ class admin_directory extends adminController
 			$this->forward("/admin/directory/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aListings = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}directory`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aListings)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aListings);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$this->dbUpdate(
 			"directory",
 			array(
 				"name" => $_POST["name"]
+				,"tag" => $sTag
 				,"address1" => $_POST["address1"]
 				,"address2" => $_POST["address2"]
 				,"city" => $_POST["city"]

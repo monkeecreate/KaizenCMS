@@ -16,6 +16,10 @@ $aPluginUrlPatterns = array(
 		"cmd" => "directory_",
 		"action" => "index"
 	),
+	"/directory/{tag:[^/]+}/" => array(
+		"cmd" => "directory_",
+		"action" => "listing"
+	),
 	"/admin/directory/" => array(
         "cmd" => "admin_directory",
         "action" => "index"

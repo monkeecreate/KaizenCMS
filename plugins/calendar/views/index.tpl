@@ -70,9 +70,7 @@
 			</p>
 		</article>
 	{foreachelse}
-		<div class="contentListEmpty">
-			No calendar events.
-		</div>
+		<p>No calendar events.</p>
 	{/foreach}
 
 	<div id="paging">
