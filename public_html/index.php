@@ -70,21 +70,6 @@ $oEnc = new hash_crypt(sha1($aConfig["encryption"]["key"]));
 $oEnc->set_salt(sha1($aConfig["encryption"]["salt"]));
 ##############################################
 
-### FIREPHP ##################################
-if($aConfig["options"]["debug"] == true && $aConfig["software"]["firephp"] == true)
-{
-	// Load FirePHP to send development messages to the browser in the header response
-	require("FirePHPCore/FirePHP.class.php");
-	$oFirePHP = FirePHP::getInstance(true);
-}
-else
-{
-	// Load empty FirePHP so no errors thrown when trying to access
-	include($site_root."helpers/emptyFirePHP.php");
-	$oFirePHP = new emptyFirePHP;
-}
-##############################################
-
 ### PREPARE URL PATTERN ######################
 require("../inc_urls.php");
 
@@ -127,9 +112,6 @@ foreach($patterns as $urlPattern)
 	if(!empty($pattern))
 		break;
 }
-
-if($aConfig["options"]["debug"] == true)
-	$oFirePHP->log("URL Pattern: ".$pattern);
 ##############################################
 
 ### DB CONNECTION ############################
@@ -146,8 +128,7 @@ $objMail = Mail::factory($aConfig["mail"]["type"], $aConfig["mail"]["params"]);
 ##############################################
 
 ### START TEMPLATE ###########################
-if($aUrl[0] == "admin")
-{
+if($aUrl[0] == "admin") {
 	require($site_root."controllers/adminController.php");
 	$aConfig["smarty"]["dir"]["templates"] = $site_root."views/admin";
 	$aConfig["smarty"]["dir"]["compile"] = $site_root.".compiled/admin";
@@ -157,42 +138,37 @@ require($aConfig["smarty"]["dir"]["smarty"]);
 $oSmarty = new Smarty();
 $oSmarty->template_dir = $aConfig["smarty"]["dir"]["templates"];
 $oSmarty->compile_dir = $aConfig["smarty"]["dir"]["compile"];
-
-/* Plugins */
-foreach($aConfig["smarty"]["dir"]["plugins"] as $plugin)
-	$oSmarty->plugins_dir[] = $plugin;
+$oSmarty->plugins_dir = $aConfig["smarty"]["dir"]["plugins"];
 
 /* Caching */
 $oSmarty->cache_dir = $aConfig["smarty"]["dir"]["cache"];
 $oSmarty->caching = $aConfig["smarty"]["cache"]["type"];
 
 /* Filters */
-foreach($aConfig["smarty"]["filters"] as $filter)
-	$oSmarty->load_filter($filter[0], $filter[1]);
+$oSmarty->autoload_filters = $aConfig["smarty"]["filters"];
 	
 /* Settings */
-$oSmarty->us_sub_dirs = $aConfig["smarty"]["subdirs"];
 $oSmarty->debugging = $aConfig["smarty"]["debug"];
 $oSmarty->debugging_ctrl = $aConfig["smarty"]["debug_ctrl"];
-
-/* Smarty Access to Database */
-$oApp = new appController;
-$oSmarty->register_object("appController", $oApp);
 ##############################################
 
 ### INCLUDE CLASS WITH CMD NAME ##############
+if($aUrl[0] == "admin") {
+	$oApp = new adminController;
+} else {
+	$oApp = new appController;
+}
+
 // Check Url Pattern for usable pattern
 ob_start();
-if(count($aUrlPatterns[$pattern]) > 0)
-{
+if(count($aUrlPatterns[$pattern]) > 0) {
 	// Pull dynamic variables from url
 	$pattern_tmp = preg_replace("/\{([a-z]+):([^}]+)\}/i", "(?P<$1>$2)", $pattern);
 	preg_match("/".str_replace("/","\/",$pattern_tmp)."/i", $sURL, $matches);
 	
 	// Put dynamic variables into usable array
 	$urlParams = Array();
-	foreach($matches as $key => $value)
-	{
+	foreach($matches as $key => $value) {
 		if(!is_numeric($key) && !empty($value))
 			$urlParams[$key] = $value;
 	}
@@ -208,50 +184,15 @@ if(count($aUrlPatterns[$pattern]) > 0)
 	
 	// Check if controller was loaded, and method exists
 	if($oClass == false || !method_exists($oClass, $aUrlPatterns[$pattern]["action"])) {
-		// Choose 404 pased on location in site
-		if($aUrl[0] == "admin")
-			$oApp = new adminController;
-		else
-			$oApp = new appController;
-	
 		$oApp->error('404');
 	}
 	
 	// Call method given by url pattern
 	$oClass->$aUrlPatterns[$pattern]["action"]();
-}
-// Complete failure, throw 404
-else
-{
-	// Choose 404 pased on location in site
-	if($aUrl[0] == "admin")
-		$oApp = new adminController;
-	else
-		$oApp = new appController;
-	
+} else {
 	$oApp->error('404');
 }
 ##############################################
 
 // Close connection to database
 $objDB->disconnect();
-
-if($aConfig["options"]["debug"] == true) {
-	//Ready extra header info
-	$output = ob_get_contents();
-	ob_end_clean();
-	
-	//Send execution time
-	$runtimeEnd = microtime(true);
-	$oFirePHP->log("Runtime: ".($runtimeEnd - $runtimeStart)." sec");
-	
-	//Get memory usage
-	function convert($size)
-	{
-		$unit=array('b','kb','mb','gb','tb','pb');
-		return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
-	}
-	$oFirePHP->log("Memory: ".convert(memory_get_usage()));
-	
-	echo $output;
-}

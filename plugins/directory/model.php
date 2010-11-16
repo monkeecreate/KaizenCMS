@@ -6,6 +6,7 @@ class directory_model extends appModel {
 	public $imageFolder = "/uploads/directory/";
 	public $useCategories = true;
 	public $perPage = 5;
+	public $sort = "name-asc"; // manual, name, state, created, updated, random - asc, desc
 	public $aStates = array(''=>"",
 							'AL'=>"Alabama",  
 							'AK'=>"Alaska",  
@@ -60,27 +61,68 @@ class directory_model extends appModel {
 							'WY'=>"Wyoming");
 	
 	function getListings($sCategory, $sAll = false) {
-		// Start the WHERE
-		$sWhere = " WHERE `directory`.`id` > 0";// Allways true
+		$aWhere = array();
+		$sJoin = "";
 		
-		if($sAll == false)
-			$sWhere .= " AND `directory`.`active` = 1";
+		// Filter those that are only active, unless told otherwise
+		if($sAll == false) {
+			$aWhere[] = "`directory`.`active` = 1";
+		}
 		
-		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+		// Filter by category if given
+		if(!empty($sCategory)) {
+			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+			$sJoin .= " LEFT JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory`.`id` = `directory_assign`.`listingid`";
+			$sJoin .= " LEFT JOIN `{dbPrefix}directory_categories` AS `categories` ON `directory_assign`.`categoryid` = `categories`.`id`";
+		}
+		
+		// Combine filters if atleast one was added
+		if(!empty($aWhere)) {
+			$sWhere = " WHERE ".implode(" AND ", $aWhere);
+		}
+		
+		// Check if sort direction is set, and clean it up for SQL use
+		$sSortDirection = array_pop(explode("-", $this->sort));
+		if(empty($sSortDirection) || !in_array(strtolower($sSortDirection), array("asc", "desc"))) {
+			$sSortDirection = "ASC";
+		} else {
+			$sSortDirection = strtoupper($sSortDirection);
+		}
+			
+		// Choose sort method based on model setting
+		switch(array_shift(explode("-", $this->sort))) {
+			case "manual":
+				$sOrderBy = " ORDER BY `sort_order` ".$sSortDirection;
+				break;
+			case "created":
+				$sOrderBy = " ORDER BY `created_datetime` ".$sSortDirection;
+				break;
+			case "updated":
+				$sOrderBy = " ORDER BY `updated_datetime` ".$sSortDirection;
+				break;
+			case "random":
+				$sOrderBy = " ORDER BY RAND()";
+				break;
+			case "state":
+				$sOrderBy = " ORDER BY `state` ".$sSortDirection;
+				break;
+			// Default to sort by name
+			default:
+				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
+		}
 		
 		$aListings = $this->dbQuery(
 			"SELECT `directory`.* FROM `{dbPrefix}directory` AS `directory`"
-				." LEFT JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory`.`id` = `directory_assign`.`listingid`"
-				." LEFT JOIN `{dbPrefix}directory_categories` AS `categories` ON `directory_assign`.`categoryid` = `categories`.`id`"
+				.$sJoin
 				.$sWhere
 				." GROUP BY `directory`.`id`"
-				." ORDER BY `directory`.`name`"
+				.$sOrderBy
 			,"all"
 		);
 	
-		foreach($aListings as $x => &$aListing)
+		foreach($aListings as $x => &$aListing) {
 			$aListing = $this->_getListingInfo($aListing);
+		}
 		
 		return $aListings;
 	}
@@ -100,8 +142,9 @@ class directory_model extends appModel {
 			,"row"
 		);
 	
-		if(!empty($aListing))
+		if(!empty($aListing)) {
 			$aListing = $this->_getListingInfo($aListing);
+		}
 		
 		return $aListing;
 	}
@@ -130,10 +173,11 @@ class directory_model extends appModel {
 		}
 		
 		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["file"])
-		 && $this->useImage == true)
+		 && $this->useImage == true) {
 			$aListing["image"] = 1;
-		else
+		} else {
 			$aListing["image"] = 0;
+		}
 			
 		return $aListing;
 	}
@@ -162,19 +206,21 @@ class directory_model extends appModel {
 				,"all"
 			);
 			
-			foreach($aCategories as $x => $aCategory)
+			foreach($aCategories as $x => $aCategory) {
 				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+			}
 		}
 		
 		return $aCategories;
 	}
 	function getCategory($sId = null, $sName = null) {
-		if(!empty($sId))
+		if(!empty($sId)) {
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
-		elseif(!empty($sName))
+		} elseif(!empty($sName)) {
 			$sWhere = " WHERE `name` LIKE ".$this->dbQuote($sName, "text");
-		else
+		} else {
 			return false;
+		}
 		
 		$aCategory = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}directory_categories`"

@@ -1,6 +1,6 @@
 <?php
 function smarty_function_getDocuments($aParams, &$oSmarty) {
-	$oApp = $oSmarty->get_registered_object("appController");
+	$oApp = $oSmarty->getRegisteredObject("appController");
 	$oDocuments = $oApp->loadModel("documents");
 	
 	if(!empty($aParams["limit"])) {

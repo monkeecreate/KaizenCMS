@@ -46,10 +46,10 @@
 					Fax#: {$aListing.fax}<br />
 				{/if}
 				{if !empty($aListing.website)}
-					Website: <a href="{$aListing.website}" title="Website for {$aListing.name}" target="_blank">{$aListing.website}</a><br />
+					Website: <a href="{$aListing.website}" title="Website for {$aListing.name}" target="_blank" rel="nofollow">{$aListing.website}</a><br />
 				{/if}
 				{if !empty($aListing.email)}
-					Email: <a href="mailto:{$aListing.email}" title="Email {$aListing.name}">{$aListing.email}</a><br />
+					Email: <a href="mailto:{$aListing.email}" title="Email {$aListing.name}" rel="nofollow">{$aListing.email}</a><br />
 				{/if}
 			</p>
 		</article>

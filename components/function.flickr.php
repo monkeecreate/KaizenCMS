@@ -1,6 +1,6 @@
 <?php
 function smarty_function_flickr($aParams, &$oSmarty) {
-	$oApp = $oSmarty->get_registered_object("appController");
+	$oApp = $oSmarty->getRegisteredObject("appController");
 	
 	$flickrKey = "69f31081cc7123755564c66ae0af159c";
 	$flickrEmail = $oApp->getSetting("flickrEmail");

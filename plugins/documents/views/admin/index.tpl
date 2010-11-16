@@ -13,7 +13,18 @@
 			/* CAN CHANGE */
 			"bStateSave": true, //whether to save a cookie with the current table state
 			"iDisplayLength": 10, //how many items to display on each page
-			"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
+			{if $sSort == "manual"}
+				"aaSorting": [[3, "asc"]], //which column to sort by (0-X)
+				"aoColumns": [
+					null,
+					null,
+					null,
+					{ldelim} "sType": "num-html" {rdelim},
+					null
+				]
+			{else}
+				"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
+			{/if}
 		{rdelim});
 	{rdelim});
 </script>
@@ -43,6 +54,9 @@
 				<th class="empty itemStatus">&nbsp;</th>
 				<th>Name</th>
 				<th>Link</th>
+				{if $sSort == "manual"}
+					<th>Order</th>
+				{/if}
 				<th></th>
 			</tr>
 		</thead>
@@ -58,14 +72,29 @@
 					</td>
 					<td>{$aDocument.name}</td>
 					<td><a href="http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}" title="{$aDocument.name}">http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}</a></td>
+					{if $sSort == "manual"}
+						<td class="small center">
+							<span class="hidden">{$aDocument.sort_order}</span>
+							{if $aDocument.sort_order != $minSort}
+								<a href="/admin/documents/sort/{$aDocument.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png" style="width:16px;height:16px;"></a>
+							{else}
+								<img src="/images/blank.gif" style="width:16px;height:16px;">
+							{/if}
+							{if $aDocument.sort_order != $maxSort && count($aDocument) > 1}
+								<a href="/admin/documents/sort/{$aDocument.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png" style="width:16px;height:16px;"></a>
+							{else}
+								<img src="/images/blank.gif" style="width:16px;height:16px;">
+							{/if}
+						</td>
+					{/if}
 					<td class="center">
 						<a href="/admin/documents/edit/{$aDocument.id}/" title="Edit Document">
-							<img src="/images/admin/icons/pencil.png" alt="edit icon">
+							<img src="/images/admin/icons/pencil.png" alt="edit icon" style="width:16px;height:16px;">
 						</a>
 						<a href="/admin/documents/delete/{$aDocument.id}/"
 						 onclick="return confirm_('Are you sure you would like to delete: {$aDocument.name}?');"
 						 title="Delete Document">
-							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
+							<img src="/images/admin/icons/bin_closed.png" alt="delete icon" style="width:16px;height:16px;">
 						</a>
 					</td>
 				</tr>

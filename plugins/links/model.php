@@ -57,7 +57,7 @@ class links_model extends appModel
 				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
 		}
 		
-		// Get all links pased on filters given
+		// Get all links based on filters given
 		$aLinks = $this->dbQuery(
 			"SELECT `links`.* FROM `{dbPrefix}links` AS `links`"
 				.$sJoin

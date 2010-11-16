@@ -13,7 +13,17 @@
 			/* CAN CHANGE */
 			"bStateSave": true, //whether to save a cookie with the current table state
 			"iDisplayLength": 10, //how many items to display on each page
-			"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
+			{if $sSort == "manual"}
+				"aaSorting": [[2, "asc"]], //which column to sort by (0-X)
+				"aoColumns": [
+					null,
+					null,
+					{ldelim} "sType": "num-html" {rdelim},
+					null
+				]
+			{else}
+				"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
+			{/if}
 		{rdelim});
 	{rdelim});
 </script>
@@ -42,6 +52,9 @@
 			<tr>
 				<th class="empty itemStatus">&nbsp;</th>
 				<th>Name</th>
+				{if $sSort == "manual"}
+					<th>Order</th>
+				{/if}
 				<th></th>
 			</tr>
 		</thead>
@@ -56,6 +69,21 @@
 						{/if}
 					</td>
 					<td>{$aListing.name}</td>
+					{if $sSort == "manual"}
+						<td class="small center">
+							<span class="hidden">{$aListing.sort_order}</span>
+							{if $aListing.sort_order != $minSort}
+								<a href="/admin/directory/sort/{$aListing.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png" style="width:16px;height:16px;"></a>
+							{else}
+								<img src="/images/blank.gif" style="width:16px;height:16px;">
+							{/if}
+							{if $aListing.sort_order != $maxSort && count($aListing) > 1}
+								<a href="/admin/directory/sort/{$aListing.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png" style="width:16px;height:16px;"></a>
+							{else}
+								<img src="/images/blank.gif" style="width:16px;height:16px;">
+							{/if}
+						</td>
+					{/if}
 					<td class="center">
 						{if $sUseImage == true}
 							<a href="/admin/directory/image/{$aListing.id}/edit/" title="Edit Listing Image">

@@ -8,19 +8,27 @@ class admin_testimonials extends adminController {
 	
 	### DISPLAY ######################
 	function index() {
-		$oTestimonials = $this->loadModel("testimonials");
-		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_testimonials"] = null;
 		
-		$this->tplAssign("aCategories", $oTestimonials->getCategories());
+		$sMinSort = $this->dbQuery(
+			"SELECT MIN(`sort_order`) FROM `{dbPrefix}testimonials`"
+			,"one"
+		);
+		$sMaxSort = $this->dbQuery(
+			"SELECT MAX(`sort_order`) FROM `{dbPrefix}testimonials`"
+			,"one"
+		);
+		
+		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aTestimonials", $oTestimonials->getTestimonials(null, false, true));
+		$this->tplAssign("aTestimonials", $this->model->getTestimonials(null, false, true));
+		$this->tplAssign("minSort", $sMinSort);
+		$this->tplAssign("maxSort", $sMaxSort);
+		$this->tplAssign("sSort", array_shift(explode("-", $this->model->sort)));
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
-		$oTestimonials = $this->loadModel("testimonials");
-		
 		if(!empty($_SESSION["admin"]["admin_testimonials"]))
 			$this->tplAssign("aTestimonial", $_SESSION["admin"]["admin_testimonials"]);
 		else {
@@ -33,8 +41,8 @@ class admin_testimonials extends adminController {
 			$this->tplAssign("aTestimonial", $aTestimonial);
 		}
 		
-		$this->tplAssign("aCategories", $oTestimonials->getCategories());
-		$this->tplAssign("sUseCategories", $oTestimonials->useCategories);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
@@ -43,12 +51,21 @@ class admin_testimonials extends adminController {
 			$this->forward("/admin/testimonials/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sOrder = $this->dbQuery(
+			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}testimonials`"
+			,"one"
+		);
+		
+		if(empty($sOrder))
+			$sOrder = 1;
+		
 		$sID = $this->dbInsert(
 			"testimonials",
 			array(
 				"name" => $_POST["name"]
 				,"sub_name" => $_POST["sub_name"]
 				,"text" => $_POST["text"]
+				,"sort_order" => $sOrder
 				,"active" => $this->boolCheck($_POST["active"])
 				,"created_datetime" => time()
 				,"created_by" => $_SESSION["admin"]["userid"]
@@ -74,8 +91,6 @@ class admin_testimonials extends adminController {
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial created successfully!"));
 	}
 	function edit() {
-		$oTestimonials = $this->loadModel("testimonials");
-		
 		if(!empty($_SESSION["admin"]["admin_testimonials"])) {
 			$aTestimonialRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}testimonials`"
@@ -92,7 +107,7 @@ class admin_testimonials extends adminController {
 				,"row"
 			);
 		} else {
-			$aTestimonial = $oTestimonials->getTestimonial($this->urlVars->dynamic["id"], true);
+			$aTestimonial = $this->model->getTestimonial($this->urlVars->dynamic["id"], true);
 			
 			$aTestimonial["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}testimonials_categories` AS `categories`"
@@ -112,8 +127,8 @@ class admin_testimonials extends adminController {
 		
 		$this->tplAssign("aTestimonial", $aTestimonial);
 		
-		$this->tplAssign("aCategories", $oTestimonials->getCategories());
-		$this->tplAssign("sUseCategories", $oTestimonials->useCategories);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
@@ -158,13 +173,56 @@ class admin_testimonials extends adminController {
 		
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial removed successfully!"));
 	}
-	function categories_index() {
-		$oTestimonials = $this->loadModel("testimonials");
+	function sort() {
+		$aTestimonial = $this->model->getTestimonial($this->urlVars->dynamic["id"], "integer");
 		
+		if($this->urlVars->dynamic["sort"] == "up") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}testimonials`"
+					." WHERE `sort_order` < ".$aTestimonial["sort_order"]
+					." ORDER BY `sort_order` DESC"
+				,"row"
+			);
+		} elseif($this->urlVars->dynamic["sort"] == "down") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}testimonials`"
+					." WHERE `sort_order` > ".$aTestimonial["sort_order"]
+					." ORDER BY `sort_order` ASC"
+				,"row"
+			);
+		}
+			
+		$this->dbUpdate(
+			"testimonials",
+			array(
+				"sort_order" => 0
+			),
+			$aTestimonial["id"]
+		);
+		
+		$this->dbUpdate(
+			"testimonials",
+			array(
+				"sort_order" => $aTestimonial["sort_order"]
+			),
+			$aOld["id"]
+		);
+			
+		$this->dbUpdate(
+			"testimonials",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aTestimonial["id"]
+		);
+		
+		$this->forward("/admin/testimonials/?notice=".urlencode("Sort order saved successfully!"));
+	}
+	function categories_index() {
 		$_SESSION["admin"]["admin_testimonials_categories"] = null;
 		
-		$this->tplAssign("aCategories", $oTestimonials->getCategories());
-		$this->tplAssign("aCategoryEdit", $oTestimonials->getCategory($_GET["category"]));
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("aCategoryEdit", $this->model->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {

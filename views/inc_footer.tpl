@@ -12,7 +12,7 @@
 		</aside>
 		
 		<footer>
-			<p>&copy; Copyright {$smarty.now|date_format:"%Y"} Your Company, All Rights Reserved.</p>
+			<p>&copy; Copyright {"Y"|date:$smarty.now} Your Company, All Rights Reserved.</p>
 		</footer>
 	</div>
 	

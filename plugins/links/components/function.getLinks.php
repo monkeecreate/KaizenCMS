@@ -1,6 +1,6 @@
 <?php
 function smarty_function_getLinks($aParams, &$oSmarty) {
-	$oApp = $oSmarty->get_registered_object("appController");
+	$oApp = $oSmarty->getRegisteredObject("appController");
 	$oLinks = $oApp->loadModel("links");
 	
 	if(!empty($aParams["limit"])) {

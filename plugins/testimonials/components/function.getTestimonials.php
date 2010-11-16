@@ -1,6 +1,6 @@
 <?php
 function smarty_function_getTestimonials($aParams, &$oSmarty) {
-	$oApp = $oSmarty->get_registered_object("appController");
+	$oApp = $oSmarty->getRegisteredObject("appController");
 	
 	$oTestimonial = $oApp->loadModel("testimonials");
 	

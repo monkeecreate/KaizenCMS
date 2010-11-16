@@ -9,20 +9,29 @@ class admin_documents extends adminController
 	
 	### DISPLAY ######################
 	function index() {
-		$oDocuments = $this->loadModel("documents");
-		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_documents"] = null;
 		
-		$this->tplAssign("aCategories", $oDocuments->getCategories());
+		$sMinSort = $this->dbQuery(
+			"SELECT MIN(`sort_order`) FROM `{dbPrefix}documents`"
+			,"one"
+		);
+		$sMaxSort = $this->dbQuery(
+			"SELECT MAX(`sort_order`) FROM `{dbPrefix}documents`"
+			,"one"
+		);
+		
+		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aDocuments", $oDocuments->getDocuments($_GET["category"], true));
-		$this->tplAssign("documentFolder", $oDocuments->documentFolder);
+		$this->tplAssign("aDocuments", $this->model->getDocuments($_GET["category"], true));
+		$this->tplAssign("documentFolder", $this->model->documentFolder);
+		$this->tplAssign("minSort", $sMinSort);
+		$this->tplAssign("maxSort", $sMaxSort);
+		$this->tplAssign("sSort", array_shift(explode("-", $this->model->sort)));
+		
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
-		$oDocuments = $this->loadModel("documents");
-		
 		if(!empty($_SESSION["admin"]["admin_documents"]))
 			$this->tplAssign("aDocument", $_SESSION["admin"]["admin_documents"]);
 		else
@@ -33,23 +42,30 @@ class admin_documents extends adminController
 				)
 			);
 		
-		$this->tplAssign("aCategories", $oDocuments->getCategories());
-		$this->tplAssign("sUseCategories", $oDocuments->useCategories);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
-		$oDocuments = $this->loadModel("documents");
-		
 		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_documents"] = $_POST;
 			$this->forward("/admin/documents/add/?error=".urlencode("Please fill in all required fields!"));
 		}
+		
+		$sOrder = $this->dbQuery(
+			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}documents`"
+			,"one"
+		);
+		
+		if(empty($sOrder))
+			$sOrder = 1;
 		
 		$sID = $this->dbInsert(
 			"documents",
 			array(
 				"name" => $_POST["name"]
 				,"description" => $_POST["description"]
+				,"sort_order" => $sOrder
 				,"active" => $this->boolCheck($_POST["active"])
 				,"created_datetime" => time()
 				,"created_by" => $_SESSION["admin"]["userid"]
@@ -82,7 +98,7 @@ class admin_documents extends adminController
 				
 				$this->forward("/admin/document/?notice=".urlencode("Document file size was too large!"));
 			} else {
-				$upload_dir = $this->settings->rootPublic.substr($oDocuments->documentFolder, 1);
+				$upload_dir = $this->settings->rootPublic.substr($this->model->documentFolder, 1);
 				
 				if(!is_dir($upload_dir))
 					mkdir($upload_dir, 0777);
@@ -90,7 +106,7 @@ class admin_documents extends adminController
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
 				
-				if(in_array($file_ext, $oDocuments->allowedExt) || empty($oDocuments->allowedExt)) {
+				if(in_array($file_ext, $this->model->allowedExt) || empty($this->model->allowedExt)) {
 					if(move_uploaded_file($_FILES["document"]["tmp_name"], $upload_dir.$upload_file)) {
 						$this->dbUpdate(
 							"documents",
@@ -120,8 +136,6 @@ class admin_documents extends adminController
 		$this->forward("/admin/documents/?notice=".urlencode("Document created successfully!"));
 	}
 	function edit() {
-		$oDocuments = $this->loadModel("documents");
-		
 		if(!empty($_SESSION["admin"]["admin_documents"])) {
 			$aDocumentRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}documents`"
@@ -138,7 +152,7 @@ class admin_documents extends adminController
 				,"row"
 			);
 		} else {
-			$aDocument = $oDocuments->getDocument($this->urlVars->dynamic["id"], true);
+			$aDocument = $this->model->getDocument($this->urlVars->dynamic["id"], true);
 			
 			$aDocument["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}documents_categories` AS `categories`"
@@ -156,14 +170,12 @@ class admin_documents extends adminController
 			);
 		}
 		
-		$this->tplAssign("aCategories", $oDocuments->getCategories());
-		$this->tplAssign("sUseCategories", $oDocuments->useCategories);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplAssign("aDocument", $aDocument);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
-		$oDocuments = $this->loadModel("documents");
-		
 		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_documents"] = $_POST;
 			$this->forward("/admin/documents/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
@@ -206,7 +218,7 @@ class admin_documents extends adminController
 				
 				$this->forward("/admin/documents/?notice=".urlencode("Document file size was too large!"));
 			} else {
-				$upload_dir = $this->settings->rootPublic.substr($oDocuments->documentFolder, 1);
+				$upload_dir = $this->settings->rootPublic.substr($this->model->documentFolder, 1);
 				
 				if(!is_dir($upload_dir))
 					mkdir($upload_dir, 0777);
@@ -214,7 +226,7 @@ class admin_documents extends adminController
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				
-				if(in_array($file_ext, $oDocuments->allowedExt) || empty($oDocuments->allowedExt)) {
+				if(in_array($file_ext, $this->model->allowedExt) || empty($this->model->allowedExt)) {
 					$sDocument = $this->dbQuery(
 						"SELECT `document` FROM `{dbPrefix}documents`"
 							." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
@@ -251,24 +263,65 @@ class admin_documents extends adminController
 		$this->forward("/admin/documents/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		$oDocuments = $this->loadModel("documents");
+		$aDocument = $this->model->getDocument($this->urlVars->dynamic["id"], "integer");
 		
-		$aDocument = $oDocuments->getDocument($this->urlVars->dynamic["id"], "integer");
-		
-		@unlink($this->settings->rootPublic.substr($oDocuments->documentFolder, 1).$aDocument["document"]);
+		@unlink($this->settings->rootPublic.substr($this->model->documentFolder, 1).$aDocument["document"]);
 		
 		$this->dbDelete("documents", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("documents_categories_assign", $this->urlVars->dynamic["id"], "documentid");
 		
 		$this->forward("/admin/documents/?notice=".urlencode("Document removed successfully!"));
 	}
-	function categories_index() {
-		$oDocuments = $this->loadModel("documents");
+	function sort() {
+		$aDocument = $this->model->getDocument($this->urlVars->dynamic["id"], "integer");
 		
+		if($this->urlVars->dynamic["sort"] == "up") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}documents`"
+					." WHERE `sort_order` < ".$aDocument["sort_order"]
+					." ORDER BY `sort_order` DESC"
+				,"row"
+			);
+		} elseif($this->urlVars->dynamic["sort"] == "down") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}documents`"
+					." WHERE `sort_order` > ".$aDocument["sort_order"]
+					." ORDER BY `sort_order` ASC"
+				,"row"
+			);
+		}
+			
+		$this->dbUpdate(
+			"documents",
+			array(
+				"sort_order" => 0
+			),
+			$aDocument["id"]
+		);
+		
+		$this->dbUpdate(
+			"documents",
+			array(
+				"sort_order" => $aDocument["sort_order"]
+			),
+			$aOld["id"]
+		);
+			
+		$this->dbUpdate(
+			"documents",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aDocument["id"]
+		);
+		
+		$this->forward("/admin/documents/?notice=".urlencode("Sort order saved successfully!"));
+	}
+	function categories_index() {
 		$_SESSION["admin"]["admin_documents_categories"] = null;
 		
-		$this->tplAssign("aCategories", $oDocuments->getCategories());
-		$this->tplAssign("aCategoryEdit", $oDocuments->getCategory($_GET["category"]));
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("aCategoryEdit", $this->model->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {

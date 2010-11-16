@@ -5,34 +5,69 @@ class documents_model extends appModel
 	public $documentFolder = "/uploads/documents/";
 	public $useCategories = true;
 	public $perPage = 5;
+	public $sort = "manual-asc"; // manual, name, created, updated, random - asc, desc
 	
 	function getDocuments($sCategory, $sAll = false, $sRandom = false) {
-		// Start the WHERE
-		$sWhere = " WHERE `documents`.`id` > 0";// Allways true
+		$aWhere = array();
+		$sJoin = "";
 		
-		if($sAll == false)
-			$sWhere .= " AND `documents`.`active` = 1";
+		// Filter those that are only active, unless told otherwise
+		if($sAll == false) {
+			$aWhere[] = "`documents`.`active` = 1";
+		}
 		
-		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+		// Filter by category if given
+		if(!empty($sCategory)) {
+			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+			$sJoin .= " LEFT JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents`.`id` = `documents_assign`.`documentid`";
+			$sJoin .= " LEFT JOIN `{dbPrefix}documents_categories` AS `categories` ON `documents_assign`.`categoryid` = `categories`.`id`";
+		}
+		
+		// Combine filters if atleast one was added
+		if(!empty($aWhere)) {
+			$sWhere = " WHERE ".implode(" AND ", $aWhere);
+		}
+		
+		// Check if sort direction is set, and clean it up for SQL use
+		$sSortDirection = array_pop(explode("-", $this->sort));
+		if(empty($sSortDirection) || !in_array(strtolower($sSortDirection), array("asc", "desc"))) {
+			$sSortDirection = "ASC";
+		} else {
+			$sSortDirection = strtoupper($sSortDirection);
+		}
 			
-		if($sRandom != false)
-			$sOrderBy = " ORDER BY rand()";
-		else
-			$sOrderBy = " ORDER BY `documents`.`created_datetime` DESC";
+		// Choose sort method based on model setting
+		switch(array_shift(explode("-", $this->sort))) {
+			case "manual":
+				$sOrderBy = " ORDER BY `sort_order` ".$sSortDirection;
+				break;
+			case "created":
+				$sOrderBy = " ORDER BY `created_datetime` ".$sSortDirection;
+				break;
+			case "updated":
+				$sOrderBy = " ORDER BY `updated_datetime` ".$sSortDirection;
+				break;
+			case "random":
+				$sOrderBy = " ORDER BY RAND()";
+				break;
+			// Default to sort by name
+			default:
+				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
+		}
 		
+		// Get all documents based on filters given
 		$aDocuments = $this->dbQuery(
 			"SELECT `documents`.* FROM `{dbPrefix}documents` AS `documents`"
-				." LEFT JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents`.`id` = `documents_assign`.`documentid`"
-				." LEFT JOIN `{dbPrefix}documents_categories` AS `categories` ON `documents_assign`.`categoryid` = `categories`.`id`"
+				.$sJoin
 				.$sWhere
 				." GROUP BY `documents`.`id`"
 				.$sOrderBy
 			,"all"
 		);
 		
-		foreach($aDocuments as $x => &$aDocument)
+		foreach($aDocuments as $x => &$aDocument) {
 			$aDocument = $this->_getDocumentInfo($aDocument);
+		}
 		
 		return $aDocuments;
 	}

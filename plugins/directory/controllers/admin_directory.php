@@ -8,21 +8,29 @@ class admin_directory extends adminController {
 	
 	### DISPLAY ######################
 	function index() {
-		$oDirectory = $this->loadModel("directory");
-		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_directory"] = null;
 		
-		$this->tplAssign("aCategories", $oDirectory->getCategories());
+		$sMinSort = $this->dbQuery(
+			"SELECT MIN(`sort_order`) FROM `{dbPrefix}directory`"
+			,"one"
+		);
+		$sMaxSort = $this->dbQuery(
+			"SELECT MAX(`sort_order`) FROM `{dbPrefix}directory`"
+			,"one"
+		);
+		
+		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aListings", $oDirectory->getListings($_GET["category"], true));
-		$this->tplAssign("sUseImage", $oDirectory->useImage);
+		$this->tplAssign("aListings", $this->model->getListings($_GET["category"], true));
+		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("minSort", $sMinSort);
+		$this->tplAssign("maxSort", $sMaxSort);
+		$this->tplAssign("sSort", array_shift(explode("-", $this->model->sort)));
 		
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
-		$oDirectory = $this->loadModel("directory");
-		
 		if(!empty($_SESSION["admin"]["admin_directory"]))
 			$this->tplAssign("aListing", $_SESSION["admin"]["admin_directory"]);
 		else
@@ -33,21 +41,19 @@ class admin_directory extends adminController {
 				)
 			);
 		
-		$this->tplAssign("aCategories", $oDirectory->getCategories());
-		$this->tplAssign("sUseCategories", $oDirectory->useCategories);
-		$this->tplAssign("sUseImage", $oDirectory->useImage);
-		$this->tplAssign("aStates", $oDirectory->aStates);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
+		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("aStates", $this->model->aStates);
 		
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
-		$oDirectory = $this->loadModel("directory");
-		
 		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_directory"] = $_POST;
 			$this->forward("/admin/directory/add/?error=".urlencode("Please fill in all required fields!"));
 		}
-		
+
 		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
 	
 		$aListings = $this->dbQuery(
@@ -65,6 +71,14 @@ class admin_directory extends adminController {
 			} while ($checkDuplicate);
 			$sTag = $sTempTag;
 		}
+
+		$sOrder = $this->dbQuery(
+			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}directory`"
+			,"one"
+		);
+		
+		if(empty($sOrder))
+			$sOrder = 1;
 		
 		$sID = $this->dbInsert(
 			"directory",
@@ -80,6 +94,7 @@ class admin_directory extends adminController {
 				,"fax" => $_POST["fax"]
 				,"website" => $_POST["website"]
 				,"email" => $_POST["email"]
+				,"sort_order" => $sOrder
 				,"active" => $this->boolCheck($_POST["active"])
 				,"created_datetime" => time()
 				,"created_by" => $_SESSION["admin"]["userid"]
@@ -103,15 +118,13 @@ class admin_directory extends adminController {
 		
 		$_SESSION["admin"]["admin_directory"] = null;
 		
-		if(!empty($_FILES["image"]["type"]) && $oDirectory->useImage == true) {
+		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true) {
 			$_POST["id"] = $sID;
 			$this->image_upload_s();
 		} else			
 			$this->forward("/admin/directory/?notice=".urlencode("Listing created successfully!"));
 	}
 	function edit() {
-		$oDirectory = $this->loadModel("directory");
-		
 		if(!empty($_SESSION["admin"]["admin_directory"])) {
 			$aListingRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}directory`"
@@ -130,7 +143,7 @@ class admin_directory extends adminController {
 			
 			$this->tplAssign("aListing", $aListing);
 		} else {
-			$aListing = $oDirectory->getListing($this->urlVars->dynamic["id"], null, true);
+			$aListing = $this->model->getListing($this->urlVars->dynamic["id"], null, true);
 			
 			$aListing["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}directory_categories` AS `categories`"
@@ -150,10 +163,10 @@ class admin_directory extends adminController {
 			$this->tplAssign("aListing", $aListing);
 		}
 		
-		$this->tplAssign("aCategories", $oDirectory->getCategories());
-		$this->tplAssign("sUseCategories", $oDirectory->useCategories);
-		$this->tplAssign("sUseImage", $oDirectory->useImage);
-		$this->tplAssign("aStates", $oDirectory->aStates);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
+		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("aStates", $this->model->aStates);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
@@ -216,7 +229,7 @@ class admin_directory extends adminController {
 		
 		$_SESSION["admin"]["admin_directory"] = null;
 		
-		if(!empty($_FILES["image"]["type"]) && $oDirectory->useImage == true)
+		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true)
 			$this->image_upload_s();
 		else {
 			if($_POST["submit"] == "Save Changes")
@@ -233,20 +246,63 @@ class admin_directory extends adminController {
 		
 		$this->forward("/admin/directory/?notice=".urlencode("Listing removed successfully!"));
 	}
-	function image_upload_s() {
-		$oDirectory = $this->loadModel("directory");
+	function sort() {
+		$aListing = $this->model->getListing($this->urlVars->dynamic["id"], "integer");
 		
-		if(!is_dir($this->settings->rootPublic.substr($oDirectory->imageFolder, 1)))
-			mkdir($this->settings->rootPublic.substr($oDirectory->imageFolder, 1), 0777);
+		if($this->urlVars->dynamic["sort"] == "up") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}directory`"
+					." WHERE `sort_order` < ".$aListing["sort_order"]
+					." ORDER BY `sort_order` DESC"
+				,"row"
+			);
+		} elseif($this->urlVars->dynamic["sort"] == "down") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}directory`"
+					." WHERE `sort_order` > ".$aListing["sort_order"]
+					." ORDER BY `sort_order` ASC"
+				,"row"
+			);
+		}
+			
+		$this->dbUpdate(
+			"directory",
+			array(
+				"sort_order" => 0
+			),
+			$aListing["id"]
+		);
+		
+		$this->dbUpdate(
+			"directory",
+			array(
+				"sort_order" => $aListing["sort_order"]
+			),
+			$aOld["id"]
+		);
+			
+		$this->dbUpdate(
+			"directory",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aListing["id"]
+		);
+		
+		$this->forward("/admin/directory/?notice=".urlencode("Sort order saved successfully!"));
+	}
+	function image_upload_s() {
+		if(!is_dir($this->settings->rootPublic.substr($this->model->imageFolder, 1)))
+			mkdir($this->settings->rootPublic.substr($this->model->imageFolder, 1), 0777);
 		
 		if($_FILES["image"]["type"] == "image/jpeg"
 		 || $_FILES["image"]["type"] == "image/jpg"
 		 || $_FILES["image"]["type"] == "image/pjpeg"
 		) {
-			$sFile = $this->settings->rootPublic.substr($oDirectory->imageFolder, 1).$_POST["id"].".jpg";
+			$sFile = $this->settings->rootPublic.substr($this->model->imageFolder, 1).$_POST["id"].".jpg";
 			
 			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
-			if($aImageSize[0] < $oDirectory->imageMinWidth || $aImageSize[1] < $oDirectory->imageMinHeight) {
+			if($aImageSize[0] < $this->model->imageMinWidth || $aImageSize[1] < $this->model->imageMinHeight) {
 				$this->forward("/admin/directory/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 			}
 			
@@ -256,10 +312,10 @@ class admin_directory extends adminController {
 					array(
 						"photo_x1" => 0
 						,"photo_y1" => 0
-						,"photo_x2" => $oDirectory->imageMinWidth
-						,"photo_y2" => $oDirectory->imageMinHeight
-						,"photo_width" => $oDirectory->imageMinWidth
-						,"photo_height" => $oDirectory->imageMinHeight
+						,"photo_x2" => $this->model->imageMinWidth
+						,"photo_y2" => $this->model->imageMinHeight
+						,"photo_width" => $this->model->imageMinWidth
+						,"photo_height" => $this->model->imageMinHeight
 					),
 					$_POST["id"]
 				);
@@ -271,20 +327,18 @@ class admin_directory extends adminController {
 			$this->forward("/admin/directory/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["image"]["type"].")."));
 	}
 	function image_edit() {
-		$oDirectory = $this->loadModel("directory");
-
-		if($oDirectory->imageMinWidth < 300) {
-			$sPreviewWidth = $oDirectory->imageMinWidth;
-			$sPreviewHeight = $oDirectory->imageMinHeight;
+		if($this->model->imageMinWidth < 300) {
+			$sPreviewWidth = $this->model->imageMinWidth;
+			$sPreviewHeight = $this->model->imageMinHeight;
 		} else {
 			$sPreviewWidth = 300;
-			$sPreviewHeight = ceil($oDirectory->imageMinHeight * (300 / $oDirectory->imageMinWidth));
+			$sPreviewHeight = ceil($this->model->imageMinHeight * (300 / $this->model->imageMinWidth));
 		}
 		
-		$this->tplAssign("aListing", $oDirectory->getListing($this->urlVars->dynamic["id"]));
-		$this->tplAssign("sFolder", $oDirectory->imageFolder);
-		$this->tplAssign("minWidth", $oDirectory->imageMinWidth);
-		$this->tplAssign("minHeight", $oDirectory->imageMinHeight);
+		$this->tplAssign("aListing", $this->model->getListing($this->urlVars->dynamic["id"]));
+		$this->tplAssign("sFolder", $this->model->imageFolder);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
 		$this->tplAssign("previewWidth", $sPreviewWidth);
 		$this->tplAssign("previewHeight", $sPreviewHeight);
 
@@ -307,8 +361,6 @@ class admin_directory extends adminController {
 		$this->forward("/admin/directory/?notice=".urlencode("Listing updated."));
 	}
 	function image_delete() {
-		$oDirectory = $this->loadModel("directory");
-		
 		$this->dbUpdate(
 			"directory",
 			array(
@@ -322,17 +374,15 @@ class admin_directory extends adminController {
 			$this->urlVars->dynamic["id"]
 		);
 		
-		@unlink($this->settings->rootPublic.substr($oDirectory->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 
 		$this->forward("/admin/directory/?notice=".urlencode("Image removed successfully!"));
 	}
 	function categories_index() {
-		$oDirectory = $this->loadModel("directory");
-		
 		$_SESSION["admin"]["admin_directory_categories"] = null;
 		
-		$this->tplAssign("aCategories", $oDirectory->getCategories());
-		$this->tplAssign("aCategoryEdit", $oDirectory->getCategory($_GET["category"]));
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("aCategoryEdit", $this->model->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {

@@ -13,7 +13,18 @@
 			/* CAN CHANGE */
 			"bStateSave": true, //whether to save a cookie with the current table state
 			"iDisplayLength": 10, //how many items to display on each page
-			"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
+			{if $sSort == "manual"}
+				"aaSorting": [[3, "asc"]], //which column to sort by (0-X)
+				"aoColumns": [
+					null,
+					null,
+					null,
+					{ldelim} "sType": "num-html" {rdelim},
+					null
+				]
+			{else}
+				"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
+			{/if}
 		{rdelim});
 	{rdelim});
 </script>
@@ -43,6 +54,9 @@
 				<th class="empty itemStatus">&nbsp;</th>
 				<th>Name</th>
 				<th>Sub-Name</th>
+				{if $sSort == "manual"}
+					<th>Order</th>
+				{/if}
 				<th></th>
 			</tr>
 		</thead>
@@ -58,6 +72,21 @@
 					</td>
 					<td>{$aTestimonial.name}</td>
 					<td>{$aTestimonial.sub_name}</td>
+					{if $sSort == "manual"}
+						<td class="small center">
+							<span class="hidden">{$aTestimonial.sort_order}</span>
+							{if $aTestimonial.sort_order != $minSort}
+								<a href="/admin/testimonials/sort/{$aTestimonial.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png" style="width:16px;height:16px;"></a>
+							{else}
+								<img src="/images/blank.gif" style="width:16px;height:16px;">
+							{/if}
+							{if $aTestimonial.sort_order != $maxSort && count($aTestimonial) > 1}
+								<a href="/admin/testimonials/sort/{$aTestimonial.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png" style="width:16px;height:16px;"></a>
+							{else}
+								<img src="/images/blank.gif" style="width:16px;height:16px;">
+							{/if}
+						</td>
+					{/if}
 					<td class="center">
 						<a href="/admin/testimonials/edit/{$aTestimonial.id}/">
 							<img src="/images/admin/icons/pencil.png">

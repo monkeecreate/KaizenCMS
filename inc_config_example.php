@@ -17,10 +17,6 @@ $aConfig["options"]["debug"] = true;
 $aConfig["options"]["timezone"] = "US/Central";
 ###############################################
 
-### SOFTWARE ##################################
-$aConfig["software"]["firephp"] = true; // Set if you want to use/have FirePHP
-###############################################
-
 ### PEAR ######################################
 # PEAR MDB2
 # http://pear.php.net/MDB2/
@@ -51,6 +47,7 @@ $aConfig["smarty"]["dir"]["templates"] = $site_root."views";
 $aConfig["smarty"]["dir"]["compile"] = $site_root.".compiled";
 $aConfig["smarty"]["dir"]["cache"] = $site_root.".cache";
 $aConfig["smarty"]["dir"]["plugins"] = array(
+	$site_root.".smarty/plugins/",
 	$site_root."components",
 	$site_root."components/html"
 );
@@ -68,10 +65,17 @@ $aConfig["smarty"]["cache"]["type"] = false;// false, 1 = 1 lifetime, 2 = lifeti
 $aConfig["smarty"]["cache"]["lifetime"] = 30;// -1 = never expire, 0 = always regenerate, seconds;
 
 /* Filters */
-$aConfig["smarty"]["filters"] = Array(
-	//[0] = Type (pre,post,output), [1] = name of filter
-	array("output", "move_to_head"),
-	array("output", "move_to_footer")
+$aConfig["smarty"]["filters"] = array(
+	"output" => array(
+		"move_to_head",
+		"move_to_footer"
+	),
+	"pre" => array(
+		
+	),
+	"post" => array(
+		
+	)
 );
 
 /* Settings */

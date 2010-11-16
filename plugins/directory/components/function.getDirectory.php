@@ -1,6 +1,6 @@
 <?php
 function smarty_function_getDirectory($aParams, &$oSmarty) {
-	$oApp = $oSmarty->get_registered_object("appController");
+	$oApp = $oSmarty->getRegisteredObject("appController");
 	$oDirectory = $oApp->loadModel("directory");
 	
 	if(empty($aParams["assign"])) {
