@@ -29,7 +29,6 @@ $aTables = array(
 			"fax" => array("type" => "text","length" => 100),
 			"website" => array("type" => "text","length" => 100),
 			"email" => array("type" => "text","length" => 100),
-			"file" => array("type" => "text","length" => 100),
 			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"active" => array("type" => "boolean"),
 			"photo_x1" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
