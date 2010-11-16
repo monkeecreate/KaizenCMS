@@ -39,4 +39,8 @@ class faq extends appController
 		
 		$this->tplDisplay("faq.tpl");
 	}
+	function question() {
+		$this->tplAssign("aQuestion", $this->model->getQuestion(null, $this->urlVars->dynamic["tag"]));
+		$this->tplDisplay("question.tpl");
+	}
 }

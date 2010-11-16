@@ -16,6 +16,10 @@ $aPluginUrlPatterns = array(
 		"cmd" => "faq",
 		"action" => "index"
 	),
+	"/faq/{tag:[^/]+}/" => array(
+		"cmd" => "faq",
+		"action" => "question"
+	),
 	"/admin/faq/" => array(
         "cmd" => "admin_faq",
         "action" => "index"
