@@ -1,6 +1,5 @@
 <?php
-class calendar extends appController
-{
+class calendar extends appController {
 	function __construct() {
 		// Load model when creating appController
 		parent::__construct("calendar");

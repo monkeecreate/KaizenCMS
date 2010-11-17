@@ -1,6 +1,5 @@
 <?php
-class admin_documents extends adminController
-{
+class admin_documents extends adminController {
 	function __construct() {
 		parent::__construct("documents");
 		

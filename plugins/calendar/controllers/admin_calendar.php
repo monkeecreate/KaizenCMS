@@ -1,6 +1,5 @@
 <?php
-class admin_calendar extends adminController
-{
+class admin_calendar extends adminController {
 	function __construct() {
 		parent::__construct("calendar");
 		

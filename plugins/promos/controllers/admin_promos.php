@@ -1,6 +1,5 @@
 <?php
-class admin_promos extends adminController
-{
+class admin_promos extends adminController {
 	function __construct() {
 		parent::__construct("promos");
 		
@@ -98,7 +97,7 @@ class admin_promos extends adminController
 			
 			$this->forward("/admin/promos/?error=".urlencode("Promo file size was too large!"));
 		} else {
-			$upload_dir = $this->settings->rootPublic."uploads/promos/";
+			$upload_dir = $this->settings->rootPublic.substr($this->model->imageFolder, 1);
 			$file_ext = pathinfo($_FILES["promo"]["name"], PATHINFO_EXTENSION);
 			$upload_file = $sID.".".strtolower($file_ext);
 		
@@ -230,7 +229,7 @@ class admin_promos extends adminController
 				
 				$this->forward("/admin/promos/?notice=".urlencode("Promo file size was too large!"));
 			} else {
-				$upload_dir = $this->settings->rootPublic."uploads/promos/";
+				$upload_dir = $this->settings->rootPublic.substr($this->model->imageFolder, 1);
 				$file_ext = pathinfo($_FILES["promo"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $_POST["id"].".".strtolower($file_ext);
 				

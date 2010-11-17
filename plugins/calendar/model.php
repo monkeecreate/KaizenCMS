@@ -1,6 +1,5 @@
 <?php
-class calendar_model extends appModel
-{
+class calendar_model extends appModel {
 	public $useImage = true;
 	public $imageMinWidth = 320;
 	public $imageMinHeight = 200;

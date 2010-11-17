@@ -1,6 +1,5 @@
 <?php
-class testimonials_model extends appModel
-{
+class testimonials_model extends appModel {
 	public $useCategories = true;
 	public $sort = "name-asc"; // manual, name, subname, created, updated, random - asc, desc
 	

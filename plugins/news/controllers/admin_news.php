@@ -1,6 +1,5 @@
 <?php
-class admin_news extends adminController
-{
+class admin_news extends adminController {
 	public $errors;
 	
 	function __construct() {

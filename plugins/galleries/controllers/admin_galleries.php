@@ -1,6 +1,5 @@
 <?php
-class admin_galleries extends adminController
-{
+class admin_galleries extends adminController {
 	function __construct() {
 		parent::__construct("galleries");
 		
@@ -96,8 +95,7 @@ class admin_galleries extends adminController
 			}
 		}
 		
-		$folder = $this->settings->rootPublic."uploads/galleries/".$sID."/";
-		@mkdir($folder, 0777);
+		@mkdir($this->settings->rootPublic.substr($this->model->imageFolder, 1).$sID."/", 0777);
 		
 		$_SESSION["admin"]["admin_galleries"] = null;
 		
@@ -215,12 +213,12 @@ class admin_galleries extends adminController
 		);
 		
 		foreach($aPhotos as $aPhoto) {
-			@unlink($this->settings->rootPublic."uploads/galleries/".$this->urlVars->dynamic["id"]."/".$aPhoto["photo"]);
+			@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"]."/".$aPhoto["photo"]);
 		
 			$this->dbDelete("galleries_photos", $aPhoto["id"]);
 		}
 		
-		@unlink($this->settings->rootPublic."uploads/galleries/".$this->urlVars->dynamic["id"]."/");
+		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"]."/");
 		
 		$this->forward("/admin/galleries/?notice=".urlencode("Gallery removed successfully!"));
 	}
@@ -315,6 +313,7 @@ class admin_galleries extends adminController
 		$this->tplAssign("aDefaultPhoto", $oGalleries->getPhoto($this->urlVars->dynamic["gallery"], true));
 		$this->tplAssign("aGallery", $aGallery);
 		$this->tplAssign("aCategories", $oGalleries->getCategories());
+		$this->tplAssign("sImageFolder", $this->model->imageFolder);
 		$this->tplAssign("sessionID", session_id());
 		$this->tplDisplay("admin/photos/index.tpl");
 	}
@@ -351,7 +350,7 @@ class admin_galleries extends adminController
 					)
 				);
 				
-				$upload_dir = $this->settings->rootPublic."uploads/galleries/".$this->urlVars->dynamic["gallery"]."/";
+				$upload_dir = $this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["gallery"]."/";
 				
 				if(!is_dir($upload_dir))
 					mkdir($upload_dir, 0777);
@@ -425,7 +424,7 @@ class admin_galleries extends adminController
 		
 		$aPhoto = $oGalleries->getPhoto($this->urlVars->dynamic["id"]);
 		
-		@unlink($this->settings->rootPublic."uploads/galleries/".$this->urlVars->dynamic["gallery"]."/".$aPhoto["photo"]);
+		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["gallery"]."/".$aPhoto["photo"]);
 		
 		$this->dbDelete("galleries_photos", $aPhoto["id"]);
 		

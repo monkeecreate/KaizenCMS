@@ -193,11 +193,11 @@ $(function() {
 			<ul id="photos">
 				{foreach from=$aGallery.photos item=aPhoto}
 					<li id="{$aPhoto.id}">
-						<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=273&height=200" class="image" width="95px" height="95px">
+						<img src="/image/crop/?file={$sImageFolder}{$aGallery.id}/{$aPhoto.photo}&width=273&height=200" class="image" width="95px" height="95px">
 						<span id="{$aPhoto.id}_form" style="display:none;" title="Edit Photo">
 							<form class="dialogForm" method="post" action="/admin/galleries/{$aGallery.id}/photos/edit/">
 								<figure class="right">
-									<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aPhoto.photo}&width=245&height=245" width="245px">
+									<img src="/image/crop/?file={$sImageFolder}{$aGallery.id}/{$aPhoto.photo}&width=245&height=245" width="245px">
 								</figure>
 								<label>*Title:</label><br />
 								<input type="text" name="title" maxlength="100" value="{$aPhoto.title}"><br />
@@ -229,7 +229,7 @@ $(function() {
 			<section>
 				{if !empty($aDefaultPhoto.photo)}
 				<div id="defaultPhoto" style="margin:0 0 10px;">
-					<img src="/image/crop/?file=/uploads/galleries/{$aGallery.id}/{$aDefaultPhoto.photo}&width=273&height=200" class="image" style="margin:0 4px;" id="photo_{$aDefaultPhoto.id}" width="273px">
+					<img src="/image/crop/?file={$sImageFolder}{$aGallery.id}/{$aDefaultPhoto.photo}&width=273&height=200" class="image" style="margin:0 4px;" id="photo_{$aDefaultPhoto.id}" width="273px">
 				</div>
 				{/if}
 			

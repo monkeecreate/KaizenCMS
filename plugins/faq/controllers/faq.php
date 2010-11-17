@@ -1,6 +1,5 @@
 <?php
-class faq extends appController
-{
+class faq extends appController {
 	function __construct() {
 		// Load model when creating appController
 		parent::__construct("faq");

@@ -1,6 +1,5 @@
 <?php
-class documents extends appController
-{
+class documents extends appController {
 	function __construct() {
 		// Load model when creating appController
 		parent::__construct("documents");

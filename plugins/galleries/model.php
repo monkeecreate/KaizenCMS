@@ -1,6 +1,6 @@
 <?php
-class galleries_model extends appModel
-{
+class galleries_model extends appModel {
+	public $imageFolder = "/uploads/galleries/";
 	public $useCategories = true;
 	public $perPage = 5;
 	
@@ -31,7 +31,7 @@ class galleries_model extends appModel
 		
 		return $aGalleries;
 	}
-	function getGallery($sId, $sTag, $sAll = false) {
+	function getGallery($sId, $sTag = null, $sAll = false) {
 		if(!empty($sId))
 			$sWhere = " WHERE `galleries`.`id` = ".$this->dbQuote($sId, "integer");
 		else

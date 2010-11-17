@@ -1,6 +1,5 @@
 <?php
-class faq_model extends appModel
-{
+class faq_model extends appModel {
 	public $useCategories = true;
 	public $perPage = 5;
 	

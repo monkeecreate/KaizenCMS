@@ -1,6 +1,5 @@
 <?php
-class links extends appController
-{
+class links extends appController {
 	function __construct() {
 		// Load model when creating appController
 		parent::__construct("links");
