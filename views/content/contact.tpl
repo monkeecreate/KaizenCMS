@@ -6,12 +6,9 @@
 	{rdelim};
 </script>
 {/head}
-{php}
-if($_GET["captcha_error"] != 1)
-{
-	$_SESSION["post_data"] = null;
-}
-{/php}
+{if $smarty.get.captcha_error != 1}
+	{$_SESSION["post_data"] = null}
+{/if}
 {getContent tag="contact" var="aContent"}
 
 	<h2>{$aContent.title}</h2>
