@@ -1,6 +1,5 @@
 <?php
-class galleries extends appController
-{
+class galleries extends appController {
 	function __construct() {
 		// Load model when creating appController
 		parent::__construct("galleries");
@@ -36,6 +35,7 @@ class galleries extends appController
 		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aGalleries", $aGalleries);
 		$this->tplAssign("aPaging", $aPaging);
+		$this->tplAssign("sImageFolder", $this->model->imageFolder);
 		
 		if(!empty($_GET["category"]) && $this->tplExists("category-".$_GET["category"]."tpl"))
 			$this->tplDisplay("category-".$_GET["category"].".tpl");
@@ -51,6 +51,7 @@ class galleries extends appController
 			$this->error('404');
 		
 		$this->tplAssign("aGallery", $aGallery);
+		$this->tplAssign("sImageFolder", $this->model->imageFolder);
 	
 		if($this->tplExists("gallery-".$aGallery["id"].".tpl"))
 			$this->tplDisplay("gallery-".$aGallery["id"].".tpl");

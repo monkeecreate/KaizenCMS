@@ -1,6 +1,5 @@
 <?php
-class faq extends appController
-{
+class faq extends appController {
 	function __construct() {
 		// Load model when creating appController
 		parent::__construct("faq");
@@ -38,5 +37,9 @@ class faq extends appController
 		$this->tplAssign("aPaging", $aPaging);
 		
 		$this->tplDisplay("faq.tpl");
+	}
+	function question() {
+		$this->tplAssign("aQuestion", $this->model->getQuestion(null, $this->urlVars->dynamic["tag"]));
+		$this->tplDisplay("question.tpl");
 	}
 }

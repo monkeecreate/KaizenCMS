@@ -96,7 +96,7 @@
 			
 			{if $sUseImage && $aListing.photo_x2 == 0}
 				<fieldset>
-					<legend>Article Image</legend>
+					<legend>Listing Image</legend>
 					
 					<label>Upload Image:</label><br />
 					<input type="file" name="image"><br />

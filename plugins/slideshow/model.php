@@ -1,6 +1,5 @@
 <?php
-class slideshow_model extends appModel
-{
+class slideshow_model extends appModel {
 	public $useImage = true;
 	public $imageMinWidth = 262;
 	public $imageMinHeight = 100;

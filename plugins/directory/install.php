@@ -19,6 +19,7 @@ $aTables = array(
 				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 100),
+			"tag" => array("type" => "text","length" => 100),
 			"address1" => array("type" => "text","length" => 100),
 			"address2" => array("type" => "text","length" => 100),
 			"city" => array("type" => "text","length" => 100),
@@ -28,7 +29,6 @@ $aTables = array(
 			"fax" => array("type" => "text","length" => 100),
 			"website" => array("type" => "text","length" => 100),
 			"email" => array("type" => "text","length" => 100),
-			"file" => array("type" => "text","length" => 100),
 			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"active" => array("type" => "boolean"),
 			"photo_x1" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
@@ -43,7 +43,7 @@ $aTables = array(
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
 		"index" => array("active"),
-		"unique" => array("sort_order"),
+		"unique" => array("tag", "sort_order"),
 		"fulltext" => array("name", "address1", "address2", "city", "state", "zip", "phone", "fax", "website", "email"),
 		"search" => array(
 			"title" => "name",

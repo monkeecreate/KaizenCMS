@@ -1,6 +1,5 @@
 <?php
-class admin_faq extends adminController
-{
+class admin_faq extends adminController {
 	function __construct() {
 		parent::__construct("faq");
 		
@@ -52,6 +51,24 @@ class admin_faq extends adminController
 			$this->forward("/admin/faq/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["question"]))))),0,100);
+	
+		$aQuestions = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}faq`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aQuestions)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aQuestions);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$sOrder = $this->dbQuery(
 			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}faq`"
 			,"one"
@@ -66,6 +83,7 @@ class admin_faq extends adminController
 			array(
 				"question" => $_POST["question"]
 				,"answer" => $_POST["answer"]
+				,"tag" => $sTag
 				,"sort_order" => $sOrder
 				,"active" => $this->boolCheck($_POST["active"])
 				,"created_datetime" => time()
@@ -136,11 +154,30 @@ class admin_faq extends adminController
 			$this->forward("/admin/faq/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["question"]))))),0,100);
+	
+		$aQuestions = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}faq`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aQuestions)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aQuestions);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$this->dbUpdate(
 			"faq",
 			array(
 				"question" => $_POST["question"]
 				,"answer" => $_POST["answer"]
+				,"tag" => $sTag
 				,"active" => $this->boolCheck($_POST["active"])
 				,"updated_datetime" => time()
 				,"updated_by" => $_SESSION["admin"]["userid"]

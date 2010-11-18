@@ -1,6 +1,5 @@
 <?php
-class admin_links extends adminController
-{
+class admin_links extends adminController {
 	function __construct() {
 		parent::__construct("links");
 		

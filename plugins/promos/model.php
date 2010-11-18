@@ -1,6 +1,5 @@
 <?php
-class promos_model extends appModel
-{
+class promos_model extends appModel {
 	public $imageFolder = "/uploads/promos/";
 	
 	function getPromos($sPosition = null) {

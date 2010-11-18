@@ -1,10 +1,9 @@
 <?php
-class directory_model extends appModel
-{
+class directory_model extends appModel {
 	public $useImage = true;
 	public $imageMinWidth = 140;
 	public $imageMinHeight = 87;
-	public $imageFolder = "/uploads/news/";
+	public $imageFolder = "/uploads/directory/";
 	public $useCategories = true;
 	public $perPage = 5;
 	public $sort = "name-asc"; // manual, name, state, created, updated, random - asc, desc
@@ -127,14 +126,17 @@ class directory_model extends appModel
 		
 		return $aListings;
 	}
-	function getListing($sId, $sAll = false) {
-		if($sAll == false) {
+	function getListing($sId, $sTag = null, $sAll = false) {
+		if(!empty($sId))
+			$sWhere = " WHERE `directory`.`id` = ".$this->dbQuote($sId, "integer");
+		else
+			$sWhere = " WHERE `directory`.`tag` = ".$this->dbQuote($sTag, "text");
+			
+		if($sAll == false)
 			$sWhere .= " AND `directory`.`active` = 1";
-		}
 		
 		$aListing = $this->dbQuery(
 			"SELECT `directory`.* FROM `{dbPrefix}directory` AS `directory`"
-				." WHERE `directory`.`id` = ".$this->dbQuote($sId, "integer")
 				.$sWhere
 				." LIMIT 1"
 			,"row"
@@ -170,7 +172,8 @@ class directory_model extends appModel
 			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		}
 		
-		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["file"])
+		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["id"].".jpg")
+		 && $aListing["photo_x2"] > 0
 		 && $this->useImage == true) {
 			$aListing["image"] = 1;
 		} else {

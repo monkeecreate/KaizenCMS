@@ -1,6 +1,5 @@
 <?php
-class links_model extends appModel
-{
+class links_model extends appModel {
 	public $useImage = true;
 	public $imageMinWidth = 140;
 	public $imageMinHeight = 87;

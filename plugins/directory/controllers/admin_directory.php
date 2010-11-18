@@ -1,6 +1,5 @@
 <?php
-class admin_directory extends adminController
-{
+class admin_directory extends adminController {
 	function __construct() {
 		parent::__construct("directory");
 		
@@ -54,7 +53,25 @@ class admin_directory extends adminController
 			$_SESSION["admin"]["admin_directory"] = $_POST;
 			$this->forward("/admin/directory/add/?error=".urlencode("Please fill in all required fields!"));
 		}
-		
+
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aListings = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}directory`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aListings)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aListings);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+
 		$sOrder = $this->dbQuery(
 			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}directory`"
 			,"one"
@@ -67,6 +84,7 @@ class admin_directory extends adminController
 			"directory",
 			array(
 				"name" => $_POST["name"]
+				,"tag" => $sTag
 				,"address1" => $_POST["address1"]
 				,"address2" => $_POST["address2"]
 				,"city" => $_POST["city"]
@@ -125,7 +143,7 @@ class admin_directory extends adminController
 			
 			$this->tplAssign("aListing", $aListing);
 		} else {
-			$aListing = $this->model->getListing($this->urlVars->dynamic["id"], true);
+			$aListing = $this->model->getListing($this->urlVars->dynamic["id"], null, true);
 			
 			$aListing["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}directory_categories` AS `categories`"
@@ -148,6 +166,8 @@ class admin_directory extends adminController
 		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
 		$this->tplAssign("aStates", $this->model->aStates);
 		$this->tplDisplay("admin/edit.tpl");
 	}
@@ -157,10 +177,29 @@ class admin_directory extends adminController
 			$this->forward("/admin/directory/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aListings = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}directory`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aListings)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aListings);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$this->dbUpdate(
 			"directory",
 			array(
 				"name" => $_POST["name"]
+				,"tag" => $sTag
 				,"address1" => $_POST["address1"]
 				,"address2" => $_POST["address2"]
 				,"city" => $_POST["city"]

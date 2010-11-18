@@ -1,6 +1,5 @@
 <?php
-class directory_ extends appController
-{
+class directory_ extends appController {
 	function __construct() {
 		// Load model when creating appController
 		parent::__construct("directory");
@@ -37,5 +36,9 @@ class directory_ extends appController
 		$this->tplAssign("aListings", $aListings);
 		$this->tplAssign("aPaging", $aPaging);
 		$this->tplDisplay("directory.tpl");
+	}
+	function listing() {
+		$this->tplAssign("aListing", $this->model->getListing(null, $this->urlVars->dynamic["tag"]));
+		$this->tplDisplay("listing.tpl");
 	}
 }

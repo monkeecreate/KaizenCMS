@@ -1,6 +1,5 @@
 <?php
-class faq_model extends appModel
-{
+class faq_model extends appModel {
 	public $useCategories = true;
 	public $perPage = 5;
 	public $sort = "manual-asc"; // manual, question, created, updated, random - asc, desc
@@ -68,10 +67,15 @@ class faq_model extends appModel
 		
 		return $aQuestions;
 	}
-	function getQuestion($sId) {
+	function getQuestion($sId, $sTag = null) {
+		if(!empty($sId))
+			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
+		else
+			$sWhere = " WHERE `tag` = ".$this->dbQuote($sTag, "text");
+		
 		$aQuestion = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}faq`"
-				." WHERE `id` = ".$this->dbQuote($sId, "integer")
+				.$sWhere
 			,"row"
 		);
 		

@@ -1,6 +1,5 @@
 <?php
-class admin_slideshow extends adminController
-{
+class admin_slideshow extends adminController {
 	function __construct() {
 		parent::__construct("slideshow");
 		
@@ -91,7 +90,7 @@ class admin_slideshow extends adminController
 	}
 	function delete() {
 		$this->dbDelete("slideshow", $this->urlVars->dynamic["id"]);
-		@unlink($this->settings->rootPublic."uploads/slideshow/".$this->urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 		
 		$this->forward("/admin/slideshow/?notice=".urlencode("Image removed successfully!"));
 	}
