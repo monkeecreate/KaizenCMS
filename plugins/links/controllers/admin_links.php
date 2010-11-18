@@ -119,7 +119,7 @@ class admin_links extends adminController {
 	}
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_links"])) {
-			$aLinkRow = $this->model->getLink($this->urlVars->dynamic["id"]);
+			$aLinkRow = $this->model->getLink($this->urlVars->dynamic["id"], null, true);
 			
 			$aLink = $_SESSION["admin"]["admin_links"];
 			
@@ -132,7 +132,7 @@ class admin_links extends adminController {
 			
 			$this->tplAssign("aLink", $aLink);
 		} else {
-			$aLink = $this->model->getLink($this->urlVars->dynamic["id"]);
+			$aLink = $this->model->getLink($this->urlVars->dynamic["id"], null, true);
 			
 			$aLink["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}links_categories` AS `categories`"
@@ -224,7 +224,7 @@ class admin_links extends adminController {
 		}
 	}
 	function delete() {
-		$aLink = $this->model->getLink($this->urlVars->dynamic["id"]);
+		$aLink = $this->model->getLink($this->urlVars->dynamic["id"], null, true);
 		
 		$this->dbDelete("links", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("links_categories_assign", $this->urlVars->dynamic["id"], "linkid");
@@ -234,7 +234,7 @@ class admin_links extends adminController {
 		$this->forward("/admin/links/?notice=".urlencode("Link removed successfully!"));
 	}
 	function sort() {
-		$aLink = $this->model->getLink($this->urlVars->dynamic["id"], "integer");
+		$aLink = $this->model->getLink($this->urlVars->dynamic["id"], null, true);
 		
 		if($this->urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbQuery(
@@ -314,7 +314,7 @@ class admin_links extends adminController {
 			$sPreviewHeight = ceil($this->model->imageMinHeight * (300 / $this->model->imageMinWidth));
 		}
 		
-		$this->tplAssign("aLink", $this->model->getLink($this->urlVars->dynamic["id"]));
+		$this->tplAssign("aLink", $this->model->getLink($this->urlVars->dynamic["id"], null, true));
 		$this->tplAssign("sFolder", $this->model->imageFolder);
 		$this->tplAssign("minWidth", $this->model->imageMinWidth);
 		$this->tplAssign("minHeight", $this->model->imageMinHeight);

@@ -107,7 +107,7 @@ class admin_faq extends adminController {
 	}
 	function edit() {		
 		if(!empty($_SESSION["admin"]["admin_faq"])) {
-			$aQuestionRow = $this->model->getQuestion($this->urlVars->dynamic["id"]);
+			$aQuestionRow = $this->model->getQuestion($this->urlVars->dynamic["id"], null, true);
 			
 			$aQuestion = $_SESSION["admin"]["admin_faq"];
 			
@@ -120,7 +120,7 @@ class admin_faq extends adminController {
 			
 			$this->tplAssign("aQuestion", $aQuestion);
 		} else {
-			$aQuestion = $this->model->getQuestion($this->urlVars->dynamic["id"], "integer");
+			$aQuestion = $this->model->getQuestion($this->urlVars->dynamic["id"], null, true);
 			
 			$aQuestion["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}faq_categories` AS `categories`"
@@ -205,7 +205,7 @@ class admin_faq extends adminController {
 		$this->forward("/admin/faq/?notice=".urlencode("Question removed successfully!"));
 	}
 	function sort() {		
-		$aQuestion = $this->model->getQuestion($this->urlVars->dynamic["id"], "integer");
+		$aQuestion = $this->model->getQuestion($this->urlVars->dynamic["id"], null, true);
 		
 		if($this->urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbQuery(

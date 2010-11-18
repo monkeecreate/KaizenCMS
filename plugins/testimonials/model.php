@@ -69,11 +69,14 @@ class testimonials_model extends appModel {
 		
 		return $aTestimonials;
 	}
-	function getTestimonial($sId, $sTag = null) {
+	function getTestimonial($sId, $sTag = null, $sAll = false) {
 		if(!empty($sId))
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
 		else
 			$sWhere = " WHERE `tag` = ".$this->dbQuote($sTag, "text");
+		
+		if($sAll == false)
+			$sWhere .= " AND `active` = 1";
 		
 		$aTestimonial = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}testimonials`"

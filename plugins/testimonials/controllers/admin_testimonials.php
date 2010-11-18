@@ -126,7 +126,7 @@ class admin_testimonials extends adminController {
 				,"row"
 			);
 		} else {
-			$aTestimonial = $this->model->getTestimonial($this->urlVars->dynamic["id"]);
+			$aTestimonial = $this->model->getTestimonial($this->urlVars->dynamic["id"], null, true);
 			
 			$aTestimonial["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}testimonials_categories` AS `categories`"
@@ -211,7 +211,7 @@ class admin_testimonials extends adminController {
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial removed successfully!"));
 	}
 	function sort() {
-		$aTestimonial = $this->model->getTestimonial($this->urlVars->dynamic["id"], "integer");
+		$aTestimonial = $this->model->getTestimonial($this->urlVars->dynamic["id"], null, true);
 		
 		if($this->urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbQuery(
