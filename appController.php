@@ -215,6 +215,13 @@ class appController {
 		
 		return $aFacebook;
 	}
+	function loadMailChimp() {
+		require_once($this->settings->root."helpers/mailchimp.php");
+		
+		$oMailChimp = new MCAPI($this->getSetting("mailChimp-api"));
+		
+		return $oMailChimp;
+	}
 	function urlShorten($sUrl) {
 		$sUser = $this->getSetting("bitly_user");
 		$sKey = $this->getSetting("bitly_key");

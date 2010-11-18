@@ -173,6 +173,23 @@ class content extends appController
 		
 		return $sString;
 	}
+	function mailChimpSubscribe() {
+		$oMailChimp = $this->loadMailChimp();
+		
+		$aMergeVars = array("FNAME" => $_POST["first_name"], "LNAME" => $_POST["last_name"], "GROUPINGS" => array());
+
+		$oMailChimp->listSubscribe($this->decrypt($_POST["list_id"]), $_POST["email"], $aMergeVars);
+
+		if($oMailChimp->errorCode){
+			$this->forward($this->decrypt($_POST["forward"])."?mcError=1");
+			// echo "Unable to load listSubscribe()!\n";
+			// echo "\tCode=".$oMailChimp->errorCode."\n";
+			// echo "\tMsg=".$oMailChimp->errorMessage."\n";
+		} else {
+			$this->forward($this->decrypt($_POST["forward"]));
+		}
+		
+	}
 	##################################
 	
 	### Functions ####################
