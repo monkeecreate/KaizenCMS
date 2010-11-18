@@ -14,13 +14,17 @@
 			/* CAN CHANGE */
 			"bStateSave": true, //whether to save a cookie with the current table state
 			"iDisplayLength": 10, //how many items to display on each page
-			"aaSorting": [[2, "asc"]], //which column to sort by (0-X)
-			"aoColumns": [
-				null,
-				null,
-				{ldelim} "sType": "num-html" {rdelim},
-				null
-			]
+			{if $sSort == "manual"}
+				"aaSorting": [[2, "asc"]], //which column to sort by (0-X)
+				"aoColumns": [
+					null,
+					null,
+					{ldelim} "sType": "num-html" {rdelim},
+					null
+				]
+			{else}
+				"aaSorting": [[1, "asc"]] //which column to sort by (0-X)
+			{/if}
 		{rdelim});
 	{rdelim});
 </script>
@@ -49,7 +53,7 @@
 			<tr>
 				<th class="empty itemStatus">&nbsp;</th>
 				<th>Question</th>
-				{if empty($sCategory)}
+				{if $sSort == "manual"}
 					<th>Order</th>
 				{/if}
 				<th></th>
@@ -66,7 +70,7 @@
 						{/if}
 					</td>
 					<td>{$aQuestion.question|substr:0:80}{if strlen($aQuestion.question) > 80}...{/if}</td>
-					{if empty($sCategory)}
+					{if $sSort == "manual"}
 						<td class="small center">
 							<span class="hidden">{$aQuestion.sort_order}</span>
 							{if $aQuestion.sort_order != $minSort}
