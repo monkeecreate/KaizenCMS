@@ -55,6 +55,24 @@ class admin_links extends adminController {
 			$this->forward("/admin/links/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aLinks = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}links`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aLinks)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aLinks);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$sOrder = $this->dbQuery(
 			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}links`"
 			,"one"
@@ -67,6 +85,7 @@ class admin_links extends adminController {
 			"links",
 			array(
 				"name" => $_POST["name"]
+				,"tag" => $sTag
 				,"description" => $_POST["description"]
 				,"link" => $_POST["link"]
 				,"sort_order" => $sOrder
@@ -145,6 +164,24 @@ class admin_links extends adminController {
 		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_links"] = $_POST;
 			$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aLinks = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}links`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aLinks)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aLinks);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
 		}
 		
 		$this->dbUpdate(

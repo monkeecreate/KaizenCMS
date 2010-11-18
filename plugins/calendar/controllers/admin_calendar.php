@@ -7,22 +7,18 @@ class admin_calendar extends adminController {
 	}
 	
 	### DISPLAY ######################
-	function index() {
-		$oCalendar = $this->loadModel("calendar");
-		
+	function index() {		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_calendar"] = null;
 		
-		$this->tplAssign("aCategories", $oCalendar->getCategories());
+		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aEvents", $oCalendar->getEvents($_GET["category"], true));
-		$this->tplAssign("sUseImage", $oCalendar->useImage);
+		$this->tplAssign("aEvents", $this->model->getEvents($_GET["category"], true));
+		$this->tplAssign("sUseImage", $this->model->useImage);
 		
 		$this->tplDisplay("admin/index.tpl");
 	}
-	function add() {
-		$oCalendar = $this->loadModel("calendar");
-		
+	function add() {		
 		if(!empty($_SESSION["admin"]["admin_calendar"])) {
 			$aEvent = $_SESSION["admin"]["admin_calendar"];
 			$aEvent["datetime_start"] = strtotime($aEvent["datetime_start_date"]." ".$aEvent["datetime_start_Hour"].":".$aEvent["datetime_start_Minute"]." ".$aEvent["datetime_start_Meridian"]);
@@ -43,19 +39,17 @@ class admin_calendar extends adminController {
 				)
 			);
 		
-		$this->tplAssign("aCategories", $oCalendar->getCategories());
-		$this->tplAssign("sUseCategories", $oCalendar->useCategories);
-		$this->tplAssign("sUseImage", $oCalendar->useImage);
-		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
-		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
-		$this->tplAssign("sShortContentCount", $oCalendar->shortContentCharacters);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
+		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
+		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
 		$this->tplAssign("sTwitterConnect", $this->getSetting("twitter_connect"));
 		$this->tplAssign("sFacebookConnect", $this->getSetting("facebook_connect"));
 		$this->tplDisplay("admin/add.tpl");
 	}
-	function add_s() {
-		$oCalendar = $this->loadModel("calendar");
-		
+	function add_s() {		
 		if(empty($_POST["title"])) {
 			$_SESSION["admin"]["admin_calendar"] = $_POST;
 			$this->forward("/admin/calendar/add/?error=".urlencode("Please fill in all required fields!"));
@@ -103,7 +97,7 @@ class admin_calendar extends adminController {
 			array(
 				"title" => $_POST["title"]
 				,"tag" => $sTag
-				,"short_content" => (string)substr($_POST["short_content"], 0, $oCalendar->shortContentCharacters)
+				,"short_content" => (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters)
 				,"content" => $_POST["content"]
 				,"allday" => $this->boolCheck($_POST["allday"])
 				,"datetime_start" => $datetime_start
@@ -136,20 +130,18 @@ class admin_calendar extends adminController {
 		}
 		
 		if($_POST["post_facebook"] == 1) {
-			$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $oCalendar->shortContentCharacters), $datetime_start, $datetime_end);
+			$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $datetime_start, $datetime_end);
 		}
 		
 		$_SESSION["admin"]["admin_calendar"] = null;
 		
-		if(!empty($_FILES["image"]["type"]) && $oCalendar->useImage == true) {
+		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true) {
 			$_POST["id"] = $sID;
 			$this->image_upload_s();
 		} else			
 			$this->forward("/admin/calendar/?notice=".urlencode("Event created successfully!"));
 	}
-	function edit() {
-		$oCalendar = $this->loadModel("calendar");
-		
+	function edit() {		
 		if(!empty($_SESSION["admin"]["admin_calendar"])) {
 			$aEventRow = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}calendar`"
@@ -166,7 +158,7 @@ class admin_calendar extends adminController {
 				,"row"
 			);
 		} else {
-			$aEvent = $oCalendar->getEvent($this->urlVars->dynamic["id"], null, true);
+			$aEvent = $this->model->getEvent($this->urlVars->dynamic["id"], null, true);
 			
 			$aEvent["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}calendar_categories` AS `categories`"
@@ -190,19 +182,17 @@ class admin_calendar extends adminController {
 		}
 		
 		$this->tplAssign("aEvent", $aEvent);
-		$this->tplAssign("aCategories", $oCalendar->getCategories());
-		$this->tplAssign("sUseCategories", $oCalendar->useCategories);
-		$this->tplAssign("sUseImage", $oCalendar->useImage);
-		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
-		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
-		$this->tplAssign("sShortContentCount", $oCalendar->shortContentCharacters);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
+		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
+		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
 		$this->tplAssign("sTwitterConnect", $this->getSetting("twitter_connect"));
 		$this->tplAssign("sFacebookConnect", $this->getSetting("facebook_connect"));
 		$this->tplDisplay("admin/edit.tpl");
 	}
-	function edit_s() {
-		$oCalendar = $this->loadModel("calendar");
-		
+	function edit_s() {		
 		if(empty($_POST["title"])) {
 			$_SESSION["admin"]["admin_calendar"] = $_POST;
 			$this->forward("/admin/calendar/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
@@ -231,7 +221,7 @@ class admin_calendar extends adminController {
 			"calendar",
 			array(
 				"title" => $_POST["title"]
-				,"short_content" => (string)substr($_POST["short_content"], 0, $oCalendar->shortContentCharacters)
+				,"short_content" => (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters)
 				,"content" => $_POST["content"]
 				,"allday" => $this->boolCheck($_POST["allday"])
 				,"datetime_start" => $datetime_start
@@ -260,12 +250,12 @@ class admin_calendar extends adminController {
 		}
 		
 		if($_POST["post_facebook"] == 1 || !empty($_POST["facebook_id"])) {
-			$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $oCalendar->shortContentCharacters), $datetime_start, $datetime_end, $_POST["facebook_id"]);
+			$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $datetime_start, $datetime_end, $_POST["facebook_id"]);
 		}
 		
 		$_SESSION["admin"]["admin_calendar"] = null;
 		
-		if(!empty($_FILES["image"]["type"]) && $oCalendar->useImage == true)
+		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true)
 			$this->image_upload_s();
 		else {
 			if($_POST["submit"] == "Save Changes")
@@ -276,30 +266,26 @@ class admin_calendar extends adminController {
 				$this->forward("/admin/calendar/image/".$_POST["id"]."/delete/");
 		}
 	}
-	function delete() {
-		$oCalendar = $this->loadModel("calendar");
-		
+	function delete() {		
 		$this->dbDelete("calendar", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("calendar_categories_assign", $this->urlVars->dynamic["id"], "eventid");
 		
-		@unlink($this->settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 		
 		$this->forward("/admin/calendar/?notice=".urlencode("Event removed successfully!"));
 	}
-	function image_upload_s() {			
-		$oCalendar = $this->loadModel("calendar");
-				
-		if(!is_dir($this->settings->rootPublic.substr($oCalendar->imageFolder, 1)))
-			mkdir($this->settings->rootPublic.substr($oCalendar->imageFolder, 1), 0777);
+	function image_upload_s() {						
+		if(!is_dir($this->settings->rootPublic.substr($this->model->imageFolder, 1)))
+			mkdir($this->settings->rootPublic.substr($this->model->imageFolder, 1), 0777);
 
 		if($_FILES["image"]["type"] == "image/jpeg"
 		 || $_FILES["image"]["type"] == "image/jpg"
 		 || $_FILES["image"]["type"] == "image/pjpeg"
 		) {
-			$sFile = $this->settings->rootPublic.substr($oCalendar->imageFolder, 1).$_POST["id"].".jpg";
+			$sFile = $this->settings->rootPublic.substr($this->model->imageFolder, 1).$_POST["id"].".jpg";
 			
 			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
-			if($aImageSize[0] < $oCalendar->imageMinWidth || $aImageSize[1] < $oCalendar->imageMinHeight) {
+			if($aImageSize[0] < $this->model->imageMinWidth || $aImageSize[1] < $this->model->imageMinHeight) {
 				$this->forward("/admin/calendar/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 			}
 			
@@ -309,10 +295,10 @@ class admin_calendar extends adminController {
 					array(
 						"photo_x1" => 0
 						,"photo_y1" => 0
-						,"photo_x2" => $oCalendar->imageMinWidth
-						,"photo_y2" => $oCalendar->imageMinHeight
-						,"photo_width" => $oCalendar->imageMinWidth
-						,"photo_height" => $oCalendar->imageMinHeight
+						,"photo_x2" => $this->model->imageMinWidth
+						,"photo_y2" => $this->model->imageMinHeight
+						,"photo_width" => $this->model->imageMinWidth
+						,"photo_height" => $this->model->imageMinHeight
 					),
 					$_POST["id"]
 				);
@@ -323,22 +309,20 @@ class admin_calendar extends adminController {
 		} else
 			$this->forward("/admin/calendar/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["file"]["type"].")."));
 	}
-	function image_edit() {
-		$oCalendar = $this->loadModel("calendar");
-		
+	function image_edit() {		
 		// Preview Size
-		if($oCalendar->imageMinWidth < 300) {
-			$sPreviewWidth = $oCalendar->imageMinWidth;
-			$sPreviewHeight = $oCalendar->imageMinHeight;
+		if($this->model->imageMinWidth < 300) {
+			$sPreviewWidth = $this->model->imageMinWidth;
+			$sPreviewHeight = $this->model->imageMinHeight;
 		} else {
 			$sPreviewWidth = 300;
-			$sPreviewHeight = ceil($oCalendar->imageMinHeight * (300 / $oCalendar->imageMinWidth));
+			$sPreviewHeight = ceil($this->model->imageMinHeight * (300 / $this->model->imageMinWidth));
 		}
 		
-		$this->tplAssign("aEvent", $oCalendar->getEvent($this->urlVars->dynamic["id"], true));
-		$this->tplAssign("sFolder", $oCalendar->imageFolder);
-		$this->tplAssign("minWidth", $oCalendar->imageMinWidth);
-		$this->tplAssign("minHeight", $oCalendar->imageMinHeight);
+		$this->tplAssign("aEvent", $this->model->getEvent($this->urlVars->dynamic["id"], true));
+		$this->tplAssign("sFolder", $this->model->imageFolder);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
 		$this->tplAssign("previewWidth", $sPreviewWidth);
 		$this->tplAssign("previewHeight", $sPreviewHeight);
 
@@ -360,9 +344,7 @@ class admin_calendar extends adminController {
 		
 		$this->forward("/admin/calendar/?notice=".urlencode("Event successfully saved."));
 	}
-	function image_delete() {
-		$oCalendar = $this->loadModel("calendar");
-		
+	function image_delete() {		
 		$this->dbUpdate(
 			"calendar",
 			array(
@@ -376,17 +358,15 @@ class admin_calendar extends adminController {
 			$this->urlVars->dynamic["id"]
 		);
 		
-		@unlink($this->settings->rootPublic.substr($oCalendar->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
+		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 
 		$this->forward("/admin/calendar/?notice=".urlencode("Event successfully saved."));
 	}
-	function categories_index() {
-		$oCalendar = $this->loadModel("calendar");
-		
+	function categories_index() {		
 		$_SESSION["admin"]["admin_calendar_categories"] = null;
 
-		$this->tplAssign("aCategories", $oCalendar->getCategories());
-		$this->tplAssign("aCategoryEdit", $oCalendar->getCategory($_GET["category"]));
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("aCategoryEdit", $this->model->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {

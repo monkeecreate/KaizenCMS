@@ -7,9 +7,7 @@ class admin_faq extends adminController {
 	}
 	
 	### DISPLAY ######################
-	function index() {
-		$oQuestions = $this->loadModel("faq");
-		
+	function index() {		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_faq"] = null;
 		
@@ -22,16 +20,14 @@ class admin_faq extends adminController {
 			,"one"
 		);
 		
-		$this->tplAssign("aCategories", $oQuestions->getCategories());
+		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aQuestions", $oQuestions->getQuestions($_GET["category"], true));
+		$this->tplAssign("aQuestions", $this->model->getQuestions($_GET["category"], true));
 		$this->tplAssign("minSort", $sMinSort);
 		$this->tplAssign("maxSort", $sMaxSort);
 		$this->tplDisplay("admin/index.tpl");
 	}
-	function add() {
-		$oQuestions = $this->loadModel("faq");
-		
+	function add() {		
 		if(!empty($_SESSION["admin"]["admin_faq"]))
 			$this->tplAssign("aQuestion", $_SESSION["admin"]["admin_faq"]);
 		else
@@ -42,8 +38,8 @@ class admin_faq extends adminController {
 				)
 			);
 		
-		$this->tplAssign("aCategories", $oQuestions->getCategories());
-		$this->tplAssign("sUseCategories", $oQuestions->useCategories);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
@@ -109,11 +105,9 @@ class admin_faq extends adminController {
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Question created successfully!"));
 	}
-	function edit() {
-		$oQuestions = $this->loadModel("faq");
-		
+	function edit() {		
 		if(!empty($_SESSION["admin"]["admin_faq"])) {
-			$aQuestionRow = $oQuestions->getQuestion($this->urlVars->dynamic["id"]);
+			$aQuestionRow = $this->model->getQuestion($this->urlVars->dynamic["id"]);
 			
 			$aQuestion = $_SESSION["admin"]["admin_faq"];
 			
@@ -126,7 +120,7 @@ class admin_faq extends adminController {
 			
 			$this->tplAssign("aQuestion", $aQuestion);
 		} else {
-			$aQuestion = $oQuestions->getQuestion($this->urlVars->dynamic["id"], "integer");
+			$aQuestion = $this->model->getQuestion($this->urlVars->dynamic["id"], "integer");
 			
 			$aQuestion["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}faq_categories` AS `categories`"
@@ -146,8 +140,8 @@ class admin_faq extends adminController {
 			$this->tplAssign("aQuestion", $aQuestion);
 		}
 		
-		$this->tplAssign("aCategories", $oQuestions->getCategories());
-		$this->tplAssign("sUseCategories", $oQuestions->useCategories);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
@@ -210,10 +204,8 @@ class admin_faq extends adminController {
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Question removed successfully!"));
 	}
-	function sort() {
-		$oQuestions = $this->loadModel("faq");
-		
-		$aQuestion = $oQuestions->getQuestion($this->urlVars->dynamic["id"], "integer");
+	function sort() {		
+		$aQuestion = $this->model->getQuestion($this->urlVars->dynamic["id"], "integer");
 		
 		if($this->urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbQuery(
@@ -249,13 +241,11 @@ class admin_faq extends adminController {
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Sort order saved successfully!"));
 	}
-	function categories_index() {
-		$oQuestions = $this->loadModel("faq");
-		
+	function categories_index() {		
 		$_SESSION["admin"]["admin_faq_categories"] = null;
 		
-		$this->tplAssign("aCategories", $oQuestions->getCategories());
-		$this->tplAssign("aCategoryEdit", $oQuestions->getCategory($_GET["category"]));
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("aCategoryEdit", $this->model->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {

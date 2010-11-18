@@ -38,4 +38,8 @@ class links extends appController {
 		
 		$this->tplDisplay("links.tpl");
 	}
+	function link() {
+		$this->tplAssign("aLink", $this->model->getLink(null, $this->urlVars->dynamic["tag"]));
+		$this->tplDisplay("link.tpl");
+	}
 }
