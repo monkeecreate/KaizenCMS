@@ -32,15 +32,16 @@ class admin_documents extends adminController
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {
-		if(!empty($_SESSION["admin"]["admin_documents"]))
+		if(!empty($_SESSION["admin"]["admin_documents"])) {
 			$this->tplAssign("aDocument", $_SESSION["admin"]["admin_documents"]);
-		else
+		} else {
 			$this->tplAssign("aDocument",
 				array(
 					"active" => 1
 					,"categories" => array()
 				)
 			);
+		}
 		
 		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sUseCategories", $this->model->useCategories);
@@ -57,8 +58,9 @@ class admin_documents extends adminController
 			,"one"
 		);
 		
-		if(empty($sOrder))
+		if(empty($sOrder)) {
 			$sOrder = 1;
+		}
 		
 		$sID = $this->dbInsert(
 			"documents",
@@ -100,8 +102,9 @@ class admin_documents extends adminController
 			} else {
 				$upload_dir = $this->settings->rootPublic.substr($this->model->documentFolder, 1);
 				
-				if(!is_dir($upload_dir))
+				if(!is_dir($upload_dir)) {
 					mkdir($upload_dir, 0777);
+				}
 			
 				$file_ext = pathinfo($_FILES["document"]["name"], PATHINFO_EXTENSION);
 				$upload_file = $sID.".".strtolower($file_ext);
@@ -126,8 +129,9 @@ class admin_documents extends adminController
 						
 						$this->forward("/admin/documents/edit/".$sID."/?error=".urlencode("Failed to upload file!"));
 					}
-				} else
+				} else {
 					$this->forward("/admin/documents/edit/".$sID."/?error=".urlencode("File type not allowed for upload!"));
+				}
 			}
 		}
 		

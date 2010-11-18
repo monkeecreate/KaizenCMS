@@ -83,8 +83,9 @@ class documents_model extends appModel
 			,"row"
 		);
 		
-		if(!empty($aDocument))
+		if(!empty($aDocument)) {
 			$aDocument = $this->_getDocumentInfo($aDocument);
+		}
 		
 		return $aDocument;
 	}
@@ -130,19 +131,21 @@ class documents_model extends appModel
 				,"all"
 			);
 			
-			foreach($aCategories as $x => $aCategory)
+			foreach($aCategories as $x => $aCategory) {
 				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+			}
 		}
 		
 		return $aCategories;
 	}
 	function getCategory($sId = null, $sName = null) {
-		if(!empty($sId))
+		if(!empty($sId)) {
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
-		elseif(!empty($sName))
+		} elseif(!empty($sName)) {
 			$sWhere = " WHERE `name` LIKE ".$this->dbQuote($sName, "text");
-		else
+		} else {
 			return false;
+		}
 		
 		$aCategory = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}documents_categories`"
