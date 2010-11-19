@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
 	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
@@ -14,23 +18,11 @@
 	
 	<link rel="shortcut icon" href="/images/favicon.ico">
 	<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
-	<link rel="stylesheet" href="/css/reset.css" type="text/css">	
-	<link rel="stylesheet" href="/css/print.css" type="text/css" media="print">
-	<link rel="stylesheet" href="/css/screen.css?v=1" type="text/css" media="screen, projection">
-	<link rel="stylesheet" href="/css/iphone.css" media="only screen and (max-width: 480px)" type="text/css">
-	<link rel="stylesheet" media="only screen and (-webkit-min-device-pixel-ratio: 2)" type="text/css" href="/css/iphone4.css"> <!-- Target iPhone 4 Retina Display -->
-	<!--[if IE]><link rel="stylesheet" href="/css/ie.css" type="text/css" media="screen, projection" /><![endif]-->
-	<!--[if gte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css" media="screen, projection" /><![endif]-->
-	<!--[if lte IE 6]><link rel="stylesheet" href="/css/ie6.css" type="text/css" media="screen, projection" /><![endif]-->
+	<link rel="stylesheet" href="/css/screen.css?v=1" type="text/css">
 	
 	<script src="/scripts/modernizr-1.5.min.js"></script>
 </head>
-<!--[if lt IE 7 ]> <body class="ie6 {$menu}"> <![endif]-->
-<!--[if IE 7 ]>    <body class="ie7 {$menu}"> <![endif]-->
-<!--[if IE 8 ]>    <body class="ie8 {$menu}"> <![endif]-->
-<!--[if IE 9 ]>    <body class="ie9 {$menu}"> <![endif]-->
-<!--[if gt IE 9]>  <body class="{$menu}">     <![endif]-->
-<!--[if !IE]><!--> <body class="{$menu}"> <!--<![endif]-->
+<body class="{$menu}">
 	<div id="wrapper">
 		<header>
 			<h1><a href="/" title="">Kaizen CMS</a></h1>

@@ -22,7 +22,8 @@
 	<script src="/scripts/common.js"></script>
 	<!--[if lt IE 7 ]>
 		<script src="/scripts/dd_belatedpng.js"></script>
-	<![endif]-->
+	 	<script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
+	 <![endif]-->
 
 {getSetting tag="analytics_google" assign="aSettingGoogle"}
 {if !empty($aSettingGoogle)}
