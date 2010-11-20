@@ -68,6 +68,7 @@ class calendar_model extends appModel {
 		else
 			$aEvent["short_content"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aEvent["content"])))), 0, $this->shortContentCharacters);
 		$aEvent["content"] = stripslashes($aEvent["content"]);
+		$aEvent["url"] = "/calendar/".$aEvent["tag"]."/";
 		
 		$aEvent["categories"] = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}calendar_categories` AS `category`"

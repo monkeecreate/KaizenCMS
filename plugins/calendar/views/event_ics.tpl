@@ -39,7 +39,7 @@ END:VTIMEZONE
 BEGIN:VEVENT
 CLASS:PUBLIC
 SUMMARY:{$aEvent.title}
-URL:http://{$domain}/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/
+URL:http://{$domain}{$aEvent.url}
 {if $aEvent.allday == 1}
 DTSTART;VALUE=DATE:{$aEvent.datetime_start|formatDate:"Ymd"}
 DTEND;VALUE=DATE:{$aEvent.datetime_end|formatDate:"Ymd\T240000"}
