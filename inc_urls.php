@@ -24,6 +24,10 @@ $aUrlPatterns = array(
 		"cmd" => "content",
 		"action" => "form_submit"
 	),
+	"/mailchimp-subscribe/" => array(
+		"cmd" => "content",
+		"action" => "mailChimpSubscribe"
+	),
 	"/image/resize/" => array(
 		"cmd" => "image",
 		"action" => "resize"

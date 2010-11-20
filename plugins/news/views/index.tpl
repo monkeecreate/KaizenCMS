@@ -61,7 +61,7 @@
 				{/if}
 			</small>
 			<fb:like href="http://{$smarty.server.SERVER_NAME}/news/{$aArticle.tag}/" show_faces="false"></fb:like>
-			<p>{$aArticle.short_content}<br /><a href="/news/{$aArticle.tag}/" title="{$aArticle.title}">More Info&raquo;</a></p>
+			<p>{$aArticle.short_content}&hellip; <a href="/news/{$aArticle.tag}/" title="{$aArticle.title}">More Info&raquo;</a></p>
 		</article>
 	{foreachelse}
 		<p>No news articles.</p>

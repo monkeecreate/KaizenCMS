@@ -7,7 +7,7 @@ class admin_faq extends adminController {
 	}
 	
 	### DISPLAY ######################
-	function index() {
+	function index() {		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_faq"] = null;
 		
@@ -29,8 +29,8 @@ class admin_faq extends adminController {
 		
 		$this->tplDisplay("admin/index.tpl");
 	}
-	function add() {
-		if(!empty($_SESSION["admin"]["admin_faq"])) {
+	function add() {		
+		if(!empty($_SESSION["admin"]["admin_faq"]))
 			$this->tplAssign("aQuestion", $_SESSION["admin"]["admin_faq"]);
 		} else {
 			$this->tplAssign("aQuestion",
@@ -109,9 +109,9 @@ class admin_faq extends adminController {
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Question created successfully!"));
 	}
-	function edit() {
+	function edit() {		
 		if(!empty($_SESSION["admin"]["admin_faq"])) {
-			$aQuestionRow = $this->model->getQuestion($this->urlVars->dynamic["id"]);
+			$aQuestionRow = $this->model->getQuestion($this->urlVars->dynamic["id"], null, true);
 			
 			$aQuestion = $_SESSION["admin"]["admin_faq"];
 			
@@ -124,7 +124,7 @@ class admin_faq extends adminController {
 			
 			$this->tplAssign("aQuestion", $aQuestion);
 		} else {
-			$aQuestion = $this->model->getQuestion($this->urlVars->dynamic["id"], "integer");
+			$aQuestion = $this->model->getQuestion($this->urlVars->dynamic["id"], null, true);
 			
 			$aQuestion["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}faq_categories` AS `categories`"
@@ -208,8 +208,8 @@ class admin_faq extends adminController {
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Question removed successfully!"));
 	}
-	function sort() {
-		$aQuestion = $this->model->getQuestion($this->urlVars->dynamic["id"], "integer");
+	function sort() {		
+		$aQuestion = $this->model->getQuestion($this->urlVars->dynamic["id"], null, true);
 		
 		if($this->urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbQuery(
@@ -245,7 +245,7 @@ class admin_faq extends adminController {
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Sort order saved successfully!"));
 	}
-	function categories_index() {
+	function categories_index() {		
 		$_SESSION["admin"]["admin_faq_categories"] = null;
 		
 		$this->tplAssign("aCategories", $this->model->getCategories());

@@ -7,16 +7,12 @@ class admin_slideshow extends adminController {
 	}	
 	### DISPLAY ######################
 	function index() {
-		$oSlideshow = $this->loadModel("slideshow");
-
-		$this->tplAssign("aImages", $oSlideshow->getSlides(true));
-		$this->tplAssign("imageMinWidth", $oSlideshow->imageMinWidth);
-		$this->tplAssign("imageMinHeight", $oSlideshow->imageMinHeight);
+		$this->tplAssign("aImages", $this->model->getSlides(true));
+		$this->tplAssign("imageMinWidth", $this->model->imageMinWidth);
+		$this->tplAssign("imageMinHeight", $this->model->imageMinHeight);
 		$this->tplDisplay("admin/index.tpl");
 	}
-	function add() {
-		$oSlideshow = $this->loadModel("slideshow");
-		
+	function add() {		
 		if(!empty($_SESSION["admin"]["admin_slideshow"])) {
 			$aImage = $_SESSION["admin"]["admin_slideshow"];
 			
@@ -28,15 +24,13 @@ class admin_slideshow extends adminController {
 				)
 			);
 		
-		$this->tplAssign("useDescription", $oSlideshow->useDescription);
-		$this->tplAssign("imageMinWidth", $oSlideshow->imageMinWidth);
-		$this->tplAssign("imageMinHeight", $oSlideshow->imageMinHeight);
-		$this->tplAssign("sShortContentCount", $oSlideshow->shortContentCharacters);
+		$this->tplAssign("useDescription", $this->model->useDescription);
+		$this->tplAssign("imageMinWidth", $this->model->imageMinWidth);
+		$this->tplAssign("imageMinHeight", $this->model->imageMinHeight);
+		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
 		$this->tplDisplay("admin/add.tpl");
 	}
-	function add_s() {
-		$oSlideshow = $this->loadModel("slideshow");
-		
+	function add_s() {		
 		if(empty($_POST["title"]) || empty($_FILES["image"]["type"])) {
 			$_SESSION["admin"]["admin_slideshow"] = $_POST;
 			$this->forward("/admin/slideshow/add/?error=".urlencode("Please fill in all required fields!"));
@@ -46,7 +40,7 @@ class admin_slideshow extends adminController {
 			"slideshow",
 			array(
 				"title" => $_POST["title"]
-				,"description" => (string)substr($_POST["description"], 0, $oSlideshow->shortContentCharacters)
+				,"description" => (string)substr($_POST["description"], 0, $this->model->shortContentCharacters)
 				,"active" => $this->boolCheck($_POST["active"])
 			)
 		);
@@ -57,13 +51,11 @@ class admin_slideshow extends adminController {
 		$this->image_upload_s();
 	}
 	function edit() {
-		$oSlideshow = $this->loadModel("slideshow");
-
-		$this->tplAssign("aImage", $oSlideshow->getSlide($this->urlVars->dynamic["id"]));
-		$this->tplAssign("useDescription", $oSlideshow->useDescription);
-		$this->tplAssign("imageMinWidth", $oSlideshow->imageMinWidth);
-		$this->tplAssign("imageMinHeight", $oSlideshow->imageMinHeight);
-		$this->tplAssign("sShortContentCount", $oSlideshow->shortContentCharacters);
+		$this->tplAssign("aImage", $this->model->getSlide($this->urlVars->dynamic["id"]));
+		$this->tplAssign("useDescription", $this->model->useDescription);
+		$this->tplAssign("imageMinWidth", $this->model->imageMinWidth);
+		$this->tplAssign("imageMinHeight", $this->model->imageMinHeight);
+		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {		
@@ -94,20 +86,18 @@ class admin_slideshow extends adminController {
 		
 		$this->forward("/admin/slideshow/?notice=".urlencode("Image removed successfully!"));
 	}
-	function image_upload_s() {
-		$oSlideshow = $this->loadModel("slideshow");
-				
-		if(!is_dir($this->settings->rootPublic.substr($oSlideshow->imageFolder, 1)))
-			mkdir($this->settings->rootPublic.substr($oSlideshow->imageFolder, 1), 0777);
+	function image_upload_s() {				
+		if(!is_dir($this->settings->rootPublic.substr($this->model->imageFolder, 1)))
+			mkdir($this->settings->rootPublic.substr($this->model->imageFolder, 1), 0777);
 
 		if($_FILES["image"]["type"] == "image/jpeg"
 		 || $_FILES["image"]["type"] == "image/jpg"
 		 || $_FILES["image"]["type"] == "image/pjpeg"
 		) {
-			$sFile = $this->settings->rootPublic.substr($oSlideshow->imageFolder, 1).$_POST["id"].".jpg";
+			$sFile = $this->settings->rootPublic.substr($this->model->imageFolder, 1).$_POST["id"].".jpg";
 			
 			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
-			if($aImageSize[0] < $oSlideshow->imageMinWidth || $aImageSize[1] < $oSlideshow->imageMinHeight) {
+			if($aImageSize[0] < $this->model->imageMinWidth || $aImageSize[1] < $this->model->imageMinHeight) {
 				$this->forward("/admin/slideshow/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 			}
 			
@@ -117,10 +107,10 @@ class admin_slideshow extends adminController {
 					array(
 						"photo_x1" => 0
 						,"photo_y1" => 0
-						,"photo_x2" => $oSlideshow->imageMinWidth
-						,"photo_y2" => $oSlideshow->imageMinHeight
-						,"photo_width" => $oSlideshow->imageMinWidth
-						,"photo_height" => $oSlideshow->imageMinHeight
+						,"photo_x2" => $this->model->imageMinWidth
+						,"photo_y2" => $this->model->imageMinHeight
+						,"photo_width" => $this->model->imageMinWidth
+						,"photo_height" => $this->model->imageMinHeight
 					),
 					$_POST["id"]
 				);
@@ -131,22 +121,20 @@ class admin_slideshow extends adminController {
 		} else
 			$this->forward("/admin/slideshow/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["file"]["type"].")."));
 	}
-	function image_edit() {
-		$oSlideshow = $this->loadModel("slideshow");
-		
+	function image_edit() {		
 		// Preview Size
-		if($oSlideshow->imageMinWidth < 300) {
-			$sPreviewWidth = $oSlideshow->imageMinWidth;
-			$sPreviewHeight = $oSlideshow->imageMinHeight;
+		if($this->model->imageMinWidth < 300) {
+			$sPreviewWidth = $this->model->imageMinWidth;
+			$sPreviewHeight = $this->model->imageMinHeight;
 		} else {
 			$sPreviewWidth = 300;
-			$sPreviewHeight = ceil($oSlideshow->imageMinHeight * (300 / $oSlideshow->imageMinWidth));
+			$sPreviewHeight = ceil($this->model->imageMinHeight * (300 / $this->model->imageMinWidth));
 		}
 		
-		$this->tplAssign("aImage", $oSlideshow->getSlide($this->urlVars->dynamic["id"], true));
-		$this->tplAssign("sFolder", $oSlideshow->imageFolder);
-		$this->tplAssign("imageMinWidth", $oSlideshow->imageMinWidth);
-		$this->tplAssign("imageMinHeight", $oSlideshow->imageMinHeight);
+		$this->tplAssign("aImage", $this->model->getSlide($this->urlVars->dynamic["id"], true));
+		$this->tplAssign("sFolder", $this->model->imageFolder);
+		$this->tplAssign("imageMinWidth", $this->model->imageMinWidth);
+		$this->tplAssign("imageMinHeight", $this->model->imageMinHeight);
 		$this->tplAssign("previewWidth", $sPreviewWidth);
 		$this->tplAssign("previewHeight", $sPreviewHeight);
 		$this->tplDisplay("admin/image.tpl");

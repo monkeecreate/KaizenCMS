@@ -16,6 +16,10 @@ $aPluginUrlPatterns = array(
 		"cmd" => "testimonials",
 		"action" => "index"
 	),
+	"/testimonials/{tag:[^/]+}/" => array(
+		"cmd" => "testimonials",
+		"action" => "testimonial"
+	),
 	"/testimonials/{id:[0-9]+}/" => array(
 		"cmd" => "testimonials",
 		"action" => "index"

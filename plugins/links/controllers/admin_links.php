@@ -55,6 +55,24 @@ class admin_links extends adminController {
 			$this->forward("/admin/links/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aLinks = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}links`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aLinks)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aLinks);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$sOrder = $this->dbQuery(
 			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}links`"
 			,"one"
@@ -67,6 +85,7 @@ class admin_links extends adminController {
 			"links",
 			array(
 				"name" => $_POST["name"]
+				,"tag" => $sTag
 				,"description" => $_POST["description"]
 				,"link" => $_POST["link"]
 				,"sort_order" => $sOrder
@@ -100,7 +119,7 @@ class admin_links extends adminController {
 	}
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_links"])) {
-			$aLinkRow = $this->model->getLink($this->urlVars->dynamic["id"]);
+			$aLinkRow = $this->model->getLink($this->urlVars->dynamic["id"], null, true);
 			
 			$aLink = $_SESSION["admin"]["admin_links"];
 			
@@ -113,7 +132,7 @@ class admin_links extends adminController {
 			
 			$this->tplAssign("aLink", $aLink);
 		} else {
-			$aLink = $this->model->getLink($this->urlVars->dynamic["id"]);
+			$aLink = $this->model->getLink($this->urlVars->dynamic["id"], null, true);
 			
 			$aLink["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}links_categories` AS `categories`"
@@ -145,6 +164,24 @@ class admin_links extends adminController {
 		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_links"] = $_POST;
 			$this->forward("/admin/links/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aLinks = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}links`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aLinks)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aLinks);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
 		}
 		
 		$this->dbUpdate(
@@ -187,7 +224,7 @@ class admin_links extends adminController {
 		}
 	}
 	function delete() {
-		$aLink = $this->model->getLink($this->urlVars->dynamic["id"]);
+		$aLink = $this->model->getLink($this->urlVars->dynamic["id"], null, true);
 		
 		$this->dbDelete("links", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("links_categories_assign", $this->urlVars->dynamic["id"], "linkid");
@@ -197,7 +234,7 @@ class admin_links extends adminController {
 		$this->forward("/admin/links/?notice=".urlencode("Link removed successfully!"));
 	}
 	function sort() {
-		$aLink = $this->model->getLink($this->urlVars->dynamic["id"], "integer");
+		$aLink = $this->model->getLink($this->urlVars->dynamic["id"], null, true);
 		
 		if($this->urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbQuery(
@@ -277,7 +314,7 @@ class admin_links extends adminController {
 			$sPreviewHeight = ceil($this->model->imageMinHeight * (300 / $this->model->imageMinWidth));
 		}
 		
-		$this->tplAssign("aLink", $this->model->getLink($this->urlVars->dynamic["id"]));
+		$this->tplAssign("aLink", $this->model->getLink($this->urlVars->dynamic["id"], null, true));
 		$this->tplAssign("sFolder", $this->model->imageFolder);
 		$this->tplAssign("minWidth", $this->model->imageMinWidth);
 		$this->tplAssign("minHeight", $this->model->imageMinHeight);

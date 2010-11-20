@@ -63,7 +63,10 @@ class calendar_model extends appModel {
 	}
 	private function _getEventInfo($aEvent) {
 		$aEvent["title"] = htmlspecialchars(stripslashes($aEvent["title"]));
-		$aEvent["short_content"] = nl2br(htmlspecialchars(stripslashes($aEvent["short_content"])));
+		if(!empty($aEvent["short_content"]))
+			$aEvent["short_content"] = nl2br(htmlspecialchars(stripslashes($aEvent["short_content"])));
+		else
+			$aEvent["short_content"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aEvent["content"])))), 0, $this->shortContentCharacters);
 		$aEvent["content"] = stripslashes($aEvent["content"]);
 		
 		$aEvent["categories"] = $this->dbQuery(

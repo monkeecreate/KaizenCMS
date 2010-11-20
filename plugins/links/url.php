@@ -16,6 +16,10 @@ $aPluginUrlPatterns = array(
 		"cmd" => "links",
 		"action" => "index"
 	),
+	"/links/{tag:[^/]+}/" => array(
+		"cmd" => "links",
+		"action" => "link"
+	),
 	"/admin/links/" => array(
         "cmd" => "admin_links",
         "action" => "index"

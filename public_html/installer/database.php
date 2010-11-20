@@ -302,6 +302,16 @@ $aTables = array(
 				"type" => "text",
 				"sortOrder" => 1,
 				"active" => 1
+			),
+			array(
+				"group" => 5,
+				"tag" => "mailChimp-api",
+				"title" => "MailChimp API Key",
+				"text" => NULL,
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 6,
+				"active" => 1
 			)
 		)
 	),

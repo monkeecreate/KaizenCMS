@@ -51,6 +51,24 @@ class admin_testimonials extends adminController {
 			$this->forward("/admin/testimonials/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aTestimonials = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}testimonials`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aTestimonials)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aQuestions);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$sOrder = $this->dbQuery(
 			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}testimonials`"
 			,"one"
@@ -65,6 +83,7 @@ class admin_testimonials extends adminController {
 				"name" => $_POST["name"]
 				,"sub_name" => $_POST["sub_name"]
 				,"text" => $_POST["text"]
+				,"tag" => $sTag
 				,"sort_order" => $sOrder
 				,"active" => $this->boolCheck($_POST["active"])
 				,"created_datetime" => time()
@@ -107,7 +126,7 @@ class admin_testimonials extends adminController {
 				,"row"
 			);
 		} else {
-			$aTestimonial = $this->model->getTestimonial($this->urlVars->dynamic["id"], true);
+			$aTestimonial = $this->model->getTestimonial($this->urlVars->dynamic["id"], null, true);
 			
 			$aTestimonial["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}testimonials_categories` AS `categories`"
@@ -135,6 +154,24 @@ class admin_testimonials extends adminController {
 		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_testimonials"] = $_POST;
 			$this->forward("/admin/testimonials/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aTestimonials = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}testimonials`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aTestimonials)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aQuestions);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
 		}
 		
 		$this->dbUpdate(
@@ -174,7 +211,7 @@ class admin_testimonials extends adminController {
 		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial removed successfully!"));
 	}
 	function sort() {
-		$aTestimonial = $this->model->getTestimonial($this->urlVars->dynamic["id"], "integer");
+		$aTestimonial = $this->model->getTestimonial($this->urlVars->dynamic["id"], null, true);
 		
 		if($this->urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbQuery(

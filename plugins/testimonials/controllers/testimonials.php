@@ -12,4 +12,8 @@ class testimonials extends appController {
 		$this->tplAssign("aCategory", $this->model->getCategory($_GET["category"]));
 		$this->tplDisplay("testimonials.tpl");
 	}
+	function testimonial() {
+		$this->tplAssign("aTestimonial", $this->model->getTestimonial(null, $this->urlVars->dynamic["tag"]));
+		$this->tplDisplay("testimonial.tpl");
+	}
 }

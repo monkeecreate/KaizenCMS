@@ -67,11 +67,14 @@ class faq_model extends appModel {
 		
 		return $aQuestions;
 	}
-	function getQuestion($sId, $sTag = null) {
+	function getQuestion($sId, $sTag = null, $sAll = false) {
 		if(!empty($sId))
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
 		else
 			$sWhere = " WHERE `tag` = ".$this->dbQuote($sTag, "text");
+		
+		if($sAll == false)		
+			$sWhere = " AND `active` = 1";
 		
 		$aQuestion = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}faq`"

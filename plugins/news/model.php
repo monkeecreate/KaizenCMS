@@ -63,7 +63,11 @@ class news_model extends appModel {
 			$aArticle["user"] = $this->getUser($aArticle["created_by"]);
 		
 		$aArticle["title"] = htmlspecialchars(stripslashes($aArticle["title"]));
-		$aArticle["short_content"] = nl2br(htmlspecialchars(stripslashes($aArticle["short_content"])));
+		if(!empty($aArticle["short_content"]))
+			$aArticle["short_content"] = nl2br(htmlspecialchars(stripslashes($aArticle["short_content"])));
+		else
+			$aArticle["short_content"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aArticle["content"])))), 0, $this->shortContentCharacters);
+		
 		$aArticle["content"] = stripslashes($aArticle["content"]);
 		
 		$aArticle["categories"] = $this->dbQuery(

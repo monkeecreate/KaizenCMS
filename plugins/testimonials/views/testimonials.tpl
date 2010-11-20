@@ -4,7 +4,7 @@
 	
 	{foreach from=$aTestimonials item=aTestimonial}
 		<article>
-			<h3>{$aTestimonial.name} - <small>{$aTestimonial.sub_name}</small></h3>
+			<h3><a href="/testimonials/{$aTestimonial.tag}/" title="{$aTestimonial.name}">{$aTestimonial.name}</a> - <small>{$aTestimonial.sub_name}</small></h3>
 			<blockquote>
 				{$aTestimonial.text}
 			</blockquote>

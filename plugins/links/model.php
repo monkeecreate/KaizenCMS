@@ -72,10 +72,18 @@ class links_model extends appModel {
 		
 		return $aLinks;
 	}
-	function getLink($sId) {
+	function getLink($sId, $sTag = null, $sAll = false) {
+		if(!empty($sId))
+			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
+		else
+			$sWhere = " WHERE `tag` = ".$this->dbQuote($sTag, "text");
+		
+		if($sAll == false)
+			$sWhere .= " AND `active` = 1";
+		
 		$aLink = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}links`"
-				." WHERE `id` = ".$this->dbQuote($sId, "integer")
+				.$sWhere
 			,"row"
 		);
 		

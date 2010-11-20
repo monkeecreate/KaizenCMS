@@ -7,21 +7,17 @@ class admin_galleries extends adminController {
 	}
 	
 	### DISPLAY ######################
-	function index() {
-		$oGalleries = $this->loadModel("galleries");
-		
+	function index() {		
 		// Clear saved form info
 		$_SESSION["admin"]["admin_gallery"] = null;
 		
-		$this->tplAssign("aCategories", $oGalleries->getCategories());
+		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aGalleries", $oGalleries->getGalleries($_GET["category"], true));
-		$this->tplAssign("maxsort", $oGalleries->getMaxSort());
+		$this->tplAssign("aGalleries", $this->model->getGalleries($_GET["category"], true));
+		$this->tplAssign("maxsort", $this->model->getMaxSort());
 		$this->tplDisplay("admin/index.tpl");
 	}
-	function add() {
-		$oGalleries = $this->loadModel("galleries");
-		
+	function add() {		
 		if(!empty($_SESSION["admin"]["admin_gallery"]))
 			$this->tplAssign("aGallery", $_SESSION["admin"]["admin_gallery"]);
 		else
@@ -32,8 +28,8 @@ class admin_galleries extends adminController {
 				)
 			);
 		
-		$this->tplAssign("aCategories", $oGalleries->getCategories());
-		$this->tplAssign("sUseCategories", $oGalleries->useCategories);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
@@ -101,11 +97,9 @@ class admin_galleries extends adminController {
 		
 		$this->forward("/admin/galleries/?notice=".urlencode("Gallery created successfully!"));
 	}
-	function edit() {
-		$oGalleries = $this->loadModel("galleries");
-		
+	function edit() {		
 		if(!empty($_SESSION["admin"]["admin_galleries"])) {	
-			$aGalleryRow = $oGalleries->getGallery($this->urlVars->dynamic["id"], null, true);
+			$aGalleryRow = $this->model->getGallery($this->urlVars->dynamic["id"], null, true);
 			
 			$aGallery = $_SESSION["admin"]["admin_galleries"];
 			
@@ -118,7 +112,7 @@ class admin_galleries extends adminController {
 			
 			$this->tplAssign("aGallery", $aGallery);
 		} else {
-			$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["id"], null, true);
+			$aGallery = $this->model->getGallery($this->urlVars->dynamic["id"], null, true);
 			
 			$aGallery["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}galleries_categories` AS `categories`"
@@ -138,8 +132,8 @@ class admin_galleries extends adminController {
 			$this->tplAssign("aGallery", $aGallery);
 		}
 		
-		$this->tplAssign("aCategories", $oGalleries->getCategories());
-		$this->tplAssign("sUseCategories", $oGalleries->useCategories);
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {
@@ -222,10 +216,8 @@ class admin_galleries extends adminController {
 		
 		$this->forward("/admin/galleries/?notice=".urlencode("Gallery removed successfully!"));
 	}
-	function sort() {
-		$oGalleries = $this->loadModel("galleries");
-		
-		$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["id"], null, true);
+	function sort() {		
+		$aGallery = $this->model->getGallery($this->urlVars->dynamic["id"], null, true);
 		
 		if($this->urlVars->dynamic["sort"] == "up")
 			$aOld = $this->dbQuery(
@@ -260,13 +252,11 @@ class admin_galleries extends adminController {
 		
 		$this->forward("/admin/galleries/?notice=".urlencode("Sort order saved successfully!"));
 	}
-	function categories_index() {
-		$oGalleries = $this->loadModel("galleries");
-		
+	function categories_index() {		
 		$_SESSION["admin"]["admin_galleries_categories"] = null;
 		
-		$this->tplAssign("aCategories", $oGalleries->getCategories());
-		$this->tplAssign("aCategoryEdit", $oGalleries->getCategory($_GET["category"]));
+		$this->tplAssign("aCategories", $this->model->getCategories());
+		$this->tplAssign("aCategoryEdit", $this->model->getCategory($_GET["category"]));
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
@@ -296,10 +286,8 @@ class admin_galleries extends adminController {
 
 		$this->forward("/admin/galleries/categories/?notice=".urlencode("Category removed successfully!"));
 	}
-	function photos_index() {
-		$oGalleries = $this->loadModel("galleries");
-		
-		$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["gallery"], null, true);
+	function photos_index() {		
+		$aGallery = $this->model->getGallery($this->urlVars->dynamic["gallery"], null, true);
 		
 		$aGallery["categories"] = $this->dbQuery(
 			"SELECT `categories`.`id` FROM `{dbPrefix}galleries_categories` AS `categories`"
@@ -310,16 +298,14 @@ class admin_galleries extends adminController {
 			,"col"
 		);
 
-		$this->tplAssign("aDefaultPhoto", $oGalleries->getPhoto($this->urlVars->dynamic["gallery"], true));
+		$this->tplAssign("aDefaultPhoto", $this->model->getPhoto($this->urlVars->dynamic["gallery"], true));
 		$this->tplAssign("aGallery", $aGallery);
-		$this->tplAssign("aCategories", $oGalleries->getCategories());
+		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sImageFolder", $this->model->imageFolder);
 		$this->tplAssign("sessionID", session_id());
 		$this->tplDisplay("admin/photos/index.tpl");
 	}
-	function photos_add() {
-		$oGalleries = $this->loadModel("galleries");
-		
+	function photos_add() {		
 		if(!empty($_FILES["photo"]["name"])) {
 			if($_FILES["photo"]["error"] == 1)
 				die("Error: File too large!");
@@ -333,7 +319,7 @@ class admin_galleries extends adminController {
 				if(empty($sOrder))
 					$sOrder = 1;
 				
-				$aGallery = $oGalleries->getGallery($this->urlVars->dynamic["gallery"]);
+				$aGallery = $this->model->getGallery($this->urlVars->dynamic["gallery"]);
 				if(empty($aGallery["photos"]))
 					$sDefault = 1;
 				else
@@ -375,9 +361,7 @@ class admin_galleries extends adminController {
 		} else
 			die("Error: File info not sent");
 	}
-	function photos_manage() {
-		$oGalleries = $this->loadModel("galleries");
-		
+	function photos_manage() {		
 		if(!empty($_GET["images"]))
 			$images = " AND `id` IN (".$_GET["images"].")";
 		
@@ -390,7 +374,7 @@ class admin_galleries extends adminController {
 		);
 		
 		$this->tplAssign("aPhotos", $aPhotos);
-		$this->tplAssign("aGallery", $oGalleries->getGallery($this->urlVars->dynamic["gallery"], null, true));
+		$this->tplAssign("aGallery", $this->model->getGallery($this->urlVars->dynamic["gallery"], null, true));
 		$this->tplDisplay("admin/photos_manage.tpl");
 	}
 	function photos_manage_s() {
@@ -419,10 +403,8 @@ class admin_galleries extends adminController {
 		
 		echo $_POST["id"];
 	}
-	function photos_delete() {
-		$oGalleries = $this->loadModel("galleries");
-		
-		$aPhoto = $oGalleries->getPhoto($this->urlVars->dynamic["id"]);
+	function photos_delete() {		
+		$aPhoto = $this->model->getPhoto($this->urlVars->dynamic["id"]);
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["gallery"]."/".$aPhoto["photo"]);
 		
