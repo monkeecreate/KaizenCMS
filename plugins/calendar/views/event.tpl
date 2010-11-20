@@ -38,7 +38,7 @@
 		</p>
 	</div>
 	<div style="text-align:center;margin-top:10px">
-		<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/ics/">
+		<a href="/calendar/{$aEvent.tag}/ics/">
 			<img src="/images/admin/icons/calendar.png"> Download Event
 		</a>
 	</div>
