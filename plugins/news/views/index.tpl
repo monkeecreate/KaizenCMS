@@ -51,7 +51,7 @@
 			{/if}
 			<h3><a href="/news/{$aArticle.tag}/" title="{$aArticle.title}">{$aArticle.title}</a></h3>
 			<small class="timeCat">
-				<time>{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</time>
+				<time>{$aArticle.datetime_show|formatDateTime}</time>
 				| Posted by: {$aArticle.user.fname} {$aArticle.user.lname} 
 				{if !empty($aArticle.categories)}
 					| Categories: 

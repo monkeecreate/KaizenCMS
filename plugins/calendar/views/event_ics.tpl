@@ -31,11 +31,11 @@ CLASS:PUBLIC
 SUMMARY:{$aEvent.title}
 URL:http://{$domain}/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/
 {if $aEvent.allday == 1}
-DTSTART;VALUE=DATE:{$aEvent.datetime_start|date_format:"%Y%m%d"}
-DTEND;VALUE=DATE:{$aEvent.datetime_end|date_format:"%Y%m%dT240000"}
+DTSTART;VALUE=DATE:{$aEvent.datetime_start|formatDate:"Ymd"}
+DTEND;VALUE=DATE:{$aEvent.datetime_end|formatDate:"Ymd\T240000"}
 {else}
-DTSTART:{$aEvent.datetime_start|date_format:"%Y%m%dT%H%M%S"}
-DTEND:{$aEvent.datetime_end|date_format:"%Y%m%dT%H%M%S"}
+DTSTART:{$aEvent.datetime_start|formatDate:"Ymd\This"}
+DTEND:{$aEvent.datetime_end|formatDate:"Ymd\This"}
 {/if}
 UID:{$aEvent.id}
 END:VEVENT

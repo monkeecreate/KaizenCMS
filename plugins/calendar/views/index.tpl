@@ -58,7 +58,7 @@
 			
 			<fb:like href="http://{$smarty.server.SERVER_NAME}/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" show_faces="false"></fb:like>
 			
-			{if $aEvent.photo_x2 > 0}
+			{if $aEvent.image == 1}
 				<figure class="left">
 					<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="{$aEvent.title}"><img src="/image/calendar/{$aEvent.id}/?width=140" alt="Calendar Image"></a>
 				</figure>

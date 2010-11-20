@@ -25,6 +25,8 @@ class appController {
 			,"surl" => $sURL
 			,"url" => $aUrl
 			,"encryptSalt" => $aConfig["encryption"]["salt"]
+			,"formatDate" => $aConfig["options"]["formatDate"]
+			,"formatTime" => $aConfig["options"]["formatTime"]
 		);
 		$this->urlVars = $aURLVars;
 		
