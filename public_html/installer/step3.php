@@ -145,11 +145,13 @@ include("inc_header.php");
 							"d/m/Y"	
 						)
 						?>
-						<label for="format_date">Date Format</label>
+						<label for="format_date" class="alt">Date Format:</label>
+						<ul>
 						<?php foreach($aDateFormats as $sDateFormat) { ?>
-							<input type="radio" name="format_date" value="<?php echo $sDateFormat; ?>"<?php if($aConfig["options"]["formatDate"] == $sDateFormat){echo " checked=\"checked\"";} ?>> <?php echo date($sDateFormat); ?>
+							<li><input type="radio" name="format_date" value="<?php echo $sDateFormat; ?>"<?php if($aConfig["options"]["formatDate"] == $sDateFormat){echo " checked=\"checked\"";} ?>> <?php echo date($sDateFormat); ?></li>
 						<?php } ?>
-						<input type="radio" name="format_date" value="custom"<?php if(!in_array($aConfig["options"]["formatDate"], $aDateFormats)){echo " checked=\"checked\"";} ?>> Custom: <input type="text" name="format_date_custom" value="<?php echo $aConfig["options"]["formatDate"]; ?>"> <?php echo date($aConfig["options"]["formatDate"]); ?>
+						<li><input type="radio" name="format_date" value="custom"<?php if(!in_array($aConfig["options"]["formatDate"], $aDateFormats)){echo " checked=\"checked\"";} ?>> Custom: <input type="text" name="format_date_custom" value="<?php echo $aConfig["options"]["formatDate"]; ?>"> <?php echo date($aConfig["options"]["formatDate"]); ?></li>
+						</ul>
 						
 						<?php
 						$aTimeFormats = array(
@@ -159,11 +161,13 @@ include("inc_header.php");
 							"H:i"	
 						)
 						?>
-						<label for="format_time">Time Format</label>
+						<label for="format_time" class="alt">Time Format:</label>
+						<ul>
 						<?php foreach($aTimeFormats as $sTimeFormat) { ?>
-							<input type="radio" name="format_time" value="<?php echo $sTimeFormat; ?>"<?php if($aConfig["options"]["formatTime"] == $sTimeFormat){echo " checked=\"checked\"";} ?>> <?php echo date($sTimeFormat); ?>
+							<li><input type="radio" name="format_time" value="<?php echo $sTimeFormat; ?>"<?php if($aConfig["options"]["formatTime"] == $sTimeFormat){echo " checked=\"checked\"";} ?>> <?php echo date($sTimeFormat); ?></li>
 						<?php } ?>
-						<input type="radio" name="format_time" value="custom"<?php if(!in_array($aConfig["options"]["formatTime"], $aTimeFormats)){echo " checked=\"checked\"";} ?>> Custom: <input type="text" name="format_time_custom" value="<?php echo $aConfig["options"]["formatTime"]; ?>"> <?php echo date($aConfig["options"]["formatTime"]); ?>
+						<li><input type="radio" name="format_time" value="custom"<?php if(!in_array($aConfig["options"]["formatTime"], $aTimeFormats)){echo " checked=\"checked\"";} ?>> Custom: <input type="text" name="format_time_custom" value="<?php echo $aConfig["options"]["formatTime"]; ?>"> <?php echo date($aConfig["options"]["formatTime"]); ?></li>
+						</ul>
 					</fieldset>
 					
 					<fieldset>
