@@ -2,29 +2,68 @@
 class faq_model extends appModel {
 	public $useCategories = true;
 	public $perPage = 5;
+	public $sort = "manual-asc"; // manual, question, created, updated, random - asc, desc
 	
 	function getQuestions($sCategory = null, $sAll = false) {
-		// Start the WHERE
-		$sWhere = " WHERE `faq`.`id` > 0";// Allways true
+		$aWhere = array();
+		$sJoin = "";
 		
-		if($sAll == false)		
-			$sWhere = " AND `faq`.`active` = 1";
+		// Filter those that are only active, unless told otherwise
+		if($sAll == false) {
+			$aWhere[] = "`faq`.`active` = 1";
+		}
+		
+		// Filter by category if given
+		if(!empty($_GET["category"])) {
+			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($_GET["category"], "integer");
+			$sJoin .= " LEFT JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq`.`id` = `faq_assign`.`faqid`";
+			$sJoin .= " LEFT JOIN `{dbPrefix}faq_categories` AS `categories` ON `faq_assign`.`categoryid` = `categories`.`id`";
+		}
+		
+		// Combine filters if atleast one was added
+		if(!empty($aWhere)) {
+			$sWhere = " WHERE ".implode(" AND ", $aWhere);
+		}
+		
+		// Check if sort direction is set, and clean it up for SQL use
+		$sSortDirection = array_pop(explode("-", $this->sort));
+		if(empty($sSortDirection) || !in_array(strtolower($sSortDirection), array("asc", "desc"))) {
+			$sSortDirection = "ASC";
+		} else {
+			$sSortDirection = strtoupper($sSortDirection);
+		}
 			
-		if(!empty($_GET["category"]))
-			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($_GET["category"], "integer");
+		// Choose sort method based on model setting
+		switch(array_shift(explode("-", $this->sort))) {
+			case "manual":
+				$sOrderBy = " ORDER BY `sort_order` ".$sSortDirection;
+				break;
+			case "created":
+				$sOrderBy = " ORDER BY `created_datetime` ".$sSortDirection;
+				break;
+			case "updated":
+				$sOrderBy = " ORDER BY `updated_datetime` ".$sSortDirection;
+				break;
+			case "random":
+				$sOrderBy = " ORDER BY RAND()";
+				break;
+			// Default to sort by name
+			default:
+				$sOrderBy = " ORDER BY `question` ".$sSortDirection;
+		}
 		
 		// Get all faq for paging
 		$aQuestions = $this->dbQuery(
 			"SELECT `faq`.* FROM `{dbPrefix}faq` AS `faq`"
-				." LEFT JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq`.`id` = `faq_assign`.`faqid`"
-				." LEFT JOIN `{dbPrefix}faq_categories` AS `categories` ON `faq_assign`.`categoryid` = `categories`.`id`"
+				.$sJoin
 				.$sWhere
-				." GROUP BY `faq`.`sort_order`"
+				.$sOrderBy
 			,"all"
 		);
 		
-		foreach($aQuestions as $x => &$aQuestion)
+		foreach($aQuestions as $x => &$aQuestion) {
 			$aQuestion = $this->_getQuestionInfo($aQuestion);
+		}
 		
 		return $aQuestions;
 	}
@@ -43,8 +82,9 @@ class faq_model extends appModel {
 			,"row"
 		);
 		
-		if(!empty($aQuestion))
+		if(!empty($aQuestion)) {
 			$aQuestion = $this->_getQuestionInfo($aQuestion);
+		}
 		
 		return $aQuestion;
 	}
@@ -90,19 +130,21 @@ class faq_model extends appModel {
 				,"all"
 			);
 			
-			foreach($aCategories as $x => $aCategory)
+			foreach($aCategories as $x => $aCategory) {
 				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+			}
 		}
 		
 		return $aCategories;
 	}
 	function getCategory($sId = null, $sName = null) {
-		if(!empty($sId))
+		if(!empty($sId)) {
 			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
-		elseif(!empty($sName))
+		} elseif(!empty($sName)) {
 			$sWhere = " WHERE `name` LIKE ".$this->dbQuote($sName, "text");
-		else
+		} else {
 			return false;
+		}
 		
 		$aCategory = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}faq_categories`"

@@ -14,7 +14,9 @@ $aConfig["admin_info"] = array(); // array("name" => "", "email" => "");
 ### OPTIONS ###################################
 $aConfig["options"]["pear"] = "folder"; // PEAR file locations; server = packages installed on server, folder = packages sit with site in .pear
 $aConfig["options"]["debug"] = true;
-$aConfig["options"]["timezone"] = "US/Central";
+$aConfig["options"]["timezone"] = "America/Chicago";
+$aConfig["options"]["format"]["date"] = "F j, Y";
+$aConfig["options"]["format"]["time"] = "h:i a";
 ###############################################
 
 ### PEAR ######################################

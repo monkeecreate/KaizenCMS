@@ -6,13 +6,15 @@ function smarty_function_getDocuments($aParams, &$oSmarty) {
 	if(!empty($aParams["limit"])) {
 		$aDocuments = array_chunk($oDocuments->getDocuments($aParams["category"], false, $aParams["random"]), $aParams["limit"]);
 		$aDocuments = $aDocuments[0];
-	} else
+	} else {
 		$aDocuments = $oDocuments->getDocuments($aParams["category"], false, $aParams["random"]);
+	}
 	
 	$oApp->tplAssign("documentFolder", $oDocuments->documentFolder);
 	
-	if(empty($aParams["assign"]))
+	if(empty($aParams["assign"])) {
 		$oApp->tplAssign("aDocuments", $aDocuments);
-	else
+	} else {
 		$oApp->tplAssign($aParams["assign"], $aDocuments);
+	}
 }

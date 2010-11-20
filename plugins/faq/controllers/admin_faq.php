@@ -25,18 +25,21 @@ class admin_faq extends adminController {
 		$this->tplAssign("aQuestions", $this->model->getQuestions($_GET["category"], true));
 		$this->tplAssign("minSort", $sMinSort);
 		$this->tplAssign("maxSort", $sMaxSort);
+		$this->tplAssign("sSort", array_shift(explode("-", $this->model->sort)));
+		
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {		
 		if(!empty($_SESSION["admin"]["admin_faq"]))
 			$this->tplAssign("aQuestion", $_SESSION["admin"]["admin_faq"]);
-		else
+		} else {
 			$this->tplAssign("aQuestion",
 				array(
 					"active" => 1
 					,"categories" => array()
 				)
 			);
+		}
 		
 		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sUseCategories", $this->model->useCategories);
@@ -71,8 +74,9 @@ class admin_faq extends adminController {
 			,"one"
 		);
 		
-		if(empty($sOrder))
+		if(empty($sOrder)) {
 			$sOrder = 1;
+		}
 		
 		$sID = $this->dbInsert(
 			"faq",
