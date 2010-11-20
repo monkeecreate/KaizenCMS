@@ -16,8 +16,7 @@
 			<input type="text" name="title" maxlength="100" value="{$aEvent.title}"><br />
 			<label>Short Content:</label><span class="right"><span id="currentCharacters"></span> of {$sShortContentCount} characters</span><br />
 			<textarea name="short_content" style="height:115px;">{$aEvent.short_content|replace:'<br />':''}</textarea><br />
-			
-			<label>Content:</label><br />
+			<label>*Content:</label><br />
 			{html_editor content=$aEvent.content name="content"}<br />
 			
 			{if $sUseCategories == true}

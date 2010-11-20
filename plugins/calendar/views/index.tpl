@@ -64,10 +64,7 @@
 				</figure>
 			{/if}
 			
-			<p>
-				{$aEvent.short_content}
-				<a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="More info for {$aEvent.title}">More Info&raquo;</a>
-			</p>
+			<p>{$aEvent.short_content}&hellip; <a href="/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/" title="More info for {$aEvent.title}">More Info&raquo;</a></p>
 		</article>
 	{foreachelse}
 		<p>No calendar events.</p>
