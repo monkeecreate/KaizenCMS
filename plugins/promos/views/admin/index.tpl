@@ -59,7 +59,7 @@
 						{/if}
 					</td>
 					<td>{$aPromo.name}</td>
-					<td class="center">{$aPromo.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</td>
+					<td class="center">{$aPromo.datetime_show|formatDateTime}</td>
 					<td class="center">{$aPromo.impressions}</td>
 					<td class="center">{$aPromo.clicks}</td>
 					<td class="center">

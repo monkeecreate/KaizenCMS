@@ -37,7 +37,7 @@ class calendar_model extends appModel {
 		
 		return $aEvents;
 	}
-	function getEvent($sId, $sTag, $sAll = false) {
+	function getEvent($sId, $sTag = "", $sAll = false) {
 		if(!empty($sId))
 			$sWhere = " WHERE `calendar`.`id` = ".$this->dbQuote($sId, "integer");
 		else

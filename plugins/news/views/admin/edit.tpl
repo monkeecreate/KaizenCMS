@@ -72,7 +72,7 @@
 				<div class="clear">&nbsp;</div>
 								
 				<label>Last Updated:</label><br />
-				<p style="font-size:1.1em;margin-bottom:8px;">{$aArticle.updated_datetime|date_format:"%D @ %I:%M %p"} by {$aArticle.updated_by.fname} {$aArticle.updated_by.lname}</p>
+				<p style="font-size:1.1em;margin-bottom:8px;">{$aArticle.updated_datetime|formatDateTime:" @ "} by {$aArticle.updated_by.fname} {$aArticle.updated_by.lname}</p>
 			</fieldset>
 			
 			{if !empty($sFacebookConnect) || !empty($sTwitterConnect)}

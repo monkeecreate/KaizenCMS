@@ -5,24 +5,34 @@ PRODID:-//{$domain}//calendar
 X-LOTUS-CHARSET:UTF-8
 X-WR-CALNAME:Calendar
 X-WR-CALDESC:Calendar
-X-WR-TIMEZONE:US/Central
+X-WR-TIMEZONE:{date("e")}
 METHOD:PUBLISH
 
 BEGIN:VTIMEZONE
-TZID:US/Central
+TZID:{date("e")}
 BEGIN:DAYLIGHT
-TZOFFSETFROM:-0600
-TZOFFSETTO:-0500
+{if date("I") == 1}
+TZOFFSETFROM:{str_replace(array("-","+"), array("-0","+0"), (date("O") - 100))}
+TZOFFSETTO:{date("O")}
+{else}
+TZOFFSETFROM:{date("O")}
+TZOFFSETTO:{str_replace(array("-","+"), array("-0","+0"), (date("O") + 100))}
+{/if}
 DTSTART:20070311T020000
 RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
-TZNAME:CDT
+TZNAME:{date("T")}
 END:DAYLIGHT
 BEGIN:STANDARD
-TZOFFSETFROM:-0500
-TZOFFSETTO:-0600
+{if date("I") == 1}
+TZOFFSETFROM:{date("O")}
+TZOFFSETTO:{str_replace(array("-","+"), array("-0","+0"), (date("O") - 100))}
+{else}
+TZOFFSETFROM:{str_replace(array("-","+"), array("-0","+0"), (date("O") + 100))}
+TZOFFSETTO:{date("O")}
+{/if}
 DTSTART:20071104T020000
 RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
-TZNAME:CST
+TZNAME:{date("T")}
 END:STANDARD
 END:VTIMEZONE
 
@@ -34,8 +44,8 @@ URL:http://{$domain}/calendar/{$aEvent.id}/{$aEvent.title|special_urlencode}/
 DTSTART;VALUE=DATE:{$aEvent.datetime_start|formatDate:"Ymd"}
 DTEND;VALUE=DATE:{$aEvent.datetime_end|formatDate:"Ymd\T240000"}
 {else}
-DTSTART:{$aEvent.datetime_start|formatDate:"Ymd\This"}
-DTEND:{$aEvent.datetime_end|formatDate:"Ymd\This"}
+DTSTART:{$aEvent.datetime_start|formatDate:"Ymd\THis"}
+DTEND:{$aEvent.datetime_end|formatDate:"Ymd\THis"}
 {/if}
 UID:{$aEvent.id}
 END:VEVENT

@@ -67,7 +67,7 @@ class calendar extends appController {
 			$this->tplDisplay("event.tpl");
 	}
 	function event_ics() {
-		$aEvent = $this->model->getEvent($this->urlVars->dynamic["id"]);
+		$aEvent = $this->model->getEvent(null, $this->urlVars->dynamic["tag"]);
 		
 		if(empty($aEvent))
 			$this->error('404');

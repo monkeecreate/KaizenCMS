@@ -61,7 +61,7 @@
 						{/if}
 					</td>
 					<td>{$aArticle.title}</td>
-					<td class="center">{$aArticle.datetime_show|date_format:"%b %e, %Y - %l:%M %p"}</td>
+					<td class="center">{$aArticle.datetime_show|formatDateTime}</td>
 					<td class="center">
 						{if $sUseImage == true}
 							<a href="/admin/news/image/{$aArticle.id}/edit/" title="Edit Article Image">
