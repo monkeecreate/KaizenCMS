@@ -50,7 +50,7 @@ class admin_news extends adminController {
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {		
-		if(empty($_POST["title"])) {
+		if(empty($_POST["title"]) || empty($_POST["content"])) {
 			$_SESSION["admin"]["admin_news"] = $_POST;
 			$this->forward("/admin/news/add/?error=".urlencode("Please fill in all required fields!"));
 		}
@@ -184,7 +184,7 @@ class admin_news extends adminController {
 		$this->tplDisplay("admin/edit.tpl");
 	}
 	function edit_s() {		
-		if(empty($_POST["title"])) {
+		if(empty($_POST["title"]) || empty($_POST["content"])) {
 			$_SESSION["admin"]["admin_news"] = $_POST;
 			$this->forward("/admin/news/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
