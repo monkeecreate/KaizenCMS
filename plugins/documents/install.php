@@ -30,7 +30,7 @@ $aTables = array(
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
 		"index" => array("active"),
-		"unique" => array("sort_order", "tag"),
+		"unique" => array("tag", "sort_order"),
 		"fulltext" => array("name", "description"),
 		"search" => array(
 			"title" => "name",

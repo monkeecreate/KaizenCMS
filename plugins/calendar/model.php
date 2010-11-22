@@ -1,12 +1,22 @@
 <?php
 class calendar_model extends appModel {
-	public $useImage = true;
-	public $imageMinWidth = 320;
-	public $imageMinHeight = 200;
-	public $imageFolder = "/uploads/calendar/";
-	public $useCategories = true;
-	public $perPage = 5;
-	public $shortContentCharacters = 250; // max characters for short content
+	public $useImage ;
+	public $imageMinWidth;
+	public $imageMinHeight;
+	public $imageFolder;
+	public $useCategories;
+	public $perPage;
+	public $shortContentCharacters;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getEvents($sCategory = null, $sAll = false) {
 		// Start the WHERE
@@ -56,50 +66,45 @@ class calendar_model extends appModel {
 			,"row"
 		);
 		
-		if(!empty($aEvent))
-			$aEvent = $this->_getEventInfo($aEvent);
+		$aEvent = $this->_getEventInfo($aEvent);
 		
 		return $aEvent;
 	}
 	private function _getEventInfo($aEvent) {
-		$aEvent["title"] = htmlspecialchars(stripslashes($aEvent["title"]));
-		if(!empty($aEvent["short_content"]))
-			$aEvent["short_content"] = nl2br(htmlspecialchars(stripslashes($aEvent["short_content"])));
-		else
-			$aEvent["short_content"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aEvent["content"])))), 0, $this->shortContentCharacters);
-		$aEvent["content"] = stripslashes($aEvent["content"]);
+		if(!empty($aEvent)) {
+			$aEvent["title"] = htmlspecialchars(stripslashes($aEvent["title"]));
+			if(!empty($aEvent["short_content"]))
+				$aEvent["short_content"] = nl2br(htmlspecialchars(stripslashes($aEvent["short_content"])));
+			else
+				$aEvent["short_content"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aEvent["content"])))), 0, $this->shortContentCharacters);
+			$aEvent["content"] = stripslashes($aEvent["content"]);
+			$aEvent["url"] = "/calendar/".$aEvent["tag"]."/";
 		
-		$aEvent["categories"] = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}calendar_categories` AS `category`"
-				." INNER JOIN `{dbPrefix}calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
-				." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
-			,"all"
-		);
+			$aEvent["categories"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}calendar_categories` AS `category`"
+					." INNER JOIN `{dbPrefix}calendar_categories_assign` AS `calendar_assign` ON `calendar_assign`.`categoryid` = `category`.`id`"
+					." WHERE `calendar_assign`.`eventid` = ".$aEvent["id"]
+				,"all"
+			);
 		
-		foreach($aEvent["categories"] as &$aCategory) {
-			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			foreach($aEvent["categories"] as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
+		
+			if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aEvent["id"].".jpg")
+			 && $aEvent["photo_x2"] > 0
+			 && $this->useImage == true)
+				$aEvent["image"] = 1;
+			else
+				$aEvent["image"] = 0;
 		}
-		
-		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aEvent["id"].".jpg")
-		 && $aEvent["photo_x2"] > 0
-		 && $this->useImage == true)
-			$aEvent["image"] = 1;
-		else
-			$aEvent["image"] = 0;
 			
 		return $aEvent;
 	}
 	function getURL($sID) {
 		$aEvent = $this->getEvent($sID);
 		
-		$sTitle = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($aEvent["title"])))));
-		
-		if(strlen($sURL) > 50)
-			$sTitle = substr($sTitle, 0, 50)."...";
-		
-		$sURL = "/events/".$aEvent["id"]."/".$sTitle."/";
-		
-		return $sURL;
+		return $aEvent["url"];
 	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		

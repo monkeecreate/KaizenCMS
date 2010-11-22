@@ -1,7 +1,17 @@
 <?php
 class testimonials_model extends appModel {
-	public $useCategories = true;
-	public $sort = "name-asc"; // manual, name, subname, created, updated, random - asc, desc
+	public $useCategories;
+	public $sort;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getTestimonials($sCategory = null, $sRandom = false, $sAll = false) {
 		$aWhere = array();
@@ -85,25 +95,24 @@ class testimonials_model extends appModel {
 			,"row"
 		);
 		
-		if(!empty($aTestimonial)) {
-			$aTestimonial = $this->_getTestimonialInfo($aTestimonial);
-		}
+		$aTestimonial = $this->_getTestimonialInfo($aTestimonial);
 		
 		return $aTestimonial;
 	}
 	private function _getTestimonialInfo($aTestimonial) {
-		$aTestimonial["name"] = htmlspecialchars(stripslashes($aTestimonial["name"]));
-		$aTestimonial["sub_name"] = htmlspecialchars(stripslashes($aTestimonial["sub_name"]));
-		$aTestimonial["text"] = strip_tags(stripslashes($aTestimonial["text"]), "<embed><param><object>");
+		if(!empty($aTestimonial)) {
+			$aTestimonial["name"] = htmlspecialchars(stripslashes($aTestimonial["name"]));
+			$aTestimonial["sub_name"] = htmlspecialchars(stripslashes($aTestimonial["sub_name"]));
+			$aTestimonial["text"] = strip_tags(stripslashes($aTestimonial["text"]), "<embed><param><object>");
+			$aTestimonial["url"] = "/testimonials/".$aTestimonial["tag"]."/";
+		}
 		
 		return $aTestimonial;
 	}
 	function getURL($sID) {
 		$aTestimonial = $this->getTestimonial($sID);
 		
-		$sURL = "/testimonials/";
-		
-		return $sURL;
+		return $aTestimonial["url"];
 	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		

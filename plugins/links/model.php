@@ -1,12 +1,22 @@
 <?php
 class links_model extends appModel {
-	public $useImage = true;
-	public $imageMinWidth = 140;
-	public $imageMinHeight = 87;
-	public $imageFolder = "/uploads/links/";
-	public $useCategories = true;
-	public $perPage = 5;
-	public $sort = "name-asc"; // manual, name, created, updated, random - asc, desc
+	public $useImage;
+	public $imageMinWidth;
+	public $imageMinHeight;
+	public $imageFolder;
+	public $useCategories;
+	public $perPage;
+	public $sort;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getLinks($sCategory = null, $sAll = false) {
 		$aWhere = array();
@@ -87,33 +97,34 @@ class links_model extends appModel {
 			,"row"
 		);
 		
-		if(!empty($aLink)) {
-			$aLink = $this->_getLinkInfo($aLink);
-		}
+		$aLink = $this->_getLinkInfo($aLink);
 		
 		return $aLink;
 	}
 	private function _getLinkInfo($aLink) {
-		$aLink["name"] = htmlspecialchars(stripslashes($aLink["name"]));
-		$aLink["description"] = nl2br(htmlspecialchars(stripslashes($aLink["description"])));
+		if(!empty($aLink)) {
+			$aLink["name"] = htmlspecialchars(stripslashes($aLink["name"]));
+			$aLink["description"] = nl2br(htmlspecialchars(stripslashes($aLink["description"])));
+			$aLink["url"] = "/links/".$aLink["tag"]."/";
 		
-		$aLink["categories"] = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}links_categories` AS `categories`"
-				." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
-				." WHERE `links_assign`.`linkid` = ".$aLink["id"]
-			,"all"
-		);
+			$aLink["categories"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}links_categories` AS `categories`"
+					." INNER JOIN `{dbPrefix}links_categories_assign` AS `links_assign` ON `links_assign`.`categoryid` = `categories`.`id`"
+					." WHERE `links_assign`.`linkid` = ".$aLink["id"]
+				,"all"
+			);
 		
-		foreach($aLink["categories"] as &$aCategory) {
-			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
-		}
+			foreach($aLink["categories"] as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		
-		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aLink["id"].".jpg")
-		 && $aLink["photo_x2"] > 0
-		 && $this->useImage == true) {
-			$aLink["image"] = 1;
-		} else {
-			$aLink["image"] = 0;
+			if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aLink["id"].".jpg")
+			 && $aLink["photo_x2"] > 0
+			 && $this->useImage == true) {
+				$aLink["image"] = 1;
+			} else {
+				$aLink["image"] = 0;
+			}
 		}
 		
 		return $aLink;
@@ -121,9 +132,7 @@ class links_model extends appModel {
 	function getURL($sID) {
 		$aLink = $this->getLink($sID);
 		
-		$sURL = "/links/";
-		
-		return $sURL;
+		return $aLink["url"];
 	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		

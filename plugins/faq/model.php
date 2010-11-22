@@ -1,8 +1,18 @@
 <?php
 class faq_model extends appModel {
-	public $useCategories = true;
-	public $perPage = 5;
-	public $sort = "manual-asc"; // manual, question, created, updated, random - asc, desc
+	public $useCategories;
+	public $perPage;
+	public $sort;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getQuestions($sCategory = null, $sAll = false) {
 		$aWhere = array();
@@ -68,13 +78,19 @@ class faq_model extends appModel {
 		return $aQuestions;
 	}
 	function getQuestion($sId, $sTag = null, $sAll = false) {
+		$aWhere = array();
+		
 		if(!empty($sId))
-			$sWhere = " WHERE `id` = ".$this->dbQuote($sId, "integer");
+			$aWhere[] = "`id` = ".$this->dbQuote($sId, "integer");
 		else
-			$sWhere = " WHERE `tag` = ".$this->dbQuote($sTag, "text");
+			$aWhere[] = "`tag` = ".$this->dbQuote($sTag, "text");
 		
 		if($sAll == false)		
-			$sWhere = " AND `active` = 1";
+			$aWhere[] = "`active` = 1";
+			
+		if(!empty($aWhere)) {
+			$sWhere = " WHERE ".implode(" AND ", $aWhere);
+		}
 		
 		$aQuestion = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}faq`"
@@ -82,25 +98,26 @@ class faq_model extends appModel {
 			,"row"
 		);
 		
-		if(!empty($aQuestion)) {
-			$aQuestion = $this->_getQuestionInfo($aQuestion);
-		}
+		$aQuestion = $this->_getQuestionInfo($aQuestion);
 		
 		return $aQuestion;
 	}
 	private function _getQuestionInfo($aQuestion) {
-		$aQuestion["question"] = nl2br(htmlspecialchars(stripslashes($aQuestion["question"])));
-		$aQuestion["answer"] = stripslashes($aQuestion["answer"]);
+		if(!empty($aQuestion)) {
+			$aQuestion["question"] = nl2br(htmlspecialchars(stripslashes($aQuestion["question"])));
+			$aQuestion["answer"] = stripslashes($aQuestion["answer"]);
+			$aQuestion["url"] = "/faq/".$aQuestion["tag"]."/";
 		
-		$aQuestion["categories"] = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}faq_categories` AS `categories`"
-				." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
-				." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
-			,"all"
-		);
+			$aQuestion["categories"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}faq_categories` AS `categories`"
+					." INNER JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq_assign`.`categoryid` = `categories`.`id`"
+					." WHERE `faq_assign`.`faqid` = ".$aQuestion["id"]
+				,"all"
+			);
 		
-		foreach($aQuestion["categories"] as &$aCategory) {
-			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			foreach($aQuestion["categories"] as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		}
 		
 		return $aQuestion;
@@ -108,9 +125,7 @@ class faq_model extends appModel {
 	function getURL($sID) {
 		$aQuestion = $this->getQuestion($sID);
 		
-		$sURL = "/faq/";
-		
-		return $sURL;
+		return $aQuestion["url"];
 	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {

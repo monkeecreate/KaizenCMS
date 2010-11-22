@@ -1,11 +1,21 @@
 <?php
 class slideshow_model extends appModel {
-	public $useImage = true;
-	public $imageMinWidth = 262;
-	public $imageMinHeight = 100;
-	public $imageFolder = "/uploads/slideshow/";
-	public $shortContentCharacters = 250; // max characters for short content
-	public $useDescription = true;
+	public $useImage;
+	public $imageMinWidth;
+	public $imageMinHeight;
+	public $imageFolder;
+	public $shortContentCharacters;
+	public $useDescription;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getSlides($sAll = false) {
 		// Start the WHERE

@@ -39,7 +39,16 @@ class faq extends appController {
 		$this->tplDisplay("faq.tpl");
 	}
 	function question() {
-		$this->tplAssign("aQuestion", $this->model->getQuestion(null, $this->urlVars->dynamic["tag"]));
-		$this->tplDisplay("question.tpl");
+		$aQuestion = $this->model->getQuestion(null, $this->urlVars->dynamic["tag"]);
+		
+		if(empty($aQuestion))
+			$this->error('404');
+		
+		$this->tplAssign("aQuestion", $aQuestion);
+		
+		if($this->tplExists("question-".$aQuestion["id"].".tpl"))
+			$this->tplDisplay("question-".$aQuestion["id"].".tpl");
+		else
+			$this->tplDisplay("question.tpl");
 	}
 }

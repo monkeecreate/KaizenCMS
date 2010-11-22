@@ -64,7 +64,7 @@
 				<input type="checkbox" name="active" value="1"{if $aEvent.active == 1} checked="checked"{/if}><br />
 				
 				<label>Last Updated:</label><br />
-				<p style="font-size:1.1em;margin-bottom:8px;">{$aEvent.updated_datetime|date_format:"%D @ %I:%M %p"} by {$aEvent.updated_by.fname} {$aEvent.updated_by.lname}</p>
+				<p style="font-size:1.1em;margin-bottom:8px;">{$aEvent.updated_datetime|formatDateTime:" @ "} by {$aEvent.updated_by.fname} {$aEvent.updated_by.lname}</p>
 			</fieldset>
 			
 			<fieldset>

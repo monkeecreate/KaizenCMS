@@ -1,64 +1,23 @@
 <?php
 class directory_model extends appModel {
-	public $useImage = true;
-	public $imageMinWidth = 140;
-	public $imageMinHeight = 87;
-	public $imageFolder = "/uploads/directory/";
-	public $useCategories = true;
-	public $perPage = 5;
-	public $sort = "name-asc"; // manual, name, state, created, updated, random - asc, desc
-	public $aStates = array(''=>"",
-							'AL'=>"Alabama",  
-							'AK'=>"Alaska",  
-							'AZ'=>"Arizona",  
-							'AR'=>"Arkansas",  
-							'CA'=>"California",  
-							'CO'=>"Colorado",  
-							'CT'=>"Connecticut",  
-							'DE'=>"Delaware",  
-							'DC'=>"District Of Columbia",  
-							'FL'=>"Florida",  
-							'GA'=>"Georgia",  
-							'HI'=>"Hawaii",  
-							'ID'=>"Idaho",  
-							'IL'=>"Illinois",  
-							'IN'=>"Indiana",  
-							'IA'=>"Iowa",  
-							'KS'=>"Kansas",  
-							'KY'=>"Kentucky",  
-							'LA'=>"Louisiana",  
-							'ME'=>"Maine",  
-							'MD'=>"Maryland",  
-							'MA'=>"Massachusetts",  
-							'MI'=>"Michigan",  
-							'MN'=>"Minnesota",  
-							'MS'=>"Mississippi",  
-							'MO'=>"Missouri",  
-							'MT'=>"Montana",
-							'NE'=>"Nebraska",
-							'NV'=>"Nevada",
-							'NH'=>"New Hampshire",
-							'NJ'=>"New Jersey",
-							'NM'=>"New Mexico",
-							'NY'=>"New York",
-							'NC'=>"North Carolina",
-							'ND'=>"North Dakota",
-							'OH'=>"Ohio",  
-							'OK'=>"Oklahoma",  
-							'OR'=>"Oregon",  
-							'PA'=>"Pennsylvania",  
-							'RI'=>"Rhode Island",  
-							'SC'=>"South Carolina",  
-							'SD'=>"South Dakota",
-							'TN'=>"Tennessee",  
-							'TX'=>"Texas",  
-							'UT'=>"Utah",  
-							'VT'=>"Vermont",  
-							'VA'=>"Virginia",  
-							'WA'=>"Washington",  
-							'WV'=>"West Virginia",  
-							'WI'=>"Wisconsin",  
-							'WY'=>"Wyoming");
+	public $useImage;
+	public $imageMinWidth;
+	public $imageMinHeight;
+	public $imageFolder;
+	public $useCategories;
+	public $perPage;
+	public $sort;
+	public $aStates;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getListings($sCategory, $sAll = false) {
 		$aWhere = array();
@@ -141,43 +100,44 @@ class directory_model extends appModel {
 				." LIMIT 1"
 			,"row"
 		);
-	
-		if(!empty($aListing)) {
-			$aListing = $this->_getListingInfo($aListing);
-		}
+		
+		$aListing = $this->_getListingInfo($aListing);
 		
 		return $aListing;
 	}
 	private function _getListingInfo($aListing) {
-		$aListing["name"] = htmlspecialchars(stripslashes($aListing["name"]));
-		$aListing["address1"] = htmlspecialchars(stripslashes($aListing["address1"]));
-		$aListing["address2"] = htmlspecialchars(stripslashes($aListing["address2"]));
-		$aListing["city"] = htmlspecialchars(stripslashes($aListing["city"]));
-		$aListing["stateFull"] = array_pop(explode(",", htmlspecialchars(stripslashes($aListing["state"]))));
-		$aListing["state"] = array_shift(explode(",", htmlspecialchars(stripslashes($aListing["state"]))));
-		$aListing["zip"] = htmlspecialchars(stripslashes($aListing["zip"]));
-		$aListing["phone"] = htmlspecialchars(stripslashes($aListing["phone"]));
-		$aListing["fax"] = htmlspecialchars(stripslashes($aListing["fax"]));
-		$aListing["email"] = htmlspecialchars(stripslashes($aListing["email"]));
-		$aListing["website"] = htmlspecialchars(stripslashes($aListing["website"]));
+		if(!empty($aListing)) {
+			$aListing["name"] = htmlspecialchars(stripslashes($aListing["name"]));
+			$aListing["address1"] = htmlspecialchars(stripslashes($aListing["address1"]));
+			$aListing["address2"] = htmlspecialchars(stripslashes($aListing["address2"]));
+			$aListing["city"] = htmlspecialchars(stripslashes($aListing["city"]));
+			$aListing["stateFull"] = array_pop(explode(",", htmlspecialchars(stripslashes($aListing["state"]))));
+			$aListing["state"] = array_shift(explode(",", htmlspecialchars(stripslashes($aListing["state"]))));
+			$aListing["zip"] = htmlspecialchars(stripslashes($aListing["zip"]));
+			$aListing["phone"] = htmlspecialchars(stripslashes($aListing["phone"]));
+			$aListing["fax"] = htmlspecialchars(stripslashes($aListing["fax"]));
+			$aListing["email"] = htmlspecialchars(stripslashes($aListing["email"]));
+			$aListing["website"] = htmlspecialchars(stripslashes($aListing["website"]));
+			$aListing["url"] = "/directory/".$aListing["tag"]."/";
 		
-		$aListing["categories"] = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}directory_categories` AS `categories`"
-				." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
-				." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
-			,"all"
-		);
+			$aListing["categories"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}directory_categories` AS `categories`"
+					." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
+					." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
+				,"all"
+			);
 		
-		foreach($aListing["categories"] as &$aCategory) {
-			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
-		}
+			foreach($aListing["categories"] as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		
-		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["id"].".jpg")
-		 && $aListing["photo_x2"] > 0
-		 && $this->useImage == true) {
-			$aListing["image"] = 1;
-		} else {
-			$aListing["image"] = 0;
+			if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["id"].".jpg")
+			 && $aListing["photo_x2"] > 0
+			 && $this->useImage == true) {
+				$aListing["image"] = 1;
+			} else {
+				$aListing["image"] = 0;
+			}
 		}
 			
 		return $aListing;
@@ -185,9 +145,7 @@ class directory_model extends appModel {
 	function getURL($sID) {
 		$aListing = $this->getListing($sID);
 		
-		$sURL = "/directory/";
-		
-		return $sURL;
+		return $aListing["url"];
 	}
 	function getCategories($sEmpty = true) {		
 		if($sEmpty == true) {		

@@ -1,12 +1,22 @@
 <?php
 class news_model extends appModel {
-	public $useImage = true;
-	public $imageMinWidth = 140;
-	public $imageMinHeight = 87;
-	public $imageFolder = "/uploads/news/";
-	public $useCategories = true;
-	public $perPage = 5;
-	public $shortContentCharacters = 250; // max characters for short content
+	public $useImage;
+	public $imageMinWidth;
+	public $imageMinHeight;
+	public $imageFolder;
+	public $useCategories;
+	public $perPage;
+	public $shortContentCharacters;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getArticles($sCategory = null, $sAll = false) {	
 		// Start the WHERE
@@ -35,7 +45,7 @@ class news_model extends appModel {
 		
 		return $aArticles;
 	}
-	function getArticle($sId, $sTag, $sAll = false) {
+	function getArticle($sId, $sTag = "", $sAll = false) {
 		if(!empty($sId))
 			$sWhere = " WHERE `news`.`id` = ".$this->dbQuote($sId, "integer");
 		else
@@ -53,54 +63,49 @@ class news_model extends appModel {
 			,"row"
 		);
 		
-		if(!empty($aArticle))
-			$aArticle = $this->_getArticleInfo($aArticle);
+		$aArticle = $this->_getArticleInfo($aArticle);
 		
 		return $aArticle;
 	}
 	private function _getArticleInfo($aArticle) {
-		if(!empty($aArticle["created_by"]))
-			$aArticle["user"] = $this->getUser($aArticle["created_by"]);
+		if(!empty($aArticle)) {
+			if(!empty($aArticle["created_by"]))
+				$aArticle["user"] = $this->getUser($aArticle["created_by"]);
 		
-		$aArticle["title"] = htmlspecialchars(stripslashes($aArticle["title"]));
-		if(!empty($aArticle["short_content"]))
-			$aArticle["short_content"] = nl2br(htmlspecialchars(stripslashes($aArticle["short_content"])));
-		else
-			$aArticle["short_content"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aArticle["content"])))), 0, $this->shortContentCharacters);
+			$aArticle["title"] = htmlspecialchars(stripslashes($aArticle["title"]));
+			if(!empty($aArticle["short_content"]))
+				$aArticle["short_content"] = nl2br(htmlspecialchars(stripslashes($aArticle["short_content"])));
+			else
+				$aArticle["short_content"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aArticle["content"])))), 0, $this->shortContentCharacters);
 		
-		$aArticle["content"] = stripslashes($aArticle["content"]);
+			$aArticle["content"] = stripslashes($aArticle["content"]);
+			$aArticle["url"] = "/news/".$aArticle["tag"]."/";
 		
-		$aArticle["categories"] = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}news_categories` AS `categories`"
-				." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
-				." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
-			,"all"
-		);
+			$aArticle["categories"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}news_categories` AS `categories`"
+					." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news_assign`.`categoryid` = `categories`.`id`"
+					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
+				,"all"
+			);
 		
-		foreach($aArticle["categories"] as &$aCategory) {
-			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			foreach($aArticle["categories"] as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
+		
+			if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aArticle["id"].".jpg")
+			 && $aArticle["photo_x2"] > 0
+			 && $this->useImage == true)
+				$aArticle["image"] = 1;
+			else
+				$aArticle["image"] = 0;
 		}
-		
-		if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aArticle["id"].".jpg")
-		 && $aArticle["photo_x2"] > 0
-		 && $this->useImage == true)
-			$aArticle["image"] = 1;
-		else
-			$aArticle["image"] = 0;
 		
 		return $aArticle;
 	}
 	function getURL($sID) {
 		$aArticle = $this->getArticle($sID);
 		
-		$sTitle = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($aArticle["title"])))));
-		
-		if(strlen($sURL) > 50)
-			$sTitle = substr($sTitle, 0, 50)."...";
-		
-		$sURL = "/news/".$aArticle["id"]."/".$sTitle."/";
-		
-		return $sURL;
+		return $aArticle["url"];
 	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		

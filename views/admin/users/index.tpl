@@ -42,7 +42,7 @@
 					<td>{$aUser.username|htmlentities}</td>
 					<td>{$aUser.email_address|clean_html}</td>
 					<td>{if !empty($aUser.last_login)}
-							{$aUser.last_login|date_format:"%D - %I:%M %p"}
+							{$aUser.last_login|formatDateTime}
 						{else}
 							Never
 						{/if}

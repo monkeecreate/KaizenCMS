@@ -17,7 +17,7 @@
 
 	{foreach from=$aListings item=aListing}
 		<article>
-			<h3><a href="/directory/{$aListing.tag}/" title="{$aListing.name}">{$aListing.name}</a></h3>
+			<h3><a href="{$aListing.url}" title="{$aListing.name}">{$aListing.name}</a></h3>
 			
 			{if $aListing.image == 1}
 				<figure>

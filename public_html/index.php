@@ -25,6 +25,7 @@ if(is_dir("installer") && $aConfig["installer_skip"] != 1)
 
 // Set timezone
 putenv("TZ=".$aConfig["options"]["timezone"]);
+date_default_timezone_set($aConfig["options"]["timezone"]);
 ##############################################
 
 ### NON-DEBUG ################################

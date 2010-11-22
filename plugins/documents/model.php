@@ -1,10 +1,20 @@
 <?php
 class documents_model extends appModel {
-	public $allowedExt = array();//array("pdf","doc");
-	public $documentFolder = "/uploads/documents/";
-	public $useCategories = true;
-	public $perPage = 5;
-	public $sort = "manual-asc"; // manual, name, created, updated, random - asc, desc
+	public $allowedExt;
+	public $documentFolder;
+	public $useCategories;
+	public $perPage;
+	public $sort;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getDocuments($sCategory, $sAll = false, $sRandom = false) {
 		$aWhere = array();
@@ -70,14 +80,22 @@ class documents_model extends appModel {
 		
 		return $aDocuments;
 	}
-	function getDocument($sId, $sTag = null, $sAll = false) {
-		if(!empty($sId))
-			$sWhere = " WHERE `documents`.`id` = ".$this->dbQuote($sId, "integer");
-		else
-			$sWhere = " WHERE `documents`.`tag` = ".$this->dbQuote($sTag, "text");
+	function getDocument($sId, $sTag = "", $sAll = false) {
+		$aWhere = array();
 		
-		if($sAll == false)
-			$sWhere .= " AND `documents`.`active` = 1";
+		if(!empty($sId))
+			$aWhere[] = "`documents`.`id` = ".$this->dbQuote($sId, "integer");
+		else
+			$aWhere[] = "`documents`.`tag` = ".$this->dbQuote($sTag, "text");
+		
+		if($sAll == false) {
+			$aWhere[] = "`documents`.`active` = 1";
+		}
+		
+		// Combine filters if atleast one was added
+		if(!empty($aWhere)) {
+			$sWhere = " WHERE ".implode(" AND ", $aWhere);
+		}
 		
 		$aDocument = $this->dbQuery(
 			"SELECT `documents`.* FROM `{dbPrefix}documents` AS `documents`"
@@ -85,25 +103,26 @@ class documents_model extends appModel {
 			,"row"
 		);
 		
-		if(!empty($aDocument)) {
-			$aDocument = $this->_getDocumentInfo($aDocument);
-		}
+		$aDocument = $this->_getDocumentInfo($aDocument);
 		
 		return $aDocument;
 	}
 	private function _getDocumentInfo($aDocument) {
-		$aDocument["name"] = htmlspecialchars(stripslashes($aDocument["name"]));
-		$aDocument["description"] = nl2br(htmlspecialchars(stripslashes($aDocument["description"])));
+		if(!empty($aDocument)) {
+			$aDocument["name"] = htmlspecialchars(stripslashes($aDocument["name"]));
+			$aDocument["description"] = nl2br(htmlspecialchars(stripslashes($aDocument["description"])));
+			$aDocument["url"] = "/documents/".$aDocument["tag"]."/";
 		
-		$aDocument["categories"] = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}documents_categories` AS `categories`"
-				." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
-				." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
-			,"all"
-		);
+			$aDocument["categories"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}documents_categories` AS `categories`"
+					." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
+					." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
+				,"all"
+			);
 		
-		foreach($aDocument["categories"] as &$aCategory) {
-			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			foreach($aDocument["categories"] as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		}
 		
 		return $aDocument;
@@ -111,9 +130,7 @@ class documents_model extends appModel {
 	function getURL($sID) {
 		$aDocument = $this->getDocument($sID);
 		
-		$sURL = "/documents/";
-		
-		return $sURL;
+		return $aDocument["url"];
 	}
 	function getCategories($sEmpty = true) {		
 		if($sEmpty == true) {		

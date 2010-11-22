@@ -5,7 +5,7 @@
 		<link>http://{$domain}/</link>
 		<description></description>
 		<language>en-us</language>
-		<lastBuildDate>{$smarty.now|date_format:'%a, %d %b %Y %T %Z'}</lastBuildDate>
+		<lastBuildDate>{$smarty.now|formatDate:'r'}</lastBuildDate>
 		<generator>http://kaizen.monkeecreate.com</generator>
 		<atom:link href="http://{$domain}/news/rss/" rel="self" type="application/rss+xml" />
 		{foreach from=$aArticles item=aArticle}
