@@ -52,6 +52,24 @@ class admin_documents extends adminController {
 			$this->forward("/admin/documents/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aDocuments = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}documents`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aDocuments)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aDocuments);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$sOrder = $this->dbQuery(
 			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}documents`"
 			,"one"
@@ -65,6 +83,7 @@ class admin_documents extends adminController {
 			"documents",
 			array(
 				"name" => $_POST["name"]
+				,"tag" => $sTag
 				,"description" => $_POST["description"]
 				,"sort_order" => $sOrder
 				,"active" => $this->boolCheck($_POST["active"])
@@ -155,7 +174,7 @@ class admin_documents extends adminController {
 				,"row"
 			);
 		} else {
-			$aDocument = $this->model->getDocument($this->urlVars->dynamic["id"], true);
+			$aDocument = $this->model->getDocument($this->urlVars->dynamic["id"], null, true);
 			
 			$aDocument["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}documents_categories` AS `categories`"
@@ -182,6 +201,24 @@ class admin_documents extends adminController {
 		if(empty($_POST["name"])) {
 			$_SESSION["admin"]["admin_documents"] = $_POST;
 			$this->forward("/admin/documents/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aDocuments = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}documents`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aDocuments)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aDocuments);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
 		}
 		
 		$this->dbUpdate(
@@ -266,7 +303,7 @@ class admin_documents extends adminController {
 		$this->forward("/admin/documents/?notice=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
-		$aDocument = $this->model->getDocument($this->urlVars->dynamic["id"], "integer");
+		$aDocument = $this->model->getDocument($this->urlVars->dynamic["id"], null, true);
 		
 		@unlink($this->settings->rootPublic.substr($this->model->documentFolder, 1).$aDocument["document"]);
 		
@@ -276,7 +313,7 @@ class admin_documents extends adminController {
 		$this->forward("/admin/documents/?notice=".urlencode("Document removed successfully!"));
 	}
 	function sort() {
-		$aDocument = $this->model->getDocument($this->urlVars->dynamic["id"], "integer");
+		$aDocument = $this->model->getDocument($this->urlVars->dynamic["id"], null, true);
 		
 		if($this->urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbQuery(

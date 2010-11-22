@@ -42,4 +42,9 @@ class documents extends appController {
 		
 		$this->tplDisplay("documents.tpl");
 	}
+	function document() {
+		$this->tplAssign("aDocument", $this->model->getDocument(null, $this->urlVars->dynamic["tag"]));
+		$this->tplAssign("documentFolder", $this->model->documentFolder);
+		$this->tplDisplay("document.tpl");
+	}
 }
