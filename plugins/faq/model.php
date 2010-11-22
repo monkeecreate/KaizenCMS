@@ -1,8 +1,18 @@
 <?php
 class faq_model extends appModel {
-	public $useCategories = true;
-	public $perPage = 5;
-	public $sort = "manual-asc"; // manual, question, created, updated, random - asc, desc
+	public $useCategories;
+	public $perPage;
+	public $sort;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getQuestions($sCategory = null, $sAll = false) {
 		$aWhere = array();

@@ -1,12 +1,22 @@
 <?php
 class news_model extends appModel {
-	public $useImage = true;
-	public $imageMinWidth = 140;
-	public $imageMinHeight = 87;
-	public $imageFolder = "/uploads/news/";
-	public $useCategories = true;
-	public $perPage = 5;
-	public $shortContentCharacters = 250; // max characters for short content
+	public $useImage;
+	public $imageMinWidth;
+	public $imageMinHeight;
+	public $imageFolder;
+	public $useCategories;
+	public $perPage;
+	public $shortContentCharacters;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getArticles($sCategory = null, $sAll = false) {	
 		// Start the WHERE
@@ -35,7 +45,7 @@ class news_model extends appModel {
 		
 		return $aArticles;
 	}
-	function getArticle($sId, $sTag, $sAll = false) {
+	function getArticle($sId, $sTag = "", $sAll = false) {
 		if(!empty($sId))
 			$sWhere = " WHERE `news`.`id` = ".$this->dbQuote($sId, "integer");
 		else

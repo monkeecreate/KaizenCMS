@@ -1,12 +1,22 @@
 <?php
 class links_model extends appModel {
-	public $useImage = true;
-	public $imageMinWidth = 140;
-	public $imageMinHeight = 87;
-	public $imageFolder = "/uploads/links/";
-	public $useCategories = true;
-	public $perPage = 5;
-	public $sort = "name-asc"; // manual, name, created, updated, random - asc, desc
+	public $useImage;
+	public $imageMinWidth;
+	public $imageMinHeight;
+	public $imageFolder;
+	public $useCategories;
+	public $perPage;
+	public $sort;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getLinks($sCategory = null, $sAll = false) {
 		$aWhere = array();

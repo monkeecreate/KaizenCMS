@@ -1,7 +1,17 @@
 <?php
 class testimonials_model extends appModel {
-	public $useCategories = true;
-	public $sort = "name-asc"; // manual, name, subname, created, updated, random - asc, desc
+	public $useCategories;
+	public $sort;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getTestimonials($sCategory = null, $sRandom = false, $sAll = false) {
 		$aWhere = array();

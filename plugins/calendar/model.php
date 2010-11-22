@@ -1,12 +1,22 @@
 <?php
 class calendar_model extends appModel {
-	public $useImage = true;
-	public $imageMinWidth = 320;
-	public $imageMinHeight = 200;
-	public $imageFolder = "/uploads/calendar/";
-	public $useCategories = true;
-	public $perPage = 5;
-	public $shortContentCharacters = 250; // max characters for short content
+	public $useImage ;
+	public $imageMinWidth;
+	public $imageMinHeight;
+	public $imageFolder;
+	public $useCategories;
+	public $perPage;
+	public $shortContentCharacters;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getEvents($sCategory = null, $sAll = false) {
 		// Start the WHERE

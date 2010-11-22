@@ -1,10 +1,20 @@
 <?php
 class documents_model extends appModel {
-	public $allowedExt = array();//array("pdf","doc");
-	public $documentFolder = "/uploads/documents/";
-	public $useCategories = true;
-	public $perPage = 5;
-	public $sort = "manual-asc"; // manual, name, created, updated, random - asc, desc
+	public $allowedExt;
+	public $documentFolder;
+	public $useCategories;
+	public $perPage;
+	public $sort;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getDocuments($sCategory, $sAll = false, $sRandom = false) {
 		$aWhere = array();

@@ -1,8 +1,18 @@
 <?php
 class galleries_model extends appModel {
-	public $imageFolder = "/uploads/galleries/";
-	public $useCategories = true;
-	public $perPage = 5;
+	public $imageFolder;
+	public $useCategories;
+	public $perPage;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getGalleries($sCategory = null, $sAll = false) {
 		$sWhere = " WHERE `galleries`.`id` > 0";

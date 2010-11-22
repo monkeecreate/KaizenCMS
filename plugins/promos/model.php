@@ -1,6 +1,16 @@
 <?php
 class promos_model extends appModel {
-	public $imageFolder = "/uploads/promos/";
+	public $imageFolder;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getPromos($sPosition = null) {
 		if(!empty($sPosition))

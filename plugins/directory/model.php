@@ -1,64 +1,23 @@
 <?php
 class directory_model extends appModel {
-	public $useImage = true;
-	public $imageMinWidth = 140;
-	public $imageMinHeight = 87;
-	public $imageFolder = "/uploads/directory/";
-	public $useCategories = true;
-	public $perPage = 5;
-	public $sort = "name-asc"; // manual, name, state, created, updated, random - asc, desc
-	public $aStates = array(''=>"",
-							'AL'=>"Alabama",  
-							'AK'=>"Alaska",  
-							'AZ'=>"Arizona",  
-							'AR'=>"Arkansas",  
-							'CA'=>"California",  
-							'CO'=>"Colorado",  
-							'CT'=>"Connecticut",  
-							'DE'=>"Delaware",  
-							'DC'=>"District Of Columbia",  
-							'FL'=>"Florida",  
-							'GA'=>"Georgia",  
-							'HI'=>"Hawaii",  
-							'ID'=>"Idaho",  
-							'IL'=>"Illinois",  
-							'IN'=>"Indiana",  
-							'IA'=>"Iowa",  
-							'KS'=>"Kansas",  
-							'KY'=>"Kentucky",  
-							'LA'=>"Louisiana",  
-							'ME'=>"Maine",  
-							'MD'=>"Maryland",  
-							'MA'=>"Massachusetts",  
-							'MI'=>"Michigan",  
-							'MN'=>"Minnesota",  
-							'MS'=>"Mississippi",  
-							'MO'=>"Missouri",  
-							'MT'=>"Montana",
-							'NE'=>"Nebraska",
-							'NV'=>"Nevada",
-							'NH'=>"New Hampshire",
-							'NJ'=>"New Jersey",
-							'NM'=>"New Mexico",
-							'NY'=>"New York",
-							'NC'=>"North Carolina",
-							'ND'=>"North Dakota",
-							'OH'=>"Ohio",  
-							'OK'=>"Oklahoma",  
-							'OR'=>"Oregon",  
-							'PA'=>"Pennsylvania",  
-							'RI'=>"Rhode Island",  
-							'SC'=>"South Carolina",  
-							'SD'=>"South Dakota",
-							'TN'=>"Tennessee",  
-							'TX'=>"Texas",  
-							'UT'=>"Utah",  
-							'VT'=>"Vermont",  
-							'VA'=>"Virginia",  
-							'WA'=>"Washington",  
-							'WV'=>"West Virginia",  
-							'WI'=>"Wisconsin",  
-							'WY'=>"Wyoming");
+	public $useImage;
+	public $imageMinWidth;
+	public $imageMinHeight;
+	public $imageFolder;
+	public $useCategories;
+	public $perPage;
+	public $sort;
+	public $aStates;
+	
+	function __construct() {
+		parent::__construct();
+		
+		include(dirname(__file__)."/config.php");
+		
+		foreach($aPluginInfo["config"] as $sKey => $sValue) {
+			$this->$sKey = $sValue;
+		}
+	}
 	
 	function getListings($sCategory, $sAll = false) {
 		$aWhere = array();
