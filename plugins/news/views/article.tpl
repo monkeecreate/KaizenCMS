@@ -29,6 +29,6 @@
 		{/if}
 	</small>
 	<fb:like show_faces="false"></fb:like>
-	<p>{$aArticle.content}</p>
+	{$aArticle.content}
 
 {include file="inc_footer.tpl"}
