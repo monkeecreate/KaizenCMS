@@ -102,9 +102,7 @@ class testimonials_model extends appModel {
 	function getURL($sID) {
 		$aTestimonial = $this->getTestimonial($sID);
 		
-		$sURL = "/testimonials/";
-		
-		return $sURL;
+		return $aTestimonial["url"];
 	}
 	function getCategories($sEmpty = true) {
 		if($sEmpty == true) {		

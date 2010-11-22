@@ -61,10 +61,29 @@ class admin_documents extends adminController {
 			$sOrder = 1;
 		}
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
+	
+		$aEvents = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}documents`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aEvents)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aEvents);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$sID = $this->dbInsert(
 			"documents",
 			array(
 				"name" => $_POST["name"]
+				,"tag" => $sTag
 				,"description" => $_POST["description"]
 				,"sort_order" => $sOrder
 				,"active" => $this->boolCheck($_POST["active"])

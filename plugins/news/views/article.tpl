@@ -19,7 +19,7 @@
 
 	<h2>{$aArticle.title}</h2>
 	<small class="timeCat">
-		<time>{$aArticle.datetime_show|formatDateTime"}</time>
+		<time>{$aArticle.datetime_show|formatDateTime}</time>
 		| Posted by: {$aArticle.user.fname} {$aArticle.user.lname} 
 		{if !empty($aArticle.categories)}
 			| Categories: 

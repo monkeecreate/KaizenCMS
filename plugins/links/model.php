@@ -95,6 +95,7 @@ class links_model extends appModel {
 		if(!empty($aLink)) {
 			$aLink["name"] = htmlspecialchars(stripslashes($aLink["name"]));
 			$aLink["description"] = nl2br(htmlspecialchars(stripslashes($aLink["description"])));
+			$aLink["url"] = "/links/".$aLink["tag"]."/";
 		
 			$aLink["categories"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}links_categories` AS `categories`"

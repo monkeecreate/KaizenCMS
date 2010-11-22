@@ -69,6 +69,7 @@ class news_model extends appModel {
 				$aArticle["short_content"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aArticle["content"])))), 0, $this->shortContentCharacters);
 		
 			$aArticle["content"] = stripslashes($aArticle["content"]);
+			$aArticle["url"] = "/news/".$aArticle["tag"]."/";
 		
 			$aArticle["categories"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}news_categories` AS `categories`"

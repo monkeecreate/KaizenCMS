@@ -42,4 +42,18 @@ class documents extends appController {
 		
 		$this->tplDisplay("documents.tpl");
 	}
+	
+	function document() {
+		$aDocument = $this->model->getDocument(null, $this->urlVars->dynamic["tag"]);
+		
+		if(empty($aDocument))
+			$this->error('404');
+		
+		$this->tplAssign("aDocument", $aDocument);
+		
+		if($this->tplExists("document-".$aDocument["id"].".tpl"))
+			$this->tplDisplay("document-".$aDocument["id"].".tpl");
+		else
+			$this->tplDisplay("document.tpl");
+	}
 }

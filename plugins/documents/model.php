@@ -70,14 +70,25 @@ class documents_model extends appModel {
 		
 		return $aDocuments;
 	}
-	function getDocument($sId, $sAll = false) {
+	function getDocument($sId, $sTag = "", $sAll = false) {
+		$aWhere = array();
+		
+		if(!empty($sId))
+			$aWhere[] = "`documents`.`id` = ".$this->dbQuote($sId, "integer");
+		else
+			$aWhere[] = "`documents`.`tag` = ".$this->dbQuote($sTag, "text");
+		
 		if($sAll == false) {
-			$sWhere = " AND `documents`.`active` = 1";
+			$aWhere[] = "`documents`.`active` = 1";
+		}
+		
+		// Combine filters if atleast one was added
+		if(!empty($aWhere)) {
+			$sWhere = " WHERE ".implode(" AND ", $aWhere);
 		}
 		
 		$aDocument = $this->dbQuery(
 			"SELECT `documents`.* FROM `{dbPrefix}documents` AS `documents`"
-				." WHERE `documents`.`id` = ".$this->dbQuote($sId, "integer")
 				.$sWhere
 			,"row"
 		);
