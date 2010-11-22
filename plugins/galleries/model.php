@@ -47,43 +47,45 @@ class galleries_model extends appModel {
 			,"row"
 		);
 		
-		if(!empty($aGallery))
-			$aGallery = $this->_getGalleryInfo($aGallery);
+		$aGallery = $this->_getGalleryInfo($aGallery);
 		
 		return $aGallery;
 	}
 	private function _getGalleryInfo($aGallery) {
-		$aGallery["name"] = htmlspecialchars(stripslashes($aGallery["name"]));
-		$aGallery["description"] = nl2br(htmlspecialchars(stripslashes($aGallery["description"])));
+		if(!empty($aGallery)) {
+			$aGallery["name"] = htmlspecialchars(stripslashes($aGallery["name"]));
+			$aGallery["description"] = nl2br(htmlspecialchars(stripslashes($aGallery["description"])));
+			$aGallery["url"] = "/galleries/".$aGallery["tag"]."/";
 		
-		$aGallery["categories"] = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}galleries_categories` AS `categories`"
-				." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `categories`.`id`"
-				." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
-			,"all"
-		);
+			$aGallery["categories"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}galleries_categories` AS `categories`"
+					." INNER JOIN `{dbPrefix}galleries_categories_assign` AS `galleries_assign` ON `galleries_assign`.`categoryid` = `categories`.`id`"
+					." WHERE `galleries_assign`.`galleryid` = ".$aGallery["id"]
+				,"all"
+			);
 		
-		foreach($aGallery["categories"] as &$aCategory) {
-			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
-		}
+			foreach($aGallery["categories"] as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		
-		$aGallery["defaultPhoto"] = $this->dbQuery(
-			"SELECT `photo` FROM `{dbPrefix}galleries_photos`"
-				." WHERE `galleryid` = ".$aGallery["id"]
-				." AND `gallery_default` = 1"
-			,"one"
-		);
+			$aGallery["defaultPhoto"] = $this->dbQuery(
+				"SELECT `photo` FROM `{dbPrefix}galleries_photos`"
+					." WHERE `galleryid` = ".$aGallery["id"]
+					." AND `gallery_default` = 1"
+				,"one"
+			);
 		
-		$aGallery["photos"] = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}galleries_photos`"
-				." WHERE `galleryid` = ".$this->dbQuote($aGallery["id"], "integer")
-				." ORDER BY `sort_order`"
-			,"all"
-		);
+			$aGallery["photos"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}galleries_photos`"
+					." WHERE `galleryid` = ".$this->dbQuote($aGallery["id"], "integer")
+					." ORDER BY `sort_order`"
+				,"all"
+			);
 		
-		foreach($aGallery["photos"] as &$aPhoto) {
-			$aPhoto["title"] = htmlspecialchars(stripslashes($aPhoto["title"]));
-			$aPhoto["description"] = nl2br(htmlspecialchars(stripslashes($aPhoto["description"])));
+			foreach($aGallery["photos"] as &$aPhoto) {
+				$aPhoto["title"] = htmlspecialchars(stripslashes($aPhoto["title"]));
+				$aPhoto["description"] = nl2br(htmlspecialchars(stripslashes($aPhoto["description"])));
+			}
 		}
 		
 		return $aGallery;
@@ -91,9 +93,7 @@ class galleries_model extends appModel {
 	function getURL($sID) {
 		$aGallery = $this->getGallery($sID);
 		
-		$sURL = "/galleries/".$aGallery["id"]."/";
-		
-		return $sURL;
+		return $aGallery["url"];
 	}
 	function getPhoto($sId, $sDefault = false) {
 		if($sDefault == true) {

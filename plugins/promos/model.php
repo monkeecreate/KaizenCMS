@@ -51,7 +51,7 @@ class promos_model extends appModel {
 			,"row"
 		);
 		
-		$aPromo["name"] = htmlspecialchars(stripslashes($aPromo["name"]));
+		$aPromo = $this->_getPromoPosition($aPromo);
 		
 		if(!empty($aPromo) && $sImpression == true) {
 			$this->dbUpdate(
@@ -63,6 +63,13 @@ class promos_model extends appModel {
 			);
 			
 			$this->settings->displayedPromos[] = $aPromo["id"];
+		}
+		
+		return $aPromo;
+	}
+	private function _getPromoPosition($aPromo) {
+		if(!empty($aPromo)) {
+			$aPromo["name"] = htmlspecialchars(stripslashes($aPromo["name"]));
 		}
 		
 		return $aPromo;

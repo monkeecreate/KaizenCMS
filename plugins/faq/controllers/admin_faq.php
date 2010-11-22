@@ -30,7 +30,7 @@ class admin_faq extends adminController {
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {		
-		if(!empty($_SESSION["admin"]["admin_faq"]))
+		if(!empty($_SESSION["admin"]["admin_faq"])) {
 			$this->tplAssign("aQuestion", $_SESSION["admin"]["admin_faq"]);
 		} else {
 			$this->tplAssign("aQuestion",

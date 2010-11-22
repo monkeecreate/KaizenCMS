@@ -46,10 +46,10 @@
 		<article>
 			{if $aArticle.image == 1}
 				<figure>
-					<a href="/news/{$aArticle.tag}/" title="{$aArticle.title}"><img src="/image/news/{$aArticle.id}/?width=140" alt="{$aArticle.title}"></a>
+					<a href="{$aArticle.url}" title="{$aArticle.title}"><img src="/image/news/{$aArticle.id}/?width=140" alt="{$aArticle.title}"></a>
 				</figure>
 			{/if}
-			<h3><a href="/news/{$aArticle.tag}/" title="{$aArticle.title}">{$aArticle.title}</a></h3>
+			<h3><a href="{$aArticle.url}" title="{$aArticle.title}">{$aArticle.title}</a></h3>
 			<small class="timeCat">
 				<time>{$aArticle.datetime_show|formatDateTime}</time>
 				| Posted by: {$aArticle.user.fname} {$aArticle.user.lname} 
@@ -60,8 +60,8 @@
 					{/foreach}
 				{/if}
 			</small>
-			<fb:like href="http://{$smarty.server.SERVER_NAME}/news/{$aArticle.tag}/" show_faces="false"></fb:like>
-			<p>{$aArticle.short_content}&hellip; <a href="/news/{$aArticle.tag}/" title="{$aArticle.title}">More Info&raquo;</a></p>
+			<fb:like href="http://{$smarty.server.SERVER_NAME}{$aArticle.url}" show_faces="false"></fb:like>
+			<p>{$aArticle.short_content}&hellip; <a href="{$aArticle.url}" title="{$aArticle.title}">More Info&raquo;</a></p>
 		</article>
 	{foreachelse}
 		<p>No news articles.</p>

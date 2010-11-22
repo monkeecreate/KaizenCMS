@@ -85,16 +85,17 @@ class testimonials_model extends appModel {
 			,"row"
 		);
 		
-		if(!empty($aTestimonial)) {
-			$aTestimonial = $this->_getTestimonialInfo($aTestimonial);
-		}
+		$aTestimonial = $this->_getTestimonialInfo($aTestimonial);
 		
 		return $aTestimonial;
 	}
 	private function _getTestimonialInfo($aTestimonial) {
-		$aTestimonial["name"] = htmlspecialchars(stripslashes($aTestimonial["name"]));
-		$aTestimonial["sub_name"] = htmlspecialchars(stripslashes($aTestimonial["sub_name"]));
-		$aTestimonial["text"] = strip_tags(stripslashes($aTestimonial["text"]), "<embed><param><object>");
+		if(!empty($aTestimonial)) {
+			$aTestimonial["name"] = htmlspecialchars(stripslashes($aTestimonial["name"]));
+			$aTestimonial["sub_name"] = htmlspecialchars(stripslashes($aTestimonial["sub_name"]));
+			$aTestimonial["text"] = strip_tags(stripslashes($aTestimonial["text"]), "<embed><param><object>");
+			$aTestimonial["url"] = "/testimonials/".$aTestimonial["tag"]."/";
+		}
 		
 		return $aTestimonial;
 	}

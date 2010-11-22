@@ -82,25 +82,26 @@ class documents_model extends appModel {
 			,"row"
 		);
 		
-		if(!empty($aDocument)) {
-			$aDocument = $this->_getDocumentInfo($aDocument);
-		}
+		$aDocument = $this->_getDocumentInfo($aDocument);
 		
 		return $aDocument;
 	}
 	private function _getDocumentInfo($aDocument) {
-		$aDocument["name"] = htmlspecialchars(stripslashes($aDocument["name"]));
-		$aDocument["description"] = nl2br(htmlspecialchars(stripslashes($aDocument["description"])));
+		if(!empty($aDocument)) {
+			$aDocument["name"] = htmlspecialchars(stripslashes($aDocument["name"]));
+			$aDocument["description"] = nl2br(htmlspecialchars(stripslashes($aDocument["description"])));
+			$aDocument["url"] = "/documents/".$aDocument["tag"]."/";
 		
-		$aDocument["categories"] = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}documents_categories` AS `categories`"
-				." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
-				." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
-			,"all"
-		);
+			$aDocument["categories"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}documents_categories` AS `categories`"
+					." INNER JOIN `{dbPrefix}documents_categories_assign` AS `documents_assign` ON `documents_assign`.`categoryid` = `categories`.`id`"
+					." WHERE `documents_assign`.`documentid` = ".$aDocument["id"]
+				,"all"
+			);
 		
-		foreach($aDocument["categories"] as &$aCategory) {
-			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			foreach($aDocument["categories"] as &$aCategory) {
+				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			}
 		}
 		
 		return $aDocument;
@@ -108,9 +109,7 @@ class documents_model extends appModel {
 	function getURL($sID) {
 		$aDocument = $this->getDocument($sID);
 		
-		$sURL = "/documents/";
-		
-		return $sURL;
+		return $aDocument["url"];
 	}
 	function getCategories($sEmpty = true) {		
 		if($sEmpty == true) {		
