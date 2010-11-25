@@ -33,9 +33,7 @@
 		
 		<fb:like show_faces="false"></fb:like>
 		
-		<p class="content">
-			{$aEvent.content}
-		</p>
+		{$aEvent.content}
 	</div>
 	<div style="text-align:center;margin-top:10px">
 		<a href="{$aEvent.url}ics/">

@@ -13,7 +13,16 @@ class testimonials extends appController {
 		$this->tplDisplay("testimonials.tpl");
 	}
 	function testimonial() {
-		$this->tplAssign("aTestimonial", $this->model->getTestimonial(null, $this->urlVars->dynamic["tag"]));
-		$this->tplDisplay("testimonial.tpl");
+		$aTestimonial = $this->model->getTestimonial(null, $this->urlVars->dynamic["tag"]);
+		
+		if(empty($aTestimonial))
+			$this->error('404');
+		
+		$this->tplAssign("aTestimonial", $aTestimonial);
+		
+		if($this->tplExists("testimonial-".$aTestimonial["id"].".tpl"))
+			$this->tplDisplay("testimonial-".$aTestimonial["id"].".tpl");
+		else
+			$this->tplDisplay("testimonial.tpl");
 	}
 }

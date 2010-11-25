@@ -144,6 +144,22 @@ class admin_content extends adminController
 			else
 				$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,100);
 			
+			$aPages = $this->dbQuery(
+				"SELECT `tag` FROM `{dbPrefix}content`"
+					." ORDER BY `tag`"
+				,"all"
+			);
+
+			if (in_array(array('tag' => $sTag), $aPages)) {
+				$i = 1;
+				do {
+					$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+					$i++;
+					$checkDuplicate = in_array(array('tag' => $sTempTag), $aPages);
+				} while ($checkDuplicate);
+				$sTag = $sTempTag;
+			}
+			
 			$this->dbUpdate(
 				"content",
 				array(

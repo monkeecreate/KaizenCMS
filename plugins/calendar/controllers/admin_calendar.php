@@ -130,7 +130,7 @@ class admin_calendar extends adminController {
 		}
 		
 		if($_POST["post_facebook"] == 1) {
-			$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $datetime_start, $datetime_end);
+			$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $sTag, $datetime_start, $datetime_end);
 		}
 		
 		$_SESSION["admin"]["admin_calendar"] = null;
@@ -217,6 +217,24 @@ class admin_calendar extends adminController {
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,100);
+	
+		$aEvents = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}calendar`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aEvents)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aEvents);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$this->dbUpdate(
 			"calendar",
 			array(
@@ -250,7 +268,7 @@ class admin_calendar extends adminController {
 		}
 		
 		if($_POST["post_facebook"] == 1 || !empty($_POST["facebook_id"])) {
-			$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $datetime_start, $datetime_end, $_POST["facebook_id"]);
+			$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $sTag, $datetime_start, $datetime_end, $_POST["facebook_id"]);
 		}
 		
 		$_SESSION["admin"]["admin_calendar"] = null;
@@ -398,23 +416,18 @@ class admin_calendar extends adminController {
 	}
 	##################################
 	
-	function postFacebook($sID, $sTitle, $sShortContent, $sStartTime, $sEndTime, $sFacebookID) {
+	function postFacebook($sID, $sTitle, $sShortContent, $sTag, $sStartTime, $sEndTime, $sFacebookID) {
 		$aFacebook = $this->loadFacebook();
 		
 		$sPrefix = 'http';
 		if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
 			$sPrefix .= "://";
 			
-		$sTitleUrl = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($sTitle)))));
-		
-		if(strlen($sTitleUrl) > 50)
-			$sTitleUrl = substr($sTitleUrl, 0, 50)."...";
-			
 		try {
 			if(!empty($sFacebookID)) {
-				$aFacebookResult = $aFacebook["obj"]->api('/'.$sFacebookID.'/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].'/calendar/'.$sID.'/'.$sTitleUrl.'/', "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
+				$aFacebookResult = $aFacebook["obj"]->api('/'.$sFacebookID.'/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].'/calendar/'.$sTag.'/', "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
 			} else {
-				$aFacebookResult = $aFacebook["obj"]->api('/me/events/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].'/calendar/'.$sID.'/'.$sTitleUrl.'/', "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
+				$aFacebookResult = $aFacebook["obj"]->api('/me/events/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].'/calendar/'.$sTag.'/', "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
 				
 				$this->dbUpdate(
 					"calendar",

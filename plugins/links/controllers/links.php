@@ -39,7 +39,16 @@ class links extends appController {
 		$this->tplDisplay("links.tpl");
 	}
 	function link() {
-		$this->tplAssign("aLink", $this->model->getLink(null, $this->urlVars->dynamic["tag"]));
-		$this->tplDisplay("link.tpl");
+		$aLink = $this->model->getLink(null, $this->urlVars->dynamic["tag"]);
+		
+		if(empty($aLink))
+			$this->error('404');
+		
+		$this->tplAssign("aLink", $aLink);
+		
+		if($this->tplExists("link-".$aLink["id"].".tpl"))
+			$this->tplDisplay("link-".$aLink["id"].".tpl");
+		else
+			$this->tplDisplay("link.tpl");
 	}
 }

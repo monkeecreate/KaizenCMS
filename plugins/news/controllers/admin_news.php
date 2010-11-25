@@ -118,7 +118,7 @@ class admin_news extends adminController {
 		$_SESSION["admin"]["admin_news"] = null;
 		
 		if($_POST["post_twitter"] == 1) {
-			$this->postTwitter($sID, $_POST["title"]);
+			$this->postTwitter($sID, $_POST["title"], $sTag);
 		}
 		
 		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true) {
@@ -126,7 +126,7 @@ class admin_news extends adminController {
 			$this->image_upload_s();
 		} else {	
 			if($_POST["post_facebook"] == 1)
-				$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), false);
+				$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $sTag, false);
 				
 			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!")."&".implode("&", $this->errors));
 		}
@@ -200,6 +200,24 @@ class admin_news extends adminController {
 			.$_POST["datetime_kill_Meridian"]
 		);
 		
+		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,100);
+	
+		$aArticles = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}news`"
+				." ORDER BY `tag`"
+			,"all"
+		);
+
+		if(in_array(array('tag' => $sTag), $aArticles)) {
+			$i = 1;
+			do {
+				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
+				$i++;
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aArticles);
+			} while ($checkDuplicate);
+			$sTag = $sTempTag;
+		}
+		
 		$this->dbUpdate(
 			"news",
 			array(
@@ -233,14 +251,14 @@ class admin_news extends adminController {
 		$_SESSION["admin"]["admin_news"] = null;
 		
 		if($_POST["post_twitter"] == 1) {
-			$this->postTwitter($_POST["id"], $_POST["title"]);
+			$this->postTwitter($_POST["id"], $_POST["title"], $sTag);
 		}
 		
 		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true)
 			$this->image_upload_s();
 		else {
 			if($_POST["post_facebook"] == 1)
-				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), false);
+				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $sTag, false);
 
 			if($_POST["submit"] == "Save Changes")
 				$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!")."&".implode("&", $this->errors));
@@ -391,7 +409,7 @@ class admin_news extends adminController {
 	}
 	##################################
 	
-	function postTwitter($sID, $sTitle) {
+	function postTwitter($sID, $sTitle, $sTag) {
 		$oTwitter = $this->loadTwitter();
 		
 		if($oTwitter != false) {
@@ -399,12 +417,7 @@ class admin_news extends adminController {
 			if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
 				$sPrefix .= "://";
 			
-			$sTitle = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($sTitle)))));
-
-			if(strlen($sTitle) > 50)
-				$sTitle = substr($sTitle, 0, 50)."...";
-			
-			$sUrl = $this->urlShorten($sPrefix.$_SERVER["HTTP_HOST"]."/news/".$sID."/".$sTitle."/");
+			$sUrl = $this->urlShorten($sPrefix.$_SERVER["HTTP_HOST"]."/news/".$sTag."/");
 			
 			$aParameters = array("status" => $_POST["title"]." ".$sUrl);
 			$status = $oTwitter->post("statuses/update", $aParameters);
@@ -416,17 +429,12 @@ class admin_news extends adminController {
 			$this->errors[] = "errors[]=".urlencode("Unable to connect with Twitter. Please try again later.");
 		}
 	}
-	function postFacebook($sID, $sTitle, $sShortContent, $sImage) {
+	function postFacebook($sID, $sTitle, $sShortContent, $sTag, $sImage) {
 		$aFacebook = $this->loadFacebook();
 		
 		$sPrefix = 'http';
 		if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
 			$sPrefix .= "://";
-			
-		$sTitleUrl = strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($sTitle)))));
-		
-		if(strlen($sTitleUrl) > 50)
-			$sTitleUrl = substr($sTitleUrl, 0, 50)."...";
 		
 		if($sImage == false)
 			$sImage = $sPrefix.$_SERVER["HTTP_HOST"].'/images/facebookConnect.png';
@@ -434,7 +442,7 @@ class admin_news extends adminController {
 			$sImage = $sPrefix.$_SERVER["HTTP_HOST"].'/image/news/'.$sID.'/?width=90';
 		
 		try {
-			$aFacebook["obj"]->api('/me/feed/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent, "link" => $sPrefix.$_SERVER["HTTP_HOST"].'/news/'.$sID.'/'.$sTitleUrl.'/', "picture" => $sImage));
+			$aFacebook["obj"]->api('/me/feed/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent, "link" => $sPrefix.$_SERVER["HTTP_HOST"].'/news/'.$sTag.'/', "picture" => $sImage));
 		} catch (FacebookApiException $e) {
 			error_log($e);
 			$this->errors[] = "errors[]=".urlencode("Error posting to Facebook. Please try again later.");

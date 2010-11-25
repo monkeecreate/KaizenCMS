@@ -38,7 +38,16 @@ class directory_ extends appController {
 		$this->tplDisplay("directory.tpl");
 	}
 	function listing() {
-		$this->tplAssign("aListing", $this->model->getListing(null, $this->urlVars->dynamic["tag"]));
-		$this->tplDisplay("listing.tpl");
+		$aListing = $this->model->getListing(null, $this->urlVars->dynamic["tag"]);
+		
+		if(empty($aListing))
+			$this->error('404');
+		
+		$this->tplAssign("aListing", $aListing);
+		
+		if($this->tplExists("listing-".$aListing["id"].".tpl"))
+			$this->tplDisplay("listing-".$aListing["id"].".tpl");
+		else
+			$this->tplDisplay("listing.tpl");
 	}
 }
