@@ -11,6 +11,7 @@ $aPluginInfo = array(
 	"config" => array(
 		"useCategories" => true,
 		"perPage" => 5,
-		"sort" => "manual-asc" // manual, question, created, updated, random - asc, desc
+		"sort" => "manual-asc", // manual, question, created, updated, random - asc, desc
+		"sortCategory" => "manual-asc" // manual, name, items, random - asc, desc
 	)
 );

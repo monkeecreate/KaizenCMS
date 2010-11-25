@@ -11,6 +11,7 @@ $aPluginInfo = array(
 	"config" => array(
 		"imageFolder" => "/uploads/galleries/",
 		"useCategories" => true,
-		"perPage" => 5
+		"perPage" => 5,
+		"sortCategory" => "manual-asc" // manual, name, items, random - asc, desc
 	)
 );

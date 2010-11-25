@@ -248,15 +248,37 @@ class admin_faq extends adminController {
 	function categories_index() {		
 		$_SESSION["admin"]["admin_faq_categories"] = null;
 		
+		$sMinSort = $this->dbQuery(
+			"SELECT MIN(`sort_order`) FROM `{dbPrefix}faq_categories`"
+			,"one"
+		);
+		$sMaxSort = $this->dbQuery(
+			"SELECT MAX(`sort_order`) FROM `{dbPrefix}faq_categories`"
+			,"one"
+		);
+		
 		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("aCategoryEdit", $this->model->getCategory($_GET["category"]));
+		$this->tplAssign("minSort", $sMinSort);
+		$this->tplAssign("maxSort", $sMaxSort);
+		$this->tplAssign("sSort", array_shift(explode("-", $this->model->sortCategory)));
+		
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
+		$sOrder = $this->dbQuery(
+			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}faq_categories`"
+			,"one"
+		);
+		
+		if(empty($sOrder))
+			$sOrder = 1;
+		
 		$this->dbInsert(
 			"faq_categories",
 			array(
 				"name" => $_POST["name"]
+				,"sort_order" => $sOrder
 			)
 		);
 
@@ -278,6 +300,51 @@ class admin_faq extends adminController {
 		$this->dbDelete("faq_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
 		$this->forward("/admin/faq/categories/?notice=".urlencode("Category removed successfully!"));
+	}
+	function categories_sort() {
+		$aCategory = $this->model->getCategory($this->urlVars->dynamic["id"], "integer");
+		
+		if($this->urlVars->dynamic["sort"] == "up") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}faq_categories`"
+					." WHERE `sort_order` < ".$aCategory["sort_order"]
+					." ORDER BY `sort_order` DESC"
+				,"row"
+			);
+		} elseif($this->urlVars->dynamic["sort"] == "down") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}faq_categories`"
+					." WHERE `sort_order` > ".$aCategory["sort_order"]
+					." ORDER BY `sort_order` ASC"
+				,"row"
+			);
+		}
+			
+		$this->dbUpdate(
+			"faq_categories",
+			array(
+				"sort_order" => 0
+			),
+			$aCategory["id"]
+		);
+		
+		$this->dbUpdate(
+			"faq_categories",
+			array(
+				"sort_order" => $aCategory["sort_order"]
+			),
+			$aOld["id"]
+		);
+			
+		$this->dbUpdate(
+			"faq_categories",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aCategory["id"]
+		);
+		
+		$this->forward("/admin/faq/categories/?notice=".urlencode("Sort order saved successfully!"));
 	}
 	##################################
 }

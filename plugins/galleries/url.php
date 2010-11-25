@@ -83,6 +83,10 @@ $aPluginUrlPatterns = array(
 	"/admin/galleries/{gallery:[0-9]+}/photos/delete/{id:[0-9]+}/" => array(
         "cmd" => "admin_galleries",
         "action" => "photos_delete"
+    ),
+	"/admin/galleries/categories/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+        "cmd" => "admin_galleries",
+        "action" => "categories_sort"
     )
 );
 ###############################################

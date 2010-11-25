@@ -61,8 +61,10 @@ $aTables = array(
 				"default" => 0,
 				"autoincrement" => 1
 			),
-			"name" => array("type" => "text","length" => 100)
-		)
+			"name" => array("type" => "text","length" => 100),
+			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
+		),
+		"unique" => array("sort_order")
 	),
 	"calendar_categories_assign" => array(
 		"fields" => array(

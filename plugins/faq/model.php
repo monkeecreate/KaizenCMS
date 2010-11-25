@@ -3,6 +3,7 @@ class faq_model extends appModel {
 	public $useCategories;
 	public $perPage;
 	public $sort;
+	public $sortCategory;
 	
 	function __construct() {
 		parent::__construct();
@@ -132,12 +133,39 @@ class faq_model extends appModel {
 		
 		if($sEmpty == false) {		
 			$sJoin .= " INNER JOIN `{dbPrefix}faq_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`";
+		} else {
+			$sJoin .= " LEFT JOIN `{dbPrefix}faq_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`";
+		}
+		
+		// Check if sort direction is set, and clean it up for SQL use
+		$sSortDirection = array_pop(explode("-", $this->sortCategory));
+		if(empty($sSortDirection) || !in_array(strtolower($sSortDirection), array("asc", "desc"))) {
+			$sSortDirection = "ASC";
+		} else {
+			$sSortDirection = strtoupper($sSortDirection);
+		}
+		
+		// Choose sort method based on model setting
+		switch(array_shift(explode("-", $this->sortCategory))) {
+			case "manual":
+				$sOrderBy = " ORDER BY `sort_order` ".$sSortDirection;
+				break;
+			case "items":
+				$sOrderBy = " ORDER BY `items` ".$sSortDirection;
+				break;
+			case "random":
+				$sOrderBy = " ORDER BY RAND()";
+				break;
+			// Default to sort by name
+			default:
+				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
 		}
 		
 		$aCategories = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}faq_categories` AS `categories`"
+			"SELECT `id`, `name`, `sort_order`, COUNT('categoryid') AS `items` FROM `{dbPrefix}faq_categories` AS `categories`"
 				.$sJoin
-				." ORDER BY `name`"
+				." GROUP BY `id`"
+				.$sOrderBy
 			,"all"
 		);
 	
@@ -157,7 +185,8 @@ class faq_model extends appModel {
 		}
 		
 		$aCategory = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}faq_categories`"
+			"SELECT `id`, `name`, `sort_order`, COUNT('categoryid') AS `items` FROM `{dbPrefix}faq_categories` AS `categories`"
+				." LEFT JOIN `{dbPrefix}faq_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`"
 				.$sWhere
 			,"row"
 		);

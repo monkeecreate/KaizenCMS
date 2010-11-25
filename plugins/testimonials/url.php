@@ -67,6 +67,10 @@ $aPluginUrlPatterns = array(
 	"/admin/testimonials/categories/delete/{id:[0-9]+}/" => array(
         "cmd" => "admin_testimonials",
         "action" => "categories_delete"
+    ),
+	"/admin/testimonials/categories/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+        "cmd" => "admin_testimonials",
+        "action" => "categories_sort"
     )
 );
 ###############################################

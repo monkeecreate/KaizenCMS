@@ -16,6 +16,7 @@ $aPluginInfo = array(
 		"useCategories" => true,
 		"perPage" => 5,
 		"sort" => "name-asc", // manual, name, state, created, updated, random - asc, desc
+		"sortCategory" => "manual-asc", // manual, name, items, random - asc, desc
 		"aStates" => array(''=>"",
 							'AL'=>"Alabama",  
 							'AK'=>"Alaska",  

@@ -63,6 +63,10 @@ $aPluginUrlPatterns = array(
 	"/admin/faq/categories/delete/{id:[0-9]+}/" => array(
         "cmd" => "admin_faq",
         "action" => "categories_delete"
+    ),
+	"/admin/faq/categories/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+        "cmd" => "admin_faq",
+        "action" => "categories_sort"
     )
 );
 ###############################################

@@ -15,6 +15,7 @@ $aPluginInfo = array(
 		"imageFolder" => "/uploads/links/",
 		"useCategories" => true,
 		"perPage" => 5,
-		"sort" => "name-asc" // manual, name, created, updated, random - asc, desc
+		"sort" => "name-asc", // manual, name, created, updated, random - asc, desc
+		"sortCategory" => "manual-asc" // manual, name, items, random - asc, desc
 	)
 );

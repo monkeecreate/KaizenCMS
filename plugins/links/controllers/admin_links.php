@@ -368,15 +368,37 @@ class admin_links extends adminController {
 	function categories_index() {
 		$_SESSION["admin"]["admin_links_categories"] = null;
 		
+		$sMinSort = $this->dbQuery(
+			"SELECT MIN(`sort_order`) FROM `{dbPrefix}links_categories`"
+			,"one"
+		);
+		$sMaxSort = $this->dbQuery(
+			"SELECT MAX(`sort_order`) FROM `{dbPrefix}links_categories`"
+			,"one"
+		);
+		
 		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("aCategoryEdit", $this->model->getCategory($_GET["category"]));
+		$this->tplAssign("minSort", $sMinSort);
+		$this->tplAssign("maxSort", $sMaxSort);
+		$this->tplAssign("sSort", array_shift(explode("-", $this->model->sortCategory)));
+		
 		$this->tplDisplay("admin/categories.tpl");
 	}
 	function categories_add_s() {
+		$sOrder = $this->dbQuery(
+			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}links_categories`"
+			,"one"
+		);
+		
+		if(empty($sOrder))
+			$sOrder = 1;
+		
 		$this->dbInsert(
 			"links_categories",
 			array(
 				"name" => $_POST["name"]
+				,"sort_order" => $sOrder
 			)
 		);
 
@@ -398,6 +420,51 @@ class admin_links extends adminController {
 		$this->dbDelete("links_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
 		$this->forward("/admin/links/categories/?notice=".urlencode("Category removed successfully!"));
+	}
+	function categories_sort() {
+		$aCategory = $this->model->getCategory($this->urlVars->dynamic["id"], "integer");
+		
+		if($this->urlVars->dynamic["sort"] == "up") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}links_categories`"
+					." WHERE `sort_order` < ".$aCategory["sort_order"]
+					." ORDER BY `sort_order` DESC"
+				,"row"
+			);
+		} elseif($this->urlVars->dynamic["sort"] == "down") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}links_categories`"
+					." WHERE `sort_order` > ".$aCategory["sort_order"]
+					." ORDER BY `sort_order` ASC"
+				,"row"
+			);
+		}
+			
+		$this->dbUpdate(
+			"links_categories",
+			array(
+				"sort_order" => 0
+			),
+			$aCategory["id"]
+		);
+		
+		$this->dbUpdate(
+			"links_categories",
+			array(
+				"sort_order" => $aCategory["sort_order"]
+			),
+			$aOld["id"]
+		);
+			
+		$this->dbUpdate(
+			"links_categories",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aCategory["id"]
+		);
+		
+		$this->forward("/admin/links/categories/?notice=".urlencode("Sort order saved successfully!"));
 	}
 	##################################
 }

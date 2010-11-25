@@ -3,6 +3,7 @@ class galleries_model extends appModel {
 	public $imageFolder;
 	public $useCategories;
 	public $perPage;
+	public $sortCategory;
 	
 	function __construct() {
 		parent::__construct();
@@ -32,7 +33,8 @@ class galleries_model extends appModel {
 				." LEFT JOIN `{dbPrefix}galleries_categories` AS `categories` ON `galleries_assign`.`categoryid` = `categories`.`id`"
 				.$sPhotos
 				.$sWhere
-				." GROUP BY `galleries`.`sort_order`"
+				." GROUP BY `galleries`.`id`"
+				." ORDER BY `galleries`.`sort_order`"
 			,"all"
 		);
 		
@@ -128,12 +130,39 @@ class galleries_model extends appModel {
 		
 		if($sEmpty == false) {		
 			$sJoin .= " INNER JOIN `{dbPrefix}galleries_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`";
+		} else {
+			$sJoin .= " LEFT JOIN `{dbPrefix}galleries_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`";
+		}
+		
+		// Check if sort direction is set, and clean it up for SQL use
+		$sSortDirection = array_pop(explode("-", $this->sortCategory));
+		if(empty($sSortDirection) || !in_array(strtolower($sSortDirection), array("asc", "desc"))) {
+			$sSortDirection = "ASC";
+		} else {
+			$sSortDirection = strtoupper($sSortDirection);
+		}
+		
+		// Choose sort method based on model setting
+		switch(array_shift(explode("-", $this->sortCategory))) {
+			case "manual":
+				$sOrderBy = " ORDER BY `sort_order` ".$sSortDirection;
+				break;
+			case "items":
+				$sOrderBy = " ORDER BY `items` ".$sSortDirection;
+				break;
+			case "random":
+				$sOrderBy = " ORDER BY RAND()";
+				break;
+			// Default to sort by name
+			default:
+				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
 		}
 		
 		$aCategories = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}galleries_categories` AS `categories`"
+			"SELECT `id`, `name`, `sort_order`, COUNT('categoryid') AS `items` FROM `{dbPrefix}galleries_categories` AS `categories`"
 				.$sJoin
-				." ORDER BY `name`"
+				." GROUP BY `id`"
+				.$sOrderBy
 			,"all"
 		);
 	
@@ -152,7 +181,8 @@ class galleries_model extends appModel {
 			return false;
 		
 		$aCategory = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}galleries_categories`"
+			"SELECT `id`, `name`, `sort_order`, COUNT('categoryid') AS `items` FROM `{dbPrefix}galleries_categories` AS `categories`"
+				." LEFT JOIN `{dbPrefix}galleries_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`"
 				.$sWhere
 			,"row"
 		);
