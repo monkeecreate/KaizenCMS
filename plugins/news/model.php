@@ -18,30 +18,41 @@ class news_model extends appModel {
 		}
 	}
 	
-	function getArticles($sCategory = null, $sAll = false) {	
-		// Start the WHERE
-		$sWhere = " WHERE `news`.`id` > 0";// Allways true
+	function getArticles($sCategory = null, $sAll = false) {
+		$aWhere = array();
+		$sJoin = "";
 		
+		// Filter those that are only active, unless told otherwise
 		if($sAll == false) {
-			$sWhere .= " AND `news`.`datetime_show` < ".time()." AND (`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
-			$sWhere .= " AND `news`.`active` = 1";
+			$aWhere[] = "`news`.`datetime_show` < ".time();
+			$aWhere[] = "(`news`.`use_kill` = 0 OR `news`.`datetime_kill` > ".time().")";
+			$aWhere[] = "`news`.`active` = 1";
 		}
 		
-		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+		// Filter by category if given
+		if(!empty($sCategory)) {
+			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+			$sJoin .= " LEFT JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`";
+			$sJoin .= " LEFT JOIN `{dbPrefix}news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`";
+		}
+		
+		// Combine filters if atleast one was added
+		if(!empty($aWhere)) {
+			$sWhere = " WHERE ".implode(" AND ", $aWhere);
+		}
 		
 		$aArticles = $this->dbQuery(
 			"SELECT `news`.* FROM `{dbPrefix}news` AS `news`"
-				." LEFT JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `news`.`id` = `news_assign`.`articleid`"
-				." LEFT JOIN `{dbPrefix}news_categories` AS `categories` ON `news_assign`.`categoryid` = `categories`.`id`"
+				.$sJoin
 				.$sWhere
 				." GROUP BY `news`.`id`"
 				." ORDER BY `news`.`sticky` DESC, `news`.`datetime_show` DESC"
 			,"all"
 		);
 		
-		foreach($aArticles as $x => $aArticle)
-			$aArticles[$x] = $this->_getArticleInfo($aArticle);
+		foreach($aArticles as &$aArticle) {
+			$this->_getArticleInfo($aArticle);
+		}
 		
 		return $aArticles;
 	}
@@ -63,11 +74,11 @@ class news_model extends appModel {
 			,"row"
 		);
 		
-		$aArticle = $this->_getArticleInfo($aArticle);
+		$this->_getArticleInfo($aArticle);
 		
 		return $aArticle;
 	}
-	private function _getArticleInfo($aArticle) {
+	private function _getArticleInfo(&$aArticle) {
 		if(!empty($aArticle)) {
 			if(!empty($aArticle["created_by"]))
 				$aArticle["user"] = $this->getUser($aArticle["created_by"]);
@@ -99,34 +110,32 @@ class news_model extends appModel {
 			else
 				$aArticle["image"] = 0;
 		}
-		
-		return $aArticle;
 	}
 	function getURL($sID) {
 		$aArticle = $this->getArticle($sID);
 		
-		return $aArticle["url"];
+		if(!empty($aArticle)) {
+			return $aArticle["url"];
+		} else {
+			return false;
+		}
 	}
 	function getCategories($sEmpty = true) {
-		if($sEmpty == true) {		
-			$aCategories = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}news_categories`"
-					." ORDER BY `name`"
-				,"all"
-			);
+		$sJoin = "";
 		
-			foreach($aCategories as &$aCategory) {
-				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
-			}
-		} else {
-			$aCategories = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}news_categories_assign`"
-					." GROUP BY `categoryid`"
-				,"all"
-			);
-			
-			foreach($aCategories as $x => $aCategory)
-				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+		if($sEmpty == false) {		
+			$sJoin .= " INNER JOIN `{dbPrefix}news_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`";
+		}
+		
+		$aCategories = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}news_categories` AS `categories`"
+				.$sJoin
+				." ORDER BY `name`"
+			,"all"
+		);
+	
+		foreach($aCategories as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		}
 		
 		return $aCategories;
@@ -145,7 +154,8 @@ class news_model extends appModel {
 			,"row"
 		);
 		
-		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		if(!empty($aCategory))
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		
 		return $aCategory;
 	}

@@ -19,31 +19,41 @@ class calendar_model extends appModel {
 	}
 	
 	function getEvents($sCategory = null, $sAll = false) {
-		// Start the WHERE
-		$sWhere = " WHERE `calendar`.`id` > 0";// Allways true
+		$aWhere = array();
+		$sJoin = "";
 		
+		// Filter those that are only active, unless told otherwise
 		if($sAll == false) {
-			$sWhere .= " AND `calendar`.`datetime_show` < ".time();
-			$sWhere .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
-			$sWhere .= " AND `calendar`.`datetime_end` > ".time();
-			$sWhere .= " AND `calendar`.`active` = 1";
+			$aWhere[] = "`calendar`.`datetime_show` < ".time();
+			$aWhere[] = "(`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
+			$aWhere[] = "`calendar`.`datetime_end` > ".time();
+			$aWhere[] = "`calendar`.`active` = 1";
 		}
 		
-		if(!empty($sCategory))
-			$sWhere .= " AND `categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+		// Filter by category if given
+		if(!empty($sCategory)) {
+			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($sCategory, "integer");
+			$sJoin .= " LEFT JOIN `{dbPrefix}calendar_categories_assign` AS `calendar_assign` ON `calendar`.`id` = `calendar_assign`.`eventid`";
+			$sJoin .= " LEFT JOIN `{dbPrefix}calendar_categories` AS `categories` ON `calendar_assign`.`categoryid` = `categories`.`id`";
+		}
+		
+		// Combine filters if atleast one was added
+		if(!empty($aWhere)) {
+			$sWhere = " WHERE ".implode(" AND ", $aWhere);
+		}
 		
 		$aEvents = $this->dbQuery(
 			"SELECT `calendar`.* FROM `{dbPrefix}calendar` AS `calendar`"
-				." LEFT JOIN `{dbPrefix}calendar_categories_assign` AS `calendar_assign` ON `calendar`.`id` = `calendar_assign`.`eventid`"
-				." LEFT JOIN `{dbPrefix}calendar_categories` AS `categories` ON `calendar_assign`.`categoryid` = `categories`.`id`"
+				.$sJoin
 				.$sWhere
 				." GROUP BY `calendar`.`id`"
 				." ORDER BY `calendar`.`datetime_start`"
 			,"all"
 		);
 	
-		foreach($aEvents as $x => &$aEvent)
+		foreach($aEvents as $x => &$aEvent) {
 			$aEvent = $this->_getEventInfo($aEvent);
+		}
 		
 		return $aEvents;
 	}
@@ -107,24 +117,21 @@ class calendar_model extends appModel {
 		return $aEvent["url"];
 	}
 	function getCategories($sEmpty = true) {
-		if($sEmpty == true) {		
-			$aCategories = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}calendar_categories`"
-					." ORDER BY `name`"
-				,"all"
-			);
+		$sJoin = "";
 		
-			foreach($aCategories as &$aCategory) {
-				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
-			}
-		} else {
-			$aCategories = $this->dbQuery(
-				"SELECT DISTINCT(`categoryid`) FROM `{dbPrefix}calendar_categories_assign`"
-				,"all"
-			);
-			
-			foreach($aCategories as $x => $aCategory)
-				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
+		if($sEmpty == false) {		
+			$sJoin .= " INNER JOIN `{dbPrefix}calendar_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`";
+		}
+		
+		$aCategories = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}calendar_categories` AS `categories`"
+				.$sJoin
+				." ORDER BY `name`"
+			,"all"
+		);
+	
+		foreach($aCategories as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		}
 		
 		return $aCategories;
@@ -143,7 +150,9 @@ class calendar_model extends appModel {
 			,"row"
 		);
 		
-		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		if(!empty($aCategory)) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		}
 		
 		return $aCategory;
 	}

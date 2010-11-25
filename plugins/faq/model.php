@@ -128,26 +128,21 @@ class faq_model extends appModel {
 		return $aQuestion["url"];
 	}
 	function getCategories($sEmpty = true) {
-		if($sEmpty == true) {
-			$aCategories = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}faq_categories`"
-					." ORDER BY `name`"
-				,"all"
-			);
+		$sJoin = "";
 		
-			foreach($aCategories as &$aCategory) {
-				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
-			}
-		} else {
-			$aCategories = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}faq_categories_assign`"
-					." GROUP BY `categoryid`"
-				,"all"
-			);
-			
-			foreach($aCategories as $x => $aCategory) {
-				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
-			}
+		if($sEmpty == false) {		
+			$sJoin .= " INNER JOIN `{dbPrefix}faq_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`";
+		}
+		
+		$aCategories = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}faq_categories` AS `categories`"
+				.$sJoin
+				." ORDER BY `name`"
+			,"all"
+		);
+	
+		foreach($aCategories as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		}
 		
 		return $aCategories;
@@ -167,7 +162,9 @@ class faq_model extends appModel {
 			,"row"
 		);
 		
-		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		if(!empty($aCategory)) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		}
 		
 		return $aCategory;
 	}

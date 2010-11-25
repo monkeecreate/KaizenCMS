@@ -147,27 +147,22 @@ class directory_model extends appModel {
 		
 		return $aListing["url"];
 	}
-	function getCategories($sEmpty = true) {		
-		if($sEmpty == true) {		
-			$aCategories = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}directory_categories`"
-					." ORDER BY `name`"
-				,"all"
-			);
+	function getCategories($sEmpty = true) {
+		$sJoin = "";
 		
-			foreach($aCategories as &$aCategory) {
-				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
-			}
-		} else {
-			$aCategories = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}directory_categories_assign`"
-					." GROUP BY `categoryid`"
-				,"all"
-			);
-			
-			foreach($aCategories as $x => $aCategory) {
-				$aCategories[$x] = $this->getCategory($aCategory["categoryid"]);
-			}
+		if($sEmpty == false) {		
+			$sJoin .= " INNER JOIN `{dbPrefix}directory_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`";
+		}
+		
+		$aCategories = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}directory_categories` AS `categories`"
+				.$sJoin
+				." ORDER BY `name`"
+			,"all"
+		);
+	
+		foreach($aCategories as &$aCategory) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		}
 		
 		return $aCategories;
@@ -187,7 +182,9 @@ class directory_model extends appModel {
 			,"row"
 		);
 		
-		$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		if(!empty($aCategory)) {
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		}
 		
 		return $aCategory;
 	}

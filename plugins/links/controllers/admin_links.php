@@ -255,7 +255,7 @@ class admin_links extends adminController {
 		$this->dbUpdate(
 			"links",
 			array(
-				"sort_order" => $aOld["sort_order"]
+				"sort_order" => 0
 			),
 			$aLink["id"]
 		);
@@ -266,6 +266,14 @@ class admin_links extends adminController {
 				"sort_order" => $aLink["sort_order"]
 			),
 			$aOld["id"]
+		);
+			
+		$this->dbUpdate(
+			"links",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aLink["id"]
 		);
 		
 		$this->forward("/admin/links/?notice=".urlencode("Sort order saved successfully!"));
