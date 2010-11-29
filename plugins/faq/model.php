@@ -25,8 +25,8 @@ class faq_model extends appModel {
 		}
 		
 		// Filter by category if given
-		if(!empty($_GET["category"])) {
-			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($_GET["category"], "integer");
+		if(!empty($sCategory)) {
+			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 			$sJoin .= " LEFT JOIN `{dbPrefix}faq_categories_assign` AS `faq_assign` ON `faq`.`id` = `faq_assign`.`faqid`";
 			$sJoin .= " LEFT JOIN `{dbPrefix}faq_categories` AS `categories` ON `faq_assign`.`categoryid` = `categories`.`id`";
 		}
