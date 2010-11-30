@@ -14,7 +14,7 @@
 	<h2>{$aContent.title}</h2>
 	{$aContent.content}
 	
-	<div class="form-errors hidden"></div>
+	<div class="form-errors hide"></div>
 	
 	<form name="contact" method="post" action="/sendform/" id="myForm" class="contactForm">
 		{getSetting tag="email" assign="sEmail"}
