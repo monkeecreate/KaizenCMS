@@ -22,6 +22,7 @@
 	
 	<script src="/scripts/modernizr-1.5.min.js"></script>
 </head>
+{flush()}
 <body class="{$menu}">
 	<div id="wrapper">
 		<header>

@@ -71,12 +71,10 @@
 						<a href="/admin/news/edit/{$aArticle.id}/" title="Edit Article">
 							<img src="/images/admin/icons/pencil.png" alt="edit icon">
 						</a>
-						{if $aPage.perminate != 1}
-							<a href="/admin/news/delete/{$aArticle.id}/"
-							 onclick="return confirm_('Are you sure you would like to delete: {$aArticle.title}?');" title="Delete Article">
-								<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
-							</a>
-						{/if}
+						<a href="/admin/news/delete/{$aArticle.id}/"
+						 onclick="return confirm_('Are you sure you would like to delete: {$aArticle.title}?');" title="Delete Article">
+							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
+						</a>
 					</td>
 				</tr>
 			{/foreach}

@@ -11,14 +11,14 @@
 		{foreach from=$aArticles item=aArticle}
 		<item>
 			<title>{$aArticle.title}</title>
-			<link>http://{$domain}/news/{$aArticle.tag}/</link>
+			<link>http://{$domain}{$aArticle.url}</link>
 			{if !empty($aArticle.short_content)}
 			<description>{$aArticle.short_content}</description>
 			{else}
 			<description>{$aArticle.content}</description>
 			{/if}
 			<pubDate>{$aArticle.datetime_show|date_format:'%a, %d %b %Y %T %Z'}</pubDate>
-			<guid>http://{$domain}/news/{$aArticle.tag}/</guid>
+			<guid>http://{$domain}{$aArticle.url}</guid>
 		</item>
 		{/foreach}
 	</channel>

@@ -24,9 +24,9 @@
 
 	{foreach from=$aGalleries item=aGallery}
 		<article>
-			{if $aGallery.photo > 0}
+			{if $aGallery.defaultPhoto > 0}
 				<figure>
-					<a href="{$aGallery.url}" title="{$aGallery.name}"><img src="/image/resize/?file={$sImageFolder}{$aGallery.id}/{$aGallery.photo}&width=140&height=140" alt="{$aGallery.name}"></a>
+					<a href="{$aGallery.url}" title="{$aGallery.name}"><img src="/image/resize/?file={$sImageFolder}{$aGallery.id}/{$aGallery.defaultPhoto}&width=140&height=140" alt="{$aGallery.name}"></a>
 				</figure>
 			{/if}
 			<h3><a href="{$aGallery.url}" title="{$aGallery.name}">{$aGallery.name}</a></h3>

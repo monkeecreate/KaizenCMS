@@ -3,7 +3,7 @@ function smarty_function_getSetting($aParams, &$oSmarty) {
 	$oApp = $oSmarty->getRegisteredObject("appController");
 	
 	if(empty($aParams["assign"]))
-		return $oApp->getSetting($aParams["tag"]);
+		return stripslashes($oApp->getSetting($aParams["tag"]));
 	else
-		$oSmarty->assign($aParams["assign"], $oApp->getSetting($aParams["tag"]));
+		$oSmarty->assign($aParams["assign"], stripslashes($oApp->getSetting($aParams["tag"])));
 }

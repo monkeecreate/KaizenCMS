@@ -126,7 +126,7 @@ $(function() {
 			null,
 			function(newDefault){
 				editPhotoDialog[id].dialog('close');
-				
+			
 				$("#"+id).remove();
 				$("#defaultPhoto").addClass('ui-state-highlight').html($("#"+newDefault+" .image").clone());
 				$("input[name=default_photo]").attr("value", newDefault);
@@ -152,8 +152,11 @@ $(function() {
 				return false;
 			});
 			$(this).find('.delete').click(function(){
-				id = $(item).attr('id').replace("_form", "");
-				deletePhoto(id);
+				if(confirm('Are you sure you would like to delete: {$aPhoto.title}?')) {
+					id = $(item).attr('id').replace("_form", "");
+					deletePhoto(id);
+				}
+				
 				return false;
 			});
 		});
@@ -206,7 +209,7 @@ $(function() {
 								<input type="submit" value="Save">
 								
 								<a class="cancel" href="#" title="Cancel" rel="{$aPhoto.id}">Cancel</a>
-								<a href="/admin/galleries/{$aGallery.id}/photos/delete/{$aPhoto.id}/" onclick="return confirm_('Are you sure you would like to delete: {$aPhoto.title}?');" title="Delete Photo" class="delete right ui-corner-all">Delete Photo</a>
+								<a href="#" title="Delete Photo" class="delete right ui-corner-all">Delete Photo</a>
 								<!-- <input type="button" value="Delete Photo" class="delete right"> -->
 								<input type="hidden" name="id" value="{$aPhoto.id}">
 							</form>

@@ -219,6 +219,8 @@ class makeImage
 					header("Expires: ".gmdate("D, d M Y H:i:s", strtotime("+2 days"))." GMT");
 					header("ETag: ".md5($this->_file));
 				}
+				
+				flush();
 	 		}
 			
 			$this->transparency();
@@ -226,7 +228,7 @@ class makeImage
 			switch($this->_info[2]) {
 				case IMAGETYPE_JPEG: imagejpeg($this->_image, $sFile, $sQuality); break;
 				case IMAGETYPE_PNG: imagepng($this->_image, $sFile); break;
-					 		case IMAGETYPE_GIF: imagegif($this->_image, $sFile); break;
+				case IMAGETYPE_GIF: imagegif($this->_image, $sFile); break;
 				default: return false;
 			}
 			

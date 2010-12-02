@@ -442,6 +442,7 @@ class admin_galleries extends adminController {
 		
 		$this->tplAssign("aPhotos", $aPhotos);
 		$this->tplAssign("aGallery", $this->model->getGallery($this->urlVars->dynamic["gallery"], null, true));
+		$this->tplAssign("sImageFolder", $this->model->imageFolder);
 		$this->tplDisplay("admin/photos_manage.tpl");
 	}
 	function photos_manage_s() {
