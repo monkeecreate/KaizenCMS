@@ -181,6 +181,7 @@ class admin_directory extends adminController {
 	
 		$aListings = $this->dbQuery(
 			"SELECT `tag` FROM `{dbPrefix}directory`"
+				." WHERE `id` != ".$this->dbQuote($_POST["id"], "integer")
 				." ORDER BY `tag`"
 			,"all"
 		);

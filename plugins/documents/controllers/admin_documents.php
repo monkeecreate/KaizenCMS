@@ -225,6 +225,7 @@ class admin_documents extends adminController {
 	
 		$aDocuments = $this->dbQuery(
 			"SELECT `tag` FROM `{dbPrefix}documents`"
+				." WHERE `id` != ".$this->dbQuote($_POST["id"], "integer")
 				." ORDER BY `tag`"
 			,"all"
 		);

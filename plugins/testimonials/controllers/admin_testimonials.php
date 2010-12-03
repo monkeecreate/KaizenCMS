@@ -160,6 +160,7 @@ class admin_testimonials extends adminController {
 	
 		$aTestimonials = $this->dbQuery(
 			"SELECT `tag` FROM `{dbPrefix}testimonials`"
+				." WHERE `id` != ".$this->dbQuote($_POST["id"], "integer")
 				." ORDER BY `tag`"
 			,"all"
 		);

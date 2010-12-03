@@ -204,6 +204,7 @@ class admin_news extends adminController {
 	
 		$aArticles = $this->dbQuery(
 			"SELECT `tag` FROM `{dbPrefix}news`"
+				." WHERE `id` != ".$this->dbQuote($_POST["id"], "integer")
 				." ORDER BY `tag`"
 			,"all"
 		);

@@ -158,6 +158,7 @@ class admin_faq extends adminController {
 	
 		$aQuestions = $this->dbQuery(
 			"SELECT `tag` FROM `{dbPrefix}faq`"
+				." WHERE `id` != ".$this->dbQuote($_POST["id"], "integer")
 				." ORDER BY `tag`"
 			,"all"
 		);

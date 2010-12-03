@@ -221,6 +221,7 @@ class admin_calendar extends adminController {
 	
 		$aEvents = $this->dbQuery(
 			"SELECT `tag` FROM `{dbPrefix}calendar`"
+				." WHERE `id` != ".$this->dbQuote($_POST["id"], "integer")
 				." ORDER BY `tag`"
 			,"all"
 		);

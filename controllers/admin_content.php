@@ -146,6 +146,7 @@ class admin_content extends adminController
 			
 			$aPages = $this->dbQuery(
 				"SELECT `tag` FROM `{dbPrefix}content`"
+					." WHERE `id` != ".$this->dbQuote($_POST["id"], "integer")
 					." ORDER BY `tag`"
 				,"all"
 			);

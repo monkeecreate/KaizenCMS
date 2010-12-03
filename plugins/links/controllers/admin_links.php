@@ -170,6 +170,7 @@ class admin_links extends adminController {
 	
 		$aLinks = $this->dbQuery(
 			"SELECT `tag` FROM `{dbPrefix}links`"
+				." WHERE `id` != ".$this->dbQuote($_POST["id"], "integer")
 				." ORDER BY `tag`"
 			,"all"
 		);
