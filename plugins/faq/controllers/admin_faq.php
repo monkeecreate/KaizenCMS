@@ -230,7 +230,7 @@ class admin_faq extends adminController {
 		$this->dbUpdate(
 			"faq",
 			array(
-				"sort_order" => $aOld["sort_order"]
+				"sort_order" => 0
 			),
 			$aQuestion["id"]
 		);
@@ -241,6 +241,14 @@ class admin_faq extends adminController {
 				"sort_order" => $aQuestion["sort_order"]
 			),
 			$aOld["id"]
+		);
+			
+		$this->dbUpdate(
+			"faq",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aQuestion["id"]
 		);
 		
 		$this->forward("/admin/faq/?notice=".urlencode("Sort order saved successfully!"));
