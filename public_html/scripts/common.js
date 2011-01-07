@@ -53,20 +53,26 @@ $(document).ready(function() {
 	 * the form is submited, the default value is not
 	 * sent to the server.
 	 */
-	$('input.default').each(function() {
+	$('input.default, textarea.default').each(function() {
 		var input = $(this);
 		input.data("val", input.val());
-		input.click(function() {
+		input.focus(function() {
 			if(input.val() == input.data("val")) {
 				input.val("");
 				input.removeClass("default");
 			}
 		});
+		input.blur(function() {
+			if(input.val() == "") {
+				input.val(input.data("val"));
+				input.addClass("default");
+			}
+		});
 	});
 	$('form').submit(function() {
-		var input = $(this);
-		input.find('input.default').each(function() {
-			input.val("");
+		var form = $(this);
+		form.find('.default').each(function() {
+			$(this).val("");
 		})
 	});
 });
