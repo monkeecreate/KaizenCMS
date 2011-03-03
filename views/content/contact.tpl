@@ -56,7 +56,7 @@
 			alert("Captcha was incorrect! Please try again.");
 		{/if}
 		
-		$("form").validateForm([
+		$("#myForm").validateForm([
 			"required,1|s|Name:,Name is required",
 			"required,7|s|Email:,An email address is required",
 			"valid_email,7|s|Email:,A valid email address is required",
