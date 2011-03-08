@@ -53,20 +53,24 @@ header h1 {
 	padding: 35px 0 0;
 }
 
-/* @group loggedIn */
+/* @group topBar */
 
-header .loggedIn {
+header .loggedIn, header .backToSite {
 	float: right;
 	margin: 8px 5px 0 0;
 	color: #a4a4a4;
 }
 
-header .loggedIn a:link, header .loggedIn a:active, header .loggedIn a:visited {
+header .backToSite {
+	float: left;
+}
+
+header .loggedIn a:link, header .loggedIn a:active, header .loggedIn a:visited, header .backToSite a:link, header .backToSite a:active, header .backToSite a:visited {
 	color: #a4a4a4;
 	text-decoration: none;
 }
 
-header .loggedIn a:hover {
+header .loggedIn a:hover, header .backToSite a:hover {
 	color: #b9b9b9;
 	text-decoration: underline;
 }

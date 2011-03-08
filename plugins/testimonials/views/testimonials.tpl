@@ -1,7 +1,8 @@
-{include file="inc_header.tpl" page_title="Testimonials" menu="testimonials"}
+{$menu = "testimonials"}
+{include file="inc_header.tpl" page_title="Testimonials"}
 
 	{if $aCategories|@count gt 1}
-	<form name="category" method="get" action="/news/" class="sortCat">
+	<form name="category" method="get" action="/testimonials/" class="sortCat">
 		Category:
 		<select name="category">
 			<option value="">- All Categories -</option>

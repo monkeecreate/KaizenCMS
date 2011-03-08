@@ -1,4 +1,5 @@
-{include file="inc_header.tpl" page_title=$aQuestion.question menu="faq"}
+{$menu = "faq"}
+{include file="inc_header.tpl" page_title=$aQuestion.question}
 	
 	<h2>Q: {$aQuestion.question}</h2>
 	

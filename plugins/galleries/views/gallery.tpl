@@ -1,4 +1,5 @@
-{include file="inc_header.tpl" page_title=$aGallery.name menu="galleries"}
+{$menu = "galleries"}
+{include file="inc_header.tpl" page_title=$aGallery.name}
 
 {footer}
 <link type="text/css" media="screen" rel="stylesheet" href="/scripts/colorbox/themes/3/colorbox.css" />

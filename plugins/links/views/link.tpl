@@ -1,4 +1,5 @@
-{include file="inc_header.tpl" page_title=$aLink.name menu="links"}
+{$menu = "links"}
+{include file="inc_header.tpl" page_title=$aLink.name}
 
 	<h2><a href="{$aLink.link}" title="{$aLink.name}" target="_blank" rel="nofollow">{$aLink.name}</a></h2>
 

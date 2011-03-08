@@ -1,4 +1,5 @@
-{include file="inc_header.tpl" page_title=$aListing.name menu="directory"}
+{$menu = "directory"}
+{include file="inc_header.tpl" page_title=$aListing.name}
 
 	<h2>{$aListing.name}</h2>
 	

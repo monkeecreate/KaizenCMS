@@ -23,10 +23,10 @@
 	<script src="/scripts/modernizr-1.5.min.js"></script>
 </head>
 {flush()}
-<body class="{$menu}">
+<body{if !empty($menu)} class="{$menu}"{/if}>
 	<div id="wrapper">
 		<header>
-			<h1><a href="/" title="">Kaizen CMS</a></h1>
+			<h1><a href="/" title="{getSetting tag="title"}">{getSetting tag="title"}</a></h1>
 			
 			<nav>
 				<ul>

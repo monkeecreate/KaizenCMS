@@ -1,4 +1,5 @@
-{include file="inc_header.tpl" page_title=$aEvent.title menu="calendar"}
+{$menu = "calendar"}
+{include file="inc_header.tpl" page_title=$aEvent.title}
 {head}
 <meta property="og:title" content="{$aEvent.title}">
 <meta property="og:site_name" content="{getSetting tag="title"}">

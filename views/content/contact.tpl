@@ -1,4 +1,6 @@
-{include file="inc_header.tpl" page_title="Contact Us" menu="contact"}
+{$menu = "contact"}{if !empty($aContent)}
+{getContent tag="contact" var="aContent"}{$sTitle = $aContent.title}{else}{$sTitle = "Contact Us"}{/if}
+{include file="inc_header.tpl" page_title=$sTitle}
 {head}
 <script type="text/javascript">
 	var RecaptchaOptions = {ldelim}
@@ -9,14 +11,15 @@
 {if $smarty.get.captcha_error != 1}
 	{$_SESSION["post_data"] = null}
 {/if}
-{getContent tag="contact" var="aContent"}
 
-	<h2>{$aContent.title}</h2>
-	{$aContent.content}
+	{if !empty($aContent)}
+		<h2>{$aContent.title}</h2>
+		{$aContent.content}
+	{/if}
 	
 	<div class="form-errors hide"></div>
 	
-	<form name="contact" method="post" action="/sendform/" id="myForm" class="contactForm">
+	<form name="contact" method="post" action="/sendform/" id="contactForm" class="contactForm">
 		{getSetting tag="email" assign="sEmail"}
 		{getSetting tag="contact-subject" assign="sSubject"}
 		<input type="hidden" name="subject" value="{enc_encrypt value=$sSubject}">
@@ -25,29 +28,29 @@
 		<input type="hidden" name="from" value="{enc_encrypt value='[$7]'}">
 		<input type="hidden" name="to" value="{enc_encrypt value=$sEmail}">
 
-		<label class="labelWidth">*Name:</label>
+		<label class="labelWidth" for="form_name">Name: <span>required</span></label>
 		<input type="text" id="form_name" name="1|s|Name:" value="{post_data key='1|s|Name:'}"><br />
-		<label class="labelWidth">Address:</label>
-		<input type="text" name="2|s|Address:" value="{post_data key='2|s|Address:'}"><br />
-		<label class="labelWidth">City:</label>
-		<input type="text" name="3|s|City:" value="{post_data key='3|s|City:'}"><br />
-		<label class="labelWidth">State:</label>
-		<input type="text" name="4|s|State:" value="{post_data key='4|s|State:'}"><br />
-		<label class="labelWidth">Zip:</label>
-		<input type="text" name="5|s|Zip:" value="{post_data key='5|s|Zip:'}"><br />
-		<label class="labelWidth">Phone:</label>
-		<input type="text" name="6|s|Phone:" value="{post_data key='6|s|Phone:'}"><br />
-		<label class="labelWidth">*Email:</label>
+		<label class="labelWidth" for="form_address">Address:</label>
+		<input type="text" id="form_address" name="2|s|Address:" value="{post_data key='2|s|Address:'}"><br />
+		<label class="labelWidth" for="form_city">City:</label>
+		<input type="text" id="form_city" name="3|s|City:" value="{post_data key='3|s|City:'}"><br />
+		<label class="labelWidth" for="form_state">State:</label>
+		<input type="text" id="form_state" name="4|s|State:" value="{post_data key='4|s|State:'}"><br />
+		<label class="labelWidth" for="form_zip">Zip:</label>
+		<input type="text" id="form_zip" name="5|s|Zip:" value="{post_data key='5|s|Zip:'}"><br />
+		<label class="labelWidth" for="form_phone">Phone:</label>
+		<input type="text" id="form_phone" name="6|s|Phone:" value="{post_data key='6|s|Phone:'}"><br />
+		<label class="labelWidth" for="form_email">Email: <span>required</span></label>
 		<input type="text" id="form_email" name="7|s|Email:" value="{post_data key='7|s|Email:'}"><br />
 
-		<label>Comment:</label>
-		<textarea name="8|n|Comment:">{post_data key='8|n|Comment:'}</textarea><br />
+		<label for="form_comment">Comment:</label>
+		<textarea id="form_comment" name="8|n|Comment:">{post_data key='8|n|Comment:'}</textarea><br />
 
 		<div class="captcha">
 			{re_captcha}
 		</div>
 
-		<input type="submit" value="Send" class="send">
+		<input type="submit" value="Send Email">
 	</form>
 	{footer}
 	<script type="text/javascript">

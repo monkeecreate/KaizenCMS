@@ -1,3 +1,4 @@
+{$menu = "500"}
 {include file="inc_header.tpl"}
 
 	<section id="content" class="content column">

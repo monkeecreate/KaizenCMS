@@ -1,5 +1,5 @@
-{include file="inc_header.tpl" page_title="News" menu="news"}
-
+{$menu = "news"}
+{include file="inc_header.tpl" page_title="News"}
 {head}
 <link rel="alternate" type="application/rss+xml" title="News RSS" href="/news/rss/">
 <meta property="og:site_name" content="{getSetting tag="title"}">

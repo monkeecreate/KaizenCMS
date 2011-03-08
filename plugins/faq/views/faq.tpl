@@ -1,4 +1,5 @@
-{include file="inc_header.tpl" page_title="FAQ" menu="faq"}
+{$menu = "faq"}
+{include file="inc_header.tpl" page_title="FAQ"}
 
 	{if $aCategories|@count gt 1}
 	<form name="category" method="get" action="/faq/" class="sortCat">

@@ -1,4 +1,5 @@
-{include file="inc_header.tpl" page_title=$aDocument.name menu="documents"}
+{$menu = "documents"}
+{include file="inc_header.tpl" page_title=$aDocument.name}
 
 	<h2><a href="{$documentFolder}{$aDocument.document}" target="_blank">{$aDocument.name}</a></h2>
 	

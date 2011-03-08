@@ -1,4 +1,5 @@
-{include file="inc_header.tpl"}
+{$menu = "Search"}
+{include file="inc_header.tpl" page_title="Search"}
 
 	<h2>Search</h2>
 
