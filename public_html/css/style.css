@@ -1,54 +1,48 @@
 /* @group reset */
-
-html, body, div, span, object, iframe,
+/* http://meyerweb.com/eric/tools/css/reset/ | v2.0 | 20110126 */
+html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-abbr, address, cite, code,
-del, dfn, em, img, ins, kbd, q, samp,
-small, strong, sub, sup, var,
-b, i,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section, summary,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-  margin:0;
-  padding:0;
-  border:0;
-  outline:0;
-  font-size:100%;
-  vertical-align:baseline;
-  background:transparent;
-}                  
-
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section { 
-    display:block;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
 }
-
-nav ul { list-style:none; }
-
-blockquote, q { quotes:none; }
-
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
 blockquote:before, blockquote:after,
-q:before, q:after { content:''; content:none; }
-
-a { margin:0; padding:0; font-size:100%; vertical-align:baseline; background:transparent; }
-
-ins { background-color:#ff9; color:#000; text-decoration:none; }
-
-mark { background-color:#ff9; color:#000; font-style:italic; font-weight:bold; }
-
-del { text-decoration: line-through; }
-
-abbr[title], dfn[title] { border-bottom:1px dotted; cursor:help; }
-
-/* tables still need cellspacing="0" in the markup */
-table { border-collapse:collapse; border-spacing:0; }
-
-hr { display:block; height:1px; border:0; border-top:1px solid #ccc; margin:1em 0; padding:0; }
-
-input, select { vertical-align:middle; }
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
 
 /* @end */
 
@@ -62,10 +56,6 @@ body {
 	font: 62.5% "Arial", Verdana, sans-serif;
 	color: #333;
 	text-align: center;
-}
-
-header, article, section, aside, footer {
-	display: block;
 }
 
 #wrapper {
@@ -154,7 +144,7 @@ nav ul li a:hover {
 	margin-left: 10px;
 }
 
-.content a:link, .content a:visited, .content a:active {
+.content a:link, .content a:active, .content a:visited {
 	color: #;
 	text-decoration: none;
 }
@@ -208,17 +198,6 @@ nav ul li a:hover {
 	line-height: 1.4em;
 }
 
-.content p a:link, .content p a:visited, .content p a:active, .content li a:link, .content li a:visited, .content li a:active {
-	color: #;
-	text-decoration: none;
-	border-bottom: 1px solid #;
-}
-
-.content p a:hover, .content li a:hover {
-	color: #;
-	border-bottom: 1px solid #;
-}
-
 .content ul {
 	margin: 0 0 15px 30px;
 }
@@ -259,10 +238,9 @@ aside {
 	margin-right: 10px;
 }
 
-aside a:link, aside a:visited, aside a:active {
+aside a:link, aside a:active, aside a:visited {
 	color: #;
 	text-decoration: none;
-	border-bottom: 1px solid #;
 }
 
 aside a:focus {
@@ -271,7 +249,7 @@ aside a:focus {
 
 aside a:hover {
 	color: #;
-	border-bottom: 1px solid #;
+	text-decoration: underline;
 }
 
 aside h2 {
@@ -314,17 +292,6 @@ aside p, aside blockquote {
 	line-height: 1.4em;
 }
 
-aside p a:link, aside p a:visited, aside p a:active, aside li a:link, aside li a:visited, aside li a:active {
-	color: #;
-	text-decoration: none;
-	border-bottom: 1px solid #;
-}
-
-aside p a:hover, aside li a:hover {
-	color: #;
-	border-bottom: 1px solid #;
-}
-
 aside ul {
 	margin: 0 0 15px 30px;
 }
@@ -346,6 +313,10 @@ aside li {
 	margin-bottom: 5px;
 	font-size: 1.3em;
 	line-height: 1.4em;
+}
+
+aside li li {
+	font-size: 1em;
 }
 
 /* @end */
@@ -383,7 +354,7 @@ footer p {
 	color: #666;
 }
 
-footer a:link, footer a:visited, footer a:active {
+footer a:link, footer a:active, footer a:visited {
 	color: #;
 	text-decoration: none;
 }
