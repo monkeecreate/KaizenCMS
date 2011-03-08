@@ -1,7 +1,13 @@
-{$menu = "Search"}
-{include file="inc_header.tpl" page_title="Search"}
+{$menu = "search"}{if !empty($aContent)}
+{getContent tag="search" var="aContent"}{$sTitle = $aContent.title}{else}{$sTitle = "Search"}{/if}
+{include file="inc_header.tpl" page_title=$sTitle}
 
-	<h2>Search</h2>
+	{if !empty($aContent)}
+		<h2>{$aContent.title}</h2>
+		{$aContent.content}
+	{else}
+		<h2>Search</h2>
+	{/if}
 
 	<form name="search" method="get" action="/search/">
 		Search: <input type="text" name="query" value="{$sQuery|clean_html}">

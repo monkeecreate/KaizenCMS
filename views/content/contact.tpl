@@ -15,6 +15,8 @@
 	{if !empty($aContent)}
 		<h2>{$aContent.title}</h2>
 		{$aContent.content}
+	{else}
+		<h2>Contact Us</h2>
 	{/if}
 	
 	<div class="form-errors hide"></div>

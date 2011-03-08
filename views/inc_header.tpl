@@ -20,7 +20,7 @@
 	<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 	<link rel="stylesheet" href="/css/screen.css?v=1" type="text/css">
 	
-	<script src="/scripts/modernizr-1.5.min.js"></script>
+	<script src="/scripts/modernizr-1.7.min.js"></script>
 </head>
 {flush()}
 <body{if !empty($menu)} class="{$menu}"{/if}>
