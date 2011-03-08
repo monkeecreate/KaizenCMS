@@ -30,7 +30,7 @@
 	<div id="wrapper">
 		<header>
 			<div class="backToSite">
-				<a href="/" title="{getSetting tag="title"}"><span class="iconic">6</span> back to {$domain}</a>
+				<a href="/" title="{getSetting tag="title"}"><span class="iconic">6</span> back to site</a>
 			</div>
 			{if !empty($user_details)}
 				<div class="loggedIn">Logged in as <b>{$user_details.fname} {$user_details.lname}</b> <span class="divider">|</span> <a href="/admin/users/edit/{$user_details.id}/">Edit Profile</a> <span class="divider">|</span> <a href="/admin/logout/" title="Logout">Logout</a></div>
