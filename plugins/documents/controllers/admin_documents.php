@@ -79,24 +79,6 @@ class admin_documents extends adminController {
 			$sOrder = 1;
 		}
 		
-		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["name"]))))),0,100);
-	
-		$aEvents = $this->dbQuery(
-			"SELECT `tag` FROM `{dbPrefix}documents`"
-				." ORDER BY `tag`"
-			,"all"
-		);
-
-		if(in_array(array('tag' => $sTag), $aEvents)) {
-			$i = 1;
-			do {
-				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
-				$i++;
-				$checkDuplicate = in_array(array('tag' => $sTempTag), $aEvents);
-			} while ($checkDuplicate);
-			$sTag = $sTempTag;
-		}
-		
 		$sID = $this->dbInsert(
 			"documents",
 			array(
@@ -134,7 +116,7 @@ class admin_documents extends adminController {
 					$sID
 				);
 				
-				$this->forward("/admin/document/?notice=".urlencode("Document file size was too large!"));
+				$this->forward("/admin/documents/?notice=".urlencode("Document file size was too large!"));
 			} else {
 				$upload_dir = $this->settings->rootPublic.substr($this->model->documentFolder, 1);
 				
