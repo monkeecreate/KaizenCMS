@@ -4,19 +4,19 @@
 ### Url Pattern ###############################
 /*
  # Function Variable Order:
- #   1. URL parameters ({name:[a-z]+})
+ #   1. URL parameters (<name:[a-z]+>)
  #   2. Pattern parameters
  #
  # Example URL Patterns:
- #   /page/{name:[a-z0-9]+}/
- #   /{tag:[a-z]+}/
+ #   /page/<name:[a-z0-9]+>/
+ #   /<tag:[a-z]+>/
 */
 $aPluginUrlPatterns = array(
     "/directory/" => array(
 		"cmd" => "directory_",
 		"action" => "index"
 	),
-	"/directory/{tag:[^/]+}/" => array(
+	"/directory/<tag:[^/]+>/" => array(
 		"cmd" => "directory_",
 		"action" => "listing"
 	),
@@ -32,7 +32,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_directory",
         "action" => "add_s"
     ),
-	"/admin/directory/edit/{id:[0-9]+}/" => array(
+	"/admin/directory/edit/<id:[0-9]+>/" => array(
         "cmd" => "admin_directory",
         "action" => "edit"
     ),
@@ -40,15 +40,15 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_directory",
         "action" => "edit_s"
     ),
-	"/admin/directory/delete/{id:[0-9]+}/" => array(
+	"/admin/directory/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_directory",
         "action" => "delete"
     ),
-	"/admin/directory/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+	"/admin/directory/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
         "cmd" => "admin_directory",
         "action" => "sort"
     ),
-	"/admin/directory/image/{id:[0-9]+}/upload/" => array(
+	"/admin/directory/image/<id:[0-9]+>/upload/" => array(
         "cmd" => "admin_directory",
         "action" => "image_upload"
     ),
@@ -56,7 +56,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_directory",
         "action" => "image_upload_s"
     ),
-	"/admin/directory/image/{id:[0-9]+}/edit/" => array(
+	"/admin/directory/image/<id:[0-9]+>/edit/" => array(
         "cmd" => "admin_directory",
         "action" => "image_edit"
     ),
@@ -64,7 +64,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_directory",
         "action" => "image_edit_s"
     ),
-	"/admin/directory/image/{id:[0-9]+}/delete/" => array(
+	"/admin/directory/image/<id:[0-9]+>/delete/" => array(
         "cmd" => "admin_directory",
         "action" => "image_delete"
     ),
@@ -80,11 +80,11 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_directory",
         "action" => "categories_edit_s"
     ),
-	"/admin/directory/categories/delete/{id:[0-9]+}/" => array(
+	"/admin/directory/categories/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_directory",
         "action" => "categories_delete"
     ),
-	"/admin/directory/categories/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+	"/admin/directory/categories/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
         "cmd" => "admin_directory",
         "action" => "categories_sort"
     )

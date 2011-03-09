@@ -4,19 +4,19 @@
 ### Url Pattern ###############################
 /*
  # Function Variable Order:
- #   1. URL parameters ({name:[a-z]+})
+ #   1. URL parameters (<name:[a-z]+>)
  #   2. Pattern parameters
  #
  # Example URL Patterns:
- #   /page/{name:[a-z0-9]+}/
- #   /{tag:[a-z]+}/
+ #   /page/<name:[a-z0-9]+>/
+ #   /<tag:[a-z]+>/
 */
 $aPluginUrlPatterns = array(
     "/documents/" => array(
 		"cmd" => "documents",
 		"action" => "index"
 	),
-	"/documents/{tag:[^/]+}/" => array(
+	"/documents/<tag:[^/]+>/" => array(
 		"cmd" => "documents",
 		"action" => "document"
 	),
@@ -32,7 +32,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_documents",
         "action" => "add_s"
     ),
-	"/admin/documents/edit/{id:[0-9]+}/" => array(
+	"/admin/documents/edit/<id:[0-9]+>/" => array(
         "cmd" => "admin_documents",
         "action" => "edit"
     ),
@@ -40,11 +40,11 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_documents",
         "action" => "edit_s"
     ),
-	"/admin/documents/delete/{id:[0-9]+}/" => array(
+	"/admin/documents/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_documents",
         "action" => "delete"
     ),
-	"/admin/documents/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+	"/admin/documents/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
         "cmd" => "admin_documents",
         "action" => "sort"
     ),
@@ -60,11 +60,11 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_documents",
         "action" => "categories_edit_s"
     ),
-	"/admin/documents/categories/delete/{id:[0-9]+}/" => array(
+	"/admin/documents/categories/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_documents",
         "action" => "categories_delete"
     ),
-	"/admin/documents/categories/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+	"/admin/documents/categories/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
         "cmd" => "admin_documents",
         "action" => "categories_sort"
     )

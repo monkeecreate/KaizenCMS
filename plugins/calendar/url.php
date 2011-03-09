@@ -4,12 +4,12 @@
 ### Url Pattern ###############################
 /*
  # Function Variable Order:
- #   1. URL parameters ({name:[a-z]+})
+ #   1. URL parameters (<name:[a-z]+>)
  #   2. Pattern parameters
  #
  # Example URL Patterns:
- #   /page/{name:[a-z0-9]+}/
- #   /{tag:[a-z]+}/
+ #   /page/<name:[a-z0-9]+>/
+ #   /<tag:[a-z]+>/
 */
 $aPluginUrlPatterns = array(
     "/calendar/" => array(
@@ -20,11 +20,11 @@ $aPluginUrlPatterns = array(
 		"cmd" => "calendar",
 		"action" => "ics"
 	),
-	"/calendar/{tag:[^/]+}/" => array(
+	"/calendar/<year:[0-9]+>/<month:[0-9]+>/<date:[0-9]+>/<tag:[^/]+>/" => array(
 		"cmd" => "calendar",
 		"action" => "event"
 	),
-	"/calendar/{tag:[^/]+}/ics/" => array(
+	"/calendar/<tag:[^/]+>/ics/" => array(
 		"cmd" => "calendar",
 		"action" => "event_ics"
 	),
@@ -40,7 +40,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_calendar",
         "action" => "add_s"
     ),
-	"/admin/calendar/edit/{id:[0-9]+}/" => array(
+	"/admin/calendar/edit/<id:[0-9]+>/" => array(
         "cmd" => "admin_calendar",
         "action" => "edit"
     ),
@@ -48,7 +48,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_calendar",
         "action" => "edit_s"
     ),
-	"/admin/calendar/delete/{id:[0-9]+}/" => array(
+	"/admin/calendar/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_calendar",
         "action" => "delete"
     ),
@@ -56,7 +56,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_calendar",
         "action" => "image_upload_s"
     ),
-	"/admin/calendar/image/{id:[0-9]+}/edit/" => array(
+	"/admin/calendar/image/<id:[0-9]+>/edit/" => array(
         "cmd" => "admin_calendar",
         "action" => "image_edit"
     ),
@@ -64,7 +64,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_calendar",
         "action" => "image_edit_s"
     ),
-	"/admin/calendar/image/{id:[0-9]+}/delete/" => array(
+	"/admin/calendar/image/<id:[0-9]+>/delete/" => array(
         "cmd" => "admin_calendar",
         "action" => "image_delete"
     ),
@@ -80,11 +80,11 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_calendar",
         "action" => "categories_edit_s"
     ),
-	"/admin/calendar/categories/delete/{id:[0-9]+}/" => array(
+	"/admin/calendar/categories/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_calendar",
         "action" => "categories_delete"
     ),
-	"/admin/calendar/categories/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+	"/admin/calendar/categories/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
         "cmd" => "admin_calendar",
         "action" => "categories_sort"
     )

@@ -4,23 +4,23 @@
 ### Url Pattern ###############################
 /*
  # Function Variable Order:
- #   1. URL parameters ({name:[a-z]+})
+ #   1. URL parameters (<name:[a-z]+>)
  #   2. Pattern parameters
  #
  # Example URL Patterns:
- #   /page/{name:[a-z0-9]+}/
- #   /{tag:[a-z]+}/
+ #   /page/<name:[a-z0-9]+>/
+ #   /<tag:[a-z]+>/
 */
 $aPluginUrlPatterns = array(
     "/testimonials/" => array(
 		"cmd" => "testimonials",
 		"action" => "index"
 	),
-	"/testimonials/{tag:[^/]+}/" => array(
+	"/testimonials/<tag:[^/]+>/" => array(
 		"cmd" => "testimonials",
 		"action" => "testimonial"
 	),
-	"/testimonials/{id:[0-9]+}/" => array(
+	"/testimonials/<id:[0-9]+>/" => array(
 		"cmd" => "testimonials",
 		"action" => "index"
 	),
@@ -36,7 +36,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_testimonials",
         "action" => "add_s"
     ),
-	"/admin/testimonials/edit/{id:[0-9]+}/" => array(
+	"/admin/testimonials/edit/<id:[0-9]+>/" => array(
         "cmd" => "admin_testimonials",
         "action" => "edit"
     ),
@@ -44,11 +44,11 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_testimonials",
         "action" => "edit_s"
     ),
-	"/admin/testimonials/delete/{id:[0-9]+}/" => array(
+	"/admin/testimonials/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_testimonials",
         "action" => "delete"
     ),
-	"/admin/testimonials/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+	"/admin/testimonials/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
         "cmd" => "admin_testimonials",
         "action" => "sort"
     ),
@@ -64,11 +64,11 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_testimonials",
         "action" => "categories_edit_s"
     ),
-	"/admin/testimonials/categories/delete/{id:[0-9]+}/" => array(
+	"/admin/testimonials/categories/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_testimonials",
         "action" => "categories_delete"
     ),
-	"/admin/testimonials/categories/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+	"/admin/testimonials/categories/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
         "cmd" => "admin_testimonials",
         "action" => "categories_sort"
     )

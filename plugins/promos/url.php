@@ -4,15 +4,15 @@
 ### Url Pattern ###############################
 /*
  # Function Variable Order:
- #   1. URL parameters ({name:[a-z]+})
+ #   1. URL parameters (<name:[a-z]+>)
  #   2. Pattern parameters
  #
  # Example URL Patterns:
- #   /page/{name:[a-z0-9]+}/
- #   /{tag:[a-z]+}/
+ #   /page/<name:[a-z0-9]+>/
+ #   /<tag:[a-z]+>/
 */
 $aPluginUrlPatterns = array(
-    "/promos/{id:[0-9]+}/" => array(
+    "/promos/<id:[0-9]+>/" => array(
 		"cmd" => "promos",
 		"action" => "index"
 	),
@@ -28,7 +28,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_promos",
         "action" => "add_s"
     ),
-	"/admin/promos/edit/{id:[0-9]+}/" => array(
+	"/admin/promos/edit/<id:[0-9]+>/" => array(
         "cmd" => "admin_promos",
         "action" => "edit"
     ),
@@ -36,7 +36,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_promos",
         "action" => "edit_s"
     ),
-	"/admin/promos/delete/{id:[0-9]+}/" => array(
+	"/admin/promos/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_promos",
         "action" => "delete"
     ),
@@ -52,7 +52,7 @@ $aPluginUrlPatterns = array(
 	    "cmd" => "admin_promos",
 	    "action" => "positions_add_s"
 	),
-	"/admin/promos/positions/edit/{id:[0-9]+}/" => array(
+	"/admin/promos/positions/edit/<id:[0-9]+>/" => array(
 	    "cmd" => "admin_promos",
 	    "action" => "positions_edit"
 	),
@@ -60,7 +60,7 @@ $aPluginUrlPatterns = array(
 	    "cmd" => "admin_promos",
 	    "action" => "positions_edit_s"
 	),
-	"/admin/promos/positions/delete/{id:[0-9]+}/" => array(
+	"/admin/promos/positions/delete/<id:[0-9]+>/" => array(
 	    "cmd" => "admin_promos",
 	    "action" => "positions_delete"
 	)

@@ -87,8 +87,8 @@ class calendar_model extends appModel {
 				$aEvent["short_content"] = nl2br(htmlspecialchars(stripslashes($aEvent["short_content"])));
 			else
 				$aEvent["short_content"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aEvent["content"])))), 0, $this->shortContentCharacters);
-			$aEvent["content"] = stripslashes($aEvent["content"]);
-			$aEvent["url"] = "/calendar/".$aEvent["tag"]."/";
+			$aEvent["content"] = stripslashes($aEvent["content"]);			
+			$aEvent["url"] = "/calendar/".date("Y", $aEvent["datetime_start"])."/".date("m", $aEvent["datetime_start"])."/".date("d", $aEvent["datetime_start"])."/".$aEvent["tag"]."/";
 		
 			$aEvent["categories"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}calendar_categories` AS `category`"

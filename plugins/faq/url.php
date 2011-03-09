@@ -4,19 +4,19 @@
 ### Url Pattern ###############################
 /*
  # Function Variable Order:
- #   1. URL parameters ({name:[a-z]+})
+ #   1. URL parameters (<name:[a-z]+>)
  #   2. Pattern parameters
  #
  # Example URL Patterns:
- #   /page/{name:[a-z0-9]+}/
- #   /{tag:[a-z]+}/
+ #   /page/<name:[a-z0-9]+>/
+ #   /<tag:[a-z]+>/
 */
 $aPluginUrlPatterns = array(
     "/faq/" => array(
 		"cmd" => "faq",
 		"action" => "index"
 	),
-	"/faq/{tag:[^/]+}/" => array(
+	"/faq/<tag:[^/]+>/" => array(
 		"cmd" => "faq",
 		"action" => "question"
 	),
@@ -32,7 +32,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_faq",
         "action" => "add_s"
     ),
-	"/admin/faq/edit/{id:[0-9]+}/" => array(
+	"/admin/faq/edit/<id:[0-9]+>/" => array(
         "cmd" => "admin_faq",
         "action" => "edit"
     ),
@@ -40,11 +40,11 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_faq",
         "action" => "edit_s"
     ),
-	"/admin/faq/delete/{id:[0-9]+}/" => array(
+	"/admin/faq/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_faq",
         "action" => "delete"
     ),
-	"/admin/faq/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+	"/admin/faq/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
         "cmd" => "admin_faq",
         "action" => "sort"
     ),
@@ -60,11 +60,11 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_faq",
         "action" => "categories_edit_s"
     ),
-	"/admin/faq/categories/delete/{id:[0-9]+}/" => array(
+	"/admin/faq/categories/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_faq",
         "action" => "categories_delete"
     ),
-	"/admin/faq/categories/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+	"/admin/faq/categories/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
         "cmd" => "admin_faq",
         "action" => "categories_sort"
     )

@@ -4,12 +4,12 @@
 ### Url Pattern ###############################
 /*
  # Function Variable Order:
- #   1. URL parameters ({name:[a-z]+})
+ #   1. URL parameters (<name:[a-z]+>)
  #   2. Pattern parameters
  #
  # Example URL Patterns:
- #   /page/{name:[a-z0-9]+}/
- #   /{tag:[a-z]+}/
+ #   /page/<name:[a-z0-9]+>/
+ #   /<tag:[a-z]+>/
 */
 $aPluginUrlPatterns = array(
 	"/admin/slideshow/" => array(
@@ -24,7 +24,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_slideshow",
         "action" => "add_s"
     ),
-	"/admin/slideshow/edit/{id:[0-9]+}/" => array(
+	"/admin/slideshow/edit/<id:[0-9]+>/" => array(
         "cmd" => "admin_slideshow",
         "action" => "edit"
     ),
@@ -32,11 +32,11 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_slideshow",
         "action" => "edit_s"
     ),
-	"/admin/slideshow/delete/{id:[0-9]+}/" => array(
+	"/admin/slideshow/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_slideshow",
         "action" => "delete"
     ),
-	"/admin/slideshow/image/{id:[0-9]+}/upload/" => array(
+	"/admin/slideshow/image/<id:[0-9]+>/upload/" => array(
         "cmd" => "admin_slideshow",
         "action" => "image_upload"
     ),
@@ -44,7 +44,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_slideshow",
         "action" => "image_upload_s"
     ),
-	"/admin/slideshow/image/{id:[0-9]+}/edit/" => array(
+	"/admin/slideshow/image/<id:[0-9]+>/edit/" => array(
         "cmd" => "admin_slideshow",
         "action" => "image_edit"
     ),

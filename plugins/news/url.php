@@ -4,12 +4,12 @@
 ### Url Pattern ###############################
 /*
  # Function Variable Order:
- #   1. URL parameters ({name:[a-z]+})
+ #   1. URL parameters (<name:[a-z]+>)
  #   2. Pattern parameters
  #
  # Example URL Patterns:
- #   /page/{name:[a-z0-9]+}/
- #   /{tag:[a-z]+}/
+ #   /page/<name:[a-z0-9]+>/
+ #   /<tag:[a-z]+>/
 */
 $aPluginUrlPatterns = array(
     "/news/" => array(
@@ -20,7 +20,7 @@ $aPluginUrlPatterns = array(
 		"cmd" => "news",
 		"action" => "rss"
 	),
-	"/news/{tag:[^/]+}/" => array(
+	"/news/<year:[0-9]+>/<month:[0-9]+>/<date:[0-9]+>/<tag:[^/]+>/" => array(
 		"cmd" => "news",
 		"action" => "article"
 	),
@@ -36,7 +36,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_news",
         "action" => "add_s"
     ),
-	"/admin/news/edit/{id:[0-9]+}/" => array(
+	"/admin/news/edit/<id:[0-9]+>/" => array(
         "cmd" => "admin_news",
         "action" => "edit"
     ),
@@ -44,11 +44,11 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_news",
         "action" => "edit_s"
     ),
-	"/admin/news/delete/{id:[0-9]+}/" => array(
+	"/admin/news/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_news",
         "action" => "delete"
     ),
-	"/admin/news/image/{id:[0-9]+}/upload/" => array(
+	"/admin/news/image/<id:[0-9]+>/upload/" => array(
         "cmd" => "admin_news",
         "action" => "image_upload"
     ),
@@ -56,7 +56,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_news",
         "action" => "image_upload_s"
     ),
-	"/admin/news/image/{id:[0-9]+}/edit/" => array(
+	"/admin/news/image/<id:[0-9]+>/edit/" => array(
         "cmd" => "admin_news",
         "action" => "image_edit"
     ),
@@ -64,7 +64,7 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_news",
         "action" => "image_edit_s"
     ),
-	"/admin/news/image/{id:[0-9]+}/delete/" => array(
+	"/admin/news/image/<id:[0-9]+>/delete/" => array(
         "cmd" => "admin_news",
         "action" => "image_delete"
     ),
@@ -80,11 +80,11 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_news",
         "action" => "categories_edit_s"
     ),
-	"/admin/news/categories/delete/{id:[0-9]+}/" => array(
+	"/admin/news/categories/delete/<id:[0-9]+>/" => array(
         "cmd" => "admin_news",
         "action" => "categories_delete"
     ),
-	"/admin/news/categories/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+	"/admin/news/categories/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
         "cmd" => "admin_news",
         "action" => "categories_sort"
     )

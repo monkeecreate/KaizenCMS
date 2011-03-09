@@ -36,7 +36,7 @@ $aUrlPatterns = array(
 		"cmd" => "image",
 		"action" => "crop"
 	),
-	"/image/{model:[a-z]+}/{id:[0-9]+}/" => array(
+	"/image/<model:[a-z]+>/<id:[0-9]+>/" => array(
 		"cmd" => "image",
 		"action" => "itemImage"
 	),
@@ -60,11 +60,11 @@ $aUrlPatterns = array(
 		"cmd" => "adminController",
 		"action" => "passwordReset"
 	),
-	"/admin/passwordReset/{code:[a-z0-9]+}/" => array(
+	"/admin/passwordReset/<code:[a-z0-9]+>/" => array(
 		"cmd" => "adminController",
 		"action" => "passwordReset_code"
 	),
-	"/admin/passwordReset/{code:[a-z0-9]+}/s/" => array(
+	"/admin/passwordReset/<code:[a-z0-9]+>/s/" => array(
 		"cmd" => "adminController",
 		"action" => "passwordReset_code_s"
 	),
@@ -80,7 +80,7 @@ $aUrlPatterns = array(
 		"cmd" => "admin_content",
 		"action" => "add_s"
 	),
-	"/admin/content/edit/{id:[0-9]+}/" => array(
+	"/admin/content/edit/<id:[0-9]+>/" => array(
 		"cmd" => "admin_content",
 		"action" => "edit"
 	),
@@ -88,7 +88,7 @@ $aUrlPatterns = array(
 		"cmd" => "admin_content",
 		"action" => "edit_s"
 	),
-	"/admin/content/delete/{id:[0-9]+}/" => array(
+	"/admin/content/delete/<id:[0-9]+>/" => array(
 		"cmd" => "admin_content",
 		"action" => "delete"
 	),
@@ -112,7 +112,7 @@ $aUrlPatterns = array(
 		"cmd" => "admin_settings",
 		"action" => "manageAdd_s"
 	),
-	"/admin/settings/manage/edit/{id:[0-9]+}/" => array(
+	"/admin/settings/manage/edit/<id:[0-9]+>/" => array(
 		"cmd" => "admin_settings",
 		"action" => "manageEdit"
 	),
@@ -120,7 +120,7 @@ $aUrlPatterns = array(
 		"cmd" => "admin_settings",
 		"action" => "manageEdit_s"
 	),
-	"/admin/settings/manage/delete/{id:[0-9]+}/" => array(
+	"/admin/settings/manage/delete/<id:[0-9]+>/" => array(
 		"cmd" => "admin_settings",
 		"action" => "manageDelete"
 	),
@@ -136,7 +136,7 @@ $aUrlPatterns = array(
 		"cmd" => "admin_settings",
 		"action" => "manageGroupsAdd_s"
 	),
-	"/admin/settings/manage/groups/edit/{id:[0-9]+}/" => array(
+	"/admin/settings/manage/groups/edit/<id:[0-9]+>/" => array(
 		"cmd" => "admin_settings",
 		"action" => "manageGroupsEdit"
 	),
@@ -144,11 +144,11 @@ $aUrlPatterns = array(
 		"cmd" => "admin_settings",
 		"action" => "manageGroupsEdit_s"
 	),
-	"/admin/settings/manage/groups/delete/{id:[0-9]+}/" => array(
+	"/admin/settings/manage/groups/delete/<id:[0-9]+>/" => array(
 		"cmd" => "admin_settings",
 		"action" => "manageGroupsDelete"
 	),
-	"/admin/settings/manage/groups/sort/{id:[0-9]+}/{sort:[a-z]+}/" => array(
+	"/admin/settings/manage/groups/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
 		"cmd" => "admin_settings",
 		"action" => "manageGroupsSort"
 	),
@@ -156,11 +156,11 @@ $aUrlPatterns = array(
 		"cmd" => "admin_settings",
 		"action" => "plugins_index"
 	),
-	"/admin/settings/plugins/install/{plugin:[a-z0-9_-]+}/" => array(
+	"/admin/settings/plugins/install/<plugin:[a-z0-9_-]+>/" => array(
 		"cmd" => "admin_settings",
 		"action" => "plugins_install"
 	),
-	"/admin/settings/plugins/uninstall/{plugin:[a-z0-9_-]+}/" => array(
+	"/admin/settings/plugins/uninstall/<plugin:[a-z0-9_-]+>/" => array(
 		"cmd" => "admin_settings",
 		"action" => "plugins_uninstall"
 	),
@@ -208,7 +208,7 @@ $aUrlPatterns = array(
 		"cmd" => "admin_users",
 		"action" => "add_s"
 	),
-	"/admin/users/edit/{id:[0-9]+}/" => array(
+	"/admin/users/edit/<id:[0-9]+>/" => array(
 		"cmd" => "admin_users",
 		"action" => "edit"
 	),
@@ -216,7 +216,7 @@ $aUrlPatterns = array(
 		"cmd" => "admin_users",
 		"action" => "edit_s"
 	),
-	"/admin/users/delete/{id:[0-9]+}/" => array(
+	"/admin/users/delete/<id:[0-9]+>/" => array(
 		"cmd" => "admin_users",
 		"action" => "delete"
 	)
@@ -236,7 +236,7 @@ $oPlugins->close();
 unset($oPlugins);
 
 $aUrlPattersAfter = array(
-	"/{page:[a-z0-9_-]+}/" => array(
+	"/<page:[a-z0-9_-]+>/" => array(
 		"cmd" => "content",
 		"action" => "view"
 	)

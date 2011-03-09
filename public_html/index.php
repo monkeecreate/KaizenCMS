@@ -87,7 +87,7 @@ foreach($patterns as $urlPattern)
 	foreach($urlPattern as $key => $value)
 	{
 		$aKeys[$i] = $key;
-		$key = preg_replace("/\{([a-z]+):([^}]+)\}/i", "($2)", $key);
+		$key = preg_replace("/<([a-z]+):(.+?)>/i", "($2)", $key);
 		$aPatterns[] = "(?P<url".$i.">^".$key."$)";
 		$i++;
 	}
@@ -164,7 +164,7 @@ if($aUrl[0] == "admin") {
 ob_start();
 if(count($aUrlPatterns[$pattern]) > 0) {
 	// Pull dynamic variables from url
-	$pattern_tmp = preg_replace("/\{([a-z]+):([^}]+)\}/i", "(?P<$1>$2)", $pattern);
+	$pattern_tmp = preg_replace("/<([a-z]+):(.+?)>/i", "(?P<$1>$2)", $pattern);
 	preg_match("/".str_replace("/","\/",$pattern_tmp)."/i", $sURL, $matches);
 	
 	// Put dynamic variables into usable array
