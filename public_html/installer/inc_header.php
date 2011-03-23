@@ -7,7 +7,7 @@
 	<title><?php echo $currentStep; ?> | Kaizen CMS Installer</title>
 	
 	<link rel="shortcut icon" href="/images/favicon.ico">
-	<link rel="stylesheet" href="/css/reset.css" type="text/css">
+	<link rel="stylesheet" href="/css/admin/reset.css" type="text/css">
 	<link rel="stylesheet" href="/installer/installer.css?v=1" type="text/css" media="screen, projection">
 	<link href="http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold" rel="stylesheet" type="text/css">
 	<!--[if IE]><link rel="stylesheet" href="/css/ie.css" type="text/css" media="screen, projection" /><![endif]-->
