@@ -10,6 +10,7 @@
 				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
 		</select>
+		{footer}
 		<script type="text/javascript">
 		$(function(){ldelim}
 			$('select[name=category]').change(function(){ldelim}
@@ -17,6 +18,7 @@
 			{rdelim});
 		{rdelim});
 		</script>
+		{/footer}
 	</form>
 	{/if}
 
