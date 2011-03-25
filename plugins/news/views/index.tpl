@@ -61,7 +61,9 @@
 					{/foreach}
 				{/if}
 			</small>
-			<fb:like href="http://{$smarty.server.SERVER_NAME}{$aArticle.url}" show_faces="false"></fb:like>
+			
+			<fb:like href="http://{$smarty.server.SERVER_NAME}{$aArticle.url}" layout="box_count" show_faces="false" width="50" font=""></fb:like> <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://{$smarty.server.SERVER_NAME}{$aArticle.url}" data-text="{$aArticle.title}" data-count="vertical" data-via="{getSetting tag="twitterUser"}">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			
 			<p>{$aArticle.short_content}&hellip; <a href="{$aArticle.url}" title="{$aArticle.title}">More Info&raquo;</a></p>
 		</article>
 	{foreachelse}
