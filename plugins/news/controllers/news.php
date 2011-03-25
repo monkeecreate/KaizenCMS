@@ -31,10 +31,14 @@ class news extends appController {
 		if($sCurrentPage == count($aArticlePages) || count($aArticlePages) == 0)
 			$aPaging["next"]["use"] = false;
 		#########################
+		
+		if(!empty($_GET["category"]))
+			$aCategory = $this->model->getCategory($_GET["category"]);
 
 		$this->tplAssign("aCategories", $this->model->getCategories(false));
 		$this->tplAssign("aArticles", $aArticles);
 		$this->tplAssign("aPaging", $aPaging);
+		$this->tplAssign("aCategory", $aCategory);
 		
 		if(!empty($_GET["category"]) && $this->tplExists("category-".$_GET["category"].".tpl"))
 			$this->tplDisplay("category-".$_GET["category"].".tpl");

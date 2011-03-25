@@ -1,7 +1,8 @@
 {$menu = "news"}
 {include file="inc_header.tpl" page_title="News"}
 {head}
-<link rel="alternate" type="application/rss+xml" title="News RSS" href="/news/rss/">
+<link rel="alternate" type="application/rss+xml" title="All Articles RSS" href="/news/rss/">
+{if !empty($smarty.get.category)}<link rel="alternate" type="application/rss+xml" title="Articles in {$aCategory.name} RSS" href="/news/rss/?category={$smarty.get.category}">{/if}
 <meta property="og:site_name" content="{getSetting tag="title"}">
 {/head}
 <div id="fb-root"></div>
