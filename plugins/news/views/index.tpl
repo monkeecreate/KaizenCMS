@@ -40,7 +40,7 @@
 	</form>
 	{/if}
 
-	<h2>News</h2>
+	<h2>Latest News{if !empty($aCategory)} in {$aCategory.name}{/if}</h2>
 	<div class="clear">&nbsp;</div>
 
 	{foreach from=$aArticles item=aArticle}
