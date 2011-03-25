@@ -43,7 +43,7 @@ function smarty_function_event_time($aParams, &$oSmarty) {
 			$sDateString = date($sFormatDate." ".$sFormatTime, $aParams["start"]);
 			
 			// If start and end times are different, add end time to create time range
-			if(date("g:i a", $aParams["start"]) == date("g:i a", $aParams["end"])) {
+			if(date("g:i a", $aParams["start"]) != date("g:i a", $aParams["end"])) {
 				$sDateString .= " - ".date($sFormatTime, $aParams["end"]);
 			}
 			
