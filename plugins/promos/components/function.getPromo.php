@@ -16,7 +16,7 @@ function smarty_function_getPromo($aParams, &$oSmarty) {
 		$aPosition = $oPromo->getPosition($aParams["tag"]);
 		
 		if(!empty($aPromo["link"]))
-			echo "<a href=\"/promos/".$aPromo["id"]."/\" class=\"".$aParams["tag"]" promo\">";
+			echo "<a href=\"/promos/".$aPromo["id"]."/\" class=\"".$aParams["tag"]." promo\">";
 		
 		echo "<img src=\"".$oPromo->imageFolder.$aPromo["promo"]."\" style=\"width:".$aPosition["promo_width"]."px;height:".$aPosition["promo_height"]."px;\" class=\"".$aParams["tag"]." promo\">";
 		
