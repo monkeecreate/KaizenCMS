@@ -83,7 +83,7 @@
 		<section>
 			{if $aListing.photo_x2 > 0}
 			<figure class="itemImage">
-				<img src="/image/directory/{$aListing.id}/?width=165&rand={$randnum}" alt="{$aListing.title} Image"><br />
+				<img src="/image/directory/{$aListing.id}/?width=165&rand={$randnum}" alt="{$aListing.name} Image"><br />
 				<input name="submit" type="image" src="/images/admin/icons/pencil.png" value="edit">
 				<input name="submit" type="image" src="/images/admin/icons/bin_closed.png" value="delete">
 			</figure>
