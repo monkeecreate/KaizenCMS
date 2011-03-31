@@ -25,7 +25,7 @@
 				<label>State:</label><br />
 				<select name="state">
 				    {foreach from=$aStates item=sState key=sAbbr}
-						<option value="{$sAbbr},{$sState}"{if $aListing.state == $sAbbr|cat:','|cat:$sState} selected="selected"{/if}>{$sState}</option>
+						<option value="{$sAbbr},{$sState}"{if $aListing.state|cat:','|cat:$aListing.stateFull == $sAbbr|cat:','|cat:$sState} selected="selected"{/if}>{$sState}</option>
 					{/foreach}
 				</select><br />
 			</span>
