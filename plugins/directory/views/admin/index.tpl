@@ -77,7 +77,7 @@
 							{else}
 								<img src="/images/blank.gif" style="width:16px;height:16px;">
 							{/if}
-							{if $aListing.sort_order != $maxSort && count($aListing) > 1}
+							{if $aListing.sort_order != $maxSort && count($aListings) > 1}
 								<a href="/admin/directory/sort/{$aListing.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png" style="width:16px;height:16px;"></a>
 							{else}
 								<img src="/images/blank.gif" style="width:16px;height:16px;">
