@@ -1,26 +1,22 @@
-h1. Kaizen CMS
+h1. Crane | West CMS
 
-A project that started as a small bit of code that John Hoover started with for each new website, that has grown into its own CMS system. It was built with the coder in mind, but also makes use of Smarty for the designer.
+A project that started as a small bit of code that John Hoover started with for each new website, that has grown into its own CMS system. It was built with the developer in mind but utilizes smarty for the designer.
 
 h2. Requirements/Installing
 
-The requirements are simple. Apache 2+ and PHP 5+. PEAR and Memcache are recommended but not required. Kaizen CMS will not work in a sub directory. It must be the root domain or a subdomain. Now to the setup.
+The requirements are simple. Apache 2+ and PHP 5+. PEAR and Memcache are recommended but not required. Crane | West CMS will not work in a sub directory. It must be the root domain or a subdomain.
 
-* Keeping the directory structure upload the files to your server. Remember, upload them to the directory just outside your public_html. This is important to the setup. Be sure and double check that all hidden files and folders were also uploaded (might have to show hidden files if your OS is hiding them). When copying on the command line, make sure that you copy the .pear/ and the .smarty/ directories as a cp ~/oldpath/* ~/newpath won't copy those folders.
+* Keeping the directory structure upload the files to your server. Remember, upload them to the directory just outside your public_html. This is important to the setup. NOTE: Backup your public_html if you already have files inside. Be sure and double check that all hidden files and folders were also uploaded (might have to show hidden files if your OS is hiding them). When copying on the command line, make sure that you copy the .pear/ and the .smarty/ directories as a cp ~/oldpath/* ~/newpath won't copy those folders.
 
 * When moving the CMS be sure include the hidden folders. (.compiled, .pear, .smarty)
 
 * If your host/server does not use public_html to store the files, no problem. Just rename the public_html from the repository.
 
-* Inside the root folder (where you just uploaded the cms files) create a new directory: .compiled/
-Then create another directory inside the .compiled/ and name it: admin/
-Both directories should be writeable.
+* Make the following directories writable (CHMOD 777): ./.compiled/ and ./public_html/uploads/
 
-* Open and edit ./inc_config_example.php with your details including database, using the included pear or the pear on your server, etc. Rename this file to ./inc_config.php
+* Rename ./inc_config_example.php to ./inc_config.php
 
-* Import the ./database.sql file to your database using phpMyAdmin or your preferred method.
-
-* You can now hit http://yourdomain.com. The backend is at http://yourdomain.com/admin/ and the default login is; user: admin | pass: admin
+* The CMS will guide you through the rest of the setup just visit http://yourdomain.com/admin/.
 
 h2. Developers
 
