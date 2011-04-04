@@ -43,7 +43,7 @@
 				</ul>
 			
 				<input type="submit" value="Upload File">
-				<a class="cancel" href="#" title="Cancel">Cancel</a>
+				<a class="cancel" href="/admin/directory/" title="Cancel">Cancel</a>
 				<input type="hidden" name="id" value="{$aListing.id}">
 			</fieldset>
 		</form>

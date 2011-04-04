@@ -43,7 +43,7 @@
 				</ul>
 			
 				<input type="submit" value="Upload File">
-				<a class="cancel" href="#" title="Cancel">Cancel</a>
+				<a class="cancel" href="/admin/calendar/" title="Cancel">Cancel</a>
 				<input type="hidden" name="id" value="{$aEvent.id}">
 			</fieldset>
 		</form>
