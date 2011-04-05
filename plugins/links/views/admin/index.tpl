@@ -97,7 +97,7 @@
 							<img src="/images/admin/icons/pencil.png" alt="edit icon" style="width:16px;height:16px;">
 						</a>
 						<a href="/admin/links/delete/{$aLink.id}/"
-						 onclick="return confirm_('Are you aLink you would like to delete: {$aLink.name}?');"
+						 onclick="return confirm_('Are you sure you would like to delete: {$aLink.name}?');"
 						 title="Delete Link">
 							<img src="/images/admin/icons/bin_closed.png" alt="delete icon" style="width:16px;height:16px;">
 						</a>
