@@ -13,7 +13,7 @@ class Form_textarea extends Form_Field
 	public function html() {
 		$sHTML = $this->getLabel($this->_setting["title"])."<br />\n";
 		$sHTML .= "<textarea name=\"settings[".$this->_setting["tag"]."]\"";
-		$sHTML .= ">".$this->value()."</textarea><br />\n";
+		$sHTML .= ">".nl2br(htmlspecialchars(stripslashes($this->value())))."</textarea><br />\n";
 		
 		if(!empty($this->_setting["text"]))
 			$sHTML .= $this->getText($this->_setting["text"])."\n";
