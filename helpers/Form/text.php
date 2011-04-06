@@ -12,7 +12,7 @@ class Form_text extends Form_Field
 	
 	public function html() {
 		$sHTML = $this->getLabel($this->_setting["title"])."<br />\n";
-		$sHTML .= "<input type=\"text\" name=\"settings[".$this->_setting["tag"]."]\" value=\"".htmlspecialchars(stripslashes($this->value()))."\"";
+		$sHTML .= "<input type=\"text\" name=\"settings[".$this->_setting["tag"]."]\" value=\"".$this->value()."\"";
 		
 		if(!empty($_options["max"]))
 			$sHTML .= " maxlength=\"".$_options["max"]."\"";
@@ -24,10 +24,10 @@ class Form_text extends Form_Field
 		
 		return $sHTML;
 	}
-	public function value() {
+	public function value($sSpecialChars = true) {
 		return htmlspecialchars(stripslashes($this->_setting["value"]));
 	}
 	public function save($value) {
-		return addslashes(trim($value));
+		return addslashes(trim(stripslashes($value)));
 	}
 }
