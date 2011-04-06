@@ -4,10 +4,11 @@
 <script type="text/javascript">
 $(function(){ldelim}
 	var availableTags = new Array();
-	{foreach from=$aSettingGroups item=aGroup}
-		availableTags.push("{$aGroup.group}");
+	{foreach from=$aGroups item=aGroupList}
+		availableTags.push("{$aGroupList.name}");
 	{/foreach}
-	$("input[name=group]").autocomplete({ldelim}
+
+	$("input[name=name]").autocomplete({ldelim}
 		source: availableTags
 	{rdelim});
 {rdelim});

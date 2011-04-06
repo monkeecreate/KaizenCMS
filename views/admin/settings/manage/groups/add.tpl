@@ -1,18 +1,6 @@
 {include file="inc_header.tpl" page_title="Manage Groups" menu="settings" page_style="fullContent"}
 {assign var=subMenu value="Manage Settings"}
-{head}
-<script type="text/javascript">
-$(function(){ldelim}
-	var availableTags = new Array();
-	{foreach from=$aSettingGroups item=aGroup}
-		availableTags.push("{$aGroup.group}");
-	{/foreach}
-	$("input[name=group]").autocomplete({ldelim}
-		source: availableTags
-	{rdelim});
-{rdelim});
-</script>
-{/head}
+
 <section id="content" class="content">
 	<header>
 		<h2>Manage Groups</h2>
