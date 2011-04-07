@@ -15,7 +15,7 @@ $aTables = array(
 				"default" => 0,
 				"autoincrement" => 1
 			),
-			"question" => array("type" => "text","length" => 100),
+			"question" => array("type" => "text","length" => 255),
 			"answer" => array("type" => "clob"),
 			"tag" => array("type" => "text","length" => 100),
 			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),

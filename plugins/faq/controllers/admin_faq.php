@@ -81,7 +81,7 @@ class admin_faq extends adminController {
 		$sID = $this->dbInsert(
 			"faq",
 			array(
-				"question" => $_POST["question"]
+				"question" => (string)substr($_POST["question"], 0, 255)
 				,"answer" => $_POST["answer"]
 				,"tag" => $sTag
 				,"sort_order" => $sOrder
@@ -176,7 +176,7 @@ class admin_faq extends adminController {
 		$this->dbUpdate(
 			"faq",
 			array(
-				"question" => $_POST["question"]
+				"question" => (string)substr($_POST["question"], 0, 255)
 				,"answer" => $_POST["answer"]
 				,"tag" => $sTag
 				,"active" => $this->boolCheck($_POST["active"])

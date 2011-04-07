@@ -12,7 +12,7 @@
 		</header>
 
 		<section class="inner-content">
-			<label>*Question:</label><br />
+			<label>*Question:</label><span class="right"><span id="currentCharacters"></span> of 255 characters</span><br />
 			<textarea name="question" style="height:115px;">{$aQuestion.question|replace:'<br />':''}</textarea><br />
 			<label>Answer:</label><br />
 			{html_editor content=$aQuestion.answer name="answer"}<br />
@@ -60,6 +60,16 @@ $(function(){ldelim}
 	$('input[name=active]').iphoneStyle({ldelim}
 		checkedLabel: 'On',
 		uncheckedLabel: 'Off'
+	{rdelim});
+	
+	$('#currentCharacters').html($('textarea[name=question]').val().length);
+	
+	$('textarea[name=question]').keyup(function() {ldelim}
+		if($(this).val().length > 255)
+			$('#currentCharacters').css('color', '#cc0000');
+		else
+			$('#currentCharacters').css('color', 'inherit');
+		$('#currentCharacters').html($(this).val().length);
 	{rdelim});
 	
 	$("form").validateForm([
