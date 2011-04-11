@@ -69,8 +69,33 @@ class content extends appController
 				}
 			}
 			
+			$sCurrentPage = $_GET["page"];
+			if(empty($sCurrentPage))
+				$sCurrentPage = 1;
+				
+			$aSearchPages = array_chunk($aSearch, 5);
+			$aSearch = $aSearchPages[$sCurrentPage - 1];
+
+			$aPaging = array(
+				"back" => array(
+					"page" => $sCurrentPage - 1,
+					"use" => true
+				),
+				"next" => array(
+					"page" => $sCurrentPage + 1,
+					"use" => true
+				)
+			);
+
+			if(($sCurrentPage - 1) < 1 || $sCurrentPage == 1)
+				$aPaging["back"]["use"] = false;
+
+			if($sCurrentPage == count($aSearchPages) || count($aSearchPages) == 0)
+				$aPaging["next"]["use"] = false;
+			
 			$this->tplAssign("sSearched", 1);
 			$this->tplAssign("aSearch", $aSearch);
+			$this->tplAssign("aPaging", $aPaging);
 			$this->tplAssign("sQuery", $_GET["query"]);
 			$this->tplAssign("sQueryInclude", $_GET["query_include"]);
 			$this->tplAssign("sQueryExclude", $_GET["query_exclude"]);

@@ -37,5 +37,19 @@
 			</ul>
 		{/foreach}
 	{/if}
+	
+	<div id="paging">
+		{if $aPaging.next.use == true}
+			<div class="right">
+				<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
+			</div>
+		{/if}
+		{if $aPaging.back.use == true}
+			<div class="left">
+				<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
+			</div>
+		{/if}
+	</div>
+	<div class="clear">&nbsp;</div>
 
 {include file="inc_footer.tpl"}

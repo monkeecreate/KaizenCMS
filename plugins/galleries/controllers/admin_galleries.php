@@ -95,7 +95,7 @@ class admin_galleries extends adminController {
 		
 		$_SESSION["admin"]["admin_galleries"] = null;
 		
-		$this->forward("/admin/galleries/?notice=".urlencode("Gallery created successfully!"));
+		$this->forward("/admin/galleries/".$sID."/photos/?notice=".urlencode("Gallery created successfully!"));
 	}
 	function edit() {		
 		if(!empty($_SESSION["admin"]["admin_galleries"])) {	
