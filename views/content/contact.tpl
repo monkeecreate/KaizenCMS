@@ -19,8 +19,6 @@
 		<h2>Contact Us</h2>
 	{/if}
 	
-	<div class="form-errors hide"></div>
-	
 	<form name="contact" method="post" action="/sendform/" id="contactForm" class="contactForm">
 		{getSetting tag="email" assign="sEmail"}
 		{getSetting tag="contact-subject" assign="sSubject"}
@@ -29,21 +27,23 @@
 		<input type="hidden" name="return" value="{enc_encrypt value='/contact/?captcha_error=1'}">
 		<input type="hidden" name="from" value="{enc_encrypt value='[$7]'}">
 		<input type="hidden" name="to" value="{enc_encrypt value=$sEmail}">
-
-		<label class="labelWidth" for="form_name">Name: <span>required</span></label>
-		<input type="text" id="form_name" name="1|s|Name:" value="{post_data key='1|s|Name:'}"><br />
-		<label class="labelWidth" for="form_address">Address:</label>
+		
+		<div class="form-errors hide"></div>
+		
+		<label for="form_name">Name: <span>required</span></label>
+		<input type="text" id="form_name" name="1|s|Name:" value="{post_data key='1|s|Name:'}" class="validate[required]"><br />
+		<label for="form_address">Address:</label>
 		<input type="text" id="form_address" name="2|s|Address:" value="{post_data key='2|s|Address:'}"><br />
-		<label class="labelWidth" for="form_city">City:</label>
+		<label for="form_city">City:</label>
 		<input type="text" id="form_city" name="3|s|City:" value="{post_data key='3|s|City:'}"><br />
-		<label class="labelWidth" for="form_state">State:</label>
+		<label for="form_state">State:</label>
 		<input type="text" id="form_state" name="4|s|State:" value="{post_data key='4|s|State:'}"><br />
-		<label class="labelWidth" for="form_zip">Zip:</label>
-		<input type="text" id="form_zip" name="5|s|Zip:" value="{post_data key='5|s|Zip:'}"><br />
-		<label class="labelWidth" for="form_phone">Phone:</label>
-		<input type="text" id="form_phone" name="6|s|Phone:" value="{post_data key='6|s|Phone:'}"><br />
-		<label class="labelWidth" for="form_email">Email: <span>required</span></label>
-		<input type="text" id="form_email" name="7|s|Email:" value="{post_data key='7|s|Email:'}"><br />
+		<label for="form_zip">Zip:</label>
+		<input type="text" id="form_zip" name="5|s|Zip:" value="{post_data key='5|s|Zip:'}" class="validate[custom[integer]]"><br />
+		<label for="form_phone">Phone:</label>
+		<input type="text" id="form_phone" name="6|s|Phone:" value="{post_data key='6|s|Phone:'}" class="validate[custom[phone]]"><br />
+		<label for="form_email">Email: <span>required</span></label>
+		<input type="text" id="form_email" name="7|s|Email:" value="{post_data key='7|s|Email:'}" class="validate[required,custom[email]]"><br />
 
 		<label for="form_comment">Comment:</label>
 		<textarea id="form_comment" name="8|n|Comment:">{post_data key='8|n|Comment:'}</textarea><br />
@@ -54,19 +54,24 @@
 
 		<input type="submit" value="Send Email">
 	</form>
+	
+	{head}
+	<link rel="stylesheet" href="/scripts/validationEngine/validationEngine.jquery.css" type="text/css">
+	<link rel="stylesheet" href="/scripts/validationEngine/template.css" type="text/css">
+	{/head}
 	{footer}
+	<script src="/scripts/validationEngine/jquery.validationEngine-en.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/scripts/validationEngine/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+	
 	<script type="text/javascript">
 	$(function(){ldelim}
+		jQuery("#contactForm").validationEngine();
+	
 		{if !empty($smarty.get.captcha_error)}
-			alert("Captcha was incorrect! Please try again.");
+			$(".form-errors").html('<p>The captcha you entered is incorrect. Please try again. Clicking the refresh icon next to the captcha field will give you two new words if needed.').show();
 		{/if}
-		
-		$("#myForm").validateForm([
-			"required,1|s|Name:,Name is required",
-			"required,7|s|Email:,An email address is required",
-			"valid_email,7|s|Email:,A valid email address is required",
-		], "Please fix the following errors:", ".form-errors", "errorField");
 	{rdelim});
 	</script>
 	{/footer}
+
 {include file="inc_footer.tpl"}

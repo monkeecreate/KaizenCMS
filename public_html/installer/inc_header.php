@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
 	
-	<title><?php echo $currentStep; ?> | Kaizen CMS Installer</title>
+	<title><?php echo $currentStep; ?> | Crane | West CMS Installer</title>
 	
 	<link rel="shortcut icon" href="/images/favicon.ico">
 	<link rel="stylesheet" href="/css/admin/reset.css" type="text/css">
@@ -26,7 +26,7 @@
 <!--[if !IE]><!--> <body>         <!--<![endif]-->
 	<div id="wrapper">
 		<header>
-			<h1>Kaizen CMS : Installer</h1>
+			<h1>Crane | West CMS : Installer</h1>
 			<h2>Making the CMS world awesome one install at a time...</h2>
 		</header>
 

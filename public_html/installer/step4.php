@@ -8,7 +8,7 @@ include("inc_header.php");
 			</header>
 
 			<section class="inner-content">
-				<p>Congratulations you have successfully installed Kaizen CMS. There are a few things below to tidy up before continuing to the admin area. These steps below are <strong>very important</strong> for the security of your website. As soon as those items are completed you are free to move about the cms.</p>
+				<p>Congratulations you have successfully installed Crane | West CMS. There are a few things below to tidy up before continuing to the admin area. These steps below are <strong>very important</strong> for the security of your website. As soon as those items are completed you are free to move about the cms.</p>
 
 				<ul>
 					<?php

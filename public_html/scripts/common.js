@@ -76,33 +76,3 @@ $(document).ready(function() {
 		})
 	});
 });
-
-(function($) {
-	jQuery.fn.validateForm = function(fields, message, errorBox, errorField){
-		if(fields == '' || fields == null)
-			fields = new Array;
-		
-		this.each(function(){
-			$(this).RSV({
-				errorFieldClass: "errorField",
-				customErrorHandler: function(f, errorInfo) {
-					if(errorInfo != 0) {
-						$(errorBox).html('').show();
-						$(errorBox).prepend('<p>'+message+'</p>');
-						for (var i=0; i<errorInfo.length; i++) {
-							$(errorBox).append('<li>'+errorInfo[i][1]+'</li>');
-							$(errorInfo[i][0]).addClass(errorField);
-						}
-					
-						errorInfo[0][0].focus();
-						$('html, body').animate({scrollTop:0}, 'slow');
-					
-						return false;
-					} else
-						return true;
-				},
-				rules: fields
-			});
-		});
-	};
-})(jQuery);

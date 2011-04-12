@@ -18,7 +18,6 @@
 	
 	<script src="/scripts/jquery-1.5.2.min.js"></script>
 	<script src="/scripts/jquery.scrollTo.min.js"></script>
-	<script src="/scripts/jquery.rsv.js"></script>
 	<script src="/scripts/common.js"></script>
 	<!--[if lt IE 9]>
 	<script src="/scripts/IE9.js">IE7_PNG_SUFFIX=".png";</script>
