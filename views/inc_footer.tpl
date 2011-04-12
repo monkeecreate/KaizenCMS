@@ -20,10 +20,9 @@
 	<script src="/scripts/jquery.scrollTo.min.js"></script>
 	<script src="/scripts/jquery.rsv.js"></script>
 	<script src="/scripts/common.js"></script>
-	<!--[if lt IE 7 ]>
-		<script src="/scripts/dd_belatedpng.js"></script>
-	 	<script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
-	 <![endif]-->
+	<!--[if lt IE 9]>
+	<script src="/scripts/IE9.js">IE7_PNG_SUFFIX=".png";</script>
+	<![endif]-->
 
 {getSetting tag="analytics_google" assign="aSettingGoogle"}
 {if !empty($aSettingGoogle)}

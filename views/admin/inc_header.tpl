@@ -14,16 +14,16 @@
 	
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
 	
+	<script src="/scripts/modernizr-1.7.min.js"></script>
 	<script src="/scripts/jquery-1.5.2.min.js"></script>
 	<script src="/scripts/jquery-ui-1.8.custom.min.js"></script>
 	<script src="/scripts/jquery.qtip-1.0.0-rc3.min.js"></script>
 	<script src="/scripts/jquery.rsv.js"></script>
 	<script src="/scripts/jquery.validateForm.js"></script>
 	<script src="/scripts/jquery.cookie.js"></script>
-	<script src="/scripts/common_admin.js"></script>	
-	<!--[if IE]>
-		<script src="/scripts/firebug-lite.js"></script>
-		<script src="/scripts/html5.js"></script>
+	<script src="/scripts/common_admin.js"></script>
+	<!--[if lt IE 9]>
+	<script src="/scripts/IE9.js">IE7_PNG_SUFFIX=".png";</script>
 	<![endif]-->
 </head>
 <body class="{$page_style}">

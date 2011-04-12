@@ -20,6 +20,6 @@ class promos extends appController {
 			$aPromo["id"]
 		);
 		
-		$this->forward($aPromo["link"]);
+		$this->forward($aPromo["link"], "301");
 	}
 }
