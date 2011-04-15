@@ -1,6 +1,11 @@
 		</section> <!-- #content -->
 
 		<aside>
+			<form class="searchForm" name="search" method="get" action="/search/">
+				<input type="text" name="query" placeholder="Search...">
+				<input type="submit" value="Search">
+			</form>
+			
 			<h2>Lorem Ipsum Stuff</h2>
 
 			<ul>
