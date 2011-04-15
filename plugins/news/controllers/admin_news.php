@@ -117,7 +117,7 @@ class admin_news extends adminController {
 		
 		$_SESSION["admin"]["admin_news"] = null;
 		
-		if($_POST["post_twitter"] == 1) {
+		if($_POST["post_twitter"] == 1 && $_POST["active"] == 1) {
 			$this->postTwitter($sID, $_POST["title"], $sTag);
 		}
 		
@@ -125,7 +125,7 @@ class admin_news extends adminController {
 			$_POST["id"] = $sID;
 			$this->image_upload_s();
 		} else {	
-			if($_POST["post_facebook"] == 1)
+			if($_POST["post_facebook"] == 1 && $_POST["active"] == 1)
 				$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $sTag, false);
 				
 			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!")."&".implode("&", $this->errors));
@@ -250,16 +250,17 @@ class admin_news extends adminController {
 		}
 		
 		$_SESSION["admin"]["admin_news"] = null;
+		$aArticle = $this->model->getArticle($_POST["id"]);
 		
-		if($_POST["post_twitter"] == 1) {
-			$this->postTwitter($_POST["id"], $_POST["title"], $sTag);
+		if($_POST["post_twitter"] == 1 && $_POST["active"] == 1) {
+			$this->postTwitter($_POST["id"], $_POST["title"], $aArticle["tag"]);
 		}
 		
 		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true)
 			$this->image_upload_s();
 		else {
-			if($_POST["post_facebook"] == 1)
-				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $sTag, false);
+			if($_POST["post_facebook"] == 1 && $_POST["active"] == 1)
+				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $aArticle["tag"], false);
 
 			if($_POST["submit"] == "Save Changes")
 				$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!")."&".implode("&", $this->errors));
@@ -352,7 +353,7 @@ class admin_news extends adminController {
 		$aArticle = $this->model->getArticle($_POST["id"]);
 		
 		if($_POST["post_facebook"] == 1)
-			$this->postFacebook($aArticle["id"], $aArticle["title"], $aArticle["short_content"], true);
+			$this->postFacebook($aArticle["id"], $aArticle["title"], $aArticle["short_content"], $aArticle["tag"], true);
 		
 		$this->forward("/admin/news/?notice=".urlencode("Article updated."));
 	}

@@ -125,11 +125,11 @@ class admin_calendar extends adminController {
 			}
 		}
 		
-		if($_POST["post_twitter"] == 1) {
+		if($_POST["post_twitter"] == 1 && $_POST["active"] == 1) {
 			$this->postTwitter($sID, $_POST["title"]);
 		}
 		
-		if($_POST["post_facebook"] == 1) {
+		if($_POST["post_facebook"] == 1 && $_POST["active"] == 1) {
 			$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $sTag, $datetime_start, $datetime_end);
 		}
 		
@@ -268,8 +268,10 @@ class admin_calendar extends adminController {
 			}
 		}
 		
+		$aEvent = $this->model->getEvent($_POST["id"]);
+		
 		if($_POST["post_facebook"] == 1 || !empty($_POST["facebook_id"])) {
-			$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $sTag, $datetime_start, $datetime_end, $_POST["facebook_id"]);
+			$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $aEvent["tag"], $datetime_start, $datetime_end, $_POST["facebook_id"]);
 		}
 		
 		$_SESSION["admin"]["admin_calendar"] = null;
