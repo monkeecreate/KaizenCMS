@@ -50,6 +50,5 @@
 woopraTracker.track(); 
 </script> 
 {/if}
-
 </body>
 </html>
