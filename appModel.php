@@ -1,4 +1,4 @@
 <?php
-class appModel extends appController
-{
+class appModel extends appController {
+	
 }

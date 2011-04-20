@@ -1,6 +1,5 @@
 <?php
-class admin_settings extends adminController
-{
+class admin_settings extends adminController {
 	function __construct() {
 		parent::__construct();
 		
@@ -341,36 +340,44 @@ class admin_settings extends adminController
 		}
 		$oPlugins->close();
 		
-		foreach($aPlugins as &$aPlugin) {
-			$aPluginInstalled = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}plugins`"
-					." WHERE `plugin` = ".$this->dbQuote($aPlugin, "text")
-				,"row"
-			);
-			
+		$aNotices = array();
+		foreach($aPlugins as $k => &$aPlugin) {
 			// Load config
-			$aPluginInfo = array();
+			//$aPluginInfo = array();
 			if(is_file($this->settings->root."plugins/".$aPlugin."/config.php"))
 				include($this->settings->root."plugins/".$aPlugin."/config.php");
 			
-			$aPlugin = array(
-				"tag" => $aPlugin,
-				"version" => $aPluginInfo["version"],
-				"author" => $aPluginInfo["author"],
-				"website" => $aPluginInfo["website"]
-			);
+			if(!empty($aPluginInfo)) {
+				$aPluginInstalled = $this->dbQuery(
+					"SELECT * FROM `{dbPrefix}plugins`"
+						." WHERE `plugin` = ".$this->dbQuote($aPlugin, "text")
+					,"row"
+				);
+				
+				$aPlugin = array(
+					"tag" => $aPlugin,
+					"version" => htmlspecialchars(stripslashes($aPluginInfo["version"])),
+					"author" => htmlspecialchars(stripslashes($aPluginInfo["author"])),
+					"website" => $aPluginInfo["website"]
+				);
 			
-			if(!empty($aPluginInfo["name"]))
-				$aPlugin["name"] = $aPluginInfo["name"];
-			else
-				$aPlugin["name"] = $aPlugin["tag"];
+				if(!empty($aPluginInfo["name"]))
+					$aPlugin["name"] = htmlspecialchars(stripslashes($aPluginInfo["name"]));
+				else
+					$aPlugin["name"] = $aPlugin["tag"];
 			
-			if(!empty($aPluginInstalled))
-				$aPlugin["status"] = 1;
-			else
-				$aPlugin["status"] = 0;
+				if(!empty($aPluginInstalled))
+					$aPlugin["status"] = 1;
+				else
+					$aPlugin["status"] = 0;
+			} else {
+				$aNotices[] = $aPlugin;
+				unset($aPlugins[$k]);
+			}
 		}
 		
+		if(!empty($aNotices))
+			$this->tplAssign("page_notice", "The following plugins are missing proper config files and are unavailable to be installed: ".implode(", ", $aNotices));
 		$this->tplAssign("aPlugins", $aPlugins);
 		$this->tplDisplay("settings/plugins/index.tpl");
 	}

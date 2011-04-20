@@ -56,9 +56,9 @@
 							<img src="/images/admin/icons/bullet_red.png" alt="inactive">
 						{/if}
 					</td>
-					<td>{$aPlugin.name|clean_html}</td>
-					<td>{$aPlugin.author|clean_html}</td>
-					<td>{$aPlugin.version|clean_html}</td>
+					<td>{$aPlugin.name}</td>
+					<td>{$aPlugin.author}</td>
+					<td>{$aPlugin.version}</td>
 					<td class="center">
 						{if $aPlugin.status == 0}
 							<a href="/admin/settings/plugins/install/{$aPlugin.tag}/" title="Install Plugin">
@@ -66,7 +66,7 @@
 							</a>
 						{else}
 							<a href="/admin/settings/plugins/uninstall/{$aPlugin.tag}/"
-								onclick="return confirm_('Are you sure you would like to remove this plugin?');" title="Uninstall Plugin">
+								onclick="return confirm_('Are you sure you would like to deactivate {$aPlugin.name}?');" title="Uninstall Plugin">
 								<img src="/images/admin/icons/delete.png">
 							</a>
 						{/if}
@@ -77,8 +77,8 @@
 	</table>
 
 	<ul class="dataTable-legend">
-		<li class="bullet-green">Active, installed</li>
-		<li class="bullet-red">Inactive, not installed</li>
+		<li class="bullet-green">Installed</li>
+		<li class="bullet-red">Not Installed</li>
 	</ul>
 </section>
 {include file="inc_footer.tpl"}

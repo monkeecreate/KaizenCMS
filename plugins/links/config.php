@@ -2,10 +2,10 @@
 $aPluginInfo = array(
 	/* Plugin Details */
 	"name" => "Links",
-	"version" => "1.1",
-	"author" => "monkeeCreate",
-	"website" => "http://monkeecreate.com/",
-	"email" => "support@monkeecreate.com",
+	"version" => "1.0",
+	"author" => "Crane | West",
+	"website" => "http://crane-west.com/",
+	"email" => "support@crane-west.com",
 	
 	/* Plugin Configuration */
 	"config" => array(

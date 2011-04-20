@@ -3,9 +3,9 @@ $aPluginInfo = array(
 	/* Plugin Details */
 	"name" => "Slideshow",
 	"version" => "1.0",
-	"author" => "monkeeCreate",
-	"website" => "http://monkeecreate.com/",
-	"email" => "support@monkeecreate.com",
+	"author" => "Crane | West",
+	"website" => "http://crane-west.com/",
+	"email" => "support@crane-west.com",
 	
 	/* Plugin Configuration */
 	"config" => array(
