@@ -85,7 +85,8 @@ class Form_facebook extends Form_Field {
 	}
 	public function save($value) {
 		$aValue = $this->value();
-		$aValue["post_access_token"] = $_POST["facebook_accounts"];
+		if(!empty($aValue))
+			$aValue["post_access_token"] = $_POST["facebook_accounts"];
 		return json_encode($aValue);
 	}
 }
