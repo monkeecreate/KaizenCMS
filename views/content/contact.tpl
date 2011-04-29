@@ -57,7 +57,6 @@
 	
 	{head}
 	<link rel="stylesheet" href="/scripts/validationEngine/validationEngine.jquery.css" type="text/css">
-	<link rel="stylesheet" href="/scripts/validationEngine/template.css" type="text/css">
 	{/head}
 	{footer}
 	<script src="/scripts/validationEngine/jquery.validationEngine-en.js" type="text/javascript" charset="utf-8"></script>

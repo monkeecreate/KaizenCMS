@@ -1,13 +1,8 @@
 {$menu = "500"}
-{include file="inc_header.tpl"}
+{include file="inc_header.tpl" page_title="Internal Server Error"}
 
-	<section id="content" class="content column">
 
-		<h2>Error 500</h2>
-		Internal Server Error
-
-	</section> <!-- #content -->
-
-	{include file="inc_sidebar.tpl"}
+	<h2>Internal Server Error</h2>
+	<p><strong>Error 500</strong>: We encountered an internal server error.</p>
 
 {include file="inc_footer.tpl"}

@@ -1,6 +1,5 @@
 <?php
-class adminController extends appController
-{
+class adminController extends appController {
 	private $_menu;
 	public $superAdmin;
 	
@@ -99,15 +98,13 @@ class adminController extends appController
 		}
 	}
 	### DISPLAY ######################
-	function index()
-	{
+	function index() {
 		if(!$this->loggedin())
 			$this->tplDisplay("login.tpl");
 		else
-			$this->tplDisplay("index.tpl");
+			$this->forward("/admin/content/");
 	}
-	function login()
-	{
+	function login() {
 		if(!empty($_POST["username"]) && !empty($_POST["password"])) {
 			$sUser = $this->dbQuery(
 				"SELECT `id` FROM `{dbPrefix}users`"

@@ -343,7 +343,7 @@ class admin_settings extends adminController {
 		$aNotices = array();
 		foreach($aPlugins as $k => &$aPlugin) {
 			// Load config
-			//$aPluginInfo = array();
+			$aPluginInfo = array();
 			if(is_file($this->settings->root."plugins/".$aPlugin."/config.php"))
 				include($this->settings->root."plugins/".$aPlugin."/config.php");
 			
