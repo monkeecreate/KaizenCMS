@@ -80,7 +80,7 @@
 							{else}
 								<img src="/images/blank.gif" style="width:16px;height:16px;">
 							{/if}
-							{if $aLink.sort_order != $maxSort && count($aLink) > 1}
+							{if $aLink.sort_order != $maxSort && count($aLinks) > 1}
 								<a href="/admin/links/sort/{$aLink.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png" style="width:16px;height:16px;"></a>
 							{else}
 								<img src="/images/blank.gif" style="width:16px;height:16px;">
