@@ -80,7 +80,7 @@ $aTables = array(
 			),
 			"galleryid" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"photo" => array("type" => "text","length" => 100),
-			"title" => array("type" => "text","length" => 20),
+			"title" => array("type" => "text","length" => 254),
 			"description" => array("type" => "clob"),
 			"gallery_default" => array("type" => "boolean"),
 			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
