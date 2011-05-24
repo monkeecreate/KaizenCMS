@@ -15,6 +15,7 @@ Options -MultiViews
 # video
 AddType video/ogg ogg ogv
 AddType video/mp4 mp4
+AddType video/webm webm
 
 # Proper svg serving. Required for svg webfonts on iPad
 #   twitter.com/FontSquirrel/status/14855840545
