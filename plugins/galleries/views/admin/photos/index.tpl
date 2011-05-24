@@ -203,7 +203,7 @@ $(function() {
 									<img src="/image/crop/?file={$sImageFolder}{$aGallery.id}/{$aPhoto.photo}&width=245&height=245" width="245px">
 								</figure>
 								<label>*Title:</label><br />
-								<input type="text" name="title" maxlength="100" value="{$aPhoto.title}"><br />
+								<input type="text" name="title" value="{$aPhoto.title}"><br />
 								<label>Description:</label><br />
 								<textarea name="description" class="elastic">{$aPhoto.description|replace:'<br />':''}</textarea><br />
 								<input type="submit" value="Save">
@@ -244,7 +244,7 @@ $(function() {
 				<fieldset>
 					<legend>Gallery Info</legend>
 					<label>*Name:</label><br />
-					<input type="text" name="name" maxlength="100" value="{$aGallery.name}"><br />
+					<input type="text" name="name" value="{$aGallery.name}"><br />
 					<label>Description:</label><br />
 					<textarea name="description" style="height:115px;">{$aGallery.description|replace:'<br />':''}</textarea>
 				</fieldset>
