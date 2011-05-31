@@ -223,7 +223,7 @@ class admin_news extends adminController {
 			"news",
 			array(
 				"title" => $_POST["title"]
-				,"short_content" => $_POST["short_content"]
+				,"short_content" => (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters)
 				,"content" => $_POST["content"]
 				,"datetime_show" => $datetime_show
 				,"datetime_kill" => $datetime_kill
