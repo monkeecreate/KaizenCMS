@@ -71,7 +71,7 @@
 						{/if}
 					</td>
 					<td>{$aDocument.name}</td>
-					<td><a href="http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}" title="{$aDocument.name}">http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}</a></td>
+					<td>{if !empty($aDocument.document)}<a href="http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}" title="{$aDocument.name}">http://{$smarty.server.HTTP_HOST}{$documentFolder}{$aDocument.document}</a>{else}No document uploaded.{/if}</td>
 					{if $sSort == "manual"}
 						<td class="small center">
 							<span class="hidden">{$aDocument.sort_order}</span>

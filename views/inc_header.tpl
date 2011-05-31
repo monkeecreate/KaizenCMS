@@ -31,7 +31,7 @@
 			
 			<nav>
 				<ul>
-					<li><a href="/" title="" class="{currentMenu var="home"}">Home</a></li>
+					<li><a href="/" title="{getSetting tag="title"}" class="{currentMenu var="home"}">Home</a></li>
 					<li><a href="/about/" title="About Us" class="{currentMenu var="about"}">About</a></li>
 					<li><a href="/contact/" title="Contact Us" class="{currentMenu var="contact"}">Contact</a></li>
 				</ul>
