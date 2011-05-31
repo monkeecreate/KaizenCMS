@@ -63,7 +63,7 @@ class admin_slideshow extends adminController {
 			"slideshow",
 			array(
 				"title" => $_POST["title"]
-				,"description" => $_POST["description"]
+				,"description" => (string)substr($_POST["description"], 0, $this->model->shortContentCharacters)
 				,"active" => $this->boolCheck($_POST["active"])
 			),
 			$_POST["id"]
