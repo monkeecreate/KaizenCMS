@@ -7,18 +7,30 @@ class admin_slideshow extends adminController {
 	}	
 	### DISPLAY ######################
 	function index() {
-		$this->tplAssign("aImages", $this->model->getSlides(true));
+		$sMinSort = $this->dbQuery(
+			"SELECT MIN(`sort_order`) FROM `{dbPrefix}slideshow`"
+			,"one"
+		);
+		$sMaxSort = $this->dbQuery(
+			"SELECT MAX(`sort_order`) FROM `{dbPrefix}slideshow`"
+			,"one"
+		);
+		
+		$this->tplAssign("aSlides", $this->model->getSlides(true));
 		$this->tplAssign("imageMinWidth", $this->model->imageMinWidth);
 		$this->tplAssign("imageMinHeight", $this->model->imageMinHeight);
+		$this->tplAssign("minSort", $sMinSort);
+		$this->tplAssign("maxSort", $sMaxSort);
+		$this->tplAssign("sSort", array_shift(explode("-", $this->model->sort)));
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {		
 		if(!empty($_SESSION["admin"]["admin_slideshow"])) {
-			$aImage = $_SESSION["admin"]["admin_slideshow"];
+			$aSlide = $_SESSION["admin"]["admin_slideshow"];
 			
-			$this->tplAssign("aImage", $aImage);
+			$this->tplAssign("aSlide", $aSlide);
 		} else
-			$this->tplAssign("aImage",
+			$this->tplAssign("aSlide",
 				array(
 					"active" => 1
 				)
@@ -36,12 +48,25 @@ class admin_slideshow extends adminController {
 			$this->forward("/admin/slideshow/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
+		$sOrder = $this->dbQuery(
+			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}slideshow`"
+			,"one"
+		);
+		
+		if(empty($sOrder))
+			$sOrder = 1;
+		
 		$sID = $this->dbInsert(
 			"slideshow",
 			array(
 				"title" => $_POST["title"]
 				,"description" => (string)substr($_POST["description"], 0, $this->model->shortContentCharacters)
+				,"sort_order" => $sOrder
 				,"active" => $this->boolCheck($_POST["active"])
+				,"created_datetime" => time()
+				,"created_by" => $_SESSION["admin"]["userid"]
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
 			)
 		);
 		
@@ -51,7 +76,15 @@ class admin_slideshow extends adminController {
 		$this->image_upload_s();
 	}
 	function edit() {
-		$this->tplAssign("aImage", $this->model->getSlide($this->urlVars->dynamic["id"]));
+		$aSlide = $this->model->getSlide($this->urlVars->dynamic["id"]);
+		
+		$aSlide["updated_by"] = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}users`"
+				." WHERE `id` = ".$aSlide["updated_by"]
+			,"row"
+		);
+		
+		$this->tplAssign("aSlide", $aSlide);
 		$this->tplAssign("useDescription", $this->model->useDescription);
 		$this->tplAssign("imageMinWidth", $this->model->imageMinWidth);
 		$this->tplAssign("imageMinHeight", $this->model->imageMinHeight);
@@ -65,6 +98,8 @@ class admin_slideshow extends adminController {
 				"title" => $_POST["title"]
 				,"description" => (string)substr($_POST["description"], 0, $this->model->shortContentCharacters)
 				,"active" => $this->boolCheck($_POST["active"])
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
 			),
 			$_POST["id"]
 		);
@@ -85,6 +120,51 @@ class admin_slideshow extends adminController {
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 		
 		$this->forward("/admin/slideshow/?notice=".urlencode("Image removed successfully!"));
+	}
+	function sort() {
+		$aSlide = $this->model->getSlide($this->urlVars->dynamic["id"]);
+		
+		if($this->urlVars->dynamic["sort"] == "up") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}slideshow`"
+					." WHERE `sort_order` < ".$aSlide["sort_order"]
+					." ORDER BY `sort_order` DESC"
+				,"row"
+			);
+		} elseif($this->urlVars->dynamic["sort"] == "down") {
+			$aOld = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}slideshow`"
+					." WHERE `sort_order` > ".$aSlide["sort_order"]
+					." ORDER BY `sort_order` ASC"
+				,"row"
+			);
+		}
+			
+		$this->dbUpdate(
+			"slideshow",
+			array(
+				"sort_order" => 0
+			),
+			$aSlide["id"]
+		);
+		
+		$this->dbUpdate(
+			"slideshow",
+			array(
+				"sort_order" => $aSlide["sort_order"]
+			),
+			$aOld["id"]
+		);
+			
+		$this->dbUpdate(
+			"slideshow",
+			array(
+				"sort_order" => $aOld["sort_order"]
+			),
+			$aSlide["id"]
+		);
+		
+		$this->forward("/admin/slideshow/?notice=".urlencode("Sort order saved successfully!"));
 	}
 	function image_upload_s() {				
 		if(!is_dir($this->settings->rootPublic.substr($this->model->imageFolder, 1)))
@@ -131,7 +211,7 @@ class admin_slideshow extends adminController {
 			$sPreviewHeight = ceil($this->model->imageMinHeight * (300 / $this->model->imageMinWidth));
 		}
 		
-		$this->tplAssign("aImage", $this->model->getSlide($this->urlVars->dynamic["id"], true));
+		$this->tplAssign("aSlide", $this->model->getSlide($this->urlVars->dynamic["id"], true));
 		$this->tplAssign("sFolder", $this->model->imageFolder);
 		$this->tplAssign("imageMinWidth", $this->model->imageMinWidth);
 		$this->tplAssign("imageMinHeight", $this->model->imageMinHeight);
