@@ -350,13 +350,12 @@ class appController {
 	##################################
 	
 	### Template #####################
-	function tplExists($template_file) {
-		if(!empty($this->_plugin)) {
+	function tplExists($template_file, $sSkipPlugin = false) {
+		if(!empty($this->_plugin) && $sSkipPlugin == false)
 			$template_file = $this->settings->root."plugins/".$this->_plugin."/views/".$template_file;
-		} else {
+		else
 			$template_file = $this->_smarty->template_dir."/".$template_file;
-		}
-		
+	
 		return is_file($template_file);
 	}
 	function tplAssign($sVariable, $sValue) {
@@ -364,21 +363,14 @@ class appController {
 	}
 	function tplDisplay($sTemplate, $sSkipPlugin = false) {
 		$this->_smarty->registerObject("appController", $this);
-		
-		if(!empty($this->_plugin) && $sSkipPlugin == false) {
-			$sTemplate = $this->settings->root."plugins/".$this->_plugin."/views/".$sTemplate;
-			if(is_file($sTemplate)) {
-				echo $this->_smarty->fetch($sTemplate);
-			} else {
-				$this->sendError("appController->tplDisplay", "Can't find template - (".$sTemplate.")");
-			}
-		} else {	
-			if($this->tplExists($sTemplate)) {
-				$this->_smarty->display($sTemplate);
-			} else {
-				$this->sendError("appController->tplDisplay", "Can't find template - (".$sTemplate.")");
-			}
-		}
+	
+		if($this->tplExists($sTemplate, $sSkipPlugin)) {
+			if(!empty($this->_plugin) && $sSkipPlugin == false)
+				$sTemplate = $this->settings->root."plugins/".$this->_plugin."/views/".$sTemplate;
+			
+			$this->_smarty->display($sTemplate);
+		} else
+			$this->sendError("appController->tplDisplay", "Can't find template - (".$sTemplate.")");
 	}
 	function tplVariableGet($sVariable) {
 		return $this->_smarty->$sVariable;
