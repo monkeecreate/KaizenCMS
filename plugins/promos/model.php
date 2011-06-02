@@ -1,6 +1,8 @@
 <?php
 class promos_model extends appModel {
 	public $imageFolder;
+	public $shortContentCharacters;
+	public $useDescription;
 	
 	function __construct() {
 		parent::__construct();
