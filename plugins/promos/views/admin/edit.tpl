@@ -32,9 +32,9 @@
 			<input type="text" name="name" maxlength="100" value="{$aPromo.name}"><br />
 			<label>Link: <span style="font-size:0.8em;">(ex: http://www.google.com/)</span></label><br />
 			<input type="text" name="link" maxlength="100" value="{$aPromo.link}"><br />
-			{if $hasDescription == true}
-			<label>Description: <span style="font-size:0.8em;">(optional)</span></label><br />
-			<textarea name="description">{$aPromo.description}</textarea><br />
+			{if $useDescription}
+			<label>Description:</label><span class="right"><span id="currentCharacters"></span> of {$sShortContentCount} characters</span><br />
+			<textarea name="description" style="height:115px;">{$aSlide.description}</textarea><br />
 			{/if}
 			<fieldset id="fieldset_positions">
 				<legend>Select Positions:</legend>
@@ -123,6 +123,18 @@ $(function(){ldelim}
 		$("input[name=use_kill]").attr('checked', false);
 		$(".eventExpire").fadeIn('slow');
 	{rdelim});
+	
+	{if $useDescription}
+	$('#currentCharacters').html($('textarea[name=description]').val().length);
+	
+	$('textarea[name=description]').keyup(function() {
+		if($(this).val().length > {$sShortContentCount})
+			$('#currentCharacters').css('color', '#cc0000');
+		else
+			$('#currentCharacters').css('color', 'inherit');
+		$('#currentCharacters').html($(this).val().length);
+	});
+	{/if}
 	
 	$(".itemImage a").click(function() {ldelim}
 		$(".itemImage").slideUp("fast");
