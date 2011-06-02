@@ -9,6 +9,7 @@ $aPluginInfo = array(
 	
 	/* Plugin Configuration */
 	"config" => array(
-		"imageFolder" => "/uploads/promos/"
+		"imageFolder" => "/uploads/promos/",
+		"hasDescription" => false
 	)
 );

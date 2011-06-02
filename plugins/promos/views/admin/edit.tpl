@@ -32,6 +32,10 @@
 			<input type="text" name="name" maxlength="100" value="{$aPromo.name}"><br />
 			<label>Link: <span style="font-size:0.8em;">(ex: http://www.google.com/)</span></label><br />
 			<input type="text" name="link" maxlength="100" value="{$aPromo.link}"><br />
+			{if $hasDescription == true}
+			<label>Description: <span style="font-size:0.8em;">(optional)</span></label><br />
+			<textarea name="description">{$aPromo.description}</textarea><br />
+			{/if}
 			<fieldset id="fieldset_positions">
 				<legend>Select Positions:</legend>
 				<table class="dataTable" style="width:578px !important;border-top:1px solid #ddd;">

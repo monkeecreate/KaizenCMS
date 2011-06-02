@@ -61,6 +61,7 @@ class admin_promos extends adminController {
 			array(
 				"name" => $_POST["name"]
 				,"link" => $_POST["link"]
+				,"description" => $_POST["description"]
 				,"datetime_show" => $datetime_show
 				,"datetime_kill" => $datetime_kill
 				,"use_kill" => $this->boolCheck($_POST["use_kill"])
@@ -190,6 +191,7 @@ class admin_promos extends adminController {
 			array(
 				"name" => $_POST["name"]
 				,"link" => $_POST["link"]
+				,"description" => $_POST["description"]
 				,"datetime_show" => $datetime_show
 				,"datetime_kill" => $datetime_kill
 				,"use_kill" => $this->boolCheck($_POST["use_kill"])

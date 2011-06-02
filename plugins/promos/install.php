@@ -20,6 +20,7 @@ $aTables = array(
 			),
 			"name" => array("type" => "text","length" => 100),
 			"link" => array("type" => "text","length" => 255),
+			"description" => array("type" => "text","length" => 255),
 			"promo" => array("type" => "text","length" => 100),
 			"impressions" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"clicks" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
