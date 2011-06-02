@@ -34,7 +34,7 @@
 			<input type="text" name="link" maxlength="100" value="{$aPromo.link}"><br />
 			{if $useDescription}
 			<label>Description:</label><span class="right"><span id="currentCharacters"></span> of {$sShortContentCount} characters</span><br />
-			<textarea name="description" style="height:115px;">{$aSlide.description}</textarea><br />
+			<textarea name="description" style="height:115px;">{$aPromo.description}</textarea><br />
 			{/if}
 			<fieldset id="fieldset_positions">
 				<legend>Select Positions:</legend>
