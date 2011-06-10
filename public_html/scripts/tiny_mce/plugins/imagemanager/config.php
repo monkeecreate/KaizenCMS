@@ -107,7 +107,10 @@
 	$mcImageManagerConfig['SessionAuthenticator.config_prefix'] = "imagemanager";
 
 	// ExternalAuthenticator config
-	$mcImageManagerConfig['ExternalAuthenticator.external_auth_url'] = "http://".$_SERVER["SERVER_NAME"]."/admin/isloggedin/";
+	if ($_SERVER['HTTPS'] == "on")
+		$mcImageManagerConfig['ExternalAuthenticator.external_auth_url'] = "http://".$_SERVER["SERVER_NAME"]."/admin/isloggedin/";
+	else
+		$mcImageManagerConfig['ExternalAuthenticator.external_auth_url'] = "http://".$_SERVER["SERVER_NAME"]."/admin/isloggedin/";
 	$mcImageManagerConfig['ExternalAuthenticator.secret_key'] = md5($_SERVER["SERVER_NAME"]);
 
 	// Local filesystem options
