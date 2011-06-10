@@ -16,6 +16,18 @@ $aPluginUrlPatterns = array(
 		"cmd" => "calendar",
 		"action" => "index"
 	),
+   	"/calendar/list/" => array(
+		"cmd" => "calendar",
+		"action" => "listView"
+	),
+   	"/calendar/month/" => array(
+		"cmd" => "calendar",
+		"action" => "monthView"
+	),
+	"/calendar/month/<year:[0-9]+>/<month:[0-9]+>/" => array(
+		"cmd" => "calendar",
+		"action" => "monthView"
+	),
 	"/calendar/ics/" => array(
 		"cmd" => "calendar",
 		"action" => "ics"

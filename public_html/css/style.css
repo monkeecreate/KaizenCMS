@@ -461,3 +461,45 @@ pre {
 		-ms-text-size-adjust: none;
 	}
 }
+
+/* @group calendar */
+
+.lastMonthContainer {
+	float: left;
+	text-align: left;	
+	height:  14px;
+}
+.nextMonthContainer {
+	float: right;
+	text-align:  right;
+	height:  14px;
+}
+
+.monthViewCal {
+	background-color: #23a0b3 ;
+	width:  100%;;
+}
+
+.monthViewCal td {
+	background-color:  #fff;
+	vertical-align: top;
+	height:  122px;
+	width:  120px;
+}
+
+.monthViewCal td a {
+	font-size:11px;
+}
+
+.monthViewCal th {
+	color: #fff;
+}
+
+.monthViewCal td.noday {
+	background-color: #f0eee2;
+}
+.monthViewCal td.today {
+	background-color: #7FD5E4;
+}
+
+/* @end */

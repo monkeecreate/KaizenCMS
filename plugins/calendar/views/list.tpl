@@ -39,6 +39,9 @@
 	{/if}
 
 	<h2>Calendar</h2>
+	<div class="viewBy">
+		<small>View as:</small> <a href="/calendar/list" title="View as List"><img src="/images/admin/calendar_list.gif" alt="View as List"></a> | <a href="/calendar/month" title="View as Calendar"><img src="/images/admin/calendar_month.gif" alt="View as Calendar"></a>
+	</div>
 
 	{foreach from=$aEvents item=aEvent}
 		<article class="events">
