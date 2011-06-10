@@ -108,7 +108,7 @@
 
 	// ExternalAuthenticator config
 	if ($_SERVER['HTTPS'] == "on")
-		$mcImageManagerConfig['ExternalAuthenticator.external_auth_url'] = "http://".$_SERVER["SERVER_NAME"]."/admin/isloggedin/";
+		$mcImageManagerConfig['ExternalAuthenticator.external_auth_url'] = "https://".$_SERVER["SERVER_NAME"]."/admin/isloggedin/";
 	else
 		$mcImageManagerConfig['ExternalAuthenticator.external_auth_url'] = "http://".$_SERVER["SERVER_NAME"]."/admin/isloggedin/";
 	$mcImageManagerConfig['ExternalAuthenticator.secret_key'] = md5($_SERVER["SERVER_NAME"]);
