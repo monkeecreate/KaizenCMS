@@ -1,12 +1,13 @@
 <?php
 class calendar_model extends appModel {
-	public $useImage ;
+	public $useImage;
 	public $imageMinWidth;
 	public $imageMinHeight;
 	public $imageFolder;
 	public $useCategories;
 	public $perPage;
 	public $shortContentCharacters;
+	public $calendarView;
 	
 	function __construct() {
 		parent::__construct();

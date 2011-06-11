@@ -1,4 +1,5 @@
-{include file="inc_header.tpl" page_title="Calendar" menu="calendarView"}
+{$menu = "calendarMonth"}
+{include file="inc_header.tpl" page_title="`$sCurrentMonth` Calendar"}
 
 	{if !empty($aCategories)}
 	<form name="category" method="get" action="/calendar/month/" class="sortCat">
@@ -20,50 +21,53 @@
 
 {/if}
 
-	<h2>Calendar - {$sCalTitle}</h2>
+	<h2>Calendar - {$sCurrentMonth}</h2>
 	<div class="viewBy">
 		<small>View as:</small> <a href="/calendar/list" title="View as List"><img src="/images/admin/calendar_list.gif" alt="View as List"></a> | <a href="/calendar/month" title="View as Calendar"><img src="/images/admin/calendar_month.gif" alt="View as Calendar"></a>
 	</div>
 	
-	<div class="lastMonthContainer"><a href="{$sLastMonthURL}" title="{$sLastMonthTitle}">Last Month</a></div>
-	<div class="nextMonthContainer"><a href="{$sNextMonthURL}" title="{$sNextMonthTitle}">Next Month</a></div>
+	<div class="lastMonth"><a href="{$aLastMonth.url}" title="{$aLastMonth.title}">Last Month</a></div>
+	<div class="nextMonth"><a href="{$aNextMonth.url}" title="{$aNextMonth.title}">Next Month</a></div>
 	<div class="clearBoth">&nbsp;</div>
 
-	<table class="monthViewCal">
-	<tr>
-		<th>Sun</th>
-		<th>Mon</th>
-		<th>Tue</th>
-		<th>Wed</th>
-		<th>Thu</th>
-		<th>Fri</th>
-		<th>Sat</th>
-	</tr>
-	{section name=week start=1 loop=$lNumWeeks step=1}
-		<tr>
-			{section name=day start=0 loop=7 step=1}
-				{if $aCalendar[$smarty.section.week.index][$smarty.section.day.index][0] != 0}
-					{if $lToday == $aCalendar[$smarty.section.week.index][$smarty.section.day.index][0]}
-					<td class="today">
-					{else}
-					<td>
-					{/if}
-						<div>{$aCalendar[$smarty.section.week.index][$smarty.section.day.index][0]}</div>
-						{section name=eventId loop=$aCalendar[$smarty.section.week.index][$smarty.section.day.index][1]}
-							<div>
-								<a href="{$aCalendar[$smarty.section.week.index][$smarty.section.day.index][1][eventId][4]}" title="{$aCalendar[$smarty.section.week.index][$smarty.section.day.index][1][eventId][0]}">
-									{$aCalendar[$smarty.section.week.index][$smarty.section.day.index][1][eventId][3]}
-								</a>
-							</div>
-						{/section}
-					</td>
-				{else}
-					<td class="noday">&nbsp;</td>
-				{/if}
-
+	<table class="monthView">
+		<thead>
+			<tr>
+				<th>Sun</th>
+				<th>Mon</th>
+				<th>Tue</th>
+				<th>Wed</th>
+				<th>Thu</th>
+				<th>Fri</th>
+				<th>Sat</th>
+			</tr>
+		</thead>
+		<tbody>
+			{section name=week start=1 loop=$lNumWeeks step=1}
+				<tr>
+					{section name=day start=0 loop=7 step=1}
+						{if $aCalendar[$smarty.section.week.index][$smarty.section.day.index][0] != 0}
+							{if $lToday == $aCalendar[$smarty.section.week.index][$smarty.section.day.index][0]}
+							<td class="today">
+							{else}
+							<td>
+							{/if}
+								<div>{$aCalendar[$smarty.section.week.index][$smarty.section.day.index][0]}</div>
+								{section name=eventId loop=$aCalendar[$smarty.section.week.index][$smarty.section.day.index][1]}
+									<div>
+										<a href="{$aCalendar[$smarty.section.week.index][$smarty.section.day.index][1][eventId][4]}" title="{$aCalendar[$smarty.section.week.index][$smarty.section.day.index][1][eventId][0]}">
+											{$aCalendar[$smarty.section.week.index][$smarty.section.day.index][1][eventId][3]}
+										</a>
+									</div>
+								{/section}
+							</td>
+						{else}
+							<td class="noday">&nbsp;</td>
+						{/if}
+					{/section}
+				</td>
 			{/section}
-		</td>
-	{/section}
+		</tbody>
 	</table>
 	
 	<span class="calSubscribe">

@@ -1,5 +1,7 @@
 /* @group reset */
+
 /* http://meyerweb.com/eric/tools/css/reset/ | v2.0 | 20110126 */
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -22,25 +24,32 @@ time, mark, audio, video {
 	font-style: inherit;
 	vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
+
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
 body {
 	line-height: 1;
 }
+
 ol, ul {
 	list-style: none;
 }
+
 blockquote, q {
 	quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
 	content: '';
 	content: none;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -382,25 +391,32 @@ footer a:hover {
 }
 
 /* Hide from browsers */
+
 .hide {
 	display: none;
 }
 
 /* Hide from browsers & screenreaders */
+
 .hidden {
 	display: none;
 	visibility: hidden;
 }
 
 /* Hide from browsers, available to screenreaders */
+
 .visuallyHidden {
 	position: absolute !important;
-	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px 1px 1px 1px);
+
+
+/* IE6, IE7 */
 	clip: rect(1px, 1px, 1px, 1px);
 }
 
 /* Hide from browsers & screenreaders, maintain layout */
-.invisible { 
+
+.invisible {
 	visibility: hidden;
 }
 
@@ -420,25 +436,37 @@ strong, th {
 	font-weight: bold;
 }
 
-pre { 
-  padding: 15px; 
-  white-space: pre; /* CSS2 */
-  white-space: pre-wrap; /* CSS 2.1 */
-  white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
-  word-wrap: break-word; /* IE */
+pre {
+	padding: 15px;
+	white-space: pre;
+	/* 
+
+CSS2 */
+  white-space: pre-wrap;
+	/*
+
+CSS 2.1 */
+  white-space: pre-line;
+	/
+
+* CSS 3 (and 2.1 as well, actually) */
+  word-wrap: break-word;
+/
+
+* IE */
 }
 
 ::-moz-selection {
 	background: #62aaf2;
-	color:#fff;
+	color: #fff;
 	text-shadow: none;
 }
 
 ::selection {
-	background:#62aaf2;
-	color:#fff;
+	background: #62aaf2;
+	color: #fff;
 	text-shadow: none;
-} 
+}
 
 /* @end */
 
@@ -451,55 +479,59 @@ pre {
 }
 
 @media screen and (max-device-width: 480px) {
-	a:link {
-		-webkit-tap-highlight-color: #;
-	} 
-	
-	/* Prevent iOS, WinMobile from adjusting font size */
-	html {
-		-webkit-text-size-adjust: none;
-		-ms-text-size-adjust: none;
-	}
+
+a:link {
+	-webkit-tap-highlight-color: #;
+}
+
+/* Prevent iOS, WinMobile from adjusting font size */
+
+html {
+	-webkit-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+}
+
 }
 
 /* @group calendar */
 
-.lastMonthContainer {
+.lastMonth {
 	float: left;
-	text-align: left;	
-	height:  14px;
+	text-align: left;
 }
-.nextMonthContainer {
+
+.nextMonth {
 	float: right;
-	text-align:  right;
-	height:  14px;
+	text-align: right;
 }
 
-.monthViewCal {
-	background-color: #23a0b3 ;
-	width:  100%;;
+.monthView {
+	background-color: #23a0b3;
+	width: 100%;
 }
 
-.monthViewCal td {
-	background-color:  #fff;
+.monthView td {
+	background-color: #fff;
 	vertical-align: top;
-	height:  122px;
-	width:  120px;
+	height: 122px;
+	width: 120px;
 }
 
-.monthViewCal td a {
-	font-size:11px;
+.monthView td a {
+	font-size: 11px;
 }
 
-.monthViewCal th {
+.monthView th {
 	color: #fff;
 }
 
-.monthViewCal td.noday {
+.monthView td.noday {
 	background-color: #f0eee2;
 }
-.monthViewCal td.today {
+
+.monthView td.today {
 	background-color: #7FD5E4;
 }
+
 
 /* @end */
