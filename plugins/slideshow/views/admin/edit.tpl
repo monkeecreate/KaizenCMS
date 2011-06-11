@@ -13,16 +13,16 @@
 
 		<section class="inner-content">
 			<label>Title:</label><br />
-			<input type="text" name="title" maxlength="100" value="{$aImage.title|clean_html}"><br />
+			<input type="text" name="title" maxlength="100" value="{$aSlide.title}"><br />
 			
 			{if $useDescription}
 			<label>Description:</label><span class="right"><span id="currentCharacters"></span> of {$sShortContentCount} characters</span><br />
-			<textarea name="description" style="height:115px;">{$aImage.description|clean_html}</textarea><br />
+			<textarea name="description" style="height:115px;">{$aSlide.description}</textarea><br />
 			{/if}
 			
 			<input type="submit" name="next" value="Save Changes">
 			<a class="cancel" href="/admin/slideshow/" title="Cancel">Cancel</a>
-			<input type="hidden" name="id" value="{$aImage.id}">
+			<input type="hidden" name="id" value="{$aSlide.id}">
 		</section>
 	</section> <!-- #content -->
 		
@@ -32,9 +32,9 @@
 		</header>
 
 		<section>
-			{if $aImage.photo_x2 > 0}
+			{if $aSlide.photo_x2 > 0}
 			<figure class="itemImage">
-				<img src="/image/slideshow/{$aImage.id}/?width=100&rand={$randnum}" alt="{$aImage.title|clean_html} Image">
+				<img src="/image/slideshow/{$aSlide.id}/?width=100&rand={$randnum}" alt="{$aSlide.title} Image">
 				<input name="submit" type="image" src="/images/admin/icons/pencil.png" value="edit">
 			</figure>
 			{/if}
@@ -43,10 +43,10 @@
 				<legend>Slide Status</legend>
 			
 				<!-- <label>Active:</label> -->
-				<input type="checkbox" name="active" value="1"{if $aImage.active == 1} checked="checked"{/if}><br />
+				<input type="checkbox" name="active" value="1"{if $aSlide.active == 1} checked="checked"{/if}><br />
 			</fieldset>
 			
-			{if $aImage.photo_x2 == 0}
+			{if $aSlide.photo_x2 == 0}
 				<fieldset>
 					<legend>Slide Image</legend>
 				
@@ -63,25 +63,27 @@
 	</section>
 </form>
 <script type="text/javascript">
-$(function(){ldelim}
+$(function(){
 	$('input[name=active]').iphoneStyle({ldelim}
 		checkedLabel: 'On',
 		uncheckedLabel: 'Off'
-	{rdelim});
+	});
 	
+	{if $useDescription}
 	$('#currentCharacters').html($('textarea[name=description]').val().length);
 	
-	$('textarea[name=description]').keyup(function() {ldelim}
+	$('textarea[name=description]').keyup(function() {
 		if($(this).val().length > {$sShortContentCount})
 			$('#currentCharacters').css('color', '#cc0000');
 		else
 			$('#currentCharacters').css('color', 'inherit');
 		$('#currentCharacters').html($(this).val().length);
-	{rdelim});
+	});
+	{/if}
 	
 	$("form").validateForm([
-		"required,title,Slide title is required"{if $useDescription},
-		"length<={$sShortContentCount},description,Short content must be less then {$sShortContentCount} characters"{/if}
+		"required,title,Slide title is required"
+		{if $useDescription},"length<={$sShortContentCount},description,Short content must be less then {$sShortContentCount} characters"{/if}
 	]);
 {rdelim});
 </script>

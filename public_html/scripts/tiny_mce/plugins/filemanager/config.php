@@ -123,7 +123,11 @@
 	$mcFileManagerConfig['SessionAuthenticator.config_prefix'] = "filemanager";
 
 	// ExternalAuthenticator config
-	$mcFileManagerConfig['ExternalAuthenticator.external_auth_url'] = "http://".$_SERVER["SERVER_NAME"]."/admin/isloggedin/";
+	if ($_SERVER['HTTPS'] == "on")
+		$mcFileManagerConfig['ExternalAuthenticator.external_auth_url'] = "https://".$_SERVER["SERVER_NAME"]."/admin/isloggedin/";
+	else
+		$mcFileManagerConfig['ExternalAuthenticator.external_auth_url'] = "http://".$_SERVER["SERVER_NAME"]."/admin/isloggedin/";
+
 	$mcFileManagerConfig['ExternalAuthenticator.secret_key'] = md5($_SERVER["SERVER_NAME"]);
 
 	// Local filesystem options

@@ -36,6 +36,10 @@ $aPluginUrlPatterns = array(
         "cmd" => "admin_slideshow",
         "action" => "delete"
     ),
+	"/admin/slideshow/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
+	    "cmd" => "admin_slideshow",
+	    "action" => "sort"
+	),
 	"/admin/slideshow/image/<id:[0-9]+>/upload/" => array(
         "cmd" => "admin_slideshow",
         "action" => "image_upload"

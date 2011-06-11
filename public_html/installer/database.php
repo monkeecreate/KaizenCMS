@@ -386,7 +386,7 @@ $aTables = array(
 				"column_title" => "title",
 				"column_content" => "content",
 				"rows" => json_encode(array("title", "content")),
-				"filter" => "`perminate` != 1"
+				"filter" => "`module` != 1"
 			)
 		)
 	),

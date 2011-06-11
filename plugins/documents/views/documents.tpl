@@ -27,7 +27,7 @@
 
 	{foreach from=$aDocuments item=aDocument}
 		<article>
-			<h3><a href="{$documentFolder}{$aDocument.document}" target="_blank">{$aDocument.name}</a></h3>
+			<h3><a href="{$documentFolder}{$aDocument.document}" target="_blank" onClick="javascript: _gaq.push(['_trackPageview', '/documents/{$aDocument.id}/{$aDocument.name}/']);">{$aDocument.name}</a></h3>
 			{if !empty($aDocument.categories)}
 				<small class="timeCat">
 					Categories: 
@@ -44,14 +44,10 @@
 
 	<div id="paging">
 		{if $aPaging.next.use == true}
-			<div class="right">
-				<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
-			</div>
+			<p class="right"><a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a></p>
 		{/if}
 		{if $aPaging.back.use == true}
-			<div class="left">
-				<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
-			</div>
+			<p class="left"><a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a></p>
 		{/if}
 	</div>
 	<div class="clear">&nbsp;</div>

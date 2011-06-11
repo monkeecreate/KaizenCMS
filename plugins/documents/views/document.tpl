@@ -1,7 +1,7 @@
 {$menu = "documents"}
 {include file="inc_header.tpl" page_title=$aDocument.name}
 
-	<h2><a href="{$documentFolder}{$aDocument.document}" target="_blank">{$aDocument.name}</a></h2>
+	<h2><a href="{$documentFolder}{$aDocument.document}" target="_blank" onClick="javascript: _gaq.push(['_trackPageview', '/documents/{$aDocument.id}/{$aDocument.name}/']);">{$aDocument.name}</a></h2>
 	
 	{if !empty($aDocument.categories)}
 		<small class="timeCat">

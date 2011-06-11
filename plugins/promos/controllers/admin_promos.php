@@ -15,6 +15,9 @@ class admin_promos extends adminController {
 		$this->tplAssign("sPosition", $_GET["position"]);
 		$this->tplAssign("aPromos", $this->model->getPromos($_GET["position"]));
 		$this->tplDisplay("admin/index.tpl");
+		
+		$this->tplAssign("useDescription", $this->model->useDescription);
+		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
 	}
 	function add() {		
 		if(!empty($_SESSION["admin"]["admin_promos"])) {
@@ -37,6 +40,8 @@ class admin_promos extends adminController {
 			);
 		
 		$this->tplAssign("aPositions", $this->model->getPositions());
+		$this->tplAssign("useDescription", $this->model->useDescription);
+		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
 		$this->tplDisplay("admin/add.tpl");
 	}
 	function add_s() {
@@ -61,6 +66,7 @@ class admin_promos extends adminController {
 			array(
 				"name" => $_POST["name"]
 				,"link" => $_POST["link"]
+				,"description" => $_POST["description"]
 				,"datetime_show" => $datetime_show
 				,"datetime_kill" => $datetime_kill
 				,"use_kill" => $this->boolCheck($_POST["use_kill"])
@@ -164,6 +170,8 @@ class admin_promos extends adminController {
 			$this->tplAssign("aPromo", $aPromo);
 		}
 		
+		$this->tplAssign("useDescription", $this->model->useDescription);
+		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
 		$this->tplAssign("aPositions", $this->model->getPositions());
 		$this->tplAssign("imageFolder", $this->model->imageFolder);
 		$this->tplDisplay("admin/edit.tpl");
@@ -190,6 +198,7 @@ class admin_promos extends adminController {
 			array(
 				"name" => $_POST["name"]
 				,"link" => $_POST["link"]
+				,"description" => $_POST["description"]
 				,"datetime_show" => $datetime_show
 				,"datetime_kill" => $datetime_kill
 				,"use_kill" => $this->boolCheck($_POST["use_kill"])

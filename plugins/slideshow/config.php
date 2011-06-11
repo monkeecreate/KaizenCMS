@@ -14,6 +14,7 @@ $aPluginInfo = array(
 		"imageMinHeight" => 100,
 		"imageFolder" => "/uploads/slideshow/",
 		"shortContentCharacters" => 250, // max characters for short content
+		"sort" => "random-asc", // manual, title, created, updated, random - asc, desc
 		"useDescription" => true
 	)
 );

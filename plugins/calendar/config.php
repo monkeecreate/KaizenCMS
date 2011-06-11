@@ -16,6 +16,9 @@ $aPluginInfo = array(
 		"useCategories" => true,
 		"perPage" => 5,
 		"shortContentCharacters" => 250, // max characters for short content
+		"defaultView" => "month",
+//		"defaultView" => "list",
 		"sortCategory" => "manual-asc" // manual, name, items, random - asc, desc
+	
 	)
 );

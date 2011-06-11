@@ -13,11 +13,11 @@
 
 		<section class="inner-content">
 			<label>Title:</label><br />
-			<input type="text" name="title" maxlength="100" value="{$aImage.title|clean_html}"><br />
+			<input type="text" name="title" maxlength="100" value="{$aSlide.title}"><br />
 			
 			{if $useDescription}
 			<label>Description:</label><span class="right"><span id="currentCharacters"></span> of {$sShortContentCount} characters</span><br />
-			<textarea name="description" style="height:115px;">{$aImage.description|clean_html}</textarea><br />
+			<textarea name="description" style="height:115px;">{$aSlide.description}</textarea><br />
 			{/if}
 			
 			<input type="submit" name="next" value="Add Photo">
@@ -35,7 +35,7 @@
 				<legend>Slide Status</legend>
 			
 				<!-- <label>Active:</label> -->
-				<input type="checkbox" name="active" value="1"{if $aImage.active == 1} checked="checked"{/if}><br />
+				<input type="checkbox" name="active" value="1"{if $aSlide.active == 1} checked="checked"{/if}><br />
 			</fieldset>
 			
 			<fieldset>
@@ -53,21 +53,23 @@
 	</section>
 </form>
 <script type="text/javascript">
-$(function(){ldelim}
+$(function(){
 	$('input[name=active]').iphoneStyle({ldelim}
 		checkedLabel: 'On',
 		uncheckedLabel: 'Off'
-	{rdelim});
+	});
 	
+	{if $useDescription}
 	$('#currentCharacters').html($('textarea[name=description]').val().length);
 	
-	$('textarea[name=description]').keyup(function() {ldelim}
+	$('textarea[name=description]').keyup(function() {
 		if($(this).val().length > {$sShortContentCount})
 			$('#currentCharacters').css('color', '#cc0000');
 		else
 			$('#currentCharacters').css('color', 'inherit');
 		$('#currentCharacters').html($(this).val().length);
-	{rdelim});
+	});
+	{/if}
 	
 	$("form").validateForm([
 		"required,title,Slide title is required",

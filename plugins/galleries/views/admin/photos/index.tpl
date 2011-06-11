@@ -8,7 +8,6 @@
 <script type="text/javascript" src="/scripts/uploadify/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="/scripts/uploadify/swfobject.js"></script>
 <script type="text/javascript">
-{literal}
 $(function() {
 	var sortable = $("#photos").sortable({
 		cursor: 'move',
@@ -73,7 +72,7 @@ $(function() {
 		'width': 158,
 		'height': 28,
 		'cancelImg': '/images/admin/icons/delete.png',
-		'script': '/admin/galleries/{/literal}{$aGallery.id}{literal}/photos/add/',
+		'script': '/admin/galleries/{$aGallery.id}/photos/add/',
 		'folder': 'files',
 		'wmode': 'transparent',
 		'multi': true,
@@ -83,7 +82,7 @@ $(function() {
 		'simUploadLimit': 1,
 		'queueID': 'uploadPhotosFilesQueue',
 		'scriptAccess': 'always',
-		'scriptData': {'session_name': '{/literal}{$sessionID}{literal}'},
+		'scriptData': { 'session_name': '{$sessionID}' },
 		onSelect: function(){
 			files = $('#uploadPhotosFilesCount').text();
 			$('#uploadPhotosFilesCount').text(parseInt(files) + 1);
@@ -103,7 +102,7 @@ $(function() {
 		},
 		onAllComplete: function(){
 			images = images.join(',');
-			window.location.href = '/admin/galleries/{/literal}{$aGallery.id}{literal}/photos/manage/?images='+images;
+			window.location.href = '/admin/galleries/{$aGallery.id}/photos/manage/?images='+images;
 		}
 	});
 	$("#uploadPhotosClear").click(function(){
@@ -122,7 +121,7 @@ $(function() {
 	}
 	function deletePhoto(id){
 		$.post(
-			"/admin/galleries/{/literal}{$aGallery.id}{literal}/photos/delete/"+id+"/",
+			"/admin/galleries/{$aGallery.id}/photos/delete/"+id+"/",
 			null,
 			function(newDefault){
 				editPhotoDialog[id].dialog('close');
@@ -152,7 +151,7 @@ $(function() {
 				return false;
 			});
 			$(this).find('.delete').click(function(){
-				if(confirm('Are you sure you would like to delete: {$aPhoto.title}?')) {
+				if(confirm('Are you sure you would like to delete: '+$(this).attr("rel")+'?')) {
 					id = $(item).attr('id').replace("_form", "");
 					deletePhoto(id);
 				}
@@ -168,7 +167,6 @@ $(function() {
 		});
 	});
 });
-{/literal}
 </script>
 {/head}
 	<section id="content" class="content">
@@ -178,7 +176,7 @@ $(function() {
 
 		<section class="inner-content">
 			<h3>{$aGallery.name}</h3>
-			<a href="#" id="uploadPhotosBtn">Upload Photos</a> | <a href="/admin/galleries/{$aGallery.id}/photos/manage/" title="Batch Edit">Batch Edit Photos</a> | <a href="#" title="Delete Gallery">Delete Gallery</a>
+			<a href="#" id="uploadPhotosBtn">Upload Photos</a> | <a href="/admin/galleries/{$aGallery.id}/photos/manage/" title="Batch Edit">Batch Edit Photos</a> | <a href="/admin/galleries/delete/{$aGallery.id}/" onclick="return confirm_('Are you sure you would like to delete: {$aGallery.name}?');" title="Delete Gallery">Delete Gallery</a>
 
 
 			<!--### IMAGE UPLOAD ###-->			
@@ -203,13 +201,13 @@ $(function() {
 									<img src="/image/crop/?file={$sImageFolder}{$aGallery.id}/{$aPhoto.photo}&width=245&height=245" width="245px">
 								</figure>
 								<label>*Title:</label><br />
-								<input type="text" name="title" maxlength="100" value="{$aPhoto.title}"><br />
+								<input type="text" name="title" value="{$aPhoto.title}"><br />
 								<label>Description:</label><br />
 								<textarea name="description" class="elastic">{$aPhoto.description|replace:'<br />':''}</textarea><br />
 								<input type="submit" value="Save">
 								
 								<a class="cancel" href="#" title="Cancel" rel="{$aPhoto.id}">Cancel</a>
-								<a href="#" title="Delete Photo" class="delete right ui-corner-all">Delete Photo</a>
+								<a href="#" title="Delete Photo" rel="{$aPhoto.title}" class="delete right ui-corner-all">Delete Photo</a>
 								<!-- <input type="button" value="Delete Photo" class="delete right"> -->
 								<input type="hidden" name="id" value="{$aPhoto.id}">
 							</form>
@@ -244,7 +242,7 @@ $(function() {
 				<fieldset>
 					<legend>Gallery Info</legend>
 					<label>*Name:</label><br />
-					<input type="text" name="name" maxlength="100" value="{$aGallery.name}"><br />
+					<input type="text" name="name" value="{$aGallery.name}"><br />
 					<label>Description:</label><br />
 					<textarea name="description" style="height:115px;">{$aGallery.description|replace:'<br />':''}</textarea>
 				</fieldset>
@@ -270,21 +268,21 @@ $(function() {
 		</form>
 	</section>
 <script type="text/javascript">
-$(function(){ldelim}
-	$('input[name=active]').iphoneStyle({ldelim}
+$(function(){
+	$('input[name=active]').iphoneStyle({
 		checkedLabel: 'On',
 		uncheckedLabel: 'Off'
-	{rdelim});
+	});
 	
-	$('.cancel').click(function() {ldelim}
+	$('.cancel').click(function() {
 		id = $(this).attr("rel");
 		$('#'+id+'_form').dialog('close');
-	{rdelim});
+	});
 	
 	// $("form").validateForm([
 	// 	"required,name,Gallery name is required",
 	// 	"required,categories[],You must select at least one category"
 	// ]);
-{rdelim});
+});
 </script>
 {include file="inc_footer.tpl"}

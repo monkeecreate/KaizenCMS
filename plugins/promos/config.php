@@ -9,6 +9,9 @@ $aPluginInfo = array(
 	
 	/* Plugin Configuration */
 	"config" => array(
-		"imageFolder" => "/uploads/promos/"
+		"imageFolder" => "/uploads/promos/",
+		"useDescription" => false,
+		"shortContentCharacters" => 250 // max characters for short content
+
 	)
 );
