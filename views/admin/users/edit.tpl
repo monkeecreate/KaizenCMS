@@ -19,6 +19,11 @@
 				<input type="text" name="fname" maxlength="100" value="{$aUser.fname|clean_html}"><br />
 				<label>*Last Name:</label><br />
 				<input type="text" name="lname" maxlength="100" value="{$aUser.lname|clean_html}"><br />
+				{if $sSuperAdmin && $aUser.id != 1}
+					<input type="checkbox" name="super" id="form_super" value="1"{if $aUser.super == 1} checked="checked"{/if}> <label for="form_super">Super Admin</label><br />
+				{else}
+					<input type="hidden" name="super" id="form_super" value="{$aUser.super}">
+				{/if}
 			</fieldset>
 			
 			{if $aUser.id != 1}

@@ -39,7 +39,7 @@ class adminController extends appController {
 			/*## End ##*/
 			
 			/*## Super Admin ##*/
-			if($aUser["id"] == 1)
+			if($aUser["super"] == 1)
 				$this->superAdmin = true;
 			else
 				$this->superAdmin = false;

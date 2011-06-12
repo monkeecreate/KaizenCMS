@@ -404,6 +404,7 @@ $aTables = array(
 			"fname" => array("type" => "text","length" => 100),
 			"lname" => array("type" => "text","length" => 100),
 			"email_address" => array("type" => "text","length" => 100),
+			"super" => array("type" => "boolean"),
 			"resetCode" => array("type" => "text","length" => 100),
 			"last_login" => array("type" => "integer","unsigned" => 1,"default" => null),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),

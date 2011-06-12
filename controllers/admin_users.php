@@ -58,6 +58,7 @@ class admin_users extends adminController
 				,"fname" => $_POST["fname"]
 				,"lname" => $_POST["lname"]
 				,"email_address" => $_POST["email_address"]
+				,"super" => $_POST["super"]
 				,"created_datetime" => time()
 				,"created_by" => $_SESSION["admin"]["userid"]
 				,"updated_datetime" => time()
@@ -143,6 +144,7 @@ class admin_users extends adminController
 				,"fname" => $_POST["fname"]
 				,"lname" => $_POST["lname"]
 				,"email_address" => $_POST["email_address"]
+				,"super" => $_POST["super"]
 				,"updated_datetime" => time()
 				,"updated_by" => $_SESSION["admin"]["userid"]
 			),

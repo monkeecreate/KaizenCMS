@@ -38,6 +38,7 @@ if($_POST["setup"] == 1) {
 			.", `fname` = ".$objDB->quote($_POST["admin_fname"], "text")
 			.", `lname` = ".$objDB->quote($_POST["admin_lname"], "text")
 			.", `email_address` = ".$objDB->quote($_POST["admin_email"], "text")
+			.", `super` = 1"
 			.", `created_datetime` = ".time()
 			.", `created_by` = 0"
 			.", `updated_datetime` = ".time()

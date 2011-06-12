@@ -19,6 +19,9 @@
 					<input type="text" name="fname" maxlength="100" value="{$aUser.fname}"><br />
 					<label>*Last Name:</label><br />
 					<input type="text" name="lname" maxlength="100" value="{$aUser.lname}"><br />
+					{if $sSuperAdmin}
+						<input type="checkbox" name="super" id="form_super" value="1"{if $aUser.super == 1} checked="checked"{/if}> <label for="form_super">Super Admin</label><br />
+					{/if}
 			</fieldset>
 			<fieldset id="fieldset_categories">
 				<legend>Privileges:</legend>
