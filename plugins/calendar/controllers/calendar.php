@@ -54,7 +54,7 @@ class calendar extends appController {
 	
 	
 	function monthView() {
-		$aEvents = $this->model->getEvents($_GET["category"], true);
+		$aEvents = $this->model->getEvents($_GET["category"], false, true);
 		
 		#### Beginning of MonthView Code ####
 		$year = $this->urlVars->dynamic["year"];
@@ -106,6 +106,7 @@ class calendar extends appController {
 					if(!isset($aEvent["event_day_number"]))
 						$aEvent["event_day_number"] = 0;
 
+
 					$bPrintEvent = false;
 					
 					// Single Day Event...
@@ -117,14 +118,14 @@ class calendar extends appController {
 					if(	$aEvent["event_day_number"] > 0 && $aEvent["datetime_end"] >= $lEndOfDay ) {
 						$bPrintEvent = true;
 					}
-					
-/*					print "<hr />";
+/*					
+					print "<hr />";
 					print "\$lCurrentDay = '$lCurrentDay'<br />";					
 					print "\$bPrintEvent = '$bPrintEvent'<br />";
-					print "\$lStartOfDay = '$lStartOfDay'<br />";
-					print "\$lEndOfDay = '$lEndOfDay'<br />";
-					print "\$aEvent[\"datetime_start\"] = '" . $aEvent["datetime_start"] . "<br />";
-					print "\$aEvent[\"datetime_end\"] = '" . $aEvent["datetime_end"] . "<br />";
+					print "\$lStartOfDay = '$lStartOfDay' (" . date("M/d/Y", $lStartOfDay) . ")<br />";
+					print "\$lEndOfDay = '$lEndOfDay' (" . date("M/d/Y", $lEndOfDay) . ")<br />";
+					print "\$aEvent[\"datetime_start\"] = '" . $aEvent["datetime_start"] ."' (" . date("M/d/Y", $aEvent["datetime_start"]) . ")<br />";
+					print "\$aEvent[\"datetime_end\"] = '" . $aEvent["datetime_end"] ."' (" . date("M/d/Y", $aEvent["datetime_end"]) . ")<br />";
 */				
 					if($bPrintEvent) {
 						$aEvent["event_day_number"]++;
@@ -210,7 +211,7 @@ class calendar extends appController {
 		$this->tplDisplay("ics.tpl");
 	}
 	function event() {
-		$aEvent = $this->model->getEvent(null, $this->urlVars->dynamic["tag"]);
+		$aEvent = $this->model->getEvent(null, $this->urlVars->dynamic["tag"], false, true);
 		
 		if(empty($aEvent))
 			$this->error('404');

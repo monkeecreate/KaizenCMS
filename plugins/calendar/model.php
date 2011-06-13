@@ -19,17 +19,24 @@ class calendar_model extends appModel {
 		}
 	}
 	
-	function getEvents($sCategory = null, $sAll = false) {
+	function getEvents($sCategory = null, $sAll = false, $sPastEvents = false) {
 		$aWhere = array();
 		$sJoin = "";
-		
+
 		// Filter those that are only active, unless told otherwise
-		if($sAll == false) {
+		
+		if($sPastEvents == true && $sAll == false) {
+			$aWhere[] = "`calendar`.`datetime_show` < ".time();
+			$aWhere[] = "(`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
+			$aWhere[] = "`calendar`.`active` = 1";
+		}elseif($sAll == false) {
 			$aWhere[] = "`calendar`.`datetime_show` < ".time();
 			$aWhere[] = "(`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
 			$aWhere[] = "`calendar`.`datetime_end` > ".time();
 			$aWhere[] = "`calendar`.`active` = 1";
 		}
+		
+
 		
 		// Filter by category if given
 		if(!empty($sCategory)) {
@@ -58,18 +65,24 @@ class calendar_model extends appModel {
 		
 		return $aEvents;
 	}
-	function getEvent($sId, $sTag = null, $sAll = false) {
+	function getEvent($sId, $sTag = null, $sAll = false, $sPastEvents = false) {
 		if(!empty($sId))
 			$sWhere = " WHERE `calendar`.`id` = ".$this->dbQuote($sId, "integer");
 		else
 			$sWhere = " WHERE `calendar`.`tag` = ".$this->dbQuote($sTag, "text");
-		
-		if($sAll == false) {
+	
+		if($sPastEvents == true && $sAll == false) {
 			$sWhere .= " AND `calendar`.`active` = 1";
-		//	$sWhere .= " AND `calendar`.`datetime_show` < ".time();
-		//	$sWhere .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
-		//	$sWhere .= " AND `calendar`.`datetime_end` > ".time();
+			$sWhere .= " AND `calendar`.`datetime_show` < ". time();
+			$sWhere .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
 		}
+		elseif($sAll == false) {
+			$sWhere .= " AND `calendar`.`active` = 1";
+			$sWhere .= " AND `calendar`.`datetime_show` < ".time();
+			$sWhere .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
+			$sWhere .= " AND `calendar`.`datetime_end` > ".time();
+		}
+
 		
 		$aEvent = $this->dbQuery(
 			"SELECT `calendar`.* FROM `{dbPrefix}calendar` AS `calendar`"
