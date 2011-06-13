@@ -18,7 +18,7 @@
   {rdelim}());
 </script>
 	
-	<span class="right"><a href="javascript:history.go(-1)" title="Back to Calendar">Back to calendar</a></span>
+	<span class="right"><a href="/calendar/" title="Back to Calendar">Back to calendar</a></span>
 	
 	<h2>{$aEvent.title}</h2>
 	<small class="timeCat">

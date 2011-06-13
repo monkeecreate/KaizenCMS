@@ -52,7 +52,6 @@ class calendar extends appController {
 			$this->tplDisplay("list.tpl");
 	}
 	
-	
 	function monthView() {
 		$aEvents = $this->model->getEvents($_GET["category"], false, true);
 		
