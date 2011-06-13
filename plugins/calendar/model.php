@@ -66,9 +66,9 @@ class calendar_model extends appModel {
 		
 		if($sAll == false) {
 			$sWhere .= " AND `calendar`.`active` = 1";
-			$sWhere .= " AND `calendar`.`datetime_show` < ".time();
-			$sWhere .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
-			$sWhere .= " AND `calendar`.`datetime_end` > ".time();
+		//	$sWhere .= " AND `calendar`.`datetime_show` < ".time();
+		//	$sWhere .= " AND (`calendar`.`use_kill` = 0 OR `calendar`.`datetime_kill` > ".time().")";
+		//	$sWhere .= " AND `calendar`.`datetime_end` > ".time();
 		}
 		
 		$aEvent = $this->dbQuery(
