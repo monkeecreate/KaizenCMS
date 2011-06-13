@@ -54,7 +54,7 @@ class calendar extends appController {
 	
 	
 	function monthView() {
-		$aEvents = $this->model->getEvents($_GET["category"]);
+		$aEvents = $this->model->getEvents($_GET["category"], true);
 		
 		#### Beginning of MonthView Code ####
 		$year = $this->urlVars->dynamic["year"];
@@ -93,24 +93,60 @@ class calendar extends appController {
 				$sThisDay = "0" . $lCurrentDay;
 			else
 				$sThisDay = $lCurrentDay;
-			$lStartOfDay = strtotime($sThisDay . "-" . $month . "-" . $year . " 12:00:01 am");
-			$lEndOfDay = strtotime($sThisDay . "-" . $month . "-" . $year . " 11:59:59 pm");	
-			
-		
+			$lStartOfDay = strtotime($sThisDay . "-" . $month . "-" . $year . " 12:00:00 am");
+			$lEndOfDay = strtotime($sThisDay . "-" . $month . "-" . $year . " 12:00:00 pm");	
+
 			$aDayEvents = array();
 			if(count($aEvents) > 0)
-				foreach($aEvents as $aEvent) {
-					if($aEvent["datetime_start"] >= $lStartOfDay && $aEvent["datetime_start"] <= $lEndOfDay ) {
+				foreach($aEvents as &$aEvent) {
+					if($aEvent["allday"] > 0) {
+						$aEvent["datetime_start"] = strtotime(date("d-M-Y",$aEvent["datetime_start"]) . " 12:00:00 am");
+						$aEvent["datetime_end"] = strtotime(date("d-M-Y",$aEvent["datetime_end"]) . " 12:00:00 pm");
+					}
+					if(!isset($aEvent["event_day_number"]))
+						$aEvent["event_day_number"] = 0;
+
+					$bPrintEvent = false;
+					
+					// Single Day Event...
+					if(
+						( $aEvent["datetime_start"] >= $lStartOfDay && $aEvent["datetime_start"] <= $lEndOfDay )
+					) {
+						$bPrintEvent = true;
+					}
+					
+					// Multiple Day Event...
+					if(
+						$aEvent["event_day_number"] > 0 && $aEvent["datetime_end"] >= $lEndOfDay
+					) {
+						$bPrintEvent = true;
+					}
+					
+/*					print "<hr />";
+					print "\$lCurrentDay = '$lCurrentDay'<br />";					
+					print "\$bPrintEvent = '$bPrintEvent'<br />";
+					print "\$lStartOfDay = '$lStartOfDay'<br />";
+					print "\$lEndOfDay = '$lEndOfDay'<br />";
+					print "\$aEvent[\"datetime_start\"] = '" . $aEvent["datetime_start"] . "<br />";
+					print "\$aEvent[\"datetime_end\"] = '" . $aEvent["datetime_end"] . "<br />";
+*/				
+					if($bPrintEvent) {
+						$aEvent["event_day_number"]++;
 						$aNewEvent[0] = $aEvent["title"];
-						if(strlen($aEvent["title"]) > 30)
-							$aNewEvent[3] = "<span title=\"" . $aEvent["title"] . "\">" . substr($aEvent["title"], 0,30 ) . "...</span>";
+						if($aEvent["event_day_number"] > 1)
+							$sTitle = $aEvent["title"] . " (day " . $aEvent["event_day_number"] . ")";
 						else
-							$aNewEvent[3] = $aEvent["title"];
+							$sTitle = $aEvent["title"];
+						if(strlen($aEvent["title"]) > 30)
+							$aNewEvent[3] = "<span title=\"" . $sTitle . "\">" . substr($sTitle, 0,30 ) . "...</span>";
+						else
+							$aNewEvent[3] = $sTitle;
 						$aNewEvent[1] = $aEvent["id"];
 						$aNewEvent[4] = $aEvent["url"];
 						array_push($aDayEvents, $aNewEvent);
 					}
 				}
+
 			$aCalendar[$lWeekNumber][$lDayOfWeek] = array($lCurrentDay, $aDayEvents);
 
 			$lDayOfWeek++;
