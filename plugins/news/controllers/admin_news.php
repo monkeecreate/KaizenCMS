@@ -480,13 +480,14 @@ class admin_news extends adminController {
 	
 	function postTwitter($sID, $sTitle, $sTag) {
 		$oTwitter = $this->loadTwitter();
+		$aArticle = $this->model->getArticle($sID);
 		
 		if($oTwitter != false) {
 			$sPrefix = 'http';
 			if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
 				$sPrefix .= "://";
 			
-			$sUrl = $this->urlShorten($sPrefix.$_SERVER["HTTP_HOST"]."/news/".$sTag."/");
+			$sUrl = $this->urlShorten($sPrefix.$_SERVER["HTTP_HOST"].$aArticle["url"]);
 			
 			$aParameters = array("status" => $_POST["title"]." ".$sUrl);
 			$status = $oTwitter->post("statuses/update", $aParameters);
@@ -500,6 +501,7 @@ class admin_news extends adminController {
 	}
 	function postFacebook($sID, $sTitle, $sShortContent, $sTag, $sImage) {
 		$aFacebook = $this->loadFacebook();
+		$aArticle = $this->model->getArticle($sID);
 		
 		$sPrefix = 'http';
 		if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
@@ -511,7 +513,7 @@ class admin_news extends adminController {
 			$sImage = $sPrefix.$_SERVER["HTTP_HOST"].'/image/news/'.$sID.'/?width=90';
 		
 		try {
-			$aFacebook["obj"]->api('/me/feed/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent, "link" => $sPrefix.$_SERVER["HTTP_HOST"].'/news/'.$sTag.'/', "picture" => $sImage));
+			$aFacebook["obj"]->api('/me/feed/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent, "link" => $sPrefix.$_SERVER["HTTP_HOST"].$aArticle["url"], "picture" => $sImage));
 		} catch (FacebookApiException $e) {
 			error_log($e);
 			$this->errors[] = "errors[]=".urlencode("Error posting to Facebook. Please try again later.");
