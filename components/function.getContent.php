@@ -18,8 +18,8 @@ function smarty_function_getContent($aParams, &$oSmarty) {
 	$aContent["title"] = htmlspecialchars(stripslashes($aContent["title"]));
 	$aContent["content"] = stripslashes($aContent["content"]);
 	
-	if(empty($aParams["var"]))
+	if(empty($aParams["assign"]))
 		return $aContent["content"];
 	else
-		$oApp->tplAssign($aParams["var"], $aContent);
+		$oApp->tplAssign($aParams["assign"], $aContent);
 }
