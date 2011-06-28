@@ -13,15 +13,15 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<!-- /iPhone -->
 	<!-- IE -->
-		<meta name="application-name" content="{getSetting tag="title"}">
-		<meta name="msapplication-tooltip" content="{getSetting tag="description"}">
-		<meta name="msapplication-starturl" content="/?iePinned=true">
-		<!-- /IE -->
-		<!-- Facebook -->
-		<meta property="og:title" content="{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="title"}">
-		<meta property="og:description" content="">
-		<meta property="og:image" content="">
-		<!-- /Facebook -->
+	<meta name="application-name" content="{getSetting tag="title"}">
+	<meta name="msapplication-tooltip" content="{getSetting tag="description"}">
+	<meta name="msapplication-starturl" content="/?iePinned=true">
+	<!-- /IE -->
+	<!-- Facebook -->
+	<meta property="og:title" content="{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="title"}">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<!-- /Facebook -->
 	
 	<title>{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="title"}</title>
 	
