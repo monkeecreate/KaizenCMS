@@ -22,14 +22,13 @@ AddType video/ogg                      ogv
 AddType video/mp4                      mp4 m4v
 AddType video/webm                     webm
 
-# Proper svg serving. Required for svg webfonts on iPad
-#   twitter.com/FontSquirrel/status/14855840545
+# SVG
 AddType     image/svg+xml              svg svgz 
 AddEncoding gzip                       svgz
                                        
 # Webfonts                             
 AddType application/vnd.ms-fontobject  eot
-AddType font/truetype                  ttf
+AddType application/x-font-ttf         ttf ttc
 AddType font/opentype                  otf
 AddType application/x-font-woff        woff
 
