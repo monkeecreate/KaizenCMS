@@ -363,7 +363,7 @@ class appController {
 	}
 	function tplDisplay($sTemplate, $sSkipPlugin = false) {
 		$this->_smarty->registerObject("appController", $this);
-	
+		
 		if($this->tplExists($sTemplate, $sSkipPlugin)) {
 			if(!empty($this->_plugin) && $sSkipPlugin == false)
 				$sTemplate = $this->settings->root."plugins/".$this->_plugin."/views/".$sTemplate;
