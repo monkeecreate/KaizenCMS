@@ -240,6 +240,53 @@ nav ul li a:hover, nav ul li a.current {
 	font-size: 1em;
 }
 
+/* @group calendar */
+
+.calendar .lastMonth {
+	float: left;
+	text-align: left;
+}
+
+.calendar .nextMonth {
+	float: right;
+	text-align: right;
+}
+
+.calendar .monthView {
+	background-color: #23a0b3;
+	width: 100%;
+}
+
+.calendar .monthView td {
+	background-color: #fff;
+	vertical-align: top;
+	height: 122px;
+	width: 120px;
+}
+
+.calendar .monthView td a:link, .calendar .monthView td a:active, .calendar .monthView td a:visited {
+	font-size: 11px;
+}
+
+.calendar .monthView th {
+	color: #fff;
+}
+
+.calendar .monthView .noday {
+	background-color: #f0eee2;
+}
+
+.calendar .monthView .today {
+	background-color: #7fd5e4;
+}
+
+.calendar .monthView .eventDay {
+	background-color: #ccc;
+}
+
+
+/* @end */
+
 /* @end */
 
 /* @group sidebar */
@@ -459,71 +506,5 @@ pre {
 	color: #fff;
 	text-shadow: none;
 }
-
-/* @end */
-
-@media all and (orientation:portrait) {
-
-}
-
-@media all and (orientation:landscape) {
-
-}
-
-@media screen and (max-device-width: 480px) {
-
-a:link {
-	-webkit-tap-highlight-color: #;
-}
-
-/* Prevent iOS, WinMobile from adjusting font size */
-
-html {
-	-webkit-text-size-adjust: none;
-	-ms-text-size-adjust: none;
-}
-
-}
-
-/* @group calendar */
-
-.lastMonth {
-	float: left;
-	text-align: left;
-}
-
-.nextMonth {
-	float: right;
-	text-align: right;
-}
-
-.monthView {
-	background-color: #23a0b3;
-	width: 100%;
-}
-
-.monthView td {
-	background-color: #fff;
-	vertical-align: top;
-	height: 122px;
-	width: 120px;
-}
-
-.monthView td a {
-	font-size: 11px;
-}
-
-.monthView th {
-	color: #fff;
-}
-
-.monthView td.noday {
-	background-color: #f0eee2;
-}
-
-.monthView td.today {
-	background-color: #7FD5E4;
-}
-
 
 /* @end */
