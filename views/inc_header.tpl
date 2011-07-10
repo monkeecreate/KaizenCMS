@@ -6,7 +6,6 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
 	<meta name="keywords" content="{getSetting tag="keywords"}">
 	<meta name="description" content="{getSetting tag="description"}">
 	<!-- iPhone -->

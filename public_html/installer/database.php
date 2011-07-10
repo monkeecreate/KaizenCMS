@@ -134,16 +134,6 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 1,
-				"tag" => "analytics_woopra",
-				"title" => "Woopra",
-				"text" => NULL,
-				"value" => 0,
-				"type" => "bool",
-				"sortOrder" => 2,
-				"active" => 1
-			),
-			array(
 				"group" => 2,
 				"tag" => "title",
 				"title" => "Site Title",
