@@ -93,7 +93,7 @@ class calendar extends appController {
 			else
 				$sThisDay = $lCurrentDay;
 			$lStartOfDay = strtotime($sThisDay . "-" . $month . "-" . $year . " 12:00:00 am");
-			$lEndOfDay = strtotime($sThisDay . "-" . $month . "-" . $year . " 12:00:00 pm");	
+			$lEndOfDay = strtotime($sThisDay . "-" . $month . "-" . $year . " 11:59:59 pm");	
 
 			$aDayEvents = array();
 			if(count($aEvents) > 0)

@@ -488,6 +488,7 @@ class admin_calendar extends adminController {
 	
 	function postFacebook($sID, $sTitle, $sShortContent, $sTag, $sStartTime, $sEndTime, $sFacebookID) {
 		$aFacebook = $this->loadFacebook();
+		$aEvent = $this->model->getEvent($sID);
 		
 		$sPrefix = 'http';
 		if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
@@ -495,9 +496,9 @@ class admin_calendar extends adminController {
 			
 		try {
 			if(!empty($sFacebookID)) {
-				$aFacebookResult = $aFacebook["obj"]->api('/'.$sFacebookID.'/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].'/calendar/'.$sTag.'/', "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
+				$aFacebookResult = $aFacebook["obj"]->api('/'.$sFacebookID.'/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].$aEvent["url"], "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
 			} else {
-				$aFacebookResult = $aFacebook["obj"]->api('/me/events/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].'/calendar/'.$sTag.'/', "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
+				$aFacebookResult = $aFacebook["obj"]->api('/me/events/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent.' More information at '.$sPrefix.$_SERVER["HTTP_HOST"].$aEvent["url"], "start_time" => date("c", $sStartTime), "end_time" => date("c", $sEndTime)));
 				
 				$this->dbUpdate(
 					"calendar",
