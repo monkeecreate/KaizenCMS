@@ -27,9 +27,9 @@
 	<!--[if lt IE 9]>
 		<script src="/scripts/IE9.js">IE7_PNG_SUFFIX=".png";</script>
 	<![endif]-->
-	<!--[if lt IE 7 ]>
+	<!--[if lt IE 7]>
 		<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
-		<script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+		<script>window.attachEvent("onload",function(){ CFInstall.check({ mode:"overlay" }) })</script>
 	<![endif]-->
 
 {getSetting tag="analytics_google" assign="aSettingGoogle"}
