@@ -49,6 +49,8 @@
 						{if $aCalendar[$smarty.section.week.index][$smarty.section.day.index][0] != 0}
 							{if $lToday == $aCalendar[$smarty.section.week.index][$smarty.section.day.index][0]}
 							<td class="today">
+							{elseif !empty($aCalendar[$smarty.section.week.index][$smarty.section.day.index][1])}
+							<td class="eventDay">
 							{else}
 							<td>
 							{/if}
