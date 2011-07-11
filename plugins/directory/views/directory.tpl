@@ -10,6 +10,15 @@
 				<option value="{$aCategory.id}"{if $aCategory.id == $smarty.get.category} selected="selected"{/if}>{$aCategory.name}</option>
 			{/foreach}
 		</select>
+		{footer}
+		<script type="text/javascript">
+		$(function(){
+			$('select[name=category]').change(function(){
+				$('form[name=category]').submit();
+			});
+		});
+		</script>
+		{/footer}
 	</form>
 	{/if}
 
