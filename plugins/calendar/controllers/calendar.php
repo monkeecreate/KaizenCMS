@@ -114,7 +114,7 @@ class calendar extends appController {
 					}
 					
 					// Multiple Day Event...
-					if(	$aEvent["event_day_number"] > 0 && $aEvent["datetime_end"] >= $lEndOfDay ) {
+					if( $aEvent["event_day_number"] > 0 && $aEvent["datetime_end"] >= $lStartOfDay ) {
 						$bPrintEvent = true;
 					}
 /*					
