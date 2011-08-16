@@ -14,9 +14,9 @@
 	<!--[if gte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css" media="screen, projection" /><![endif]-->
 	<!--[if lte IE 6]><link rel="stylesheet" href="/css/ie6.css" type="text/css" media="screen, projection" /><![endif]-->
 	
-	<script src="/scripts/jquery-1.5.1.min.js"></script>
+	<script src="/scripts/modernizr-2.0.6.min.js"></script>
+	<script src="/scripts/jquery-1.6.2.min.js"></script>
 	<script src="/scripts/jquery.rsv.js"></script>
-	<script src="/scripts/modernizr-1.7.min.js"></script>
 </head>
 <!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
 <!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
