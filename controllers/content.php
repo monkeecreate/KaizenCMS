@@ -82,6 +82,8 @@ class content extends appController
 			$aSearch = $aSearchPages[$sCurrentPage - 1];
 
 			$aPaging = array(
+				"total" => count($aSearchPages),
+				"current" => $sCurrentPage,
 				"back" => array(
 					"page" => $sCurrentPage - 1,
 					"use" => true

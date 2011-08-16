@@ -38,18 +38,13 @@
 		{/foreach}
 	{/if}
 	
-	<div id="paging">
-		{if $aPaging.next.use == true}
-			<div class="right">
-				<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
-			</div>
-		{/if}
-		{if $aPaging.back.use == true}
-			<div class="left">
-				<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
-			</div>
-		{/if}
-	</div>
+	{if $aPaging.next.use == true}
+		<p class="right paging"><a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a></p>
+	{/if}
+	{if $aPaging.back.use == true}
+		<p class="left paging"><a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a></p>
+	{/if}
+	<p style="text-align: center;">Page {$aPaging.current} of {$aPaging.total}</p>
 	<div class="clear">&nbsp;</div>
 
 {include file="inc_footer.tpl"}
