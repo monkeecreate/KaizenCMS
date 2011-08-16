@@ -21,6 +21,7 @@
 	<script src="/scripts/jquery.rsv.js"></script>
 	<script src="/scripts/jquery.validateForm.js"></script>
 	<script src="/scripts/jquery.cookie.js"></script>
+	<script src="/scripts/tiny_mce/tiny_mce.js"></script>
 	<script src="/scripts/common_admin.js"></script>
 	<!--[if lt IE 9]>
 	<script src="/scripts/IE9.js">IE7_PNG_SUFFIX=".png";</script>
