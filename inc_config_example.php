@@ -4,6 +4,7 @@ $aConfig["installer"] = false;
 ###############################################
 $aConfig["encryption"]["key"] = ""; // example: "domain.com"
 $aConfig["encryption"]["salt"] = ""; // example: "random string"
+$aConfig["mobile"] = false;
 ###############################################
 
 ### ADMIN INFO ################################
@@ -45,8 +46,24 @@ $aConfig["mail"]["params"] = array();
 # PHP Smarty Template Engine
 # http://smarty.php.net/
 $aConfig["smarty"]["dir"]["smarty"] = $site_root.".smarty/Smarty.class.php";
-$aConfig["smarty"]["dir"]["templates"] = $site_root."views";
-$aConfig["smarty"]["dir"]["compile"] = $site_root.".compiled";
+
+include($site_root."helpers/Mobile_Detect.php");
+$oMobileDetect = new Mobile_Detect();
+
+if($_GET["full"] == 1)
+	$_SESSION["site"] = "full";
+
+if($_GET["mobile"] == 1)
+	$_SESSION["site"] = "mobile";
+
+if($oMobileDetect->isMobile() && (empty($_SESSION["site"]) || $_SESSION["site"] == "mobile") && !$oMobileDetect->isIpad() && $aConfig["mobile"]) {
+	$aConfig["smarty"]["dir"]["templates"] = $site_root."views/mobile";
+	$aConfig["smarty"]["dir"]["compile"] = $site_root.".compiled/mobile";
+} else {
+	$aConfig["smarty"]["dir"]["templates"] = $site_root."views";
+	$aConfig["smarty"]["dir"]["compile"] = $site_root.".compiled";
+}
+
 $aConfig["smarty"]["dir"]["cache"] = $site_root.".cache";
 $aConfig["smarty"]["dir"]["plugins"] = array(
 	$site_root.".smarty/plugins/",
