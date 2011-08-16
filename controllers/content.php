@@ -56,6 +56,11 @@ class content extends appController
 				if(strlen($aItem["content"]) > 150)
 					$aItem["content"] = substr($aItem["content"], 0, 150)."...";
 				
+				foreach(explode(" ", $sSearch) as $sValue)
+					$aSearchMark[$sValue] = "<mark>".$sValue."</mark>";
+				
+				$aItem["content"] = str_replace(array_keys($aSearchMark), $aSearchMark, $aItem["content"]);
+				
 				// Score
 				$aItem["score"] = round($aItem["score"], 3);
 				
