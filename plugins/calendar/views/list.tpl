@@ -5,16 +5,16 @@
 {/head}
 <div id="fb-root"></div>
 <script>
-  window.fbAsyncInit = function() {ldelim}
-    FB.init({ldelim}appId: '127471297263601', status: true, cookie: true,
-             xfbml: true{rdelim});
-  {rdelim};
-  (function() {ldelim}
+  window.fbAsyncInit = function() {
+    FB.init({ appId: '127471297263601', status: true, cookie: true,
+             xfbml: true });
+  };
+  (function() {
     var e = document.createElement('script'); e.async = true;
     e.src = document.location.protocol +
       '//connect.facebook.net/en_US/all.js';
     document.getElementById('fb-root').appendChild(e);
-  {rdelim}());
+  }());
 </script>
 
 	{if $aCategories|@count gt 1}
@@ -27,72 +27,57 @@
 			{/foreach}
 		</select>
 		{footer}
-		<script type="text/javascript">
-		$(function(){ldelim}
-			$('select[name=category]').change(function(){ldelim}
+		<script>
+		$(function(){
+			$('select[name=category]').change(function(){
 				$('form[name=category]').submit();
-			{rdelim});
-		{rdelim});
+			});
+		});
 		</script>
 		{/footer}
 	</form>
 	{/if}
 
 	<h2>Calendar</h2>
-	<div class="viewBy">
-		<small>View as:</small> <a href="/calendar/list" title="View as List"><img src="/images/admin/calendar_list.gif" alt="View as List"></a> | <a href="/calendar/month" title="View as Calendar"><img src="/images/admin/calendar_month.gif" alt="View as Calendar"></a>
-	</div>
-
+	<p>View as: <a href="/calendar/list/" title="View as List">List</a> | <a href="/calendar/month/" title="View as Calendar">Calendar</a></p>
+	
 	{foreach from=$aEvents item=aEvent}
-		<article class="events">
-			<h3>
-				<a href="{$aEvent.url}" title="{$aEvent.title}">
-					{$aEvent.title}
-				</a>
-			</h3>
-			<span class="timeCat">
-				<time>{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</time>
+		<article class="events" itemscope itemtype="http://schema.org/Event">
+			<h3 itemprop="name"><a href="{$aEvent.url}" title="{$aEvent.title}" itemprop="url">{$aEvent.title}</a></h3>
+			<p class="meta">
+				<meta itemprop="startDate" content="{date('c', $aEvent.datetime_start)}">
+				<meta itemprop="endDtate" content="{date('c', $aEvent.datetime_end)}">
+				<time datetime="{date('c', $aEvent.datetime_start)}">{event_time allday=$aEvent.allday start=$aEvent.datetime_start end=$aEvent.datetime_end}</time>
 				{if !empty($aEvent.categories)}
 					 | Categories:
 						{foreach from=$aEvent.categories item=aCategory name=category}
 							<a href="/calendar/?category={$aCategory.id}" title="Events in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
 						{/foreach}
 				{/if}
-			</span>
+			</p>
 			
-			<fb:like href="http://{$smarty.server.SERVER_NAME}{$aEvent.url}" show_faces="false"></fb:like>
+			<fb:like href="//{$smarty.server.SERVER_NAME}{$aEvent.url}" show_faces="false"></fb:like>
 			
 			{if $aEvent.image == 1}
-				<figure class="left">
-					<a href="{$aEvent.url}" title="{$aEvent.title}"><img src="/image/calendar/{$aEvent.id}/?width=140" alt="Calendar Image"></a>
+				<figure>
+					<a href="{$aEvent.url}" title="{$aEvent.title}"><img src="/image/calendar/{$aEvent.id}/?width=140" alt="{$aEvent.title} image" itemprop="thumbnail"></a>
 				</figure>
 			{/if}
 			
-			<p>{$aEvent.short_content}&hellip; <a href="{$aEvent.url}" title="More info for {$aEvent.title}">More Info&raquo;</a></p>
+			<p itemprop="description">{$aEvent.short_content}&hellip; <a href="{$aEvent.url}" title="More info for {$aEvent.title}">More Info&raquo;</a></p>
 		</article>
 	{foreachelse}
-		<p>No calendar events.</p>
+		<p>There are currently no upcoming events.</p>
 	{/foreach}
 
-	<div id="paging">
-		{if $aPaging.next.use == true}
-			<div class="right">
-				<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
-			</div>
-		{/if}
-		{if $aPaging.back.use == true}
-			<div>
-				<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
-			</div>
-		{/if}
-	</div>
-	
+	{if $aPaging.next.use == true}
+		<p class="right"><a href="{preserve_query option='page' value=$aPaging.next.page}" title="Next Page">Next &raquo;</a></p>
+	{/if}
+	{if $aPaging.back.use == true}
+		<p><a href="{preserve_query option='page' value=$aPaging.back.page}" title="Previous Page">&laquo; Back</a></p>
+	{/if}
 	<div class="clear">&nbsp;</div>
 
-	<span class="calSubscribe">
-		<a href="webcal://{$domain}/calendar/ics/" title="Subscribe to Calendar">
-			<img src="/images/admin/icons/calendar.png" alt="calendar icon"> Subscribe to Calendar
-		</a>
-	</span>
+	<p><a href="webcal://{$domain}/calendar/ics/" title="Subscribe to Calendar"><img src="/images/admin/icons/calendar.png" alt="calendar icon"> Subscribe to Calendar</a></p>
 		
 {include file="inc_footer.tpl"}
