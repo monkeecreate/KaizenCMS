@@ -372,6 +372,7 @@ ul#photos li {
 	margin: 0 4px 10px;
 	width: 95px;
 	height: 95px;
+	cursor: pointer;
 }
 
 .tinymce_editor .tinymce_tabs {

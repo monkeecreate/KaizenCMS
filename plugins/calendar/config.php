@@ -18,6 +18,5 @@ $aPluginInfo = array(
 		"shortContentCharacters" => 250, // max characters for short content
 		"calendarView" => "list", // month, list
 		"sortCategory" => "manual-asc" // manual, name, items, random - asc, desc
-	
 	)
 );

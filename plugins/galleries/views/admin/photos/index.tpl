@@ -176,7 +176,7 @@ $(function() {
 
 		<section class="inner-content">
 			<h3>{$aGallery.name}</h3>
-			<a href="#" id="uploadPhotosBtn">Upload Photos</a> | <a href="/admin/galleries/{$aGallery.id}/photos/manage/" title="Batch Edit">Batch Edit Photos</a> | <a href="/admin/galleries/delete/{$aGallery.id}/" onclick="return confirm_('Are you sure you would like to delete: {$aGallery.name}?');" title="Delete Gallery">Delete Gallery</a>
+			<p><a href="#" id="uploadPhotosBtn">Upload Photos</a> | <a href="/admin/galleries/{$aGallery.id}/photos/manage/" title="Batch Edit">Batch Edit Photos</a> | <a href="/admin/galleries/delete/{$aGallery.id}/" onclick="return confirm_('Are you sure you would like to delete: {$aGallery.name}?');" title="Delete Gallery">Delete Gallery</a></p>
 
 
 			<!--### IMAGE UPLOAD ###-->			
@@ -194,7 +194,7 @@ $(function() {
 			<ul id="photos">
 				{foreach from=$aGallery.photos item=aPhoto}
 					<li id="{$aPhoto.id}">
-						<img src="/image/crop/?file={$sImageFolder}{$aGallery.id}/{$aPhoto.photo}&width=273&height=200" class="image" width="95px" height="95px">
+						<img src="/image/crop/?file={$sImageFolder}{$aGallery.id}/{$aPhoto.photo}&width=273&height=200" class="image" width="95px" height="95px" title="Double click to edit or drag and drop to change order.">
 						<span id="{$aPhoto.id}_form" style="display:none;" title="Edit Photo">
 							<form class="dialogForm" method="post" action="/admin/galleries/{$aGallery.id}/photos/edit/">
 								<figure class="right">
@@ -217,7 +217,8 @@ $(function() {
 					<p>There are currently no photos in this gallery.</p>
 				{/foreach}
 			</ul>
-			<div class="clear">&nbsp;</div>				
+			<div class="clear">&nbsp;</div>	
+			<p><strong>Note</strong>: You can double click on an image to edit the details or delete the photo. You can drag and drop a photo to change the order. To change the default photo, drag and drop the photo of your choice into the sidebar, on top of the current default.</p>			
 		</section>
 	</section> <!-- #content -->
 
@@ -247,6 +248,7 @@ $(function() {
 					<textarea name="description" style="height:115px;">{$aGallery.description|replace:'<br />':''}</textarea>
 				</fieldset>
 			
+				{if !empty($aCategories)}
 				<fieldset id="fieldset_categories">
 					<legend>Categories</legend>
 					<ul class="categories">
@@ -259,6 +261,7 @@ $(function() {
 						{/foreach}
 					</ul>
 				</fieldset>
+				{/if}
 				
 				<input class="submit" type="submit" value="Save Changes">
 				<input type="hidden" name="sort" value="">
