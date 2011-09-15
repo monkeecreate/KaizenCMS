@@ -1,10 +1,9 @@
 <?php
-function smarty_function_getFAQItem($aParams, &$oSmarty) {
+function smarty_function_getFAQ($aParams, &$oSmarty) {
 	$oApp = $oSmarty->getRegisteredObject("appController");
+	$oQuestions = $oApp->loadModel("faq");
 	
-	$oNews = $oApp->loadModel("faq");
-	
-	$aQuestion = $oNews->getQuestion($aParams["id"]);
+	$aQuestion = $oQuestions->getQuestion($aParams["id"]);
 	
 	if(!empty($aParams["assign"]))
 		$oSmarty->assign($aParams["assign"], $aQuestion);
