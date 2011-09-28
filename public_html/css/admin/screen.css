@@ -83,10 +83,13 @@ nav {
 	display: block;
 	height: 38px;
 	margin: 3px 0 0;
+	zoom: 1;
+	position: relative;
+	z-index: 20;
 }
 
-nav ul {
-	height: 38px;
+nav > ul:first-child {
+	/*height: 38px;*/
 	list-style: none;
 }
 
@@ -120,9 +123,12 @@ nav a:hover {
 }
 
 nav ul li.adminSubMenu a {
-	font-family: "IconicStroke";
-	font-size: 2.7em;
 	padding: 10px 10px 0px;
+}
+
+nav ul li.adminSubMenu a span {
+	font-family: "IconicStroke";
+	font-size: 1.5em;
 }
 
 nav ul li.adminSubMenu a:hover {
@@ -150,6 +156,7 @@ ul.dropdown {
 	left: 15px;
 	display: none;
 	background: none;
+	zoom: 1;
 }
 
 ul.dropdown li {
@@ -159,10 +166,12 @@ ul.dropdown li {
 	position: relative;
 	list-style: none;
 	display: block;
+	border: 0;
 }
 
 ul.dropdown li a {
 	display: block;
+	zoom: 1;
 }
 
 nav ul li ul.dropdown li a, ul.dropdown li a:link, ul.dropdown li a:visited, ul.dropdown li a:active {
@@ -172,6 +181,8 @@ nav ul li ul.dropdown li a, ul.dropdown li a:link, ul.dropdown li a:visited, ul.
 	padding: 10px 25px;
 	margin: 0;
 	font-family: "Verdana";
+	zoom: 1;
+	width: 100px;
 }
 
 nav ul li ul.dropdown li a:hover {
