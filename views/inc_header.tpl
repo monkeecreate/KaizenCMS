@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
@@ -37,18 +37,21 @@
 </head>
 {flush()}
 <body{if !empty($menu)} class="{$menu}"{/if}>
-	<div id="wrapper">
-		<div id="no-js" class="hide"><p>For full functionality of this site it is necessary to enable JavaScript. Here are the <a href="http://www.enable-javascript.com/" target="_blank"> instructions how to enable JavaScript in your web browser</a>.</p></div>
-		<header>
+	<div id="no-js" class="hide"><p>For full functionality of this site it is necessary to enable JavaScript. Here are the <a href="http://www.enable-javascript.com/" target="_blank"> instructions how to enable JavaScript in your web browser</a>.</p></div>
+	
+	<header role="banner">
+		<hgroup>
 			<h1><a href="/" title="{getSetting tag="title"}">{getSetting tag="title"}</a></h1>
-			
-			<nav>
-				<ul>
-					<li><a href="/" title="{getSetting tag="title"}" class="{currentMenu var="home"}">Home</a></li>
-					<li><a href="/about/" title="About Us" class="{currentMenu var="about"}">About</a></li>
-					<li><a href="/contact/" title="Contact Us" class="{currentMenu var="contact"}">Contact</a></li>
-				</ul>
-			</nav>
-		</header>
+			<h2>Site Slogan/Tag Line</h2>
+		</hgroup>		
 		
-		<section id="content" class="content">
+		<nav role="navigation">
+			<ul>
+				<li><a href="/" title="{getSetting tag="title"}" class="{currentMenu var="home"}">Home</a></li>
+				<li><a href="/about/" title="About Us" class="{currentMenu var="about"}">About</a></li>
+				<li><a href="/contact/" title="Contact Us" class="{currentMenu var="contact"}">Contact</a></li>
+			</ul>
+		</nav>
+	</header>
+	
+	<div class="main" role="main">
