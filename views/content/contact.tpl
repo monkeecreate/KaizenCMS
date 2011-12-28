@@ -1,11 +1,11 @@
 {$menu = "contact"}{if !empty($aContent)}
-{getContent tag="contact" var="aContent"}{$sTitle = $aContent.title}{else}{$sTitle = "Contact Us"}{/if}
+{getContent tag="contact" assign="aContent"}{$sTitle = $aContent.title}{else}{$sTitle = "Contact Us"}{/if}
 {include file="inc_header.tpl" page_title=$sTitle}
 {head}
-<script type="text/javascript">
-	var RecaptchaOptions = {ldelim}
+<script>
+	var RecaptchaOptions = {
 	   theme : 'white'
-	{rdelim};
+	};
 </script>
 {/head}
 {if $smarty.get.captcha_error != 1}
@@ -59,17 +59,16 @@
 	<link rel="stylesheet" href="/scripts/validationEngine/validationEngine.jquery.css" type="text/css">
 	{/head}
 	{footer}
-	<script src="/scripts/validationEngine/jquery.validationEngine-en.js" type="text/javascript" charset="utf-8"></script>
-	<script src="/scripts/validationEngine/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
-	
-	<script type="text/javascript">
-	$(function(){ldelim}
+	<script src="/scripts/validationEngine/jquery.validationEngine-en.js"></script>
+	<script src="/scripts/validationEngine/jquery.validationEngine.js"></script>
+	<script>
+	$(function(){
 		jQuery("#contactForm").validationEngine();
 	
 		{if !empty($smarty.get.captcha_error)}
 			$(".form-errors").html('<p>The captcha you entered is incorrect. Please try again. Clicking the refresh icon next to the captcha field will give you two new words if needed.').show();
 		{/if}
-	{rdelim});
+	});
 	</script>
 	{/footer}
 
