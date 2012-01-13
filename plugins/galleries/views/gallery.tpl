@@ -26,7 +26,7 @@ $(document).ready(function(){ldelim}
 
 	{foreach from=$aGallery.photos item=aPhoto}
 		<a href="/image/resize/?file={$sImageFolder}{$aGallery.id}/{$aPhoto.photo}&width=600" rel="prettyPhoto[gallery]" title="{$aPhoto.description}">
-			<img src="/image/resize/?file={$sImageFolder}{$aGallery.id}/{$aPhoto.photo}&width=140&height=140" width="140px" height="140px" alt="{$aPhoto.title}" class="galleryPics">
+			<img src="/image/crop/?file={$sImageFolder}{$aGallery.id}/{$aPhoto.photo}&width=140&height=140" width="140px" height="140px" alt="{$aPhoto.title}" class="galleryPics">
 		</a>
 	{/foreach}
 	<div class="clear">&nbsp;</div>

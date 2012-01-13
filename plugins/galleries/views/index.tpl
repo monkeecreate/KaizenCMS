@@ -27,7 +27,7 @@
 		<article>
 			{if $aGallery.defaultPhoto > 0}
 				<figure>
-					<a href="{$aGallery.url}" title="{$aGallery.name}"><img src="/image/resize/?file={$sImageFolder}{$aGallery.id}/{$aGallery.defaultPhoto}&width=140&height=140" alt="{$aGallery.name}"></a>
+					<a href="{$aGallery.url}" title="{$aGallery.name}"><img src="/image/crop/?file={$sImageFolder}{$aGallery.id}/{$aGallery.defaultPhoto}&width=140&height=140" alt="{$aGallery.name}"></a>
 				</figure>
 			{/if}
 			<h3><a href="{$aGallery.url}" title="{$aGallery.name}">{$aGallery.name}</a></h3>
