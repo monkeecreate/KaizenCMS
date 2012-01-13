@@ -5,7 +5,6 @@
 /* TEAM */
   <your title>: <your name>
   Site: 
-  Twitter: 
   Location: 
 
 /* THANKS */
@@ -13,5 +12,5 @@
 
 /* SITE */
   Standards: HTML5, CSS3
-  Components: Modernizr, jQuery
-  Software:
+  Components: Modernizr, jQuery, Drought
+  Software: cwCMS

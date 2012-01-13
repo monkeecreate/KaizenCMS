@@ -20,7 +20,7 @@
 		<p>&copy; Copyright {$smarty.now|formatDate:"Y"} {getSetting tag="title"}, All Rights Reserved.</p>
 	</footer>
 	
-	<script src="/scripts/jquery-1.6.4.min.js"></script>
+	<script src="/scripts/jquery-1.7.1.min.js"></script>
 	<script src="/scripts/jquery.scrollTo.min.js"></script>
 	<script src="/scripts/common.js"></script>
 	<!--[if lt IE 9]>
