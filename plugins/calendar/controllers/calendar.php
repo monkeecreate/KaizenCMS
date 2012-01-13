@@ -164,8 +164,8 @@ class calendar extends appController {
 		}
 
 		if($lNextMonth == 13) {
-			$lLastYear++;
-			$lLastMonth = 1;
+			$lNextYear++;
+			$lNextMonth = 1;
 		}
 
 		if(strlen($lLastMonth) == 1)
