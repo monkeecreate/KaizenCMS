@@ -1,91 +1,81 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta charset="utf-8">
+	<!-- iPhone -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<!-- /iPhone -->
+	<!-- IE -->
+	<meta name="application-name" content="{getSetting tag="title"} Admin">
+	<meta name="msapplication-tooltip" content="Website Admin Area">
+	<meta name="msapplication-starturl" content="/?iePinned=true">
+	<!-- /IE -->
 	
-	<title>{if !empty($page_title)}{$page_title} - {/if}{getSetting tag="title"} Admin</title>
+	<title>{if !empty($sPageTitle)}{$sPageTitle} | {/if}{getSetting tag="title"}</title>
 	
-	<link rel="stylesheet" href="/css/admin/reset.css" type="text/css">
-	<link rel="stylesheet" href="/css/admin/screen.css" type="text/css" media="screen, projection">
-	<link rel="stylesheet" href="/scripts/ui-themes/smoothness/jquery-ui-1.8.custom.css" type="text/css">
-	<link href="http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold" rel="stylesheet" type="text/css">
-	<!--[if IE]><link rel="stylesheet" href="/css/admin/ie.css" type="text/css" media="screen, projection" /><![endif]-->
-	<!--[if IE 7]><link rel="stylesheet" href="/css/admin/ie7.css" type="text/css" media="screen, projection" /><![endif]-->
+	<link rel="shortcut icon" href="/images/favicon.ico">
+	<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+	<link rel="author" href="/humans.txt">
+	<link rel="dns-prefetch" href="//ajax.googleapis.com">
 	
-	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
+	<link href="/css/admin/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/admin/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="/css/admin/style.css" rel="stylesheet">
+	<link href="/js/datatables/css/data_table.css" rel="stylesheet">
+	<link href="/js/validationEngine/validationEngine.jquery.css" rel="stylesheet">
+	<link href="/js/ui-themes/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
 	
-	<script src="/scripts/modernizr-2.0.6.min.js"></script>
-	<script src="/scripts/jquery-1.7.1.min.js"></script>
-	<script src="/scripts/jquery-ui-1.8.custom.min.js"></script>
-	<script src="/scripts/jquery.qtip-1.0.0-rc3.min.js"></script>
-	<script src="/scripts/jquery.rsv.js"></script>
-	<script src="/scripts/jquery.validateForm.js"></script>
-	<script src="/scripts/jquery.cookie.js"></script>
-	<script src="/scripts/tiny_mce/tiny_mce.js"></script>
-	<script src="/scripts/common_admin.js"></script>
-	<!--[if lt IE 9]>
-	<script src="/scripts/IE9.js">IE7_PNG_SUFFIX=".png";</script>
-	<![endif]-->
+	<script src="/js/modernizr-2.0.6.min.js"></script>
 </head>
-<body class="{$page_style}">
-	<div id="wrapper">
-		<header>
-			<div class="backToSite">
-				<a href="/" title="{getSetting tag="title"}"><span class="iconic">6</span> back to site</a>
-			</div>
-			{if !empty($user_details)}
-				<div class="loggedIn">Logged in as <b>{$user_details.fname} {$user_details.lname}</b> <span class="divider">|</span> <a href="/admin/users/edit/{$user_details.id}/">Edit Profile</a> <span class="divider">|</span> <a href="/admin/logout/" title="Logout">Logout</a></div>
-			{/if}
+<body class="{$menu}">
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<img src="/images/logo.png" alt="logo" class="pull-left" style="margin-right: 15px;">
 			
-			<h1>{getSetting tag="title"} Admin</h1>
-			
-			{if $loggedin == 1}
-				<nav>
-					<ul>
-						{foreach from=$aAdminMainMenu item=aMenu key=x}
-							<li><a{if $menu == $x} class="active"{/if} href="{$aMenu.menu[0].link}" tabindex="-1">{$aMenu.title|clean_html}</a></li>
-						{/foreach}
-						{if !empty($aAdminSubMenu)}
-							<li class="adminSubMenu">
-								<a href="">%</a>
-								<ul class="dropdown">
-									{foreach from=$aAdminSubMenu item=aMenu}
-										<li><a{if $menu == $x} class="active"{/if} href="{$aMenu.menu[0].link}" tabindex="-1">{$aMenu.title|clean_html}</a></li>
-									{/foreach}
-								</ul>
-							</li>
-						{/if}
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				
+				<a class="brand" href="/">{getSetting tag="title"}</a>
+				
+				<div class="nav-collapse pull-right">
+					<ul class="nav">
+					<li><a href="#">Edit Account</a></li>
+					<li><a href="#about">Help &amp; Support</a></li>
+					<li><a href="#contact">Logout</a></li>
 					</ul>
-				</nav>
-			{else}
-				&nbsp;
-			{/if}
-		</header>
-		
-		<div id="wrapper-inner">
-			{if !empty($sSecurityError)}
-				<div class="ui-state-error ui-corner-all notice">
-					<span class="icon ui-icon ui-icon-alert"></span>
-					{$sSecurityError}
-				</div>
-			{/if}
-			{if !empty($smarty.get.errors)}
-				{foreach from=$smarty.get.errors item=sPageError}
-					<div class="ui-state-error ui-corner-all notice">
-						<span class="icon ui-icon ui-icon-alert"></span>
-						{$sPageError|urldecode}
-					</div>
-				{/foreach}
-			{/if}
-			{if !empty($page_error)}
-				<div class="ui-state-error ui-corner-all notice">
-					<span class="icon ui-icon ui-icon-alert"></span>
-					{$page_error}
-				</div>
-			{/if}
-			{if !empty($page_notice)}
-				<div class="ui-state-highlight ui-corner-all notice">
-					<span class="icon ui-icon ui-icon-info"></span>
-					{$page_notice}
-				</div>
-			{/if}
+				</div><!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span3">
+				<div class="well sidebar-nav">
+					<ul class="nav nav-list">
+						{foreach from=$aAdminFullMenu item=aMenu key=x}
+							<li{if $menu == $x} class="active"{/if}><a href="{$aMenu.menu[0].link}" title="{$aMenu.title|clean_html}">{$aMenu.title|clean_html}</a></li>
+						{/foreach}
+
+					</ul>
+				</div><!--/.well -->
+				
+				<div class="thumbnail">
+		            <img src="http://placehold.it/295x100" alt="">
+		            <div class="caption">
+		              <h5>Are you running Facebook Ads?</h5>
+		              <p>If you aren't running Facebook Ads then you are missing out on 80,000 potential customers. Don't worry, we can help. <a href="#">Contact Us</a>.</p>
+		            </div>
+		          </div>
+			</div><!--/span-->
+			
+			<div class="span9">
+			  <div class="row-fluid">

@@ -18,6 +18,11 @@ class admin_content extends adminController
 			,"all"
 		);
 		
+		foreach($aPages as &$aPage) {
+			$aPage["title"] = htmlspecialchars(stripslashes($aPage["title"]));
+			$aPage["content"] = stripslashes($aPage["content"]);
+		}
+		
 		$this->tplAssign("aPages", $aPages);
 		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
 		$this->tplDisplay("content/index.tpl");
@@ -72,8 +77,7 @@ class admin_content extends adminController
 				"content",
 				array(
 					"tag" => $sTag
-					,"perminate" => $this->boolCheck($_POST["perminate"])
-					,"module" => $this->boolCheck($_POST["module"])
+					,"permanent" => $this->boolCheck($_POST["permanent"])
 					,"template" => $_POST["template"]
 				),
 				$sID
@@ -82,7 +86,7 @@ class admin_content extends adminController
 		
 		$_SESSION["admin"]["admin_content"] = null;
 		
-		$this->forward("/admin/content/?notice=".urlencode("Page created successfully!"));
+		$this->forward("/admin/content/?success=".urlencode("Page created successfully!"));
 	}
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_content"])) {
@@ -108,6 +112,9 @@ class admin_content extends adminController
 					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
+			
+			$aPage["title"] = htmlspecialchars(stripslashes($aPage["title"]));
+			$aPage["content"] = stripslashes($aPage["content"]);
 			
 			$aPage["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
@@ -165,8 +172,7 @@ class admin_content extends adminController
 				"content",
 				array(
 					"tag" => $sTag
-					,"perminate" => $this->boolCheck($_POST["perminate"])
-					,"module" => $this->boolCheck($_POST["module"])
+					,"permanent" => $this->boolCheck($_POST["permanent"])
 					,"template" => $_POST["template"]
 				),
 				$_POST["id"]
@@ -175,12 +181,136 @@ class admin_content extends adminController
 		
 		$_SESSION["admin"]["admin_content"] = null;
 		
-		$this->forward("/admin/content/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/content/?success=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
 		$this->dbDelete("content", $this->urlVars->dynamic["id"]);
 		
-		$this->forward("/admin/content/?notice=".urlencode("Page removed successfully!"));
+		$this->forward("/admin/content/?success=".urlencode("Page removed successfully!"));
+	}
+	function excerpts() {
+		// Clear saved form info
+		$_SESSION["admin"]["admin_content_excerpt"] = null;
+		
+		$aPages = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}content_excerpts`"
+				." ORDER BY `title`"
+			,"all"
+		);
+		
+		foreach($aPages as &$aPage) {
+			$aPage["title"] = htmlspecialchars(stripslashes($aPage["title"]));
+			$aPage["content"] = stripslashes($aPage["content"]);
+			$aPage["description"] = nl2br(htmlspecialchars(stripslashes($aPage["description"])));
+		}
+		
+		$this->tplAssign("aPages", $aPages);
+		$this->tplDisplay("content/excerpts/index.tpl");
+	}
+	function excerpts_add() {
+		$this->tplAssign("aPage", $_SESSION["admin"]["admin_content_excerpts"]);
+		$this->tplDisplay("content/excerpts/add.tpl");
+	}
+	function excerpts_add_s() {
+		if(empty($_POST["title"])) {
+			$_SESSION["admin"]["admin_content_excerpts"] = $_POST;
+			$this->forward("/admin/content/excerpts/add/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		$sID = $this->dbInsert(
+			"content_excerpts",
+			array(
+				"title" => $_POST["title"]
+				,"tag" => substr(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["tag"])))),0,255)
+				,"content" => $_POST["content"]
+				,"description" => $_POST["description"]
+				,"created_datetime" => time()
+				,"created_by" => $_SESSION["admin"]["userid"]
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			)
+		);
+		
+		$_SESSION["admin"]["admin_content_excerpts"] = null;
+		
+		$this->forward("/admin/content/excerpts/?success=".urlencode("Excerpt created successfully!"));
+	}
+	function excerpts_edit() {
+		if(!empty($_SESSION["admin"]["admin_content_excerpts"])) {
+			$aPage = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}content_excerpts`"
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
+				,"row"
+			);
+			
+			$aPage = $_SESSION["admin"]["admin_content_excerpts"];
+			
+			$aPage["updated_datetime"] = $aPageRow["updated_datetime"];
+			$aPage["updated_by"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}users`"
+					." WHERE `id` = ".$aPageRow["updated_by"]
+				,"row"
+			);
+			
+			$this->tplAssign("aPage", $aPage);
+		} else {
+			$aPage = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}content_excerpts`"
+					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
+				,"row"
+			);
+			
+			$aPage["title"] = htmlspecialchars(stripslashes($aPage["title"]));
+			$aPage["content"] = stripslashes($aPage["content"]);
+			$aPage["description"] = nl2br(htmlspecialchars(stripslashes($aPage["description"])));
+			
+			$aPage["updated_by"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}users`"
+					." WHERE `id` = ".$aPage["updated_by"]
+				,"row"
+			);
+		
+			$this->tplAssign("aPage", $aPage);
+		}
+		
+		$this->tplDisplay("content/excerpts/edit.tpl");
+	}
+	function excerpts_edit_s() {
+		if(empty($_POST["title"])) {
+			$_SESSION["admin"]["admin_content"] = $_POST;
+			$this->forward("/admin/content/excerpts/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
+		}
+		
+		$this->dbUpdate(
+			"content_excerpts",
+			array(
+				"title" => $_POST["title"]
+				,"content" => $_POST["content"]
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			),
+			$_POST["id"]
+		);
+		
+		if($this->superAdmin) {			
+			$this->dbUpdate(
+				"content_excerpts",
+				array(
+					"tag" => substr(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["tag"])))),0,255)
+					,"description" => $_POST["description"]
+				),
+				$_POST["id"]
+			);
+		}
+		
+		$_SESSION["admin"]["admin_content_excerpts"] = null;
+		
+		$this->forward("/admin/content/excerpts/?success=".urlencode("Changes saved successfully!"));
+	}
+	function excerpts_delete() {
+		$this->dbDelete("content_excerpts", $this->urlVars->dynamic["id"]);
+		
+		$this->forward("/admin/content/excerpts/?success=".urlencode("Excerpt removed successfully!"));
 	}
 	##################################
 	

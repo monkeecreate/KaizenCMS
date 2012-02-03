@@ -30,7 +30,7 @@ class appController {
 		);
 		$this->urlVars = $aURLVars;
 		
-		$this->cmsVersion = "4.0";
+		$this->cmsVersion = "5.0b";
 		$this->tplAssign("cmsVersion", $this->cmsVersion);
 		
 		if(!empty($sModel)) {

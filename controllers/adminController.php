@@ -6,11 +6,23 @@ class adminController extends appController {
 	function __construct($sModel = null) {
 		parent::__construct($sModel);
 		
+		$aPageMessages = array();
+		if(is_writable("../inc_config.php"))
+			$aPageMessages[] = array("type" => "error", "text" => "Config file is still writable. This poses a security risk.", "close" => false);
+		
 		if(!empty($_GET["error"]))
-			$this->tplAssign("page_error", htmlentities(urldecode($_GET["error"])));
+			$aPageMessages[] = array("type" => "error", "text" => htmlentities(urldecode($_GET["error"])), "close" => false);
 			
-		if(!empty($_GET["notice"]))
-			$this->tplAssign("page_notice", htmlentities(urldecode($_GET["notice"])));
+		if(!empty($_GET["info"]))
+			$aPageMessages[] = array("type" => "info", "text" => htmlentities(urldecode($_GET["info"])), "close" => true);
+			
+		if(!empty($_GET["warning"]))
+			$aPageMessages[] = array("type" => "warning", "text" => htmlentities(urldecode($_GET["warning"])), "close" => true);
+			
+		if(!empty($_GET["success"]))
+			$aPageMessages[] = array("type" => "success", "text" => htmlentities(urldecode($_GET["success"])), "close" => true);
+		
+		$this->tplAssign("aPageMessages", $aPageMessages);
 			
 		$aAllowedActions = array(
 			"login"
@@ -31,12 +43,6 @@ class adminController extends appController {
 			
 			$this->tplAssign("loggedin", 1);
 			$this->tplAssign("user_details", $aUser);
-			
-			/*## Security Check ##*/
-			if(is_writable("../inc_config.php")) {
-				$this->tplAssign("sSecurityError", "Config file is still writable. This poses a security risk.");
-			}
-			/*## End ##*/
 			
 			/*## Super Admin ##*/
 			if($aUser["super"] == 1)
@@ -70,27 +76,15 @@ class adminController extends appController {
 				}
 				
 				$this->_menu = array();
-				$aMainMenu = array();
-				$aSubMenu = array();
-				$menuLength = 0;
 				foreach($aMenuAdmin as $aMenu) {
 					$aInfo = json_decode($aMenu["info"], true);
-					
-					$menuLength = $menuLength + strlen($aInfo["title"]);
 					$this->_menu[$aMenu["tag"]] = $aInfo;
-					
-					if($menuLength > 60)
-						$aSubMenu[$aMenu["tag"]] = $aInfo;
-					else
-						$aMainMenu[$aMenu["tag"]] = $aInfo;
 				}
 			
 				if(empty($aMenuAdmin))
 					$this->forward("/admin/logout/");
 				
 				$this->tplAssign("aAdminFullMenu", $this->_menu);
-				$this->tplAssign("aAdminMainMenu", $aMainMenu);
-				$this->tplAssign("aAdminSubMenu", $aSubMenu);
 			}
 			/*## @end ##*/
 			

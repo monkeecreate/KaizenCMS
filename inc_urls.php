@@ -92,6 +92,30 @@ $aUrlPatterns = array(
 		"cmd" => "admin_content",
 		"action" => "delete"
 	),
+	"/admin/content/excerpts/" => array(
+		"cmd" => "admin_content",
+		"action" => "excerpts"
+	),
+	"/admin/content/excerpts/add/" => array(
+		"cmd" => "admin_content",
+		"action" => "excerpts_add"
+	),
+	"/admin/content/excerpts/add/s/" => array(
+		"cmd" => "admin_content",
+		"action" => "excerpts_add_s"
+	),
+	"/admin/content/excerpts/edit/<id:[0-9]+>/" => array(
+		"cmd" => "admin_content",
+		"action" => "excerpts_edit"
+	),
+	"/admin/content/excerpts/edit/s/" => array(
+		"cmd" => "admin_content",
+		"action" => "excerpts_edit_s"
+	),
+	"/admin/content/excerpts/delete/<id:[0-9]+>/" => array(
+		"cmd" => "admin_content",
+		"action" => "excerpts_delete"
+	),
 	"/admin/settings/" => array(
 		"cmd" => "admin_settings",
 		"action" => "index"

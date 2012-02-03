@@ -1,0 +1,44 @@
+/* @group structure */
+
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+
+.well {
+	background: #fafafa;
+}
+
+/* @end */
+
+/* @group sidebar */
+
+.sidebar-nav {
+  padding: 9px 0;
+}
+
+.nav-list {
+	font-size: 18px;
+}
+
+.nav-list li {
+	line-height: 25px;
+}
+
+/* @end */
+
+/* @group main */
+
+h1 {
+	margin-bottom: 15px;
+}
+
+/* @group data-table */
+
+.dataTable-header .nav-pills {
+	float: left;
+}
+
+/* @end */
+
+/* @end */
