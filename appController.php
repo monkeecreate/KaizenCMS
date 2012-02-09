@@ -467,10 +467,13 @@ class appController {
 		}
 		
 		$headers["To"] = $this->settings->adminInfo["email"];
-		$headers["From"] = $this->settings->adminInfo["email"];
-		$headers["Subject"] = "Website Error - ".$section;
+		$headers["From"] = "noreply@crane-west.com";
+		$headers["Subject"] = $_SERVER["HTTP_HOST"]." - ".$section." Error";
 		
-		$body = "Where: ".$section."\n";
+		$body = "Domain: ".$_SERVER["HTTP_HOST"]."\n";
+		$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
+		$body .= "Time: ".date("M j,Y - h:i:s a")."\n";
+		$body .= "Where: ".$section."\n";
 		if(!empty($db)) {
 			$aUserInfo = preg_split('/\] \[/',str_replace(array("_doQuery: [", "]\n[", "]\n"),array(null, "] [", null),$db->userinfo));
 			$aMessage = preg_split('/: /',$aUserInfo[3]);
@@ -480,15 +483,10 @@ class appController {
 		} else {
 			$body .= "Error: ".$error."\n";
 		}
-		
 		$body .= "File: ".$aTrace[0]["file"]."\n";
 		$body .= "Line: ".$aTrace[0]["line"]."\n";
 		$body .= "User Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
-		$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";
-		$body .= "Domain: ".$_SERVER["HTTP_HOST"]."\n";
-		$body .= "URL: ".$_SERVER["REQUEST_URI"]."\n";
-		$body .= "Time: ".date("M j,Y - h:i:s a")."\n";
-		
+		$body .= "Referer: ".$_SERVER["HTTP_REFERER"]."\n";		
 		if($this->settings->debug == true) {
 			die(str_replace("\n","<br />",$body));
 		} else {
