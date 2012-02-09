@@ -1,5 +1,11 @@
 /* @group structure */
 
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
 body {
   padding-top: 60px;
   padding-bottom: 40px;
@@ -40,5 +46,31 @@ h1 {
 }
 
 /* @end */
+
+/* @group rightside */
+
+.aside .accordion-group {
+	margin-bottom: 20px;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group bootstrap override */
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+	background: #f0f0ee;
+}
+
+.accordion-heading .accordion-toggle {
+	background-color: #f1f1f1;
+	background-image: -ms-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: -moz-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: -o-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#f9f9f9),to(#ececec));
+	background-image: -webkit-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: linear-gradient(top,#f9f9f9,#ececec);	
+}
 
 /* @end */
