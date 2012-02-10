@@ -6,17 +6,32 @@
 	
 	<form id="add-form" method="post" action="/admin/content/add/s/">
 		<div class="row-fluid">
-			<div class="span8">
-				<div class="control-group">
-					<label class="control-label" for="form-title">Page Title</label>
-					<div class="controls">
-						<input type="text" name="title" id="form-title" value="{$aPage.title}" maxlength="255" class="span12">
-						<p class="help-block permalink hide"><strong>Permalink</strong>: http://{$smarty.server.SERVER_NAME}/<span></span>/</p>
+			<div class="span8">				
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Page Title</span>
+					</div>
+					<div id="pagecontent" class="accordion-body">
+						<div class="accordion-inner">
+							<div class="controls">
+								<input type="text" name="title" id="form-title" value="{$aPage.title}" maxlength="255" class="span12">
+								<p class="help-block permalink hide"><strong>Permalink</strong>: http://{$smarty.server.SERVER_NAME}/<span></span>/</p>
+							</div>
+						</div>
 					</div>
 				</div>
 				
-				<div class="control-group">
-					{html_editor content=$aPage.content name="content" label="Content"}
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Content</span>
+					</div>
+					<div id="pagecontent" class="accordion-body">
+						<div class="accordion-inner">
+							<div class="controls">
+								{html_editor content=$aPage.content name="content"}
+							</div>
+						</div>
+					</div>
 				</div>
 				
 				<input type="submit" value="Create Page" class="btn btn-primary">
@@ -27,9 +42,9 @@
 				{if $sSuperAdmin == true}
 				<div class="accordion-group">
 					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" href="#pageoptions">Page Options</a>
+						<span class="accordion-toggle">Page Options</span>
 					</div>
-					<div id="pageoptions" class="accordion-body in collapse">
+					<div id="pageoptions" class="accordion-body">
 						<div class="accordion-inner">
 							<div class="control-group">
 								<label class="control-label" for="form-tag">Tag</label>
