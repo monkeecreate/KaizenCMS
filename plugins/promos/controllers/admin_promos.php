@@ -120,13 +120,13 @@ class admin_promos extends adminController {
 					$sID
 				);
 				
-				$this->forward("/admin/promos/?notice=".urlencode("Failed to upload file!"));
+				$this->forward("/admin/promos/?info=".urlencode("Failed to upload file!"));
 			}
 		}
 		
 		$_SESSION["admin"]["admin_promos"] = null;
 		
-		$this->forward("/admin/promos/?notice=".urlencode("Promo created successfully!"));
+		$this->forward("/admin/promos/?info=".urlencode("Promo created successfully!"));
 	}
 	function edit() {		
 		if(!empty($_SESSION["admin"]["admin_promos"])) {
@@ -230,7 +230,7 @@ class admin_promos extends adminController {
 					$_POST["id"]
 				);
 				
-				$this->forward("/admin/promos/?notice=".urlencode("Promo file size was too large!"));
+				$this->forward("/admin/promos/?info=".urlencode("Promo file size was too large!"));
 			} else {
 				$upload_dir = $this->settings->rootPublic.substr($this->model->imageFolder, 1);
 				$file_ext = pathinfo($_FILES["promo"]["name"], PATHINFO_EXTENSION);
@@ -260,14 +260,14 @@ class admin_promos extends adminController {
 						$_POST["id"]
 					);
 					
-					$this->forward("/admin/promos/?notice=".urlencode("Failed to upload file!"));
+					$this->forward("/admin/promos/?info=".urlencode("Failed to upload file!"));
 				}
 			}
 		}
 		
 		$_SESSION["admin"]["admin_promos"] = null;
 		
-		$this->forward("/admin/promos/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/promos/?info=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {		
 		$aPromo = $this->model->getPromo(null, null, null, $this->urlVars->dynamic["id"]);
@@ -277,7 +277,7 @@ class admin_promos extends adminController {
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$aPromo["promo"]);
 		
-		$this->forward("/admin/promos/?notice=".urlencode("Promo removed successfully!"));
+		$this->forward("/admin/promos/?info=".urlencode("Promo removed successfully!"));
 	}
 	function positions_index() {		
 		// Clear saved form info
@@ -310,7 +310,7 @@ class admin_promos extends adminController {
 		
 		$_SESSION["admin"]["admin_promo_positions"] = null;
 		
-		$this->forward("/admin/promos/positions/?notice=".urlencode("Position created successfully!"));
+		$this->forward("/admin/promos/positions/?info=".urlencode("Position created successfully!"));
 	}
 	function positions_edit_s() {
 		if(empty($_POST["name"])) {
@@ -336,13 +336,13 @@ class admin_promos extends adminController {
 		
 		$_SESSION["admin"]["admin_promo_positions"] = null;
 		
-		$this->forward("/admin/promos/positions/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/promos/positions/?info=".urlencode("Changes saved successfully!"));
 	}
 	function positions_delete() {
 		$this->dbDelete("promos_positions", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("promos_positions_assign", $this->urlVars->dynamic["id"], "positionid");
 		
-		$this->forward("/admin/promos/positions/?notice=".urlencode("Position removed successfully!"));
+		$this->forward("/admin/promos/positions/?info=".urlencode("Position removed successfully!"));
 	}
 	##################################
 }

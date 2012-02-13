@@ -80,7 +80,7 @@ class admin_users extends adminController
 		
 		$_SESSION["admin"]["admin_users"] = null;
 		
-		$this->forward("/admin/users/?notice=".urlencode("User add successfully!"));
+		$this->forward("/admin/users/?info=".urlencode("User add successfully!"));
 	}
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_users"])) {
@@ -176,7 +176,7 @@ class admin_users extends adminController
 		
 		$_SESSION["admin"]["admin_users"] = null;
 		
-		$this->forward("/admin/users/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/users/?info=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
 		if($_SESSION["admin"]["userid"] == $this->urlVars->dynamic["id"])
@@ -185,7 +185,7 @@ class admin_users extends adminController
 		$this->dbDelete("users", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("users_privileges", $this->urlVars->dynamic["id"], "userid");
 		
-		$this->forward("/admin/users/?notice=".urlencode("User removed successfully!"));
+		$this->forward("/admin/users/?info=".urlencode("User removed successfully!"));
 	}
 	##################################
 	

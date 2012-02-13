@@ -95,7 +95,7 @@ class admin_galleries extends adminController {
 		
 		$_SESSION["admin"]["admin_galleries"] = null;
 		
-		$this->forward("/admin/galleries/".$sID."/photos/?notice=".urlencode("Gallery created successfully!"));
+		$this->forward("/admin/galleries/".$sID."/photos/?info=".urlencode("Gallery created successfully!"));
 	}
 	function edit() {		
 		if(!empty($_SESSION["admin"]["admin_galleries"])) {	
@@ -195,7 +195,7 @@ class admin_galleries extends adminController {
 		
 		$_SESSION["admin"]["admin_galleries"] = null;
 		
-		$this->forward("/admin/galleries/".$_POST["gallery"]."/photos/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/galleries/".$_POST["gallery"]."/photos/?info=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
 		$this->dbDelete("galleries", $this->urlVars->dynamic["id"]);
@@ -214,7 +214,7 @@ class admin_galleries extends adminController {
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"]."/");
 		
-		$this->forward("/admin/galleries/?notice=".urlencode("Gallery removed successfully!"));
+		$this->forward("/admin/galleries/?info=".urlencode("Gallery removed successfully!"));
 	}
 	function sort() {		
 		$aGallery = $this->model->getGallery($this->urlVars->dynamic["id"], null, true);
@@ -250,7 +250,7 @@ class admin_galleries extends adminController {
 			$aOld["id"]
 		);
 		
-		$this->forward("/admin/galleries/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/galleries/?info=".urlencode("Sort order saved successfully!"));
 	}
 	function categories_index() {		
 		$_SESSION["admin"]["admin_galleries_categories"] = null;
@@ -289,7 +289,7 @@ class admin_galleries extends adminController {
 			)
 		);
 
-		$this->forward("/admin/galleries/categories/?notice=".urlencode("Category created successfully!"));
+		$this->forward("/admin/galleries/categories/?info=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbUpdate(
@@ -300,13 +300,13 @@ class admin_galleries extends adminController {
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/galleries/categories/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/galleries/categories/?info=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbDelete("galleries_categories", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("galleries_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
-		$this->forward("/admin/galleries/categories/?notice=".urlencode("Category removed successfully!"));
+		$this->forward("/admin/galleries/categories/?info=".urlencode("Category removed successfully!"));
 	}
 	function categories_sort() {
 		$aCategory = $this->model->getCategory($this->urlVars->dynamic["id"], "integer");
@@ -351,7 +351,7 @@ class admin_galleries extends adminController {
 			$aCategory["id"]
 		);
 		
-		$this->forward("/admin/galleries/categories/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/galleries/categories/?info=".urlencode("Sort order saved successfully!"));
 	}
 	function photos_index() {		
 		$aGallery = $this->model->getGallery($this->urlVars->dynamic["gallery"], null, true);
@@ -457,7 +457,7 @@ class admin_galleries extends adminController {
 			);
 		}
 		
-		$this->forward("/admin/galleries/".$this->urlVars->dynamic["gallery"]."/photos/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/galleries/".$this->urlVars->dynamic["gallery"]."/photos/?info=".urlencode("Changes saved successfully!"));
 	}
 	function photos_edit() {
 		$this->dbUpdate(

@@ -85,7 +85,7 @@ class admin_mailchimp extends adminController {
 		if($oMailChimp->errorCode) {
 			$this->forward("/admin/mailchimp/lists/".$this->urlVars->dynamic["id"]."/members/?error=".urlencode("Member was not saved, please try again. Error: ".$oMailChimp->errorMessage));
 		} else {
-			$this->forward("/admin/mailchimp/lists/".$this->urlVars->dynamic["id"]."/members/?notice=".urlencode("Changes successfully saved!"));
+			$this->forward("/admin/mailchimp/lists/".$this->urlVars->dynamic["id"]."/members/?info=".urlencode("Changes successfully saved!"));
 		}
 	}
 }

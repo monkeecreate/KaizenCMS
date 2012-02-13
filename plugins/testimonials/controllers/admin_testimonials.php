@@ -107,7 +107,7 @@ class admin_testimonials extends adminController {
 		
 		$_SESSION["admin"]["admin_testimonials"] = null;
 		
-		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial created successfully!"));
+		$this->forward("/admin/testimonials/?info=".urlencode("Testimonial created successfully!"));
 	}
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_testimonials"])) {
@@ -203,13 +203,13 @@ class admin_testimonials extends adminController {
 		
 		$_SESSION["admin"]["admin_testimonials"] = null;
 		
-		$this->forward("/admin/testimonials/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/testimonials/?info=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
 		$this->dbDelete("testimonials", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("testimonials_categories_assign", $this->urlVars->dynamic["id"], "testimonialid");
 		
-		$this->forward("/admin/testimonials/?notice=".urlencode("Testimonial removed successfully!"));
+		$this->forward("/admin/testimonials/?info=".urlencode("Testimonial removed successfully!"));
 	}
 	function sort() {
 		$aTestimonial = $this->model->getTestimonial($this->urlVars->dynamic["id"], null, true);
@@ -254,7 +254,7 @@ class admin_testimonials extends adminController {
 			$aTestimonial["id"]
 		);
 		
-		$this->forward("/admin/testimonials/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/testimonials/?info=".urlencode("Sort order saved successfully!"));
 	}
 	function categories_index() {
 		$_SESSION["admin"]["admin_testimonials_categories"] = null;
@@ -293,7 +293,7 @@ class admin_testimonials extends adminController {
 			)
 		);
 
-		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Category created successfully!"));
+		$this->forward("/admin/testimonials/categories/?info=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbUpdate(
@@ -304,13 +304,13 @@ class admin_testimonials extends adminController {
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/testimonials/categories/?info=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbDelete("testimonials_categories", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("testimonials_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
-		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Category removed successfully!"));
+		$this->forward("/admin/testimonials/categories/?info=".urlencode("Category removed successfully!"));
 	}
 	function categories_sort() {
 		$aCategory = $this->model->getCategory($this->urlVars->dynamic["id"], "integer");
@@ -355,7 +355,7 @@ class admin_testimonials extends adminController {
 			$aCategory["id"]
 		);
 		
-		$this->forward("/admin/testimonials/categories/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/testimonials/categories/?info=".urlencode("Sort order saved successfully!"));
 	}
 	##################################
 }

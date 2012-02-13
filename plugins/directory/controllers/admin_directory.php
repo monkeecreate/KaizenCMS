@@ -122,7 +122,7 @@ class admin_directory extends adminController {
 			$_POST["id"] = $sID;
 			$this->image_upload_s();
 		} else			
-			$this->forward("/admin/directory/?notice=".urlencode("Listing created successfully!"));
+			$this->forward("/admin/directory/?info=".urlencode("Listing created successfully!"));
 	}
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_directory"])) {
@@ -236,7 +236,7 @@ class admin_directory extends adminController {
 			$this->image_upload_s();
 		else {
 			if($_POST["submit"] == "Save Changes")
-				$this->forward("/admin/directory/?notice=".urlencode("Changes saved successfully!"));
+				$this->forward("/admin/directory/?info=".urlencode("Changes saved successfully!"));
 			elseif($_POST["submit"] == "edit")
 				$this->forward("/admin/directory/image/".$_POST["id"]."/edit/");
 			elseif($_POST["submit"] == "delete")
@@ -247,7 +247,7 @@ class admin_directory extends adminController {
 		$this->dbDelete("directory", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("directory_categories_assign", $this->urlVars->dynamic["id"], "listingid");
 		
-		$this->forward("/admin/directory/?notice=".urlencode("Listing removed successfully!"));
+		$this->forward("/admin/directory/?info=".urlencode("Listing removed successfully!"));
 	}
 	function sort() {
 		$aListing = $this->model->getListing($this->urlVars->dynamic["id"], "integer");
@@ -292,7 +292,7 @@ class admin_directory extends adminController {
 			$aListing["id"]
 		);
 		
-		$this->forward("/admin/directory/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/directory/?info=".urlencode("Sort order saved successfully!"));
 	}
 	function image_upload_s() {
 		if(!is_dir($this->settings->rootPublic.substr($this->model->imageFolder, 1)))
@@ -361,7 +361,7 @@ class admin_directory extends adminController {
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/directory/?notice=".urlencode("Listing updated."));
+		$this->forward("/admin/directory/?info=".urlencode("Listing updated."));
 	}
 	function image_delete() {
 		$this->dbUpdate(
@@ -379,7 +379,7 @@ class admin_directory extends adminController {
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 
-		$this->forward("/admin/directory/?notice=".urlencode("Image removed successfully!"));
+		$this->forward("/admin/directory/?info=".urlencode("Image removed successfully!"));
 	}
 	function categories_index() {
 		$_SESSION["admin"]["admin_directory_categories"] = null;
@@ -418,7 +418,7 @@ class admin_directory extends adminController {
 			)
 		);
 
-		$this->forward("/admin/directory/categories/?notice=".urlencode("Category created successfully!"));
+		$this->forward("/admin/directory/categories/?info=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbUpdate(
@@ -429,13 +429,13 @@ class admin_directory extends adminController {
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/directory/categories/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/directory/categories/?info=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbDelete("directory_categories", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("directory_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
-		$this->forward("/admin/directory/categories/?notice=".urlencode("Category removed successfully!"));
+		$this->forward("/admin/directory/categories/?info=".urlencode("Category removed successfully!"));
 	}
 	function categories_sort() {
 		$aCategory = $this->model->getCategory($this->urlVars->dynamic["id"], "integer");
@@ -480,6 +480,6 @@ class admin_directory extends adminController {
 			$aCategory["id"]
 		);
 		
-		$this->forward("/admin/directory/categories/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/directory/categories/?info=".urlencode("Sort order saved successfully!"));
 	}
 }

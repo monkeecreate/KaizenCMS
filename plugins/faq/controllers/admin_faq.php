@@ -107,7 +107,7 @@ class admin_faq extends adminController {
 		
 		$_SESSION["admin"]["admin_faq"] = null;
 		
-		$this->forward("/admin/faq/?notice=".urlencode("Question created successfully!"));
+		$this->forward("/admin/faq/?info=".urlencode("Question created successfully!"));
 	}
 	function edit() {		
 		if(!empty($_SESSION["admin"]["admin_faq"])) {
@@ -201,13 +201,13 @@ class admin_faq extends adminController {
 		
 		$_SESSION["admin"]["admin_faq"] = null;
 		
-		$this->forward("/admin/faq/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/faq/?info=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
 		$this->dbDelete("faq", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("faq_categories_assign", $this->urlVars->dynamic["id"], "faqid");
 		
-		$this->forward("/admin/faq/?notice=".urlencode("Question removed successfully!"));
+		$this->forward("/admin/faq/?info=".urlencode("Question removed successfully!"));
 	}
 	function sort() {		
 		$aQuestion = $this->model->getQuestion($this->urlVars->dynamic["id"], null, true);
@@ -252,7 +252,7 @@ class admin_faq extends adminController {
 			$aQuestion["id"]
 		);
 		
-		$this->forward("/admin/faq/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/faq/?info=".urlencode("Sort order saved successfully!"));
 	}
 	function categories_index() {		
 		$_SESSION["admin"]["admin_faq_categories"] = null;
@@ -291,7 +291,7 @@ class admin_faq extends adminController {
 			)
 		);
 
-		$this->forward("/admin/faq/categories/?notice=".urlencode("Category created successfully!"));
+		$this->forward("/admin/faq/categories/?info=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbUpdate(
@@ -302,13 +302,13 @@ class admin_faq extends adminController {
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/faq/categories/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/faq/categories/?info=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbDelete("faq_categories", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("faq_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
-		$this->forward("/admin/faq/categories/?notice=".urlencode("Category removed successfully!"));
+		$this->forward("/admin/faq/categories/?info=".urlencode("Category removed successfully!"));
 	}
 	function categories_sort() {
 		$aCategory = $this->model->getCategory($this->urlVars->dynamic["id"], "integer");
@@ -353,7 +353,7 @@ class admin_faq extends adminController {
 			$aCategory["id"]
 		);
 		
-		$this->forward("/admin/faq/categories/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/faq/categories/?info=".urlencode("Sort order saved successfully!"));
 	}
 	##################################
 }

@@ -159,7 +159,7 @@ class adminController extends appController {
 				
 				$this->mail($aHeaders, $sBody);
 				
-				$this->forward("/admin/?notice=".urlencode("Check your email for details to reset your password."));
+				$this->forward("/admin/?info=".urlencode("Check your email for details to reset your password."));
 			}
 			$this->forward("/admin/?error=".urlencode("We could not find an account with that email address."));			
 		}
@@ -192,7 +192,7 @@ class adminController extends appController {
 			$this->settings->encryptSalt."_".$this->urlVars->dynamic["code"], "resetCode"
 		);
 		
-		$this->forward("/admin/?notice=".urlencode("Password successfully reset."));
+		$this->forward("/admin/?success=".urlencode("Password successfully reset."));
 	}
 	function isloggedin() {
 		$secretKey = md5($_SERVER["SERVER_NAME"]);

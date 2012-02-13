@@ -128,7 +128,7 @@ class admin_news extends adminController {
 			if($_POST["post_facebook"] == 1 && $_POST["active"] == 1)
 				$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $sTag, false);
 				
-			$this->forward("/admin/news/?notice=".urlencode("Article created successfully!")."&".implode("&", $this->errors));
+			$this->forward("/admin/news/?info=".urlencode("Article created successfully!")."&".implode("&", $this->errors));
 		}
 	}
 	function edit() {		
@@ -263,7 +263,7 @@ class admin_news extends adminController {
 				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $aArticle["tag"], false);
 
 			if($_POST["submit"] == "Save Changes")
-				$this->forward("/admin/news/?notice=".urlencode("Changes saved successfully!")."&".implode("&", $this->errors));
+				$this->forward("/admin/news/?info=".urlencode("Changes saved successfully!")."&".implode("&", $this->errors));
 			elseif($_POST["submit"] == "edit")
 				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?".implode("&", $this->errors));
 			elseif($_POST["submit"] == "delete")
@@ -276,7 +276,7 @@ class admin_news extends adminController {
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 		
-		$this->forward("/admin/news/?notice=".urlencode("Article removed successfully!"));
+		$this->forward("/admin/news/?info=".urlencode("Article removed successfully!"));
 	}
 	function image_upload_s() {		
 		if(!empty($_GET["post_facebook"]))
@@ -355,7 +355,7 @@ class admin_news extends adminController {
 		if($_POST["post_facebook"] == 1)
 			$this->postFacebook($aArticle["id"], $aArticle["title"], $aArticle["short_content"], $aArticle["tag"], true);
 		
-		$this->forward("/admin/news/?notice=".urlencode("Article updated."));
+		$this->forward("/admin/news/?info=".urlencode("Article updated."));
 	}
 	function image_delete() {		
 		$this->dbUpdate(
@@ -373,7 +373,7 @@ class admin_news extends adminController {
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 
-		$this->forward("/admin/news/?notice=".urlencode("Image removed successfully!"));
+		$this->forward("/admin/news/?info=".urlencode("Image removed successfully!"));
 	}
 	function categories_index() {		
 		$_SESSION["admin"]["admin_news_categories"] = null;
@@ -412,7 +412,7 @@ class admin_news extends adminController {
 			)
 		);
 
-		$this->forward("/admin/news/categories/?notice=".urlencode("Category created successfully!"));
+		$this->forward("/admin/news/categories/?info=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbUpdate(
@@ -423,13 +423,13 @@ class admin_news extends adminController {
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/news/categories/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/news/categories/?info=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbDelete("news_categories", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("news_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
-		$this->forward("/admin/news/categories/?notice=".urlencode("Category removed successfully!"));
+		$this->forward("/admin/news/categories/?info=".urlencode("Category removed successfully!"));
 	}
 	function categories_sort() {
 		$aCategory = $this->model->getCategory($this->urlVars->dynamic["id"], "integer");
@@ -474,7 +474,7 @@ class admin_news extends adminController {
 			$aCategory["id"]
 		);
 		
-		$this->forward("/admin/news/categories/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/news/categories/?info=".urlencode("Sort order saved successfully!"));
 	}
 	##################################
 	

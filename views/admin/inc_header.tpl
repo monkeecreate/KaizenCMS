@@ -78,4 +78,4 @@
 			</div><!--/span-->
 			
 			<div class="span9">
-			  <div class="row-fluid">
+				<div class="row-fluid">

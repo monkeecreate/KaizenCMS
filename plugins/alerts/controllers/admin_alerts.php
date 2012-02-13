@@ -94,7 +94,7 @@ class admin_alerts extends adminController {
 		$_SESSION["admin"]["admin_alerts"] = null;
 		
 				
-		$this->forward("/admin/alerts/?notice=".urlencode("Alert created successfully!")."&".implode("&", $this->errors));
+		$this->forward("/admin/alerts/?info=".urlencode("Alert created successfully!")."&".implode("&", $this->errors));
 	}
 	function edit() {		
 		if(!empty($_SESSION["admin"]["admin_alerts"])) {
@@ -187,11 +187,11 @@ class admin_alerts extends adminController {
 		$_SESSION["admin"]["admin_alerts"] = null;
 
 
-		$this->forward("/admin/alerts/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/alerts/?info=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {		
 		$this->dbDelete("alerts", $this->urlVars->dynamic["id"]);
 		
-		$this->forward("/admin/alerts/?notice=".urlencode("Alert removed successfully!"));
+		$this->forward("/admin/alerts/?info=".urlencode("Alert removed successfully!"));
 	}
 }

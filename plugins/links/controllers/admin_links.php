@@ -115,7 +115,7 @@ class admin_links extends adminController {
 			$_POST["id"] = $sID;
 			$this->image_upload_s();
 		} else			
-			$this->forward("/admin/links/?notice=".urlencode("Link created successfully!"));
+			$this->forward("/admin/links/?info=".urlencode("Link created successfully!"));
 	}
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_links"])) {
@@ -217,7 +217,7 @@ class admin_links extends adminController {
 			$this->image_upload_s();
 		else {
 			if($_POST["submit"] == "Save Changes")
-				$this->forward("/admin/links/?notice=".urlencode("Changes saved successfully!"));
+				$this->forward("/admin/links/?info=".urlencode("Changes saved successfully!"));
 			elseif($_POST["submit"] == "edit")
 				$this->forward("/admin/links/image/".$_POST["id"]."/edit/");
 			elseif($_POST["submit"] == "delete")
@@ -232,7 +232,7 @@ class admin_links extends adminController {
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$aLink["image"]);
 		
-		$this->forward("/admin/links/?notice=".urlencode("Link removed successfully!"));
+		$this->forward("/admin/links/?info=".urlencode("Link removed successfully!"));
 	}
 	function sort() {
 		$aLink = $this->model->getLink($this->urlVars->dynamic["id"], null, true);
@@ -277,7 +277,7 @@ class admin_links extends adminController {
 			$aLink["id"]
 		);
 		
-		$this->forward("/admin/links/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/links/?info=".urlencode("Sort order saved successfully!"));
 	}
 	function image_upload_s() {
 		if(!is_dir($this->settings->rootPublic.substr($this->model->imageFolder, 1)))
@@ -346,7 +346,7 @@ class admin_links extends adminController {
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/links/?notice=".urlencode("Link updated."));
+		$this->forward("/admin/links/?info=".urlencode("Link updated."));
 	}
 	function image_delete() {
 		$this->dbUpdate(
@@ -364,7 +364,7 @@ class admin_links extends adminController {
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 
-		$this->forward("/admin/links/?notice=".urlencode("Image removed successfully!"));
+		$this->forward("/admin/links/?info=".urlencode("Image removed successfully!"));
 	}
 	function categories_index() {
 		$_SESSION["admin"]["admin_links_categories"] = null;
@@ -403,7 +403,7 @@ class admin_links extends adminController {
 			)
 		);
 
-		$this->forward("/admin/links/categories/?notice=".urlencode("Category created successfully!"));
+		$this->forward("/admin/links/categories/?info=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbUpdate(
@@ -414,13 +414,13 @@ class admin_links extends adminController {
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/links/categories/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/links/categories/?info=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbDelete("links_categories", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("links_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
-		$this->forward("/admin/links/categories/?notice=".urlencode("Category removed successfully!"));
+		$this->forward("/admin/links/categories/?info=".urlencode("Category removed successfully!"));
 	}
 	function categories_sort() {
 		$aCategory = $this->model->getCategory($this->urlVars->dynamic["id"], "integer");
@@ -465,7 +465,7 @@ class admin_links extends adminController {
 			$aCategory["id"]
 		);
 		
-		$this->forward("/admin/links/categories/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/links/categories/?info=".urlencode("Sort order saved successfully!"));
 	}
 	##################################
 }

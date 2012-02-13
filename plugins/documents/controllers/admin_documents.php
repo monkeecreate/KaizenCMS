@@ -116,7 +116,7 @@ class admin_documents extends adminController {
 					$sID
 				);
 				
-				$this->forward("/admin/documents/?notice=".urlencode("Document file size was too large!"));
+				$this->forward("/admin/documents/?info=".urlencode("Document file size was too large!"));
 			} else {
 				$upload_dir = $this->settings->rootPublic.substr($this->model->documentFolder, 1);
 				
@@ -155,7 +155,7 @@ class admin_documents extends adminController {
 		
 		$_SESSION["admin"]["admin_documents"] = null;
 		
-		$this->forward("/admin/documents/?notice=".urlencode("Document created successfully!"));
+		$this->forward("/admin/documents/?info=".urlencode("Document created successfully!"));
 	}
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_documents"])) {
@@ -257,7 +257,7 @@ class admin_documents extends adminController {
 					$_POST["id"]
 				);
 				
-				$this->forward("/admin/documents/?notice=".urlencode("Document file size was too large!"));
+				$this->forward("/admin/documents/?info=".urlencode("Document file size was too large!"));
 			} else {
 				$upload_dir = $this->settings->rootPublic.substr($this->model->documentFolder, 1);
 				
@@ -292,7 +292,7 @@ class admin_documents extends adminController {
 							$_POST["id"]
 						);
 					
-						$this->forward("/admin/documents/?notice=".urlencode("Failed to upload file!"));
+						$this->forward("/admin/documents/?info=".urlencode("Failed to upload file!"));
 					}
 				} else
 					$this->forward("/admin/documents/?error=".urlencode("File type not allowed for upload!"));
@@ -301,7 +301,7 @@ class admin_documents extends adminController {
 		
 		$_SESSION["admin"]["admin_documents"] = null;
 		
-		$this->forward("/admin/documents/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/documents/?info=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
 		$aDocument = $this->model->getDocument($this->urlVars->dynamic["id"], null, true);
@@ -311,7 +311,7 @@ class admin_documents extends adminController {
 		$this->dbDelete("documents", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("documents_categories_assign", $this->urlVars->dynamic["id"], "documentid");
 		
-		$this->forward("/admin/documents/?notice=".urlencode("Document removed successfully!"));
+		$this->forward("/admin/documents/?info=".urlencode("Document removed successfully!"));
 	}
 	function sort() {
 		$aDocument = $this->model->getDocument($this->urlVars->dynamic["id"], null, true);
@@ -356,7 +356,7 @@ class admin_documents extends adminController {
 			$aDocument["id"]
 		);
 		
-		$this->forward("/admin/documents/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/documents/?info=".urlencode("Sort order saved successfully!"));
 	}
 	function categories_index() {
 		$_SESSION["admin"]["admin_documents_categories"] = null;
@@ -395,7 +395,7 @@ class admin_documents extends adminController {
 			)
 		);
 
-		$this->forward("/admin/documents/categories/?notice=".urlencode("Category created successfully!"));
+		$this->forward("/admin/documents/categories/?info=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbUpdate(
@@ -406,13 +406,13 @@ class admin_documents extends adminController {
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/documents/categories/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/documents/categories/?info=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbDelete("documents_categories", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("documents_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
-		$this->forward("/admin/documents/categories/?notice=".urlencode("Category removed successfully!"));
+		$this->forward("/admin/documents/categories/?info=".urlencode("Category removed successfully!"));
 	}
 	function categories_sort() {
 		$aCategory = $this->model->getCategory($this->urlVars->dynamic["id"], "integer");
@@ -457,7 +457,7 @@ class admin_documents extends adminController {
 			$aCategory["id"]
 		);
 		
-		$this->forward("/admin/documents/categories/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/documents/categories/?info=".urlencode("Sort order saved successfully!"));
 	}
 	##################################
 }

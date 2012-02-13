@@ -108,18 +108,18 @@ class admin_slideshow extends adminController {
 			$this->image_upload_s();
 		else {
 			if($_POST["submit"] == "Save Changes")
-				$this->forward("/admin/slideshow/?notice=".urlencode("Changes saved successfully!"));
+				$this->forward("/admin/slideshow/?info=".urlencode("Changes saved successfully!"));
 			elseif($_POST["submit"] == "edit")
 				$this->forward("/admin/slideshow/image/".$_POST["id"]."/edit/");
 		}
 		
-		$this->forward("/admin/slideshow/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/slideshow/?info=".urlencode("Changes saved successfully!"));
 	}
 	function delete() {
 		$this->dbDelete("slideshow", $this->urlVars->dynamic["id"]);
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 		
-		$this->forward("/admin/slideshow/?notice=".urlencode("Image removed successfully!"));
+		$this->forward("/admin/slideshow/?info=".urlencode("Image removed successfully!"));
 	}
 	function sort() {
 		$aSlide = $this->model->getSlide($this->urlVars->dynamic["id"]);
@@ -164,7 +164,7 @@ class admin_slideshow extends adminController {
 			$aSlide["id"]
 		);
 		
-		$this->forward("/admin/slideshow/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/slideshow/?info=".urlencode("Sort order saved successfully!"));
 	}
 	function image_upload_s() {				
 		if(!is_dir($this->settings->rootPublic.substr($this->model->imageFolder, 1)))
@@ -233,7 +233,7 @@ class admin_slideshow extends adminController {
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/slideshow/?notice=".urlencode("Image cropped successfully!"));
+		$this->forward("/admin/slideshow/?info=".urlencode("Image cropped successfully!"));
 	}
 	##################################
 }

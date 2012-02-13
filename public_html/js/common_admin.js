@@ -18,53 +18,6 @@ $(document).ready(function() {
 			qsParm[key] = val;
 		}
 	}
-	
-//	/**
-//	 * Initiate Accordion
-//	 *
-//	 * Create accordion on any element with
-//	 * class of .accordion
-//	 */
-//	$(".accordion").accordion({
-//		collapsible: true,
-//		autoHeight: false,
-//		header: ".header"
-//	});
-//	
-//	/**
-//	 * Initiate Date Picker
-//	 *
-//	 * Apply datepicker to any element with
-//	 * class of .datepicker
-//	 */
-//	$('.datepicker').datepicker({
-//	});
-//	
-//	/**
-//	 * Initiate Draggable Elements
-//	 *
-//	 * Enable drag and drop to any element
-//	 * with class of .draggable
-//	 */
-//	$(".draggable").draggable({
-//	});
-//	
-//	/**
-//	 * Initiate Sortable Elements
-//	 *
-//	 * Enable sort to any element
-//	 * with class of .sortable
-//	 */
-//	$(".sortable").sortable({
-//	});
-//	
-//	/**
-//	 * Initiate Button Elements
-//	 *
-//	 * Enable button to any element
-//	 * with class of .button
-//	 */
-//	$(".button").button();
 });
 
 /**

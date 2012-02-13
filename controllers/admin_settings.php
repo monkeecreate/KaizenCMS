@@ -50,7 +50,7 @@ class admin_settings extends adminController {
 			);
 		}
 		
-		$this->forward("/admin/settings/?notice=".urlencode("Settings saved successfully!"));
+		$this->forward("/admin/settings/?info=".urlencode("Settings saved successfully!"));
 	}
 	function manageIndex() {
 		if($this->superAdmin == false)
@@ -113,7 +113,7 @@ class admin_settings extends adminController {
 		
 		$_SESSION["admin"]["admin_settings"] = null;
 		
-		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting created successfully!"));
+		$this->forward("/admin/settings/manage/?info=".urlencode("Setting created successfully!"));
 	}
 	function manageEdit() {
 		if($this->superAdmin == false)
@@ -164,12 +164,12 @@ class admin_settings extends adminController {
 		
 		$_SESSION["admin"]["admin_settings"] = null;
 		
-		$this->forward("/admin/settings/manage/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/settings/manage/?info=".urlencode("Changes saved successfully!"));
 	}
 	function manageDelete() {
 		$this->dbDelete("settings", $this->urlVars->dynamic["id"]);
 		
-		$this->forward("/admin/settings/manage/?notice=".urlencode("Setting removed successfully!"));
+		$this->forward("/admin/settings/manage/?info=".urlencode("Setting removed successfully!"));
 	}
 	function manageGroupsIndex() {
 		if($this->superAdmin == false)
@@ -239,7 +239,7 @@ class admin_settings extends adminController {
 		
 		$_SESSION["admin"]["admin_settings_groups"] = null;
 		
-		$this->forward("/admin/settings/manage/groups/?notice=".urlencode("Group created successfully!"));
+		$this->forward("/admin/settings/manage/groups/?info=".urlencode("Group created successfully!"));
 	}
 	function manageGroupsEdit() {
 		if($this->superAdmin == false)
@@ -278,12 +278,12 @@ class admin_settings extends adminController {
 		
 		$_SESSION["admin"]["admin_settings_groups"] = null;
 		
-		$this->forward("/admin/settings/manage/groups/?notice=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/settings/manage/groups/?info=".urlencode("Changes saved successfully!"));
 	}
 	function manageGroupsDelete() {
 		$this->dbDelete("settings_groups", $this->urlVars->dynamic["id"]);
 		
-		$this->forward("/admin/settings/manage/groups/?notice=".urlencode("Group removed successfully!"));
+		$this->forward("/admin/settings/manage/groups/?info=".urlencode("Group removed successfully!"));
 	}
 	function manageGroupsSort() {
 		$aGroup = $this->dbQuery(
@@ -324,7 +324,7 @@ class admin_settings extends adminController {
 			$aOld["id"]
 		);
 		
-		$this->forward("/admin/settings/manage/groups/?notice=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/settings/manage/groups/?info=".urlencode("Sort order saved successfully!"));
 	}
 	function plugins_index() {
 		if($this->superAdmin == false)
@@ -515,7 +515,7 @@ class admin_settings extends adminController {
 			)
 		);
 		
-		$this->forward("/admin/settings/plugins/?notice=".urlencode("Plugin installed successfully!"));
+		$this->forward("/admin/settings/plugins/?info=".urlencode("Plugin installed successfully!"));
 	}
 	function plugins_uninstall() {
 		global $objDB;
@@ -551,7 +551,7 @@ class admin_settings extends adminController {
 		// Plugin status
 		$this->dbDelete("plugins", $sPlugin, "plugin", "text");
 		
-		$this->forward("/admin/settings/plugins/?notice=".urlencode("Plugin uninstalled successfully!"));
+		$this->forward("/admin/settings/plugins/?info=".urlencode("Plugin uninstalled successfully!"));
 	}
 	function admin_menu_index() {
 		if($this->superAdmin == false)
@@ -584,7 +584,7 @@ class admin_settings extends adminController {
 			);
 		}
 		
-		$this->forward("/admin/settings/admin-menu/?notice=".urlencode("Menu updated successfully!"));
+		$this->forward("/admin/settings/admin-menu/?info=".urlencode("Menu updated successfully!"));
 	}
 	##################################
 }
