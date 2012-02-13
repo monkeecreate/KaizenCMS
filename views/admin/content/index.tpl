@@ -15,11 +15,11 @@
 		<tbody>
 			{foreach from=$aPages item=aPage}
 				<tr>
-					<td>{$aPage.title|clean_html}</td>
-					<td><a href="http://{$domain}/{$aPage.tag}/" target="new">http://{$domain}/{$aPage.tag}/</td>
+					<td>{$aPage.title}</td>
+					<td><a href="http://{$domain}/{$aPage.tag}/" target="new">http://{$domain}/{$aPage.tag}/</a></td>
 					<td>
 						<a href="/admin/content/edit/{$aPage.id}/" title="Edit Page" rel="tooltip"><i class="icon-pencil"></i></a>
-						{if $aPage.permanent != 1}
+						{if $aPage.permanent != 1 || $sSuperAdmin}
 							<a href="/admin/content/delete/{$aPage.id}/" title="Delete Page" rel="tooltip" onclick="return confirm('Are you sure you would like to delete: {$aPage.title}?');"><i class="icon-trash"></i></a>
 						{/if}
 					</td>

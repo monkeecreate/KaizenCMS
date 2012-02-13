@@ -40,7 +40,7 @@
 			</div>
 			
 			<div class="span4 aside">
-				{if $sSuperAdmin == true}
+				{if $sSuperAdmin}
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<span class="accordion-toggle">Page Options</span>
@@ -50,20 +50,20 @@
 							<div class="control-group">
 								<label class="control-label" for="form-tag">Tag</label>
 								<div class="controls">
-									<input type="text" name="tag" value="{$aPage.tag|clean_html}" class="span12">
+									<input type="text" name="tag" id="form-tag" value="{$aPage.tag}" class="span12">
 								</div>
 							</div>
 							
 							<div class="control-group">
 								<div class="controls">
-									<label class="checkbox"><input type="checkbox" name="permanent" value="1"{if $aPage.permanent == 1} checked="checked"{/if}>Permanent</label>
+									<label class="checkbox"><input type="checkbox" name="permanent" id="form-permanent" value="1"{if $aPage.permanent == 1} checked="checked"{/if}>Permanent</label>
 								</div>
 							</div>
 							
 							<div class="control-group">
 								<label class="control-label" for="form-template">Template</label>
 								<div class="controls">
-									<select name="template">
+									<select name="template" id="form-template">
 										<option value="">Default</option>
 										{foreach from=$aTemplates item=template}
 											<option value="{$template}"{if $aPage.template == $template} selected="selected"{/if}>{$template}</option>
@@ -83,7 +83,7 @@
 					<div id="pagetags" class="accordion-body in collapse">
 						<div class="accordion-inner">
 							<div class="controls">
-								<textarea name="tags" style="height:115px;" class="span12">{$aPage.tags}</textarea>
+								<textarea name="tags" id="form-tags" style="height:115px;" class="span12">{$aPage.tags}</textarea>
 								<p class="help-block">Comma separated list of keywords. Tags are used both for visitors using the site's built-in search and meta keywords which are indexed by search engines like Google.</p>
 							</div>
 						</div>
