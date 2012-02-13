@@ -21,6 +21,7 @@ class admin_content extends adminController
 		foreach($aPages as &$aPage) {
 			$aPage["title"] = htmlspecialchars(stripslashes($aPage["title"]));
 			$aPage["content"] = stripslashes($aPage["content"]);
+			$aPage["tags"] = htmlspecialchars(stripslashes($aPage["tags"]));
 		}
 		
 		$this->tplAssign("aPages", $aPages);
@@ -65,6 +66,7 @@ class admin_content extends adminController
 				"tag" => $sTag
 				,"title" => $_POST["title"]
 				,"content" => $_POST["content"]
+				,"tags" => $_POST["tags"]
 				,"created_datetime" => time()
 				,"created_by" => $_SESSION["admin"]["userid"]
 				,"updated_datetime" => time()
@@ -115,6 +117,7 @@ class admin_content extends adminController
 			
 			$aPage["title"] = htmlspecialchars(stripslashes($aPage["title"]));
 			$aPage["content"] = stripslashes($aPage["content"]);
+			$aPage["tags"] = htmlspecialchars(stripslashes($aPage["tags"]));
 			
 			$aPage["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
@@ -139,6 +142,7 @@ class admin_content extends adminController
 			array(
 				"title" => $_POST["title"]
 				,"content" => $_POST["content"]
+				,"tags" => $_POST["tags"]
 				,"updated_datetime" =>time()
 				,"updated_by" => $_SESSION["admin"]["userid"]
 			),

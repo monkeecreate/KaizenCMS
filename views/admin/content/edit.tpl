@@ -1,67 +1,103 @@
-{if $sSuperAdmin == true}
-	{include file="inc_header.tpl" page_title="Content Pages : Edit Page" menu="content" page_style="halfContent"}
-{else}
-	{include file="inc_header.tpl" page_title="Content Pages : Edit Page" menu="content" page_style="fullContent"}
-{/if}
-{assign var=subMenu value="Content Pages"}
-
-<form method="post" action="/admin/content/edit/s/">
-	<input type="hidden" name="id" value="{$aPage.id}">
-	<section id="content" class="content">
-		<header>
-			<h2>Content Pages &raquo; Edit Page</h2>
-		</header>
-
-		<section class="inner-content">
-			{if $aPage.module != 1}
-				<label>*Page Title:</label><br />
-				<input type="text" name="title" maxlength="100" value="{$aPage.title|clean_html}"><br />
-			{else}
-				<h3>{$aPage.title|clean_html}</h3>
-				<input type="hidden" name="title" value="{$aPage.title|clean_html}">
-			{/if}
+{$menu = "content"}{$subMenu = "Pages"}
+{include file="inc_header.tpl" sPageTitle="Content Pages &raquo; Edit Page"}
 	
-			<label>Content:</label><br />
-			{html_editor content=$aPage.content name="content"}
+	<h1>Content Pages &raquo; Edit Page</h1>
+	{include file="inc_alerts.tpl"}
 	
-			<input type="submit" value="Save Changes"> <a class="cancel" href="/admin/content/" title="Cancel">Cancel</a>
-		</section>
-	</section>
-		
-	{if $sSuperAdmin == true}
-		<section id="sidebar" class="sidebar">
-			<header>
-				<h2>Page Options</h2>
-			</header>
+	<form id="edit-form" method="post" action="/admin/content/edit/s/">
+		<div class="row-fluid">
+			<div class="span8">				
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Page Title</span>
+					</div>
+					<div id="pagecontent" class="accordion-body">
+						<div class="accordion-inner">
+							<div class="controls">
+								<input type="text" name="title" id="form-title" value="{$aPage.title}" class="span12 validate[required]">
+								<p class="help-block permalink"><strong>Permalink</strong>: http://{$smarty.server.SERVER_NAME}/<span>{$aPage.tag}</span>/</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Content</span>
+					</div>
+					<div id="pagecontent" class="accordion-body">
+						<div class="accordion-inner">
+							<div class="controls">
+								{html_editor content=$aPage.content name="content"}
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<input type="submit" value="Save Changes" class="btn btn-primary">
+				<input type="hidden" name="id" value="{$aPage.id}">
+				<a href="/admin/content/" title="Cancel" class="btn">Cancel</a>
+			</div>
+			
+			<div class="span4 aside">
+				{if $sSuperAdmin == true}
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Page Options</span>
+					</div>
+					<div id="pageoptions" class="accordion-body">
+						<div class="accordion-inner">
+							<div class="control-group">
+								<label class="control-label" for="form-tag">Tag</label>
+								<div class="controls">
+									<input type="text" name="tag" value="{$aPage.tag|clean_html}" class="span12">
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<div class="controls">
+									<label class="checkbox"><input type="checkbox" name="permanent" value="1"{if $aPage.permanent == 1} checked="checked"{/if}>Permanent</label>
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label" for="form-template">Template</label>
+								<div class="controls">
+									<select name="template">
+										<option value="">Default</option>
+										{foreach from=$aTemplates item=template}
+											<option value="{$template}"{if $aPage.template == $template} selected="selected"{/if}>{$template}</option>
+										{/foreach}
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{/if}
+				
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" href="#pagetags">Tags</a>
+					</div>
+					<div id="pagetags" class="accordion-body in collapse">
+						<div class="accordion-inner">
+							<div class="controls">
+								<textarea name="tags" style="height:115px;" class="span12">{$aPage.tags}</textarea>
+								<p class="help-block">Comma separated list of keywords. Tags are used both for visitors using the site's built-in search and meta keywords which are indexed by search engines like Google.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 
-			<section>
-				<label>Tag:</label><br />
-				<input type="text" name="tag" maxlength="100" value="{$aPage.tag|clean_html}"><br>
-		
-				<label>Permanent:</label>
-				<input type="checkbox" name="perminate" value="1"{if $aPage.perminate == 1} checked="checked"{/if}><br />
-		
-				<label>Module:</label>
-				<input type="checkbox" name="module" value="1"{if $aPage.module == 1} checked="checked"{/if}><br />
-		
-				<label>Template:</label>
-				<select name="template">
-					<option value="">Default</option>
-					{foreach from=$aTemplates item=template}
-						<option value="{$template}"{if $aPage.template == $template} selected="selected"{/if}>{$template}</option>
-					{/foreach}
-				</select><br />
-			</section>
-		</section>
-	{/if}
-</form>
-<script type="text/javascript">
-{literal}
+{footer}
+<script>
 $(function(){
-	$("form").validateForm([
-		"required,title,Page Title is required"
-	]);
+	jQuery('#edit-form').validationEngine({ promptPosition: "bottomLeft" });
 });
-{/literal}
 </script>
+{/footer}
 {include file="inc_footer.tpl"}

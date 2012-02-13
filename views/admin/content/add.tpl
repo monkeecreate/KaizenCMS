@@ -82,8 +82,8 @@
 					<div id="pagetags" class="accordion-body in collapse">
 						<div class="accordion-inner">
 							<div class="controls">
-								<textarea name="tags" style="height:115px;" class="span12"></textarea>
-								<p class="help-block">Tags are used both for visitors using the site's built-in search and meta keywords which are indexed by search engines like Google.</p>
+								<textarea name="tags" style="height:115px;" class="span12">{$aPage.tags}</textarea>
+								<p class="help-block">Comma separated list of keywords. Tags are used both for visitors using the site's built-in search and meta keywords which are indexed by search engines like Google.</p>
 							</div>
 						</div>
 					</div>
