@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	/* Init Bootstrap Plugins */
-	$(".alert").alert();
+	$('.alert').alert();
+	$('a[rel=popover]').popover();
 
 	/**
 	 * Load GET into variable
@@ -19,14 +20,3 @@ $(document).ready(function() {
 		}
 	}
 });
-
-/**
- * Shorten confirm
- *
- * Shortens script of returning confirm
- * result.
- */
-function confirm_(message)
-{
-	return confirm(message);
-}

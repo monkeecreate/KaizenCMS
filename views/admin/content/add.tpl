@@ -14,7 +14,7 @@
 					<div id="pagecontent" class="accordion-body">
 						<div class="accordion-inner">
 							<div class="controls">
-								<input type="text" name="title" id="form-title" value="{$aPage.title}" maxlength="255" class="span12">
+								<input type="text" name="title" id="form-title" value="{$aPage.title}" class="span12 validate[required]">
 								<p class="help-block permalink hide"><strong>Permalink</strong>: http://{$smarty.server.SERVER_NAME}/<span></span>/</p>
 							</div>
 						</div>
@@ -55,7 +55,7 @@
 							
 							<div class="control-group">
 								<div class="controls">
-									<label class="checkbox"><input type="checkbox" name="perminate" value="1"{if $aPage.perminate == 1} checked="checked"{/if}>Permanent</label>
+									<label class="checkbox"><input type="checkbox" name="permanent" value="1"{if $aPage.permanent == 1} checked="checked"{/if}>Permanent</label>
 								</div>
 							</div>
 							
@@ -98,9 +98,11 @@ $(function(){
 	jQuery('#add-form').validationEngine({ promptPosition: "bottomLeft" });
 	
 	$('input[name="title"]').focusout(function() {
-		str = $(this).val().replace(/[^a-z0-9]+/gi, '-').replace(/^-*|-*$/g, '').toLowerCase().substr(0, 100);
-		$('.permalink span').text(str).parent().show();
-		{if $sSuperAdmin == true}$('input[name="tag"]').val(str);{/if}
+		if($(this).val()) {
+			str = $(this).val().replace(/[^a-z0-9]+/gi, '-').replace(/^-*|-*$/g, '').toLowerCase().substr(0, 100);
+			$('.permalink span').text(str).parent().show();
+			{if $sSuperAdmin == true}$('input[name="tag"]').val(str);{/if}
+		}
 	});
 });
 </script>

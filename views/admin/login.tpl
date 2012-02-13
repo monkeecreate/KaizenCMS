@@ -22,16 +22,12 @@
 	<link rel="author" href="/humans.txt">
 	<link rel="dns-prefetch" href="//ajax.googleapis.com">
 	
-	<link href="/css/admin/bootstrap.min.css" rel="stylesheet">
-	<link href="/css/admin/bootstrap-responsive.min.css" rel="stylesheet">
-	<link href="/css/admin/style.css" rel="stylesheet">
-	<link href="/js/datatables/css/data_table.css" rel="stylesheet">
-	<link href="/js/validationEngine/validationEngine.jquery.css" rel="stylesheet">
+	<link href="/css/admin/style.css?v1" rel="stylesheet">
 	<link href="/js/ui-themes/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
 	
 	<script src="/js/modernizr-2.0.6.min.js"></script>
 </head>
-<body class="{$menu}">
+<body>
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">

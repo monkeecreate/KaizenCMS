@@ -9,21 +9,43 @@ $aTables = array(
 				"default" => 0,
 				"autoincrement" => 1
 			),
-			"tag" => array("type" => "text","length" => 100),
-			"title" => array("type" => "text","length" => 100),
+			"title" => array("type" => "text","length" => 255),
+			"tag" => array("type" => "text","length" => 255),
 			"content" => array("type" => "clob"),
-			"perminate" => array("type" => "boolean"),
+			"tags" => array("type" => "clob"),
+			"permanent" => array("type" => "boolean"),
 			"has_sub_menu" => array("type" => "boolean"),
 			"sub_item_of" => array("type" => "integer"),
 			"sort_order" => array("type" => "integer"),
-			"module" => array("type" => "boolean"),
-			"template" => array("type" => "text","length" => 100),
+			"template" => array("type" => "text","length" => 255),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("perminate", "has_sub_menu", "sub_item_of", "sort_order", "module"),
+		"index" => array("permanent", "has_sub_menu", "sub_item_of", "sort_order"),
+		"unique" => array("tag"),
+		"fulltext" => array("title", "content")
+	),
+	"content_excerpts" => array(
+		"fields" => array(
+			"id" => array(
+				"type" => "integer",
+				"unsigned" => 1,
+				"notnull" => 1,
+				"default" => 0,
+				"autoincrement" => 1
+			),
+			"title" => array("type" => "text","length" => 255),
+			"tag" => array("type" => "text","length" => 255),
+			"content" => array("type" => "clob"),
+			"description" => array("type" => "clob"),
+			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
+		),
+		"index" => array(),
 		"unique" => array("tag"),
 		"fulltext" => array("title", "content")
 	),
@@ -40,11 +62,15 @@ $aTables = array(
 				"sort_order" => 1,
 				"info" => json_encode(
 					array(
-						"title" => "Content",
+						"title" => "Content Pages",
 						"menu" => array(
 							array(
-								"text" => "Manage Pages",
+								"text" => "Pages",
 								"link" => "/admin/content/"
+							),
+							array(
+								"text" => "Excerpts",
+								"link" => "/admin/content/excerpts/"
 							)
 						)
 					)
@@ -112,9 +138,9 @@ $aTables = array(
 				"default" => 0,
 				"autoincrement" => 1
 			),
-			"group" => array("type" => "text","length" => 100),
+			"group" => array("type" => "text","length" => 255),
 			"tag" => array("type" => "text","length" => 50),
-			"title" => array("type" => "text","length" => 100),
+			"title" => array("type" => "text","length" => 255),
 			"text" => array("type" => "clob"),
 			"value" => array("type" => "clob"),
 			"type" => array("type" => "text","length" => 50),
@@ -314,7 +340,7 @@ $aTables = array(
 				"default" => 0,
 				"autoincrement" => 1
 			),
-			"name" => array("type" => "text","length" => 100),
+			"name" => array("type" => "text","length" => 255),
 			"sort_order" => array("type" => "integer"),
 			"active" => array("type" => "boolean")
 		),
@@ -376,7 +402,7 @@ $aTables = array(
 				"column_title" => "title",
 				"column_content" => "content",
 				"rows" => json_encode(array("title", "content")),
-				"filter" => "`module` != 1"
+				"filter" => ""
 			)
 		)
 	),
@@ -389,13 +415,13 @@ $aTables = array(
 				"default" => 0,
 				"autoincrement" => 1
 			),
-			"username" => array("type" => "text","length" => 100),
-			"password" => array("type" => "text","length" => 100),
-			"fname" => array("type" => "text","length" => 100),
-			"lname" => array("type" => "text","length" => 100),
-			"email_address" => array("type" => "text","length" => 100),
+			"username" => array("type" => "text","length" => 255),
+			"password" => array("type" => "text","length" => 255),
+			"fname" => array("type" => "text","length" => 255),
+			"lname" => array("type" => "text","length" => 255),
+			"email_address" => array("type" => "text","length" => 255),
 			"super" => array("type" => "boolean"),
-			"resetCode" => array("type" => "text","length" => 100),
+			"resetCode" => array("type" => "text","length" => 255),
 			"last_login" => array("type" => "integer","unsigned" => 1,"default" => null),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
@@ -407,7 +433,7 @@ $aTables = array(
 	"users_privileges" => array(
 		"fields" => array(
 			"userid" => array("type" => "integer"),
-			"menu" => array("type" => "text","length" => 100)
+			"menu" => array("type" => "text","length" => 255)
 		),
 		"index" => array("userid", "menu")
 	)
