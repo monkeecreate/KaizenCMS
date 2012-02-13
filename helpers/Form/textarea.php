@@ -11,12 +11,13 @@ class Form_textarea extends Form_Field
 	}
 	
 	public function html() {
-		$sHTML = $this->getLabel($this->_setting["title"])."<br />\n";
-		$sHTML .= "<textarea name=\"settings[".$this->_setting["tag"]."]\"";
-		$sHTML .= ">".$this->value(false)."</textarea><br />\n";
-		
+		$sHTML = '<div class="control-group">';
+		$sHTML .= '<label class="control-label" for="form-'.urlencode(stripslashes($this->_setting["title"])).'">'.stripslashes($this->_setting["title"]).'</label>';
+		$sHTML .= '<div class="controls">';
+		$sHTML .= '<textarea name="settings['.$this->_setting["tag"].']" id="form-'.urlencode(stripslashes($this->_setting["title"])).'" class="input-xxlarge" style="height: 115px;">'.$this->value(false).'</textarea>';
 		if(!empty($this->_setting["text"]))
-			$sHTML .= $this->getText($this->_setting["text"])."\n";
+			$sHTML .= '<p class="help-block">'.$this->getText($this->_setting["text"]).'</p>';
+		$sHTML .= '</div></div>';
 		
 		return $sHTML;
 	}

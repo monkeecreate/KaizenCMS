@@ -11,19 +11,16 @@ class Form_bool extends Form_Field
 	}
 	
 	public function html() {
-		$sHTML = $this->getLabel($this->_setting["title"])."\n";
-		$sHTML .= "<input type=\"checkbox\" name=\"settings[".$this->_setting["tag"]."]\" value=\"1\"";
-		
-		if(!empty($_options["max"]))
-			$sHTML .= " maxlength=\"".$_options["max"]."\"";
-		
+		$sHTML = '<div class="control-group">';
+		$sHTML .= '<label class="control-label" for="form-'.urlencode(stripslashes($this->_setting["title"])).'">'.stripslashes($this->_setting["title"]).'</label>';
+		$sHTML .= '<div class="controls"><label class="checkbox">';
+		$sHTML .= '<input type="checkbox" name="settings['.$this->_setting["tag"].']" id="form-'.urlencode(stripslashes($this->_setting["title"])).'" value="1"';
 		if($this->value() == 1)
-			$sHTML .= " checked=\"checked\"";
-		
-		$sHTML .= " /><br />\n";
-		
+			$sHTML .= ' checked="checked"';
+		$sHTML .= '>';
 		if(!empty($this->_setting["text"]))
-			$sHTML .= $this->getText($this->_setting["text"])."\n";
+			$sHTML .= $this->getText($this->_setting["text"]);
+		$sHTML .= '</label></div></div>';
 		
 		return $sHTML;
 	}

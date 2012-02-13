@@ -11,16 +11,13 @@ class Form_text extends Form_Field
 	}
 	
 	public function html() {
-		$sHTML = $this->getLabel($this->_setting["title"])."<br />\n";
-		$sHTML .= "<input type=\"text\" name=\"settings[".$this->_setting["tag"]."]\" value=\"".$this->value()."\"";
-		
-		if(!empty($_options["max"]))
-			$sHTML .= " maxlength=\"".$_options["max"]."\"";
-		
-		$sHTML .= " /><br />\n";
-		
+		$sHTML = '<div class="control-group">';
+		$sHTML .= '<label class="control-label" for="form-'.urlencode(stripslashes($this->_setting["title"])).'">'.stripslashes($this->_setting["title"]).'</label>';
+		$sHTML .= '<div class="controls">';
+		$sHTML .= '<input type="text" name="settings['.$this->_setting["tag"].']" id="form-'.urlencode(stripslashes($this->_setting["title"])).'" value="'.$this->value().'" class="input-xxlarge">';
 		if(!empty($this->_setting["text"]))
-			$sHTML .= $this->getText($this->_setting["text"])."\n";
+			$sHTML .= '<p class="help-block">'.$this->getText($this->_setting["text"]).'</p>';
+		$sHTML .= '</div></div>';
 		
 		return $sHTML;
 	}

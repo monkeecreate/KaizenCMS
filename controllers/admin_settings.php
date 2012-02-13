@@ -25,6 +25,9 @@ class admin_settings extends adminController {
 			$aSettings[$aSetting["group"]][]["html"] = $oField->setting->html();
 		}
 		
+		// echo "<pre>";
+		// print_r($aSettings);
+
 		$this->tplAssign("aSettings", $aSettings);
 		$this->tplAssign("curGroup", "");
 		$this->tplDisplay("settings/index.tpl");

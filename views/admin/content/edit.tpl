@@ -25,7 +25,7 @@
 					<div class="accordion-heading">
 						<span class="accordion-toggle">Content</span>
 					</div>
-					<div id="pagecontent" class="accordion-body">
+					<div class="accordion-body">
 						<div class="accordion-inner">
 							<div class="controls">
 								{html_editor content=$aPage.content name="content"}
