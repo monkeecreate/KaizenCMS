@@ -24,9 +24,6 @@ class admin_settings extends adminController {
 			
 			$aSettings[$aSetting["group"]][]["html"] = $oField->setting->html();
 		}
-		
-		// echo "<pre>";
-		// print_r($aSettings);
 
 		$this->tplAssign("aSettings", $aSettings);
 		$this->tplAssign("curGroup", "");
@@ -53,7 +50,7 @@ class admin_settings extends adminController {
 			);
 		}
 		
-		$this->forward("/admin/settings/?info=".urlencode("Settings saved successfully!"));
+		$this->forward("/admin/settings/?success=".urlencode("Settings saved successfully!"));
 	}
 	function manageIndex() {
 		if($this->superAdmin == false)
@@ -116,7 +113,7 @@ class admin_settings extends adminController {
 		
 		$_SESSION["admin"]["admin_settings"] = null;
 		
-		$this->forward("/admin/settings/manage/?info=".urlencode("Setting created successfully!"));
+		$this->forward("/admin/settings/manage/?success=".urlencode("Setting created successfully!"));
 	}
 	function manageEdit() {
 		if($this->superAdmin == false)
@@ -167,12 +164,12 @@ class admin_settings extends adminController {
 		
 		$_SESSION["admin"]["admin_settings"] = null;
 		
-		$this->forward("/admin/settings/manage/?info=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/settings/manage/?success=".urlencode("Changes saved successfully!"));
 	}
 	function manageDelete() {
 		$this->dbDelete("settings", $this->urlVars->dynamic["id"]);
 		
-		$this->forward("/admin/settings/manage/?info=".urlencode("Setting removed successfully!"));
+		$this->forward("/admin/settings/manage/?success=".urlencode("Setting removed successfully!"));
 	}
 	function manageGroupsIndex() {
 		if($this->superAdmin == false)
@@ -242,7 +239,7 @@ class admin_settings extends adminController {
 		
 		$_SESSION["admin"]["admin_settings_groups"] = null;
 		
-		$this->forward("/admin/settings/manage/groups/?info=".urlencode("Group created successfully!"));
+		$this->forward("/admin/settings/manage/groups/?success=".urlencode("Group created successfully!"));
 	}
 	function manageGroupsEdit() {
 		if($this->superAdmin == false)
@@ -281,12 +278,12 @@ class admin_settings extends adminController {
 		
 		$_SESSION["admin"]["admin_settings_groups"] = null;
 		
-		$this->forward("/admin/settings/manage/groups/?info=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/settings/manage/groups/?success=".urlencode("Changes saved successfully!"));
 	}
 	function manageGroupsDelete() {
 		$this->dbDelete("settings_groups", $this->urlVars->dynamic["id"]);
 		
-		$this->forward("/admin/settings/manage/groups/?info=".urlencode("Group removed successfully!"));
+		$this->forward("/admin/settings/manage/groups/?success=".urlencode("Group removed successfully!"));
 	}
 	function manageGroupsSort() {
 		$aGroup = $this->dbQuery(
@@ -327,7 +324,7 @@ class admin_settings extends adminController {
 			$aOld["id"]
 		);
 		
-		$this->forward("/admin/settings/manage/groups/?info=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/settings/manage/groups/?success=".urlencode("Sort order saved successfully!"));
 	}
 	function plugins_index() {
 		if($this->superAdmin == false)
@@ -378,9 +375,7 @@ class admin_settings extends adminController {
 				unset($aPlugins[$k]);
 			}
 		}
-		
-		if(!empty($aNotices))
-			$this->tplAssign("page_notice", "The following plugins are missing proper config files and are unavailable to be installed: ".implode(", ", $aNotices));
+
 		$this->tplAssign("aPlugins", $aPlugins);
 		$this->tplDisplay("settings/plugins/index.tpl");
 	}
@@ -518,7 +513,7 @@ class admin_settings extends adminController {
 			)
 		);
 		
-		$this->forward("/admin/settings/plugins/?info=".urlencode("Plugin installed successfully!"));
+		$this->forward("/admin/settings/plugins/?success=".urlencode("Plugin installed successfully!"));
 	}
 	function plugins_uninstall() {
 		global $objDB;
@@ -554,7 +549,7 @@ class admin_settings extends adminController {
 		// Plugin status
 		$this->dbDelete("plugins", $sPlugin, "plugin", "text");
 		
-		$this->forward("/admin/settings/plugins/?info=".urlencode("Plugin uninstalled successfully!"));
+		$this->forward("/admin/settings/plugins/?success=".urlencode("Plugin uninstalled successfully!"));
 	}
 	function admin_menu_index() {
 		if($this->superAdmin == false)
@@ -587,7 +582,7 @@ class admin_settings extends adminController {
 			);
 		}
 		
-		$this->forward("/admin/settings/admin-menu/?info=".urlencode("Menu updated successfully!"));
+		$this->forward("/admin/settings/admin-menu/?success=".urlencode("Menu updated successfully!"));
 	}
 	##################################
 }

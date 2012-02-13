@@ -10,7 +10,7 @@ abstract class Form_Field {
 		return $sLabel;
 	}
 	protected function getText($sText) {
-		$sText = "<span class=\"input-info\">".stripslashes($sText)."</span>";
+		$sText = stripslashes($sText);
 		
 		return $sText;
 	}
