@@ -39,7 +39,7 @@
 					<span class="icon-bar"></span>
 				</a>
 				
-				<a class="brand" href="/">{getSetting tag="title"}</a>
+				<a class="brand" href="/" title="Visit http://{$smarty.server.SERVER_NAME}/" rel="tooltip" data-placement="bottom">{getSetting tag="title"}</a>
 				
 				<div class="nav-collapse pull-right">
 					<ul class="nav">
@@ -61,7 +61,7 @@
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						{foreach from=$aAdminFullMenu item=aMenu key=x}
-							<li{if $menu == $x} class="active"{/if}><a href="{$aMenu.menu[0].link}" title="{$aMenu.title|clean_html}">{$aMenu.title|clean_html}</a></li>
+							<li{if $menu == $x} class="active"{/if}><a href="{$aMenu.menu[0].link}" title="{$aMenu.title|clean_html}" rel="tooltip" data-placement="right">{$aMenu.title|clean_html}</a></li>
 						{/foreach}
 					</ul>
 				</div><!--/.well -->

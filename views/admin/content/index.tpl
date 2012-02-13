@@ -1,7 +1,7 @@
 {$menu = "content"}{$subMenu = "Pages"}
 {include file="inc_header.tpl" sPageTitle="Content Pages"}
 
-	<h1>Content Pages <a class="btn btn-primary pull-right" href="/admin/content/add/" title="Create Page"><i class="icon-plus icon-white"></i> Create Page</a></h1>
+	<h1>Content Pages <a class="btn btn-primary pull-right" href="/admin/content/add/" title="Create a New Page" rel="tooltip" data-placement="bottom"><i class="icon-plus icon-white"></i> Create Page</a></h1>
 	{include file="inc_alerts.tpl"}
 
 	<table class="data-table table table-striped">
@@ -18,9 +18,9 @@
 					<td>{$aPage.title|clean_html}</td>
 					<td><a href="http://{$domain}/{$aPage.tag}/" target="new">http://{$domain}/{$aPage.tag}/</td>
 					<td>
-						<a href="/admin/content/edit/{$aPage.id}/" title="Edit Page"><i class="icon-pencil"></i></a>
+						<a href="/admin/content/edit/{$aPage.id}/" title="Edit Page" rel="tooltip"><i class="icon-pencil"></i></a>
 						{if $aPage.permanent != 1}
-							<a href="/admin/content/delete/{$aPage.id}/" title="Delete Page" onclick="return confirm('Are you sure you would like to delete: {$aPage.title}?');"><i class="icon-trash"></i></a>
+							<a href="/admin/content/delete/{$aPage.id}/" title="Delete Page" rel="tooltip" onclick="return confirm('Are you sure you would like to delete: {$aPage.title}?');"><i class="icon-trash"></i></a>
 						{/if}
 					</td>
 				</tr>

@@ -2,6 +2,7 @@ $(document).ready(function() {
 	/* Init Bootstrap Plugins */
 	$('.alert').alert();
 	$('a[rel=popover]').popover();
+	$('[rel=tooltip]').tooltip();
 
 	/**
 	 * Load GET into variable
