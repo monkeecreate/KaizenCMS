@@ -342,7 +342,8 @@ $aTables = array(
 			),
 			"name" => array("type" => "text","length" => 255),
 			"sort_order" => array("type" => "integer"),
-			"active" => array("type" => "boolean")
+			"active" => array("type" => "boolean"),
+			"restricted" => array("type" => "boolean")
 		),
 		"index" => array("sort_order", "active"),
 		"data" => array(
@@ -350,31 +351,36 @@ $aTables = array(
 				"id" => 2,
 				"name" => "SEO",
 				"sort_order" => 1,
-				"active" => 1
+				"active" => 1,
+				"restricted" => 0
 			),
 			array(
 				"id" => 3,
 				"name" => "Contact Info",
 				"sort_order" => 2,
-				"active" => 1
+				"active" => 1,
+				"restricted" => 0
 			),
 			array(
 				"id" => 1,
 				"name" => "Analytics",
 				"sort_order" => 3,
-				"active" => 1
+				"active" => 1,
+				"restricted" => 0
 			),
 			array(
 				"id" => 4,
 				"name" => "Social",
 				"sort_order" => 4,
-				"active" => 1
+				"active" => 1,
+				"restricted" => 0
 			),
 			array(
 				"id" => 5,
 				"name" => "Social Dev",
 				"sort_order" => 5,
-				"active" => 1
+				"active" => 1,
+				"restricted" => 1
 			)
 		)
 	),

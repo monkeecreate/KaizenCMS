@@ -10,17 +10,19 @@
 
 	<form class="form-horizontal" method="post" action="/admin/settings/save/" enctype="multipart/form-data">
 		{foreach from=$aSettings item=aGroup key=name}
-			{if $curGroup != $name}
-				{if !empty($curGroup)}
-					</fieldset>
+			{if $aGroup.restricted != 1 || $sSuperAdmin}
+				{if $curGroup != $name}
+					{if !empty($curGroup)}
+						</fieldset>
+					{/if}
+					<fieldset>
+						<legend>{$name}</legend>
+					{assign var="curGroup" value=$name}
 				{/if}
-				<fieldset>
-					<legend>{$name}</legend>
-				{assign var="curGroup" value=$name}
+				{foreach from=$aGroup.settings item=aSetting}
+					{$aSetting.html}
+				{/foreach}
 			{/if}
-			{foreach from=$aGroup item=aSetting}
-				{$aSetting.html}
-			{/foreach}
 		{/foreach}
 		{if !empty($curGroup)}
 			</fieldset>

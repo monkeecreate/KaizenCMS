@@ -9,7 +9,7 @@ class admin_settings extends adminController {
 	### DISPLAY ######################
 	function index() {
 		$aSettingsFull = $this->dbQuery(
-			"SELECT `settings`.*, `groups`.`name` AS `group` FROM `{dbPrefix}settings` AS `settings`"
+			"SELECT `settings`.*, `groups`.* FROM `{dbPrefix}settings` AS `settings`"
 				." LEFT JOIN `{dbPrefix}settings_groups` as `groups` ON `settings`.`group` = `groups`.`id`"
 				." WHERE `settings`.`active` = 1"
 				." AND `groups`.`active` = 1"
@@ -22,7 +22,8 @@ class admin_settings extends adminController {
 		foreach($aSettingsFull as $aSetting) {
 			$oField = new Form($aSetting);
 			
-			$aSettings[$aSetting["group"]][]["html"] = $oField->setting->html();
+			$aSettings[$aSetting["name"]]["restricted"] = $aSetting["restricted"];
+			$aSettings[$aSetting["name"]]["settings"][]["html"] = $oField->setting->html();
 		}
 
 		$this->tplAssign("aSettings", $aSettings);
