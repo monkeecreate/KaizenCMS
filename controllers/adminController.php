@@ -42,7 +42,7 @@ class adminController extends appController {
 			);
 			
 			$this->tplAssign("loggedin", 1);
-			$this->tplAssign("user_details", $aUser);
+			$this->tplAssign("aAccount", $aUser);
 			
 			/*## Super Admin ##*/
 			if($aUser["super"] == 1)

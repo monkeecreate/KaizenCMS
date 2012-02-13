@@ -43,7 +43,7 @@
 				
 				<div class="nav-collapse pull-right">
 					<ul class="nav">
-					<li><a href="/admin/users/edit/{$user_details.id}/" rel="popover" data-content="Change your password or update your personal information. Remember to keep your email address up to date." data-original-title="Edit Account" data-placement="bottom">Edit Account</a></li>
+					<li><a href="#edit-account-modal" data-toggle="modal" rel="popover" data-content="Change your password or update your personal information. Remember to keep your email address up to date." data-original-title="Edit Account" data-placement="bottom">Edit Account</a></li>
 					<li><a href="#support">Help &amp; Support</a></li>
 					<li><a href="/admin/logout/" title="Log Out">Log Out</a></li>
 					</ul>

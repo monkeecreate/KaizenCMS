@@ -243,6 +243,10 @@ $aUrlPatterns = array(
 	"/admin/users/delete/<id:[0-9]+>/" => array(
 		"cmd" => "admin_users",
 		"action" => "delete"
+	),
+	"/admin/users/account/s/" => array(
+		"cmd" => "admin_users",
+		"action" => "account_s"
 	)
 );
 

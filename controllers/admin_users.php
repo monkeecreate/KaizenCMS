@@ -187,6 +187,32 @@ class admin_users extends adminController
 		
 		$this->forward("/admin/users/?info=".urlencode("User removed successfully!"));
 	}
+	function account_s() {
+		$this->dbUpdate(
+			"users",
+			array(
+				"username" => $_POST["username"]
+				,"fname" => $_POST["fname"]
+				,"lname" => $_POST["lname"]
+				,"email_address" => $_POST["email_address"]
+				,"updated_datetime" => time()
+				,"updated_by" => $_SESSION["admin"]["userid"]
+			),
+			$_POST["id"]
+		);
+
+		if(!empty($_POST["password"])) {
+			$this->dbUpdate(
+				"users",
+				array(
+					"password" => sha1($_POST["password"])
+				),
+				$_POST["id"]
+			);
+		}
+
+		$this->forward("/admin/content/?success=".urlencode("Your account has been saved."));
+	}
 	##################################
 	
 	### Functions ####################
