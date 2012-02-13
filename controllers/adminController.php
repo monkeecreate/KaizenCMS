@@ -78,6 +78,7 @@ class adminController extends appController {
 				$this->_menu = array();
 				foreach($aMenuAdmin as $aMenu) {
 					$aInfo = json_decode($aMenu["info"], true);
+					$aInfo["title"] = htmlspecialchars(stripslashes($aInfo["title"]));
 					$this->_menu[$aMenu["tag"]] = $aInfo;
 				}
 			

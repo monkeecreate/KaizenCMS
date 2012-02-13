@@ -61,7 +61,7 @@
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						{foreach from=$aAdminFullMenu item=aMenu key=x}
-							<li{if $menu == $x} class="active"{/if}><a href="{$aMenu.menu[0].link}" title="{$aMenu.title|clean_html}" rel="tooltip" data-placement="right">{$aMenu.title|clean_html}</a></li>
+							<li class="nav-{$x}{if $menu == $x} active{/if}"><a href="{$aMenu.menu[0].link}" title="{$aMenu.title}" rel="tooltip" data-placement="right">{$aMenu.title}</a></li>
 						{/foreach}
 					</ul>
 				</div><!--/.well -->
