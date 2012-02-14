@@ -247,9 +247,16 @@
 }
 
 .dataTables_wrapper td.group {
-	background-color: #d1cfd0;
-	border-bottom: 2px solid #A19B9E;
-	border-top: 2px solid #A19B9E;
+	font-weight: bold;
+	background-color: #eeeeee;
+	background-repeat: repeat-x;
+	background-image: -moz-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#eeeeee));
+	background-image: -webkit-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%);
+	background-image: -ms-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%);
+	background-image: -o-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#eeeeee',GradientType=0 );
+	background-image: linear-gradient(top, #f5f5f5 0%,#eeeeee 100%);
 }
 
 .dataTables_wrapper td.details {

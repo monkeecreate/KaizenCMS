@@ -1,110 +1,84 @@
-{include file="inc_header.tpl" page_title="Manage Settings" menu="settings" page_style="fullContent"}
-{assign var=subMenu value="Manage Settings"}
-{head}
-<script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
-<script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
-<script type="text/javascript">
-	$(function(){ldelim}
-		$('.dataTable').dataTable({ldelim}
-			/* DON'T CHANGE */
-			"sDom": 'rt<"dataTable-footer"flpi<"clear">',
-			"sPaginationType": "scrolling",
-			"bLengthChange": true,
-			/* CAN CHANGE */
-			"fnDrawCallback": function ( oSettings ) {ldelim}
-				if ( oSettings.aiDisplay.length == 0 ) {ldelim}
-					return;
-				{rdelim}
+{$menu = "settings"}{$subMenu = "Manage Settings"}
+{include file="inc_header.tpl" sPageTitle="Manage Settings"}
 
-				var nTrs = $('.dataTable tbody tr');
-				var iColspan = nTrs[0].getElementsByTagName('td').length;
-				var sLastGroup = "";
-				for ( var i=0 ; i<nTrs.length ; i++ )
-				{ldelim}
-					var iDisplayIndex = oSettings._iDisplayStart + i;
-					var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData[0];
-					if ( sGroup != sLastGroup )
-					{ldelim}
-						var nGroup = document.createElement( 'tr' );
-						var nCell = document.createElement( 'td' );
-						nCell.colSpan = iColspan;
-						nCell.className = "group";
-						nCell.innerHTML = sGroup;
-						nGroup.appendChild( nCell );
-						nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
-						sLastGroup = sGroup;
-					{rdelim}
-				{rdelim}
-			{rdelim}, //row grouping
-			"bStateSave": true, //whether to save a cookie with the current table state
-			"iDisplayLength": 10, //how many items to display on each page
-			"bSort": false //which column to sort by (0-X)
-		{rdelim});
-	{rdelim});
-</script>
-{/head}
+	<h1>Manage Settings
 
-<section id="content" class="content">
-	<header>
-		<h2>Manage Settings</h2>
-		<a href="/admin/settings/manage/add/" title="Add Setting" class="button">Add Setting &raquo;</a>
-		<a href="/admin/settings/manage/groups/" title="Manage Groups" class="button">Manage Groups &raquo;</a>
-	
-		{foreach from=$aAdminFullMenu item=aMenu key=k}
-			{if $k == "settings"}
-				{if $aMenu.menu|@count gt 1}
-					<ul class="pageTabs">
-						{foreach from=$aMenu.menu item=aItem}
-							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
-						{/foreach}
-					</ul>
-				{/if}
-			{/if}
-		{/foreach}
-	</header>
+	<div class="btn-group pull-right">
+		<a class="btn" href="/admin/settings/manage/add/" title="Create New Setting" rel="tooltip" data-placement="bottom">Create Setting</a>
+		<a class="btn" href="/admin/settings/manage/groups/" title="Create New Group" rel="tooltip" data-placement="bottom">Create Group</a>
+	</div>
 
-	<table class="dataTable">
+	</h1>
+	{include file="inc_alerts.tpl"}
+
+	<table class="data-table table table-striped">
 		<thead>
 			<tr>
 				<th class="hidden">Group</th>
-				<th class="empty itemStatus">&nbsp;</th>
+				<th>&nbsp;</th>
 				<th>Title</th>
 				<th>Tag</th>
-				<th class="hidden">Order</th>
-				<th class="sorting_disabled center empty">Actions</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			{foreach from=$aSettings item=aSetting}
 				<tr>
-					<td class="hidden">{$aSetting.group|clean_html}</td>
+					<td class="hidden">{$aSetting.group|clean_html} {if $aSetting.group == "Social Developer Settings"}<span class="label label-important">Restricted</span>{/if}</td>
 					<td>
 						{if $aSetting.active == 1}
-							<span class="hidden">active</span><img src="/images/admin/icons/bullet_green.png" alt="active">
+							<span class="hidden">active</span><img src="/images/icons/bullet_green.png" alt="active">
 						{else}
-							<span class="hidden">inactive</span><img src="/images/admin/icons/bullet_red.png" alt="inactive">
+							<span class="hidden">inactive</span><img src="/images/icons/bullet_red.png" alt="inactive">
 						{/if}
 					</td>
 					<td>{$aSetting.title|clean_html}</td>
 					<td>{$aSetting.tag|clean_html}</td>
-					<td class="hidden">{$aSetting.sortorder}</td>
-					<td class="center">
-						<a href="/admin/settings/manage/edit/{$aSetting.id}/" title="Edit Setting">
-							<img src="/images/admin/icons/pencil.png" alt="edit_icon">
-						</a>
-						<a href="/admin/settings/manage/delete/{$aSetting.id}/"
-							onclick="return confirm_('Are you sure you would like to delete {$aSetting.title|clean_html}?');" title="Delete Setting">
-							<img src="/images/admin/icons/bin_closed.png" alt="delete_icon">
-						</a>
+					<td>
+						<a href="/admin/settings/manage/edit/{$aSetting.id}/" title="Edit Setting" rel="tooltip"><i class="icon-pencil"></i></a>
+						<a href="/admin/settings/manage/delete/{$aSetting.id}/" title="Delete Setting" rel="tooltip" onclick="return confirm('Are you sure you would like to delete: {$aSetting.title}?');"><i class="icon-trash"></i></a>
 					</td>
 				</tr>
 			{/foreach}
 		</tbody>
 	</table>
 
-	<ul class="dataTable-legend">
-		<li class="bullet-green">Active</li>
-		<li class="bullet-red">Inactive</li>
-	</ul>
-</section>
+{footer}
+<script>
+$('.data-table').dataTable({
+	/* DON'T CHANGE */
+	"sDom": '<"dataTable-header"rf>t<"dataTable-footer"lip<"clear">',
+	"sPaginationType": "full_numbers",
+	"bLengthChange": false,
+	"fnDrawCallback": function ( oSettings ) {
+        if ( oSettings.aiDisplay.length == 0 )
+            return;
+         
+        var nTrs = $('.data-table tbody tr');
+        var iColspan = nTrs[0].getElementsByTagName('td').length;
+        var sLastGroup = "";
+        for ( var i=0 ; i<nTrs.length ; i++ ) {
+            var iDisplayIndex = oSettings._iDisplayStart + i;
+            var sGroup = oSettings.aoData[ oSettings.aiDisplay[iDisplayIndex] ]._aData[0];
+            if ( sGroup != sLastGroup ) {
+                var nGroup = document.createElement( 'tr' );
+                var nCell = document.createElement( 'td' );
+                nCell.colSpan = iColspan;
+                nCell.className = "group";
+                nCell.innerHTML = sGroup;
+                nGroup.appendChild( nCell );
+                nTrs[i].parentNode.insertBefore( nGroup, nTrs[i] );
+                sLastGroup = sGroup;
+            }
+        }
+    },
+    "aoColumnDefs": [{ "bVisible": false, "aTargets": [ 0 ] }],
+	/* CAN CHANGE */
+	"bStateSave": true,
+	"aaSorting": [[ 0, "asc" ]], //which column to sort by (0-X)
+	"iDisplayLength": 10 //how many items to display per page
+});
+$('.dataTable-header').prepend('{foreach from=$aAdminFullMenu item=aMenu key=k}{if $k == $menu}{if $aMenu.menu|@count gt 1}<ul class="nav nav-pills">{foreach from=$aMenu.menu item=aItem}<li{if $subMenu == $aItem.text} class="active"{/if}><a href="{$aItem.link}" title="{$aItem.text}">{$aItem.text}</a></li>{/foreach}</ul>{/if}{/if}{/foreach}');
+</script>
+{/footer}
 {include file="inc_footer.tpl"}
