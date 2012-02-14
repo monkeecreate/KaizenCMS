@@ -9,24 +9,28 @@
 	{/if}
 
 	<form class="form-horizontal" method="post" action="/admin/settings/save/" enctype="multipart/form-data">
-		{foreach from=$aSettings item=aGroup key=name}
-			{if $aGroup.restricted != 1 || $sSuperAdmin}
-				{if $curGroup != $name}
-					{if !empty($curGroup)}
-						</fieldset>
-					{/if}
-					<fieldset>
-						<legend>{$name}</legend>
-					{assign var="curGroup" value=$name}
+		<div class="accordion" id="accordion-settings">
+			{foreach from=$aSettings item=aGroup key=sName name=settingGroups}
+				{if $aGroup.restricted != 1 || $sSuperAdmin}
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-settings" href="#setting-group-{$aGroup.id}">{$sName}</a>
+					</div>
+					<div id="setting-group-{$aGroup.id}" class="accordion-body{if $smarty.foreach.settingGroups.first} in{/if} collapse">
+						<div class="accordion-inner">
+							<div class="controls">
+								{foreach from=$aGroup.settings item=aSetting}
+									{$aSetting.html}
+								{/foreach}
+							</div>
+						</div>
+					</div>
+				</div>
 				{/if}
-				{foreach from=$aGroup.settings item=aSetting}
-					{$aSetting.html}
-				{/foreach}
-			{/if}
-		{/foreach}
-		{if !empty($curGroup)}
-			</fieldset>
-		{/if}
+			{/foreach}
+		</div>
+
+
 		<input type="submit" value="Save Changes" class="btn btn-primary">
 		<a href="/admin/settings/" title="Cancel" class="btn">Cancel</a>
 	</form>

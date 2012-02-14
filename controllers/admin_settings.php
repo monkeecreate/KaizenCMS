@@ -22,6 +22,7 @@ class admin_settings extends adminController {
 		foreach($aSettingsFull as $aSetting) {
 			$oField = new Form($aSetting);
 			
+			$aSettings[$aSetting["name"]]["id"] = $aSetting["id"];
 			$aSettings[$aSetting["name"]]["restricted"] = $aSetting["restricted"];
 			$aSettings[$aSetting["name"]]["settings"][]["html"] = $oField->setting->html();
 		}
