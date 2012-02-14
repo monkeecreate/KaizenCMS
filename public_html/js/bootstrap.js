@@ -447,6 +447,13 @@
         hasData || actives.data('collapse', null)
       }
 
+      console.log();
+
+      // MODIFIED
+      this.$parent.find('.accordion-toggle i').removeClass('icon-chevron-down').addClass('icon-chevron-left')
+      this.$element.parent().find('.accordion-toggle i').removeClass('icon-chevron-left').addClass('icon-chevron-down')
+      // MODIFIED
+
       this.$element[dimension](0)
       this.transition('addClass', 'show', 'shown')
       this.$element[dimension](this.$element[0][scroll])
@@ -456,6 +463,11 @@
   , hide: function () {
       var dimension = this.dimension()
       this.reset(this.$element[dimension]())
+
+      // MODIFIED
+      this.$element.parent().find('.accordion-toggle i').removeClass('icon-chevron-down').addClass('icon-chevron-left')
+      // MODIFIED
+
       this.transition('removeClass', 'hide', 'hidden')
       this.$element[dimension](0)
     }

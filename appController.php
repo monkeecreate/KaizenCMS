@@ -223,7 +223,7 @@ class appController {
 	function loadMailChimp() {
 		require_once($this->settings->root."helpers/mailchimp.php");
 		
-		$oMailChimp = new MCAPI($this->getSetting("mailChimp-api"));
+		$oMailChimp = new MCAPI($this->getSetting("mailchimp-api"));
 		
 		return $oMailChimp;
 	}

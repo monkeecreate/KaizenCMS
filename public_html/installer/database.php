@@ -81,10 +81,10 @@ $aTables = array(
 				"sort_order" => 2, 
 				"info" => json_encode(
 					array(
-						"title" => "Settings",
+						"title" => "Site Settings",
 						"menu" => array(
 							array(
-								"text" => "Settings",
+								"text" => "Site Settings",
 								"link" => "/admin/settings/"
 							),
 							array(
@@ -151,39 +151,29 @@ $aTables = array(
 		"data" => array(
 			array(
 				"group" => 1,
-				"tag" => "analytics_google",
+				"tag" => "analytics-google",
 				"title" => "Google Analytics",
-				"text" => NULL,
+				"text" => "Enter only your Google Analytics Property ID for this website, not the entire tracking code. This ID should look like UA-XXXXXXX-XX.",
 				"value" => "",
 				"type" => "text",
-				"sortOrder" => 1,
-				"active" => 1
-			),
-			array(
-				"group" => 2,
-				"tag" => "title",
-				"title" => "Site Title",
-				"text" => NULL,
-				"value" => "",
-				"type" => "text",
-				"sortOrder" => 1,
-				"active" => 1
-			),
-			array(
-				"group" => 2,
-				"tag" => "keywords",
-				"title" => "Keywords",
-				"text" => NULL,
-				"value" => "",
-				"type" => "textarea",
 				"sortOrder" => 3,
 				"active" => 1
 			),
 			array(
-				"group" => 2,
-				"tag" => "description",
-				"title" => "Description",
-				"text" => NULL,
+				"group" => 1,
+				"tag" => "site-title",
+				"title" => "Site Title",
+				"text" => "Use brief, but descriptive titles. Titles can be both short and informative. If the title is too long, Google will show only a portion of it in the search result.",
+				"value" => "",
+				"type" => "text",
+				"sortOrder" => 1,
+				"active" => 1
+			),
+			array(
+				"group" => 1,
+				"tag" => "site-description",
+				"title" => "Site Description",
+				"text" => "Accurately summarize the site's content. Write a description that would both inform and interest users if they saw your description meta tag as a snippet in a search result.",
 				"value" => "",
 				"type" => "textarea",
 				"sortOrder" => 2,
@@ -191,9 +181,9 @@ $aTables = array(
 			),
 			array(
 				"group" => 3,
-				"tag" => "email",
-				"title" => "Email Address",
-				"text" => NULL,
+				"tag" => "contact-subject",
+				"title" => "Contact Form Subject",
+				"text" => "This subject will be used for emails sent from your contact page. A descriptive subject for the site will help you filter out emails sent from visitors.",
 				"value" => "",
 				"type" => "text",
 				"sortOrder" => 1,
@@ -201,9 +191,9 @@ $aTables = array(
 			),
 			array(
 				"group" => 3,
-				"tag" => "contact-subject",
-				"title" => "Contact Form Subject",
-				"text" => NULL,
+				"tag" => "contact-email",
+				"title" => "Email Address",
+				"text" => "Emails from your contact page will be sent to this email address.",
 				"value" => "",
 				"type" => "text",
 				"sortOrder" => 2,
@@ -231,9 +221,9 @@ $aTables = array(
 			),
 			array(
 				"group" => 4,
-				"tag" => "twitterUser",
+				"tag" => "twitter-username",
 				"title" => "Twitter Username",
-				"text" => NULL,
+				"text" => "Do not include your full Twitter URL, this is just your username without the @.",
 				"value" => "",
 				"type" => "text",
 				"sortOrder" => 1,
@@ -241,22 +231,12 @@ $aTables = array(
 			),
 			array(
 				"group" => 4,
-				"tag" => "facebookUser",
-				"title" => "Facebook Username",
-				"text" => NULL,
+				"tag" => "facebook-url",
+				"title" => "Facebook URL",
+				"text" => "This should be the full url to your Facebook profile or page including http://facebook.com/.",
 				"value" => "",
 				"type" => "text",
 				"sortOrder" => 2,
-				"active" => 1
-			),
-			array(
-				"group" => 4,
-				"tag" => "flickrEmail",
-				"title" => "Flickr Email Address",
-				"text" => NULL,
-				"value" => "",
-				"type" => "text",
-				"sortOrder" => 4,
 				"active" => 1
 			),
 			array(
@@ -321,7 +301,7 @@ $aTables = array(
 			),
 			array(
 				"group" => 5,
-				"tag" => "mailChimp-api",
+				"tag" => "mailchimp-api",
 				"title" => "MailChimp API Key",
 				"text" => NULL,
 				"value" => "",
@@ -348,37 +328,30 @@ $aTables = array(
 		"index" => array("sort_order", "active"),
 		"data" => array(
 			array(
-				"id" => 2,
-				"name" => "SEO",
+				"id" => 1,
+				"name" => "General Settings",
 				"sort_order" => 1,
 				"active" => 1,
 				"restricted" => 0
 			),
 			array(
-				"id" => 3,
+				"id" => 2,
 				"name" => "Contact Info",
 				"sort_order" => 2,
 				"active" => 1,
 				"restricted" => 0
 			),
 			array(
-				"id" => 1,
-				"name" => "Analytics",
+				"id" => 3,
+				"name" => "Social Settings",
 				"sort_order" => 3,
 				"active" => 1,
 				"restricted" => 0
 			),
 			array(
 				"id" => 4,
-				"name" => "Social",
+				"name" => "Social Developer Settings",
 				"sort_order" => 4,
-				"active" => 1,
-				"restricted" => 0
-			),
-			array(
-				"id" => 5,
-				"name" => "Social Dev",
-				"sort_order" => 5,
 				"active" => 1,
 				"restricted" => 1
 			)

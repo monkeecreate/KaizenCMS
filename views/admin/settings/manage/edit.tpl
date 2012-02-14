@@ -24,10 +24,10 @@
 				<legend>Edit {$aSetting.title|clean_html}</legend>
 			
 				<label>* Title:</label><br />
-				<input type="text" name="title" maxlength="100" value="{$aSetting.title|clean_html}"><br>
+				<input type="text" name="title" value="{$aSetting.title|clean_html}"><br>
 			
 				<label>* Tag:</label><br />
-				<input type="text" name="tag" maxlength="100" value="{$aSetting.tag|clean_html}"><br>
+				<input type="text" name="tag" value="{$aSetting.tag|clean_html}"><br>
 			
 				<label>Value:</label><br />
 				<input type="text" name="value" value="{$aSetting.value|clean_html}"><br />
@@ -41,7 +41,7 @@
 				</select><br />
 			
 				<label>Text:</label><br />
-				<input type="text" name="text" maxlength="100" value="{$aSetting.text|clean_html}"><br>
+				<input type="text" name="text" value="{$aSetting.text|clean_html}"><br>
 				<span class="input-info">Adds info below the setting label when modifying value.</span>
 			
 				<label>Field Type:</label>
@@ -56,7 +56,7 @@
 				</select><br />
 			
 				<label>Order:</label>
-				<input type="text" name="sortorder" maxlength="100" value="{$aSetting.sortorder}" style="width: 50px"><br>
+				<input type="text" name="sortorder" value="{$aSetting.sortorder}" style="width: 50px"><br>
 			
 				<label>Active:</label>
 				<input type="checkbox" name="active" value="1"{if $aSetting.active == 1} checked="checked"{/if}><br />

@@ -1,4 +1,4 @@
-{$menu = "settings"}{$subMenu = "Settings"}
+{$menu = "settings"}{$subMenu = "Site Settings"}
 {include file="inc_header.tpl" sPageTitle="Site Settings"}
 
 	<h1>Site Settings</h1>
@@ -14,15 +14,13 @@
 				{if $aGroup.restricted != 1 || $sSuperAdmin}
 				<div class="accordion-group">
 					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-settings" href="#setting-group-{$aGroup.id}">{$sName}</a>
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-settings" href="#setting-group-{$aGroup.id}"><i class="icon-chevron-{if $smarty.foreach.settingGroups.first}down{else}left{/if}"></i>{$sName}</a>
 					</div>
 					<div id="setting-group-{$aGroup.id}" class="accordion-body{if $smarty.foreach.settingGroups.first} in{/if} collapse">
 						<div class="accordion-inner">
-							<div class="controls">
-								{foreach from=$aGroup.settings item=aSetting}
-									{$aSetting.html}
-								{/foreach}
-							</div>
+							{foreach from=$aGroup.settings item=aSetting}
+								{$aSetting.html}
+							{/foreach}
 						</div>
 					</div>
 				</div>

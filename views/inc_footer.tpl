@@ -17,7 +17,7 @@
 	</aside>
 	
 	<footer role="contentinfo">
-		<p>&copy; Copyright {$smarty.now|formatDate:"Y"} {getSetting tag="title"}, All Rights Reserved.</p>
+		<p>&copy; Copyright {$smarty.now|formatDate:"Y"} {getSetting tag="site-title"}, All Rights Reserved.</p>
 	</footer>
 	
 	<script src="/scripts/jquery-1.7.1.min.js"></script>
@@ -31,7 +31,7 @@
 		<script>window.attachEvent("onload",function(){ CFInstall.check({ mode:"overlay" }) })</script>
 	<![endif]-->
 
-	{getSetting tag="analytics_google" assign="aSettingGoogle"}
+	{getSetting tag="analytics-google" assign="aSettingGoogle"}
 	{if !empty($aSettingGoogle)}
 	<script>	
 	var _gaq=[['_setAccount','{$aSettingGoogle}'],['_trackPageview'],['_trackPageLoadTime']];

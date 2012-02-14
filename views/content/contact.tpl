@@ -20,7 +20,7 @@
 	{/if}
 	
 	<form name="contact" method="post" action="/sendform/" id="contactForm" class="contactForm">
-		{getSetting tag="email" assign="sEmail"}
+		{getSetting tag="contact-email" assign="sEmail"}
 		{getSetting tag="contact-subject" assign="sSubject"}
 		<input type="hidden" name="subject" value="{enc_encrypt value=$sSubject}">
 		<input type="hidden" name="forward" value="{enc_encrypt value='/thank-you/'}">

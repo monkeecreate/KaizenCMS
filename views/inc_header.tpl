@@ -5,24 +5,23 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<meta name="keywords" content="{getSetting tag="keywords"}">
-	<meta name="description" content="{getSetting tag="description"}">
+	<meta name="description" content="{getSetting tag="site-description"}">
 	<!-- iPhone -->
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<!-- /iPhone -->
 	<!-- IE -->
-	<meta name="application-name" content="{getSetting tag="title"}">
-	<meta name="msapplication-tooltip" content="{getSetting tag="description"}">
+	<meta name="application-name" content="{getSetting tag="site-title"}">
+	<meta name="msapplication-tooltip" content="{getSetting tag="site-description"}">
 	<meta name="msapplication-starturl" content="/?iePinned=true">
 	<!-- /IE -->
 	<!-- Facebook -->
-	<meta property="og:title" content="{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="title"}">
+	<meta property="og:title" content="{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="site-title"}">
 	<meta property="og:description" content="">
 	<meta property="og:image" content="">
 	<!-- /Facebook -->
 	
-	<title>{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="title"}</title>
+	<title>{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="site-title"}</title>
 	
 	<link rel="shortcut icon" href="/images/favicon.ico">
 	<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
@@ -41,13 +40,13 @@
 	
 	<header role="banner">
 		<hgroup>
-			<h1><a href="/" title="{getSetting tag="title"}">{getSetting tag="title"}</a></h1>
+			<h1><a href="/" title="{getSetting tag="site-title"}">{getSetting tag="site-title"}</a></h1>
 			<h2>Site Slogan/Tag Line</h2>
 		</hgroup>		
 		
 		<nav role="navigation">
 			<ul>
-				<li><a href="/" title="{getSetting tag="title"}" class="{currentMenu var="home"}">Home</a></li>
+				<li><a href="/" title="{getSetting tag="site-title"}" class="{currentMenu var="home"}">Home</a></li>
 				<li><a href="/about/" title="About Us" class="{currentMenu var="about"}">About</a></li>
 				<li><a href="/contact/" title="Contact Us" class="{currentMenu var="contact"}">Contact</a></li>
 			</ul>

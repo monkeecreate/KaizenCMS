@@ -14,7 +14,7 @@ class Form_text extends Form_Field
 		$sHTML = '<div class="control-group">';
 		$sHTML .= '<label class="control-label" for="form-'.urlencode(stripslashes($this->_setting["title"])).'">'.stripslashes($this->_setting["title"]).'</label>';
 		$sHTML .= '<div class="controls">';
-		$sHTML .= '<input type="text" name="settings['.$this->_setting["tag"].']" id="form-'.urlencode(stripslashes($this->_setting["title"])).'" value="'.$this->value().'" class="input-xxlarge">';
+		$sHTML .= '<input type="text" name="settings['.$this->_setting["tag"].']" id="form-'.urlencode(stripslashes($this->_setting["title"])).'" value="'.$this->value().'" class="span12">';
 		if(!empty($this->_setting["text"]))
 			$sHTML .= '<p class="help-block">'.$this->getText($this->_setting["text"]).'</p>';
 		$sHTML .= '</div></div>';

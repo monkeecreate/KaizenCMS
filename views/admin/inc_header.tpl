@@ -10,12 +10,12 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<!-- /iPhone -->
 	<!-- IE -->
-	<meta name="application-name" content="{getSetting tag="title"} Admin">
+	<meta name="application-name" content="{getSetting tag="site-title"} Admin">
 	<meta name="msapplication-tooltip" content="Website Admin Area">
 	<meta name="msapplication-starturl" content="/?iePinned=true">
 	<!-- /IE -->
 	
-	<title>{if !empty($sPageTitle)}{$sPageTitle} | {/if}{getSetting tag="title"}</title>
+	<title>{if !empty($sPageTitle)}{$sPageTitle} | {/if}{getSetting tag="site-title"}</title>
 	
 	<link rel="shortcut icon" href="/images/favicon.ico">
 	<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
@@ -39,7 +39,7 @@
 					<span class="icon-bar"></span>
 				</a>
 				
-				<a class="brand" href="/" title="Visit http://{$smarty.server.SERVER_NAME}/" rel="tooltip" data-placement="bottom">{getSetting tag="title"}</a>
+				<a class="brand" href="/" title="Visit http://{$smarty.server.SERVER_NAME}/" rel="tooltip" data-placement="bottom">{getSetting tag="site-title"}</a>
 				
 				<div class="nav-collapse pull-right">
 					<ul class="nav">
