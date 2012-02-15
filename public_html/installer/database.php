@@ -125,7 +125,7 @@ $aTables = array(
 	),
 	"plugins" => array(
 		"fields" => array(
-			"plugin" => array("type" => "text","length" => 50)
+			"plugin" => array("type" => "text","length" => 255)
 		),
 		"index" => array("plugin")
 	),
@@ -139,11 +139,12 @@ $aTables = array(
 				"autoincrement" => 1
 			),
 			"group" => array("type" => "text","length" => 255),
-			"tag" => array("type" => "text","length" => 50),
+			"tag" => array("type" => "text","length" => 255),
 			"title" => array("type" => "text","length" => 255),
 			"text" => array("type" => "clob"),
 			"value" => array("type" => "clob"),
-			"type" => array("type" => "text","length" => 50),
+			"type" => array("type" => "text","length" => 255),
+			"validation" => array("type" => "clob"),
 			"sortOrder" => array("type" => "integer"),
 			"active" => array("type" => "boolean")
 		),
@@ -166,6 +167,7 @@ $aTables = array(
 				"text" => "Use brief, but descriptive titles. Titles can be both short and informative. If the title is too long, Google will show only a portion of it in the search result.",
 				"value" => "",
 				"type" => "text",
+				"validation" => json_encode(array("required")),
 				"sortOrder" => 1,
 				"active" => 1
 			),
@@ -186,6 +188,7 @@ $aTables = array(
 				"text" => "This subject will be used for emails sent from your contact page. A descriptive subject for the site will help you filter out emails sent from visitors.",
 				"value" => "",
 				"type" => "text",
+				"validation" => json_encode(array("required")),
 				"sortOrder" => 1,
 				"active" => 1
 			),
@@ -196,6 +199,7 @@ $aTables = array(
 				"text" => "Emails from your contact page will be sent to this email address.",
 				"value" => "",
 				"type" => "text",
+				"validation" => json_encode(array("required", "email")),
 				"sortOrder" => 2,
 				"active" => 1
 			),

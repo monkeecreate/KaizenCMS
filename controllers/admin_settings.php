@@ -108,6 +108,7 @@ class admin_settings extends adminController {
 				,"text" => $_POST["text"]
 				,"value" => $_POST["value"]
 				,"type" => $_POST["type"]
+				,"validation" => json_encode($_POST["validation"])
 				,"sortOrder" => $_POST["sortorder"]
 				,"active" => $this->boolCheck($_POST["active"])
 			)
@@ -123,24 +124,23 @@ class admin_settings extends adminController {
 		
 		if(!empty($_SESSION["admin"]["admin_settings"])) {
 			$aSetting = $_SESSION["admin"]["admin_settings"];
-			
-			$this->tplAssign("aSetting", $aSetting);
 		} else {
 			$aSetting = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}settings`"
 					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
-			
-			$this->tplAssign("aSetting", $aSetting);
 		}
+
+		$aSetting["validation"] = json_decode($aSetting["validation"], true);
 		
 		$aSettingGroups = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}settings_groups`"
 			,"all"
 		);
 
-		$this->tplAssign("aSettingGroups", $aSettingGroups);		
+		$this->tplAssign("aSettingGroups", $aSettingGroups);
+		$this->tplAssign("aSetting", $aSetting);		
 		$this->tplDisplay("settings/manage/edit.tpl");
 	}
 	function manageEdit_s() {
@@ -158,6 +158,7 @@ class admin_settings extends adminController {
 				,"text" => $_POST["text"]
 				,"value" => $_POST["value"]
 				,"type" => $_POST["type"]
+				,"validation" => json_encode($_POST["validation"])
 				,"sortOrder" => $_POST["sortorder"]
 				,"active" => $this->boolCheck($_POST["active"])
 			),
