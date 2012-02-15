@@ -4,7 +4,7 @@
 	<h1>Manage Settings
 		<div class="btn-group pull-right">
 			<a class="btn" href="/admin/settings/manage/add/" title="Create New Setting" rel="tooltip" data-placement="bottom">Create Setting</a>
-			<a class="btn" href="/admin/settings/manage/groups/" title="Create New Group" rel="tooltip" data-placement="bottom">Create Group</a>
+			<a class="btn" href="/admin/settings/manage/groups/add/" title="Create New Group" rel="tooltip" data-placement="bottom">Create Group</a>
 		</div>
 	</h1>
 	{include file="inc_alerts.tpl"}
@@ -22,7 +22,7 @@
 		<tbody>
 			{foreach from=$aSettings item=aSetting}
 				<tr>
-					<td class="hidden">{$aSetting.group|clean_html} {if $aSetting.group == "Social Developer Settings"}<span class="label label-important">Restricted</span>{/if}</td>
+					<td class="hidden">{$aSetting.group|clean_html} {if $aSetting.group == "Social Developer Settings"}<span class="label label-important">Restricted</span>{/if} <a href="/admin/settings/manage/groups/edit/{$aSetting.groupid}/" title="Edit Group" class="hide" rel="tooltip"><i class="icon-pencil"></i></a> <a href="/admin/settings/manage/groups/delete/{$aSetting.groupid}/" title="Delete Group" class="hide" rel="tooltip" onclick="return confirm('Are you sure you would like to delete: {$aSetting.group}? This will delete all settings in this group.');"><i class="icon-trash"></i></a></td>
 					<td>
 						{if $aSetting.active == 1}
 							<span class="hidden">active</span><img src="/images/icons/bullet_green.png" alt="active">
@@ -47,6 +47,16 @@
 	</ul>
 {footer}
 <script>
+$(document).ready(function() {	
+	$('.data-table td.group').hover(
+		function() {
+			$('a', this).show();
+		}, function () {
+			$('a', this).hide();
+		}
+	);
+});
+
 $('.data-table').dataTable({
 	/* DON'T CHANGE */
 	"sDom": '<"dataTable-header"rf>t<"dataTable-footer"lip<"clear">',

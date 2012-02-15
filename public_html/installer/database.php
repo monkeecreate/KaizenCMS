@@ -325,6 +325,7 @@ $aTables = array(
 				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 255),
+			"description" => array("type" => "clob"),
 			"sort_order" => array("type" => "integer"),
 			"active" => array("type" => "boolean"),
 			"restricted" => array("type" => "boolean")
@@ -334,6 +335,7 @@ $aTables = array(
 			array(
 				"id" => 1,
 				"name" => "General Settings",
+				"description" => "",
 				"sort_order" => 1,
 				"active" => 1,
 				"restricted" => 0
@@ -341,6 +343,7 @@ $aTables = array(
 			array(
 				"id" => 2,
 				"name" => "Contact Info",
+				"description" => "",
 				"sort_order" => 2,
 				"active" => 1,
 				"restricted" => 0
@@ -348,6 +351,7 @@ $aTables = array(
 			array(
 				"id" => 3,
 				"name" => "Social Settings",
+				"description" => "",
 				"sort_order" => 3,
 				"active" => 1,
 				"restricted" => 0
@@ -355,6 +359,7 @@ $aTables = array(
 			array(
 				"id" => 4,
 				"name" => "Social Developer Settings",
+				"description" => "The following social settings are for developer use only. Changing or removing any of the following fields could break an aspect of the website and the social sharing. Please use with caution.",
 				"sort_order" => 4,
 				"active" => 1,
 				"restricted" => 1

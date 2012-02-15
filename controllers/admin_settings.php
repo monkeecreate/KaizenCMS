@@ -24,6 +24,7 @@ class admin_settings extends adminController {
 			$oField = new Form($aSetting);
 
 			$aSettings[$aSetting["name"]]["id"] = $aSetting["id"];
+			$aSettings[$aSetting["name"]]["description"] = $aSetting["description"];
 			$aSettings[$aSetting["name"]]["restricted"] = $aSetting["restricted"];
 			$aSettings[$aSetting["name"]]["settings"][]["html"] = $oField->setting->html();
 		}
@@ -63,7 +64,7 @@ class admin_settings extends adminController {
 		$_SESSION["admin"]["admin_settings"] = null;
 		
 		$aSettings = $this->dbQuery(
-			"SELECT `settings`.*, `groups`.`name` AS `group` FROM `{dbPrefix}settings` AS `settings`"
+			"SELECT `settings`.*, `groups`.`name` AS `group`, `groups`.`id` AS `groupid` FROM `{dbPrefix}settings` AS `settings`"
 				." LEFT JOIN `{dbPrefix}settings_groups` as `groups` ON `settings`.`group` = `groups`.`id`"
 				." ORDER BY `groups`.`sort_order`, `settings`.`sortOrder`, `settings`.`title`"
 			,"all"
@@ -179,33 +180,6 @@ class admin_settings extends adminController {
 		
 		$this->forward("/admin/settings/manage/?success=".urlencode("Setting removed successfully!"));
 	}
-	function manageGroupsIndex() {
-		if($this->superAdmin == false)
-			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
-		
-		// Clear saved form info
-		$_SESSION["admin"]["admin_settings_groups"] = null;
-		
-		$aGroups = $this->dbQuery(
-			"SELECT * FROM `{dbPrefix}settings_groups`"
-				." ORDER BY `sort_order`, `name`"
-			,"all"
-		);
-		
-		$sMinSort = $this->dbQuery(
-			"SELECT MIN(`sort_order`) FROM `{dbPrefix}settings_groups`"
-			,"one"
-		);
-		$sMaxSort = $this->dbQuery(
-			"SELECT MAX(`sort_order`) FROM `{dbPrefix}settings_groups`"
-			,"one"
-		);
-		
-		$this->tplAssign("aGroups", $aGroups);
-		$this->tplAssign("minSort", $sMinSort);
-		$this->tplAssign("maxSort", $sMaxSort);
-		$this->tplDisplay("settings/manage/groups/index.tpl");
-	}
 	function manageGroupsAdd() {
 		if($this->superAdmin == false)
 			$this->forward("/admin/settings/?error=".urlencode("You do not have permissions to view that page."));
@@ -240,14 +214,16 @@ class admin_settings extends adminController {
 			"settings_groups",
 			array(
 				"name" => $_POST["name"]
+				,"description" => $_POST["description"]
 				,"sort_order" => $sOrder
 				,"active" => $this->boolCheck($_POST["active"])
+				,"restricted" => $this->boolCheck($_POST["restricted"])
 			)
 		);
 		
 		$_SESSION["admin"]["admin_settings_groups"] = null;
 		
-		$this->forward("/admin/settings/manage/groups/?success=".urlencode("Group created successfully!"));
+		$this->forward("/admin/settings/manage/?success=".urlencode("Group created successfully!"));
 	}
 	function manageGroupsEdit() {
 		if($this->superAdmin == false)
@@ -279,19 +255,21 @@ class admin_settings extends adminController {
 			"settings_groups",
 			array(
 				"name" => $_POST["name"]
+				,"description" => $_POST["description"]
 				,"active" => $this->boolCheck($_POST["active"])
+				,"restricted" => $this->boolCheck($_POST["restricted"])
 			),
 			$_POST["id"]
 		);
 		
 		$_SESSION["admin"]["admin_settings_groups"] = null;
 		
-		$this->forward("/admin/settings/manage/groups/?success=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/settings/manage/?success=".urlencode("Changes saved successfully!"));
 	}
 	function manageGroupsDelete() {
 		$this->dbDelete("settings_groups", $this->urlVars->dynamic["id"]);
 		
-		$this->forward("/admin/settings/manage/groups/?success=".urlencode("Group removed successfully!"));
+		$this->forward("/admin/settings/manage/?success=".urlencode("Group removed successfully!"));
 	}
 	function manageGroupsSort() {
 		$aGroup = $this->dbQuery(
@@ -332,7 +310,7 @@ class admin_settings extends adminController {
 			$aOld["id"]
 		);
 		
-		$this->forward("/admin/settings/manage/groups/?success=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/settings/manage/?success=".urlencode("Sort order saved successfully!"));
 	}
 	function plugins_index() {
 		if($this->superAdmin == false)

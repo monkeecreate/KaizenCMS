@@ -18,6 +18,8 @@
 					</div>
 					<div id="setting-group-{$aGroup.id}" class="accordion-body{if $smarty.foreach.settingGroups.first} in{/if} collapse">
 						<div class="accordion-inner">
+							{if !empty($aGroup.description)}<p>{$aGroup.description}</p>{/if}
+
 							{foreach from=$aGroup.settings item=aSetting}
 								{$aSetting.html}
 							{/foreach}
@@ -27,7 +29,6 @@
 				{/if}
 			{/foreach}
 		</div>
-
 
 		<input type="submit" value="Save Changes" class="btn btn-primary">
 		<a href="/admin/settings/" title="Cancel" class="btn">Cancel</a>
