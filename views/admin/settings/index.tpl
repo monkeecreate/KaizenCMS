@@ -8,7 +8,7 @@
 		{foreach from=$aAdminFullMenu item=aMenu key=k}{if $k == $menu}{if $aMenu.menu|@count gt 1}<ul class="nav nav-pills">{foreach from=$aMenu.menu item=aItem}<li{if $subMenu == $aItem.text} class="active"{/if}><a href="{$aItem.link}" title="{$aItem.text}">{$aItem.text}</a></li>{/foreach}</ul>{/if}{/if}{/foreach}
 	{/if}
 
-	<form class="form-horizontal" method="post" action="/admin/settings/save/" enctype="multipart/form-data">
+	<form id="save-form" class="form-horizontal" method="post" action="/admin/settings/save/" enctype="multipart/form-data">
 		<div class="accordion" id="accordion-settings">
 			{foreach from=$aSettings item=aGroup key=sName name=settingGroups}
 				{if $aGroup.restricted != 1 || $sSuperAdmin}
@@ -33,4 +33,11 @@
 		<a href="/admin/settings/" title="Cancel" class="btn">Cancel</a>
 	</form>
 
+{footer}
+<script>
+$(function(){
+	jQuery('#save-form').validationEngine({ promptPosition: "bottomLeft" });
+});
+</script>
+{/footer}
 {include file="inc_footer.tpl"}

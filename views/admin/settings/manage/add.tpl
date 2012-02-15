@@ -72,6 +72,7 @@
 								<div class="controls">
 									<label class="checkbox"><input type="checkbox" name="validation[]" value="required"{if in_array("required", $aSetting.validation)} checked="checked"{/if}> Make this field required.</label>
 									<label class="checkbox"><input type="checkbox" name="validation[]" value="email"{if in_array("email", $aSetting.validation)} checked="checked"{/if}> Valid email address. Ex: hello@johndoe.com</label>
+									<label class="checkbox"><input type="checkbox" name="validation[]" value="phone"{if in_array("phone", $aSetting.validation)} checked="checked"{/if}> Valid phone number. Ex: 940-555-1234, 1 (940) 555-1234, 555-1234</label>
 									<label class="checkbox"><input type="checkbox" name="validation[]" value="url"{if in_array("url", $aSetting.validation)} checked="checked"{/if}> Valid website URL. Ex: http://google.com</label>
 									<label class="checkbox"><input type="checkbox" name="validation[]" value="number"{if in_array("number", $aSetting.validation)} checked="checked"{/if}> Numeric value only. Ex: -143.22 or .77 or 234,230</label>
 									<label class="checkbox"><input type="checkbox" name="validation[]" value="onlyNumberSp"{if in_array("onlyNumberSp", $aSetting.validation)} checked="checked"{/if}> Only numbers and spaces.</label>

@@ -2,12 +2,10 @@
 {include file="inc_header.tpl" sPageTitle="Manage Settings"}
 
 	<h1>Manage Settings
-
-	<div class="btn-group pull-right">
-		<a class="btn" href="/admin/settings/manage/add/" title="Create New Setting" rel="tooltip" data-placement="bottom">Create Setting</a>
-		<a class="btn" href="/admin/settings/manage/groups/" title="Create New Group" rel="tooltip" data-placement="bottom">Create Group</a>
-	</div>
-
+		<div class="btn-group pull-right">
+			<a class="btn" href="/admin/settings/manage/add/" title="Create New Setting" rel="tooltip" data-placement="bottom">Create Setting</a>
+			<a class="btn" href="/admin/settings/manage/groups/" title="Create New Group" rel="tooltip" data-placement="bottom">Create Group</a>
+		</div>
 	</h1>
 	{include file="inc_alerts.tpl"}
 

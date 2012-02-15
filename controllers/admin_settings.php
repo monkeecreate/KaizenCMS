@@ -20,8 +20,9 @@ class admin_settings extends adminController {
 		$aSettings = array();
 		include($this->settings->root."helpers/Form.php");
 		foreach($aSettingsFull as $aSetting) {
+			$aSetting["validation"] = json_decode($aSetting["validation"], true);
 			$oField = new Form($aSetting);
-			
+
 			$aSettings[$aSetting["name"]]["id"] = $aSetting["id"];
 			$aSettings[$aSetting["name"]]["restricted"] = $aSetting["restricted"];
 			$aSettings[$aSetting["name"]]["settings"][]["html"] = $oField->setting->html();
@@ -81,6 +82,7 @@ class admin_settings extends adminController {
 			$this->tplAssign("aSetting",
 				array(
 					"active" => 1
+					,"validation" => array()
 				)
 			);
 		}
@@ -132,7 +134,10 @@ class admin_settings extends adminController {
 			);
 		}
 
-		$aSetting["validation"] = json_decode($aSetting["validation"], true);
+		if(!empty($aSetting["validation"]))
+			$aSetting["validation"] = json_decode($aSetting["validation"], true);
+		else
+			$aSetting["validation"] = array();
 		
 		$aSettingGroups = $this->dbQuery(
 			"SELECT * FROM `{dbPrefix}settings_groups`"
