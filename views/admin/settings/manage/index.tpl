@@ -43,6 +43,10 @@
 		</tbody>
 	</table>
 
+	<ul class="data-table-legend">
+		<li class="bullet-green">Active</li>
+		<li class="bullet-red">Inactive</li>
+	</ul>
 {footer}
 <script>
 $('.data-table').dataTable({
@@ -76,6 +80,7 @@ $('.data-table').dataTable({
 	/* CAN CHANGE */
 	"bStateSave": true,
 	"aaSorting": [[ 0, "asc" ]], //which column to sort by (0-X)
+	"bSort" : false,
 	"iDisplayLength": 10 //how many items to display per page
 });
 $('.dataTable-header').prepend('{foreach from=$aAdminFullMenu item=aMenu key=k}{if $k == $menu}{if $aMenu.menu|@count gt 1}<ul class="nav nav-pills">{foreach from=$aMenu.menu item=aItem}<li{if $subMenu == $aItem.text} class="active"{/if}><a href="{$aItem.link}" title="{$aItem.text}">{$aItem.text}</a></li>{/foreach}</ul>{/if}{/if}{/foreach}');

@@ -56,6 +56,63 @@
 	background-color: white;
 }
 
+ul.data-table-legend {
+	margin: 8px 0 0 10px;
+	overflow: hidden;
+	font-size: 0.8em;
+}
+
+ul.data-table-legend li {
+	float: left;
+	margin: 0 10px 0 0;
+	list-style: none;
+}
+
+.data-table-legend .bullet-green {
+	background: url(/images/icons/bullet_green.png) no-repeat center left;
+	padding-left: 18px;
+}
+
+.data-table-legend .bullet-red {
+	background: url(/images/icons/bullet_red.png) no-repeat center left;
+	padding-left: 18px;
+}
+
+.data-table-legend .bullet-yellow {
+	background: url(/images/icons/bullet_yellow.png) no-repeat center left;
+	padding-left: 18px;
+}
+
+.data-table-legend .bullet-blue {
+	background: url(/images/icons/bullet_blue.png) no-repeat center left;
+	padding-left: 18px;
+}
+
+.data-table-legend .bullet-black {
+	background: url(/images/icons/bullet_black.png) no-repeat center left;
+	padding-left: 18px;
+}
+
+.data-table-legend .bullet-orange {
+	background: url(/images/icons/bullet_orange.png) no-repeat center left;
+	padding-left: 18px;
+}
+
+.data-table-legend .bullet-purple {
+	background: url(/images/icons/bullet_purple.png) no-repeat center left;
+	padding-left: 18px;
+}
+
+.data-table-legend .bullet-pink {
+	background: url(/images/icons/bullet_pink.png) no-repeat center left;
+	padding-left: 18px;
+}
+
+.data-table-legend .bullet-white {
+	background: url(/images/icons/bullet_white.png) no-repeat center left;
+	padding-left: 18px;
+}
+
 .dataTables_wrapper .dataTables_length {
 	width: 40%;
 	float: left;
