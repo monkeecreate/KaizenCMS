@@ -6,17 +6,8 @@ $aPluginInfo = array(
 	"author" => "Crane | West",
 	"website" => "http://crane-west.com/",
 	"email" => "support@crane-west.com",
+	"description" => "This not a plugin. This is a base template for creating a new cwCMS plugin. Do not install. To create a new plugin just duplicate this directory and rename.",
 	
 	/* Plugin Configuration */
-	"config" => array(
-		#### Some Default Configs Below ####
-		// "useImage" => true,
-		// "imageMinWidth" => 150,
-		// "imageMinHeight" => 150,
-		// "imageFolder" => "/uploads/BASE/",
-		// "useCategories" => true,
-		// "perPage" => 10,
-		// "sort" => "name-asc", // manual, name, created, updated, random - asc, desc
-		// "sortCategory" => "manual-asc" // manual, name, items, random - asc, desc
-	)
+	"config" => array()
 );

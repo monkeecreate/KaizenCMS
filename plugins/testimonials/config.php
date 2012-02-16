@@ -6,6 +6,7 @@ $aPluginInfo = array(
 	"author" => "Crane | West",
 	"website" => "http://crane-west.com/",
 	"email" => "support@crane-west.com",
+	"description" => "Share your visitors experiences on your website with this plugin. Allows you to provide a name and text testimonial that will display on your website.",
 	
 	/* Plugin Configuration */
 	"config" => array(

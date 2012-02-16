@@ -6,6 +6,7 @@ $aPluginInfo = array(
 	"author" => "Crane | West",
 	"website" => "http://crane-west.com/",
 	"email" => "support@crane-west.com",
+	"description" => "A full featured calendar to manage your events. Includes publishing events to the website and auto creating the event on Facebook. Features include event details, start and end date, publish and unpublish date, social sharing, event image/logo, event location and google maps.",
 	
 	/* Plugin Configuration */
 	"config" => array(

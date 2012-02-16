@@ -2,10 +2,11 @@
 $aPluginInfo = array(
 	/* Plugin Details */
 	"name" => "Alerts",
-	"version" => "1.0",
+	"version" => "0.1b",
 	"author" => "Crane | West",
 	"website" => "http://crane-west.com/",
 	"email" => "support@crane-west.com",
+	"description" => "This plugin is currently incomplete. Do not use in a production environment.",
 	
 	/* Plugin Configuration */
 	"config" => array(

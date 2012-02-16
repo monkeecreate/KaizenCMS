@@ -6,6 +6,7 @@ $aPluginInfo = array(
 	"author" => "Crane | West",
 	"website" => "http://crane-west.com/",
 	"email" => "support@crane-west.com",
+	"description" => "Manage a directory of businesses, sponsors, partners, members, employes and more. Includes listing details and contact information.",
 	
 	/* Plugin Configuration */
 	"config" => array(

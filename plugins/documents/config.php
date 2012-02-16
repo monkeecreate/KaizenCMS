@@ -6,6 +6,7 @@ $aPluginInfo = array(
 	"author" => "Crane | West",
 	"website" => "http://crane-west.com/",
 	"email" => "support@crane-west.com",
+	"description" => "Make documents available to your visitors for download. Ability to upload any document type, provide document description and view download stats.",
 	
 	/* Plugin Configuration */
 	"config" => array(

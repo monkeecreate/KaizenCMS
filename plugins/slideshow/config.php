@@ -6,6 +6,7 @@ $aPluginInfo = array(
 	"author" => "Crane | West",
 	"website" => "http://crane-west.com/",
 	"email" => "support@crane-west.com",
+	"description" => "Keep your homepage dynamic with this slideshow plugin. Allows you to upload any number of photos that will animate/rotate through a slideshow on your website.",
 	
 	/* Plugin Configuration */
 	"config" => array(

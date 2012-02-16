@@ -6,6 +6,7 @@ $aPluginInfo = array(
 	"author" => "Crane | West",
 	"website" => "http://crane-west.com/",
 	"email" => "support@crane-west.com",
+	"description" => "Provide your visitor with a link of recommended or important links. Includes the ability to upload an image for each link, provide a description and assign to multiple categories for easy browsing by your visitor.",
 	
 	/* Plugin Configuration */
 	"config" => array(

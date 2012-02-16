@@ -6,6 +6,7 @@ $aPluginInfo = array(
 	"author" => "Crane | West",
 	"website" => "http://crane-west.com/",
 	"email" => "support@crane-west.com",
+	"description" => "Keep your visitors up to date with your latest news. Includes the ability to schedule news to publish and unpublish automatically, upload an image for each article, assign to multiple categories, a full editor along with short description and social sharing to auto post to Facebook and Twitter.",
 	
 	/* Plugin Configuration */
 	"config" => array(

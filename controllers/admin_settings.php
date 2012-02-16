@@ -342,6 +342,7 @@ class admin_settings extends adminController {
 				
 				$aPlugin = array(
 					"tag" => $aPlugin,
+					"description" => htmlspecialchars(stripslashes($aPluginInfo["description"])),
 					"version" => htmlspecialchars(stripslashes($aPluginInfo["version"])),
 					"author" => htmlspecialchars(stripslashes($aPluginInfo["author"])),
 					"website" => $aPluginInfo["website"]
