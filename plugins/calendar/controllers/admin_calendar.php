@@ -55,14 +55,21 @@ class admin_calendar extends adminController {
 			$this->forward("/admin/calendar/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$datetime_start = strtotime(
-			$_POST["datetime_start_date"]." "
-			.((!empty($_POST["datetime_start_Hour"]))?$_POST["datetime_start_Hour"].":".$_POST["datetime_start_Minute"]." ".$_POST["datetime_start_Meridian"]:"")
-		);
-		$datetime_end = strtotime(
-			$_POST["datetime_end_date"]." "
-			.((!empty($_POST["datetime_end_Hour"]))?$_POST["datetime_end_Hour"].":".$_POST["datetime_end_Minute"]." ".$_POST["datetime_end_Meridian"]:"")
-		);
+		if($_POST["allday"] == 1) {
+			$datetime_start = strtotime($_POST["datetime_start_date"]." 12:00 am");
+			$datetime_end = strtotime($_POST["datetime_end_date"]." 12:59 pm");
+		} else {
+			$datetime_start = strtotime(
+				$_POST["datetime_start_date"]." "
+				.((!empty($_POST["datetime_start_Hour"]))?$_POST["datetime_start_Hour"].":".$_POST["datetime_start_Minute"]." ".$_POST["datetime_start_Meridian"]:"")
+			);
+
+			$datetime_end = strtotime(
+				$_POST["datetime_end_date"]." "
+				.((!empty($_POST["datetime_end_Hour"]))?$_POST["datetime_end_Hour"].":".$_POST["datetime_end_Minute"]." ".$_POST["datetime_end_Meridian"]:"")
+			);	
+		}
+
 		$datetime_show = strtotime(
 			$_POST["datetime_show_date"]." "
 			.$_POST["datetime_show_Hour"].":".$_POST["datetime_show_Minute"]." "

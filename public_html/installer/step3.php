@@ -51,8 +51,8 @@ if($_POST["setup"] == 1) {
 		$sFail = "Admin password is required!";
 	}
 } else {
-	$_POST["title"] = $objDB->query("SELECT `value` FROM `".$aConfig["database"]["prefix"]."settings` WHERE `tag` = 'title'")->fetchOne();
-	$_POST["contact"] = $objDB->query("SELECT `value` FROM `".$aConfig["database"]["prefix"]."settings` WHERE `tag` = 'email'")->fetchOne();
+	$_POST["title"] = $objDB->query("SELECT `value` FROM `".$aConfig["database"]["prefix"]."settings` WHERE `tag` = 'site-title'")->fetchOne();
+	$_POST["contact"] = $objDB->query("SELECT `value` FROM `".$aConfig["database"]["prefix"]."settings` WHERE `tag` = 'contact-email'")->fetchOne();
 	
 	$sAdmin = $objDB->query("SELECT * FROM `".$aConfig["database"]["prefix"]."users` WHERE `id` = 1")->fetchRow();
 	$_POST["admin_username"] = $sAdmin["username"];

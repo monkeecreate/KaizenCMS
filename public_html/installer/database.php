@@ -244,7 +244,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 5,
+				"group" => 4,
 				"tag" => "twitter_consumer_key",
 				"title" => "Twitter - Consumer Key",
 				"text" => NULL,
@@ -254,7 +254,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 5,
+				"group" => 4,
 				"tag" => "twitter_consumer_secret",
 				"title" => "Twitter- Consumer Secret",
 				"text" => NULL,
@@ -264,7 +264,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 5,
+				"group" => 4,
 				"tag" => "bitly_user",
 				"title" => "Bit.ly User",
 				"text" => NULL,
@@ -274,7 +274,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 5,
+				"group" => 4,
 				"tag" => "bitly_key",
 				"title" => "Bit.ly Key",
 				"text" => NULL,
@@ -284,7 +284,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 5,
+				"group" => 4,
 				"tag" => "facebook_app_id",
 				"title" => "Facebook - App ID",
 				"text" => NULL,
@@ -294,7 +294,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 5,
+				"group" => 4,
 				"tag" => "facebook_app_secret",
 				"title" => "Facebook - App Secret",
 				"text" => NULL,
@@ -304,7 +304,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 5,
+				"group" => 4,
 				"tag" => "mailchimp-api",
 				"title" => "MailChimp API Key",
 				"text" => NULL,

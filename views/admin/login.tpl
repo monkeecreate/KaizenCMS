@@ -10,12 +10,12 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<!-- /iPhone -->
 	<!-- IE -->
-	<meta name="application-name" content="{getSetting tag="title"} Admin">
+	<meta name="application-name" content="{getSetting tag="site-title"} Admin">
 	<meta name="msapplication-tooltip" content="Website Admin Area">
 	<meta name="msapplication-starturl" content="/?iePinned=true">
 	<!-- /IE -->
 	
-	<title>{getSetting tag="title"} Log In</title>
+	<title>{getSetting tag="site-title"} Log In</title>
 	
 	<link rel="shortcut icon" href="/images/favicon.ico">
 	<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
@@ -32,7 +32,7 @@
 		<div class="navbar-inner">
 			<div class="container">
 				<img src="/images/logo.png" alt="logo" class="pull-left" style="margin-right: 15px;">
-				<a class="brand" href="/">{getSetting tag="title"}</a>
+				<a class="brand" href="/">{getSetting tag="site-title"}</a>
 			</div>
 		</div>
 	</div>
