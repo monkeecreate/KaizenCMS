@@ -447,11 +447,11 @@
         hasData || actives.data('collapse', null)
       }
 
-      console.log();
-
       // MODIFIED
-      this.$parent.find('.accordion-toggle i').removeClass('icon-chevron-down').addClass('icon-chevron-left')
-      this.$element.parent().find('.accordion-toggle i').removeClass('icon-chevron-left').addClass('icon-chevron-down')
+      if(this.$parent) {
+        this.$parent.find('.accordion-toggle i').removeClass('icon-chevron-down').addClass('icon-chevron-left')
+        this.$element.parent().find('.accordion-toggle i').removeClass('icon-chevron-left').addClass('icon-chevron-down')
+      }
       // MODIFIED
 
       this.$element[dimension](0)

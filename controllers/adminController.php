@@ -97,7 +97,7 @@ class adminController extends appController {
 		if(!$this->loggedin())
 			$this->tplDisplay("login.tpl");
 		else
-			$this->forward("/admin/content/");
+			$this->tplDisplay("index.tpl");
 	}
 	function login() {
 		if(!empty($_POST["username"]) && !empty($_POST["password"])) {
