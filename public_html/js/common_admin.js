@@ -4,6 +4,9 @@ $(document).ready(function() {
 	$('a[rel=popover]').popover();
 	$('[rel=tooltip]').tooltip();
 
+	/* Init jQueryUI Modules */
+	$('.sortable').sortable();
+
 	/**
 	 * Load GET into variable
 	 *

@@ -69,6 +69,7 @@
 	</form>
 	
 	<script src="/js/jquery-1.7.1.min.js"></script>
+	<script src="/js/jquery-ui-1.8.16.custom.min.js"></script>
 	<script src="/js/bootstrap.js"></script>
 	<script src="/js/datatables/jquery.dataTables.min.js"></script>
 	<script src="/js/validationEngine/jquery.validationEngine-en.js"></script>
