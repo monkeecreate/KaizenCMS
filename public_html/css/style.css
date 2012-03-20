@@ -49,12 +49,19 @@ table {
 
 /* @group structure */
 
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	*behavior: url(../js/boxsizing.htc);
+}
+
 html {
 	overflow-y: scroll;
 }
 
 body {
-	background: #fff url(../images/12_col.gif) repeat-y fixed top center;
+	background: #fff;
 	font: 62.5% "Arial", Verdana, sans-serif;
 	color: #333;
 	text-align: left;

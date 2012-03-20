@@ -23,7 +23,7 @@
 			{foreach from=$aSettings item=aSetting}
 				<tr>
 					<td class="hidden">{$aSetting.group|clean_html} {if $aSetting.group == "Social Developer Settings"}<span class="label label-important">Restricted</span>{/if} <a href="/admin/settings/manage/groups/edit/{$aSetting.groupid}/" title="Edit Group" class="hide" rel="tooltip"><i class="icon-pencil"></i></a> <a href="/admin/settings/manage/groups/delete/{$aSetting.groupid}/" title="Delete Group" class="hide" rel="tooltip" onclick="return confirm('Are you sure you would like to delete: {$aSetting.group}? This will delete all settings in this group.');"><i class="icon-trash"></i></a></td>
-					<td>
+					<td class="data-table-status">
 						{if $aSetting.active == 1}
 							<span class="hidden">active</span><img src="/images/icons/bullet_green.png" alt="active">
 						{else}

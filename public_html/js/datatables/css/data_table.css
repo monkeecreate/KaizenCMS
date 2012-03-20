@@ -68,6 +68,10 @@ ul.data-table-legend li {
 	list-style: none;
 }
 
+.data-table-status {
+	width: 30px;
+}
+
 .data-table-legend .bullet-green {
 	background: url(/images/icons/bullet_green.png) no-repeat center left;
 	padding-left: 18px;

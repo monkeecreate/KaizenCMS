@@ -16,9 +16,9 @@
 		<tbody>
 			{foreach from=$aPlugins item=aPlugin}
 				<tr>
-					<td>
+					<td class="data-table-status">
 						{if $aPlugin.status == 1}
-							<img src="/images/icons/bullet_green.png" alt="active">
+							<img src="/images/icons/bullet_green.png" alt="active" width="16px">
 						{else}
 							<img src="/images/icons/bullet_red.png" alt="inactive">
 						{/if}
