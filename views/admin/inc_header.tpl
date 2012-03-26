@@ -68,12 +68,12 @@
 				</div><!--/.well -->
 				
 				<div class="thumbnail">
-		            <img src="http://placehold.it/295x100" alt="">
+					<img src="http://placehold.it/295x100" alt="">
 		            <div class="caption">
-		              <h5>Are you running Facebook Ads?</h5>
-		              <p>If you aren't running Facebook Ads then you are missing out on 80,000 potential customers. Don't worry, we can help. <a href="#">Contact Us</a>.</p>
-		            </div>
-		          </div>
+						<h5>Are you running Facebook Ads?</h5>
+						<p>If you aren't running Facebook Ads then you are missing out on 80,000 potential customers. Don't worry, we can help. <a href="http://crane-west.com" title="Contact Crane | West">Contact Us</a>.</p>
+		        	</div>
+		        </div>
 			</div><!--/span-->
 			
 			<div class="span9">
