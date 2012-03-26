@@ -189,7 +189,7 @@ class adminController extends appController {
 			"users",
 			array(
 				"password" => sha1($_POST["password"])
-				"last_password" => time()
+				,"last_password" => time()
 			),
 			$this->settings->encryptSalt."_".$this->urlVars->dynamic["code"], "resetCode"
 		);
