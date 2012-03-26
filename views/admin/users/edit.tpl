@@ -1,62 +1,95 @@
-{include file="inc_header.tpl" page_title="Users :: Edit User" menu="users" page_style="fullContent"}
+{$menu = "users"}
+{include file="inc_header.tpl" sPageTitle="Manage Users &raquo; Create User"}
+	
+	<h1>Manage Users &raquo; Create User</h1>
+	{include file="inc_alerts.tpl"}
+	
+	<form id="add-form" class="form-horizontal" method="post" action="/admin/users/manage/add/s/">
+		<div class="row-fluid">
+			<div class="span12">	
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">User Info</span>
+					</div>
+					<div id="pagecontent" class="accordion-body">
+						<div class="accordion-inner">
+							<div class="control-group">
+								<label class="control-label" for="form-username">Username</label>
+								<div class="controls">
+									<input type="text" name="username" id="form-username" value="{$aUser.username}" class="span12 validate[required]">
+								</div>
+							</div>
 
-<section id="content" class="content">
-	<header>
-		<h2>Manage Users &raquo; Edit User</h2>
-	</header>
+							<div class="control-group">
+								<label class="control-label" for="form-password">Password</label>
+								<div class="controls">
+									<a href="#" title="Change Password" class="change-password" style="padding-top: 6px; display: inline-block;">Change Password</a>
+									<input type="password" name="password" id="form-password" value="" class="span12 validate[required]" style="display: none;">
+								</div>
+							</div>
 
-	<section class="inner-content">
-		<form method="post" action="/admin/users/edit/s/">
-			<fieldset>
-				<legend>{$aUser.fname|clean_html} {$aUser.lname|clean_html}</legend>
-				<label>*Username:</label><br />
-				<input type="text" name="username" maxlength="100" value="{$aUser.username|clean_html}"><br />
-				<label>Password: (New password)</label><br />
-				<input type="text" name="password" maxlength="100"><br />
-				<label>*Email:</label><br />
-				<input type="text" name="email_address" maxlength="100" value="{$aUser.email_address|clean_html}"><br />
-				<label>*First Name:</label><br />
-				<input type="text" name="fname" maxlength="100" value="{$aUser.fname|clean_html}"><br />
-				<label>*Last Name:</label><br />
-				<input type="text" name="lname" maxlength="100" value="{$aUser.lname|clean_html}"><br />
-				{if $sSuperAdmin && $aUser.id != 1}
-					<input type="checkbox" name="super" id="form_super" value="1"{if $aUser.super == 1} checked="checked"{/if}> <label for="form_super">Super Admin</label><br />
-				{else}
-					<input type="hidden" name="super" id="form_super" value="{$aUser.super}">
-				{/if}
-			</fieldset>
-			
-			{if $aUser.id != 1}
-			<fieldset id="fieldset_categories">
-				<legend>Privileges:</legend>
-				<p class="selectOptions">Select: <a href="#" class="checkAll">All</a>, <a href="#" class="uncheckAll">None</a></p>
-				<ul class="categories">
-					{foreach from=$aAdminFullMenu item=aMenu key=x}
-						<li>
-							<input id="menu_{$aMenu.id}" type="checkbox" name="privileges[]" value="{$x}"
-								{if in_array($x, $aUser.privileges)} checked="checked"{/if}>
-							<label style="display: inline;" for="menu_{$aMenu.id}">{$aMenu.title|clean_html}</label>
-						</li>
-					{/foreach}
-				</ul>
-			</fieldset><br />
-			{/if}
-			<input type="submit" value="Save Changes">
-			<a class="cancel" href="/admin/users/" title="Cancel">Cancel</a>
-			<input type="hidden" name="id" value="{$aUser.id}">
-		</form>
-	</section>
-</section>
-<script type="text/javascript">
-$(function(){ldelim}
-	$("form").validateForm([
-		"required,username,Username is required",
-		"required,email_address,An email address is required",
-		"valid_email,email_address,A valid email address is required",
-		"required,fname,First Name is required",
-		"required,lname,Last Name is required"{if $aUser.id != 1},
-		"required,privileges[],You must select at least one privilege"{/if}
-	]);
-{rdelim});
+							<div class="control-group">
+								<label class="control-label" for="form-email_address">Email Address</label>
+								<div class="controls">
+									<input type="text" name="email_address" id="form-email_address" value="{$aUser.email_address}" class="span12 validate[required,email]">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label" for="form-firstname">First Name</label>
+								<div class="controls">
+									<input type="text" name="fname" id="form-firstname" value="{$aUser.fname}" class="span12 validate[required]">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label" for="form-lastname">Last Name</label>
+								<div class="controls">
+									<input type="text" name="lname" id="form-lastname" value="{$aUser.lname}" class="span12 validate[required]">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label" for="form-privileges">Privileges</label>
+								<div class="controls">
+									{if $sSuperAdmin}<label class="checkbox"><input type="checkbox" name="super" value="1"{if $aUser.super == 1} checked="checked"{/if}> Super Admin</label>{/if}
+									{foreach from=$aAdminFullMenu item=aMenu key=x}
+										<label class="checkbox"><input type="checkbox" name="privileges[]" value="{$x}"{if in_array($x, $aUser.privileges) || $aUser.super == 1} checked="checked"{/if} class="privileges"> {$aMenu.title|clean_html}</label>
+									{/foreach}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<input type="submit" value="Save Changes" class="btn btn-primary">
+				<a href="/admin/users/" title="Cancel" class="btn">Cancel</a>
+				<input type="hidden" name="id" value="{$aUser.id}">
+			</div>
+		</div>
+	</form>
+
+{footer}
+<script>
+$(function(){
+	jQuery('#add-form').validationEngine({ promptPosition: "bottomLeft" });
+
+	$('input[name="super"]').change(function() {
+		whichForm = $(this).closest("form");
+		if(this.checked)
+			$('input.privileges').each(function() { $(this).attr('checked', true); });
+		else
+			$('input.privileges').each(function() { $(this).attr('checked', false); });
+	});
+
+	$('.change-password').click(function() {
+		whichForm = $(this).closest("form");
+		$(this).fadeOut('slow', function() {
+			$('input[name="password"]', whichForm).fadeIn('slow');
+		});
+		return false;
+	});
+});
 </script>
+{/footer}
 {include file="inc_footer.tpl"}

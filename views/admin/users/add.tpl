@@ -1,58 +1,85 @@
-{include file="inc_header.tpl" page_title="Users :: Add User" menu="users" page_style="fullContent"}
+{$menu = "users"}
+{include file="inc_header.tpl" sPageTitle="Manage Users &raquo; Create User"}
+	
+	<h1>Manage Users &raquo; Create User</h1>
+	{include file="inc_alerts.tpl"}
+	
+	<form id="add-form" class="form-horizontal" method="post" action="/admin/users/manage/add/s/">
+		<div class="row-fluid">
+			<div class="span12">	
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">User Info</span>
+					</div>
+					<div id="pagecontent" class="accordion-body">
+						<div class="accordion-inner">
+							<div class="control-group">
+								<label class="control-label" for="form-username">Username</label>
+								<div class="controls">
+									<input type="text" name="username" id="form-username" value="{$aUser.username}" class="span12 validate[required]">
+								</div>
+							</div>
 
-<section id="content" class="content">
-	<header>
-		<h2>Manage Users &raquo; Add User</h2>
-	</header>
+							<div class="control-group">
+								<label class="control-label" for="form-password">Password</label>
+								<div class="controls">
+									<input type="password" name="password" id="form-password" value="{$aUser.password}" class="span12 validate[required]">
+								</div>
+							</div>
 
-	<section class="inner-content">	
-		<form method="post" action="/admin/users/add/s/">
-			<fieldset>
-				<legend>User Info</legend>
-					<label>*Username:</label><br />
-					<input type="text" name="username" maxlength="100" value="{$aUser.username}"><br />
-					<label>*Password:</label><br />
-					<input type="text" name="password" maxlength="100" value="{$aUser.password}"><br />
-					<label>*Email:</label><br />
-					<input type="text" name="email_address" maxlength="100" value="{$aUser.email_address}"><br />
-					<label>*First Name:</label><br />
-					<input type="text" name="fname" maxlength="100" value="{$aUser.fname}"><br />
-					<label>*Last Name:</label><br />
-					<input type="text" name="lname" maxlength="100" value="{$aUser.lname}"><br />
-					{if $sSuperAdmin}
-						<input type="checkbox" name="super" id="form_super" value="1"{if $aUser.super == 1} checked="checked"{/if}> <label for="form_super">Super Admin</label><br />
-					{/if}
-			</fieldset>
-			<fieldset id="fieldset_categories">
-				<legend>Privileges:</legend>
-				<p class="selectOptions">Select: <a href="#" class="checkAll">All</a>, <a href="#" class="uncheckAll">None</a></p>
-				<ul class="categories">
-					{foreach from=$aAdminFullMenu item=aMenu key=x}
-						<li>					
-							<input id="menu_{$aMenu.id}" type="checkbox" name="privileges[]" value="{$x}" {if in_array($x, $aUser.privileges)} checked="checked"{/if}>
-							<label style="display: inline;" for="menu_{$aMenu.id}">{$aMenu.title|clean_html}</label>
-						</li>
-					{/foreach}
-				</ul>
-			</fieldset>
-			<input type="submit" value="Add User">
-			<a class="cancel" href="/admin/users/" title="Cancel">Cancel</a>
-		</form>
-	</section>
-</section>
-<script type="text/javascript">
-{literal}
+							<div class="control-group">
+								<label class="control-label" for="form-email_address">Email Address</label>
+								<div class="controls">
+									<input type="text" name="email_address" id="form-email_address" value="{$aUser.email_address}" class="span12 validate[required,email]">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label" for="form-firstname">First Name</label>
+								<div class="controls">
+									<input type="text" name="fname" id="form-firstname" value="{$aUser.fname}" class="span12 validate[required]">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label" for="form-lastname">Last Name</label>
+								<div class="controls">
+									<input type="text" name="lname" id="form-lastname" value="{$aUser.lname}" class="span12 validate[required]">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label" for="form-privileges">Privileges</label>
+								<div class="controls">
+									{if $sSuperAdmin}<label class="checkbox"><input type="checkbox" name="super" value="1"{if $aUser.super == 1} checked="checked"{/if}> Super Admin</label>{/if}
+									{foreach from=$aAdminFullMenu item=aMenu key=x}
+										<label class="checkbox"><input type="checkbox" name="privileges[]" value="{$x}"{if in_array($x, $aUser.privileges) || $aUser.super == 1} checked="checked"{/if} class="privileges"> {$aMenu.title|clean_html}</label>
+									{/foreach}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<input type="submit" value="Create User" class="btn btn-primary">
+				<a href="/admin/users/" title="Cancel" class="btn">Cancel</a>
+			</div>
+		</div>
+	</form>
+
+{footer}
+<script>
 $(function(){
-	$("form").validateForm([
-		"required,username,Username is required",
-		"required,password,Password is required",
-		"required,email_address,An email address is required",
-		"valid_email,email_address,A valid email address is required",
-		"required,fname,First Name is required",
-		"required,lname,Last Name is required",
-		"required,privileges[],You must select at least one privilege"
-	]);
+	jQuery('#add-form').validationEngine({ promptPosition: "bottomLeft" });
+
+	$('input[name="super"]').change(function() {
+		whichForm = $(this).closest("form");
+		if(this.checked)
+			$('input.privileges').each(function() { $(this).attr('checked', true); });
+		else
+			$('input.privileges').each(function() { $(this).attr('checked', false); });
+	});
 });
-{/literal}
 </script>
+{/footer}
 {include file="inc_footer.tpl"}

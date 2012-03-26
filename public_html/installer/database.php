@@ -411,6 +411,7 @@ $aTables = array(
 			"super" => array("type" => "boolean"),
 			"resetCode" => array("type" => "text","length" => 255),
 			"last_login" => array("type" => "integer","unsigned" => 1,"default" => null),
+			"last_password" => array("type" => "integer","unsigned" => 1,"default" => null),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),

@@ -169,6 +169,7 @@ class admin_users extends adminController
 				"users",
 				array(
 					"password" => sha1($_POST["password"])
+					,"last_password" => time()
 				),
 				$_POST["id"]
 			);
@@ -206,6 +207,7 @@ class admin_users extends adminController
 				"users",
 				array(
 					"password" => sha1($_POST["password"])
+					,"last_password" => time()
 				),
 				$_POST["id"]
 			);
