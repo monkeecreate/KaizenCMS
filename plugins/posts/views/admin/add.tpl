@@ -46,28 +46,31 @@
 						</div>
 					</div>
 				</div>
-				
-				{*
-				{if $sUseCategories == true}
-				<fieldset id="fieldset_categories">
-					<legend>Assign article to category:</legend>
-					<ul class="categories">
-						{foreach from=$aCategories item=aCategory}
-							<li>
-								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
-								 {if in_array($aCategory.id, $aArticle.categories)} checked="checked"{/if}>
-								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name}</label>
-							</li>
-						{foreachelse}
-							<li>There are currently no categories. Need to <a href="#" title="">add one</a>?</li>
-						{/foreach}
-					</ul>
-				</fieldset><br />
-				{/if}
-				*}
 
-				<!-- <input type="submit" value="Create Post" class="btn btn-primary">
-				<a href="/admin/posts/" title="Cancel" class="btn">Cancel</a> -->
+				{if $sUseCategories == true}
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Categories</span>
+					</div>
+					<div class="accordion-body">
+						<div class="accordion-inner">
+							<div class="controls">
+								{if !empty($aCategories)}
+									<select name="categories[]" data-placeholder="Select Categories" class="chzn-select span12" multiple="">
+										{foreach from=$aCategories item=aCategory}
+											<option value="{$aCategory.id}"{if in_array($aCategory.id, $aPost.categories)} selected="selected"{/if}>{$aCategory.name}</option>
+										{/foreach}
+				              		</select>
+
+				              		<p class="help-block">Hold down ctrl (or cmd) to select multiple categories at once.</p>
+			              		{else}
+			              			<p>There are currently no categories. Need to <a href="#" title="">add one</a>?</p>
+			              		{/if}
+							</div>
+						</div>
+					</div>
+				</div>
+				{/if}
 			</div>
 			
 			<div class="span4 aside">
@@ -79,8 +82,8 @@
 						<div class="accordion-inner">
 							<div class="control-group cf">
 								<div class="controls">
-									<input type="submit" name="submit" value="Save Draft" class="btn pull-left">
-									<input type="submit" name="submit" value="Publish" class="btn btn-primary pull-right">
+									<input type="submit" name="submit-type" value="Save Draft" class="btn pull-left">
+									<input type="submit" name="submit-type" value="Publish" class="btn btn-primary pull-right">
 								</div>
 							</div>
 

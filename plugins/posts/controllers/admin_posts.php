@@ -54,9 +54,9 @@ class admin_posts extends adminController {
 			$this->forward("/admin/posts/add/?error=".urlencode("Please fill in all required fields!"));
 		}
 
-		if($_POST["submit"] === "Save Draft")
+		if($_POST["submit-type"] === "Save Draft")
 			$sActive = 0;
-		elseif($_POST["submit"] === "Publish")
+		elseif($_POST["submit-type"] === "Publish")
 			$sActive = 1;
 		
 		$publish_on = strtotime(

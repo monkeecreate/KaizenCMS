@@ -8,6 +8,9 @@ $(document).ready(function() {
 	$('.sortable').sortable();
 	$('.datepicker').datepicker();
 
+	/* Init jQuery Plugins */
+	$('.chzn-select').chosen();
+
 	/**
 	 * Load GET into variable
 	 *

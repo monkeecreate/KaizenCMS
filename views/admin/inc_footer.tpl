@@ -74,6 +74,7 @@
 	<script src="/js/datatables/jquery.dataTables.min.js"></script>
 	<script src="/js/validationEngine/jquery.validationEngine-en.js"></script>
 	<script src="/js/validationEngine/jquery.validationEngine.js"></script>
+	<script src="/js/chosen/chosen.jquery.min.js"></script>
 	<script src="/js/common_admin.js"></script>
 </body>
 </html>
