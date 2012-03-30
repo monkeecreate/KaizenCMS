@@ -43,7 +43,7 @@ class admin_posts extends adminController {
 		$this->tplAssign("useComments", $this->model->useComments);
 		$this->tplAssign("minWidth", $this->model->imageMinWidth);
 		$this->tplAssign("minHeight", $this->model->imageMinHeight);
-		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
+		$this->tplAssign("sExcerptCharacters", $this->model->excerptCharacters);
 		$this->tplAssign("sTwitterConnect", $this->getSetting("twitter_connect"));
 		$this->tplAssign("sFacebookConnect", $this->getSetting("facebook_connect"));
 		$this->tplDisplay("admin/add.tpl");
@@ -88,7 +88,7 @@ class admin_posts extends adminController {
 			array(
 				"title" => $_POST["title"]
 				,"tag" => $sTag
-				,"excerpt" => (string)substr($_POST["excerpt"], 0, $this->model->shortContentCharacters)
+				,"excerpt" => (string)substr($_POST["excerpt"], 0, $this->model->excerptCharacters)
 				,"content" => $_POST["content"]
 				,"tags" => $_POST["tags"]
 				,"publish_on" => $publish_on
@@ -179,7 +179,7 @@ class admin_posts extends adminController {
 		$this->tplAssign("useComments", $this->model->useComments);
 		$this->tplAssign("minWidth", $this->model->imageMinWidth);
 		$this->tplAssign("minHeight", $this->model->imageMinHeight);
-		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
+		$this->tplAssign("sExcerptCharacters", $this->model->excerptCharacters);
 		$this->tplAssign("sTwitterConnect", $this->getSetting("twitter_connect"));
 		$this->tplAssign("sFacebookConnect", $this->getSetting("facebook_connect"));
 		$this->tplDisplay("admin/edit.tpl");
@@ -219,7 +219,7 @@ class admin_posts extends adminController {
 			"posts",
 			array(
 				"title" => $_POST["title"]
-				,"excerpt" => (string)substr($_POST["excerpt"], 0, $this->model->shortContentCharacters)
+				,"excerpt" => (string)substr($_POST["excerpt"], 0, $this->model->excerptCharacters)
 				,"content" => $_POST["content"]
 				,"publish_on" => $publish_on
 				,"sticky" => $this->boolCheck($_POST["sticky"])

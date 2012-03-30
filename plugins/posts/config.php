@@ -17,7 +17,7 @@ $aPluginInfo = array(
 		"useCategories" => true,
 		"perPage" => 10,
 		"useComments" => true,
-		"shortContentCharacters" => 250, // max characters for short content
+		"excerptCharacters" => 250, // character limit for excerpt
 		"sortCategory" => "manual-asc" // manual, name, items, random - asc, desc
 	)
 );

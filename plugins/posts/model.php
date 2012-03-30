@@ -1,6 +1,6 @@
 <?php
 class posts_model extends appModel {
-	public $useImage, $imageMinWidth, $imageMinHeight, $imageFolder, $useCategories, $perPage, $useComments, $shortContentCharacters, $sortCategory;
+	public $useImage, $imageMinWidth, $imageMinHeight, $imageFolder, $useCategories, $perPage, $useComments, $excerptCharacters, $sortCategory;
 	
 	function __construct() {
 		parent::__construct();
@@ -98,7 +98,7 @@ class posts_model extends appModel {
 			if(!empty($aPost["excerpt"]))
 				$aPost["excerpt"] = nl2br(htmlspecialchars(stripslashes($aPost["excerpt"])));
 			else
-				$aPost["excerpt"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aPost["content"])))), 0, $this->shortContentCharacters);
+				$aPost["excerpt"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aPost["content"])))), 0, $this->excerptCharacters);
 		
 			$aPost["content"] = stripslashes($aPost["content"]);
 			$aPost["url"] = "/posts/".date("Y", $aPost["created_datetime"])."/".date("m", $aPost["created_datetime"])."/".date("d", $aPost["created_datetime"])."/".$aPost["tag"]."/";

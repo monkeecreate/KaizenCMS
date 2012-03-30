@@ -41,7 +41,7 @@
 						<div class="accordion-inner">
 							<div class="controls">
 								<textarea name="excerpt" class="span12" style="height:115px;">{$aPost.excerpt}</textarea>
-								<p class="help-block"><span id="currentCharacters"></span> of {$sShortContentCount} characters</p>
+								<p class="help-block"><span id="currentCharacters"></span> of {$sExcerptCharacters} characters</p>
 							</div>
 						</div>
 					</div>
@@ -218,23 +218,11 @@ $(function(){
 
 	$('#currentCharacters').html($('textarea[name=excerpt]').val().length);
 	$('textarea[name=excerpt]').keyup(function() {
-		if($(this).val().length > {$sShortContentCount})
+		if($(this).val().length > {$sExcerptCharacters})
 			$('#currentCharacters').parent().css('color', '#cc0000');
 		else
 			$('#currentCharacters').parent().css('color', 'inherit');
 		$('#currentCharacters').html($(this).val().length);
-	});
-	
-	$(".eventExpire").click(function() {
-		$(this).hide();
-		$('input[name=use_kill]').attr('checked', true);
-		$(".expireDate").fadeIn("slow");
-	});
-	
-	$(".cancelExpire").click(function() {
-		$(".expireDate").slideUp('fast');
-		$("input[name=use_kill]").attr('checked', false);
-		$(".eventExpire").fadeIn('slow');
 	});
 });
 </script>
