@@ -4,7 +4,7 @@
 	<h1>Manage Users &raquo; Create User</h1>
 	{include file="inc_alerts.tpl"}
 	
-	<form id="add-form" class="form-horizontal" method="post" action="/admin/users/manage/add/s/">
+	<form id="add-form" class="form-horizontal" method="post" action="/admin/users/add/s/">
 		<div class="row-fluid">
 			<div class="span12">	
 				<div class="accordion-group">

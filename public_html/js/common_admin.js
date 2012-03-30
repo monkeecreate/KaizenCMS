@@ -6,6 +6,7 @@ $(document).ready(function() {
 
 	/* Init jQueryUI Modules */
 	$('.sortable').sortable();
+	$('.datepicker').datepicker();
 
 	/**
 	 * Load GET into variable

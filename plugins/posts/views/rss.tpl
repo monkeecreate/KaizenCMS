@@ -12,8 +12,8 @@
 		<item>
 			<title>{$aArticle.title}</title>
 			<link>http://{$domain}{$aArticle.url}</link>
-			{if !empty($aArticle.short_content)}
-			<description>{$aArticle.short_content}</description>
+			{if !empty($aArticle.excerpt)}
+			<description>{$aArticle.excerpt}</description>
 			{else}
 			<description>{$aArticle.content}</description>
 			{/if}

@@ -77,8 +77,23 @@ $aTables = array(
 				)
 			),
 			array(
-				"tag" => "settings",
+				"tag" => "users",
 				"sort_order" => 2, 
+				"info" => json_encode(
+					array(
+						"title" => "Users",
+						"menu" => array(
+							array(
+								"text" => "Manage Users",
+								"link" => "/admin/users/"
+							)
+						)
+					)
+				)
+			),
+			array(
+				"tag" => "settings",
+				"sort_order" => 3, 
 				"info" => json_encode(
 					array(
 						"title" => "Site Settings",
@@ -101,21 +116,6 @@ $aTables = array(
 								"text" => "Admin Menu",
 								"link" => "/admin/settings/admin-menu/",
 								"type" => "super"
-							)
-						)
-					)
-				)
-			),
-			array(
-				"tag" => "users",
-				"sort_order" => 3, 
-				"info" => json_encode(
-					array(
-						"title" => "Users",
-						"menu" => array(
-							array(
-								"text" => "Manage Users",
-								"link" => "/admin/users/"
 							)
 						)
 					)

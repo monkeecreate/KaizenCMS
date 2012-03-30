@@ -1,8 +1,8 @@
 <?php
-class news extends appController {
+class posts extends appController {
 	function __construct() {
 		// Load model when creating appController
-		parent::__construct("news");
+		parent::__construct("posts");
 	}
 	
 	function index() {
@@ -11,10 +11,12 @@ class news extends appController {
 		if(empty($sCurrentPage))
 			$sCurrentPage = 1;
 		
-		$aArticlePages = array_chunk($this->model->getArticles($_GET["category"]), $this->model->perPage);
-		$aArticles = $aArticlePages[$sCurrentPage - 1];
+		$aPostPages = array_chunk($this->model->getPosts($_GET["category"]), $this->model->perPage);
+		$aPosts = $aPostPages[$sCurrentPage - 1];
 		
 		$aPaging = array(
+			"total" => count($aPostPages),
+			"current" => $sCurrentPage,
 			"back" => array(
 				"page" => $sCurrentPage - 1,
 				"use" => true
@@ -28,7 +30,7 @@ class news extends appController {
 		if(($sCurrentPage - 1) < 1 || $sCurrentPage == 1)
 			$aPaging["back"]["use"] = false;
 		
-		if($sCurrentPage == count($aArticlePages) || count($aArticlePages) == 0)
+		if($sCurrentPage == count($aPostPages) || count($aPostPages) == 0)
 			$aPaging["next"]["use"] = false;
 		#########################
 		
@@ -36,7 +38,7 @@ class news extends appController {
 			$aCategory = $this->model->getCategory($_GET["category"]);
 
 		$this->tplAssign("aCategories", $this->model->getCategories(false));
-		$this->tplAssign("aArticles", $aArticles);
+		$this->tplAssign("aPosts", $aPosts);
 		$this->tplAssign("aPaging", $aPaging);
 		$this->tplAssign("aCategory", $aCategory);
 		
@@ -47,26 +49,26 @@ class news extends appController {
 		else
 			$this->tplDisplay("index.tpl");
 	}
+	function post() {
+		$aPost = $this->model->getPost(null, $this->urlVars->dynamic["tag"]);
+		
+		if(empty($aPost))
+			$this->error('404');
+
+		$this->tplAssign("aPost", $aPost);
+		
+		if($this->tplExists("post-".$aPost["id"].".tpl"))
+			$this->tplDisplay("post-".$aPost["id"].".tpl");
+		else
+			$this->tplDisplay("post.tpl");
+	}
 	function rss() {
-		$aArticles = array_slice($this->model->getArticles($_GET["category"]), 0, 15);
+		$aPosts = array_slice($this->model->getPosts($_GET["category"]), 0, 15);
 
 		$this->tplAssign("domain", $_SERVER["SERVER_NAME"]);
-		$this->tplAssign("aArticles", $aArticles);
+		$this->tplAssign("aPosts", $aPosts);
 		
 		header("Content-Type: application/rss+xml");
 		$this->tplDisplay("rss.tpl");
-	}
-	function article() {
-		$aArticle = $this->model->getArticle(null, $this->urlVars->dynamic["tag"]);
-		
-		if(empty($aArticle))
-			$this->error('404');
-
-		$this->tplAssign("aArticle", $aArticle);
-		
-		if($this->tplExists("article-".$aArticle["id"].".tpl"))
-			$this->tplDisplay("article-".$aArticle["id"].".tpl");
-		else
-			$this->tplDisplay("article.tpl");
 	}
 }

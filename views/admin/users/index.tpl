@@ -27,17 +27,8 @@
 						{/if}
 					</td>
 					<td class="center">
-						<a href="/admin/users/edit/{$aUser.id}/" title="Edit User">
-							<img src="/images/icons/pencil.png" alt="edit icon">
-						</a>
-						{if $user_details.id != $aUser.id}
-							<a href="/admin/users/delete/{$aUser.id}/"
-						 onclick="return confirm_('Are you sure you would like to delete: {$aUser.username}?');" title="Delete User">
-								<img src="/images/icons/bin_closed.png" alt="delete icon">
-							</a>
-						{else}
-							<img src="/images/spacerIcon.png" alt="spacer">
-						{/if}
+						<a href="/admin/users/edit/{$aUser.id}/" title="Edit User" rel="tooltip"><i class="icon-pencil"></i></a>
+						{if $aAccount.id != $aUser.id}<a href="/admin/users/delete/{$aUser.id}/" title="Delete User" rel="tooltip" onclick="return confirm('Are you sure you would like to delete: {$aUser.username}?');"><i class="icon-trash"></i></a>{/if}
 					</td>
 				</tr>
 			{/foreach}

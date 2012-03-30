@@ -1,47 +1,46 @@
 <?php
-class admin_news extends adminController {
+class admin_posts extends adminController {
 	public $errors;
 	
 	function __construct() {
-		parent::__construct("news");
+		parent::__construct("posts");
 		
-		$this->menuPermission("news");
+		$this->menuPermission("posts");
 		
 		$this->errors = array();
 	}
 	
-	### DISPLAY ######################
 	function index() {		
 		// Clear saved form info
-		$_SESSION["admin"]["admin_news"] = null;
+		$_SESSION["admin"]["admin_posts"] = null;
 		
 		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sCategory", $_GET["category"]);
-		$this->tplAssign("aArticles", $this->model->getArticles($_GET["category"], true));
+		$this->tplAssign("aPosts", $this->model->getPosts($_GET["category"], true));
 		$this->tplAssign("sUseImage", $this->model->useImage);
 		
 		$this->tplDisplay("admin/index.tpl");
 	}
 	function add() {		
-		if(!empty($_SESSION["admin"]["admin_news"])) {
-			$aArticle = $_SESSION["admin"]["admin_news"];
-			$aArticle["datetime_show"] = strtotime($aArticle["datetime_show_date"]." ".$aArticle["datetime_show_Hour"].":".$aArticle["datetime_show_Minute"]." ".$aArticle["datetime_show_Meridian"]);
-			$aArticle["datetime_kill"] = strtotime($aArticle["datetime_kill_date"]." ".$aArticle["datetime_kill_Hour"].":".$aArticle["datetime_kill_Minute"]." ".$aArticle["datetime_kill_Meridian"]);
+		if(!empty($_SESSION["admin"]["admin_posts"])) {
+			$aPost = $_SESSION["admin"]["admin_posts"];
+			$aPost["publish_on"] = strtotime($aPost["publish_on_date"]." ".$aPost["publish_on_Hour"].":".$aPost["publish_on_Minute"]." ".$aPost["publish_on_Meridian"]);
 			
-			$this->tplAssign("aArticle", $aArticle);
+			$this->tplAssign("aPost", $aPost);
 		} else
-			$this->tplAssign("aArticle",
+			$this->tplAssign("aPost",
 				array(
-					"datetime_show_date" => date("m/j/Y")
-					,"datetime_kill_date" => date("m/j/Y")
+					"publish_on_date" => date("l, F d, Y")
 					,"active" => 1
 					,"categories" => array()
 				)
 			);
 		
+		$this->tplAssign("aUsers", $this->dbQuery("SELECT * FROM `{dbPrefix}users`", "all"));
 		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("useComments", $this->model->useComments);
 		$this->tplAssign("minWidth", $this->model->imageMinWidth);
 		$this->tplAssign("minHeight", $this->model->imageMinHeight);
 		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
@@ -49,53 +48,55 @@ class admin_news extends adminController {
 		$this->tplAssign("sFacebookConnect", $this->getSetting("facebook_connect"));
 		$this->tplDisplay("admin/add.tpl");
 	}
-	function add_s() {		
+	function add_s() {
 		if(empty($_POST["title"]) || empty($_POST["content"])) {
-			$_SESSION["admin"]["admin_news"] = $_POST;
-			$this->forward("/admin/news/add/?error=".urlencode("Please fill in all required fields!"));
+			$_SESSION["admin"]["admin_posts"] = $_POST;
+			$this->forward("/admin/posts/add/?error=".urlencode("Please fill in all required fields!"));
 		}
+
+		if($_POST["submit"] === "Save Draft")
+			$sActive = 0;
+		elseif($_POST["submit"] === "Publish")
+			$sActive = 1;
 		
-		$datetime_show = strtotime(
-			$_POST["datetime_show_date"]." "
-			.$_POST["datetime_show_Hour"].":".$_POST["datetime_show_Minute"]." "
-			.$_POST["datetime_show_Meridian"]
-		);
-		$datetime_kill = strtotime(
-			$_POST["datetime_kill_date"]." "
-			.$_POST["datetime_kill_Hour"].":".$_POST["datetime_kill_Minute"]." "
-			.$_POST["datetime_kill_Meridian"]
+		$publish_on = strtotime(
+			$_POST["publish_on_date"]." "
+			.$_POST["publish_on_Hour"].":".$_POST["publish_on_Minute"]." "
+			.$_POST["publish_on_Meridian"]
 		);
 		
 		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,100);
 	
-		$aArticles = $this->dbQuery(
-			"SELECT `tag` FROM `{dbPrefix}news`"
+		$aPosts = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}posts`"
 				." ORDER BY `tag`"
 			,"all"
 		);
 
-		if(in_array(array('tag' => $sTag), $aArticles)) {
+		if(in_array(array('tag' => $sTag), $aPosts)) {
 			$i = 1;
 			do {
 				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
 				$i++;
-				$checkDuplicate = in_array(array('tag' => $sTempTag), $aArticles);
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aPosts);
 			} while ($checkDuplicate);
 			$sTag = $sTempTag;
 		}
 		
 		$sID = $this->dbInsert(
-			"news",
+			"posts",
 			array(
 				"title" => $_POST["title"]
 				,"tag" => $sTag
-				,"short_content" => (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters)
+				,"excerpt" => (string)substr($_POST["excerpt"], 0, $this->model->shortContentCharacters)
 				,"content" => $_POST["content"]
-				,"datetime_show" => $datetime_show
-				,"datetime_kill" => $datetime_kill
-				,"use_kill" => $this->boolCheck($_POST["use_kill"])
+				,"tags" => $_POST["tags"]
+				,"publish_on" => $publish_on
+				,"allow_comments" => $this->boolCheck($_POST["allow_comments"])
+				,"allow_sharing" => $this->boolCheck($_POST["allow_sharing"])
 				,"sticky" => $this->boolCheck($_POST["sticky"])
-				,"active" => $this->boolCheck($_POST["active"])
+				,"active" => $this->boolCheck($sActive)
+				,"authorid" => $_POST["authorid"]
 				,"created_datetime" => time()
 				,"created_by" => $_SESSION["admin"]["userid"]
 				,"updated_datetime" => time()
@@ -106,19 +107,19 @@ class admin_news extends adminController {
 		if(!empty($_POST["categories"])) {
 			foreach($_POST["categories"] as $sCategory) {
 				$sID = $this->dbInsert(
-					"news_categories_assign",
+					"posts_categories_assign",
 					array(
-						"articleid" => $sID
+						"postid" => $sID
 						,"categoryid" => $sCategory
 					)
 				);
 			}
 		}
 		
-		$_SESSION["admin"]["admin_news"] = null;
+		$_SESSION["admin"]["admin_posts"] = null;
 		
 		if($_POST["post_twitter"] == 1 && $_POST["active"] == 1) {
-			$this->postTwitter($sID, $_POST["title"], $sTag);
+			$this->postTwitter($sID);
 		}
 		
 		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true) {
@@ -126,56 +127,56 @@ class admin_news extends adminController {
 			$this->image_upload_s();
 		} else {	
 			if($_POST["post_facebook"] == 1 && $_POST["active"] == 1)
-				$this->postFacebook($sID, $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $sTag, false);
+				$this->postFacebook($sID);
 				
-			$this->forward("/admin/news/?info=".urlencode("Article created successfully!")."&".implode("&", $this->errors));
+			$this->forward("/admin/posts/?info=".urlencode("Post created successfully!")."&".implode("&", $this->errors));
 		}
 	}
 	function edit() {		
-		if(!empty($_SESSION["admin"]["admin_news"])) {
-			$aArticleRow = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}news`"
+		if(!empty($_SESSION["admin"]["admin_posts"])) {
+			$aPostRow = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}posts`"
 					." WHERE `id` = ".$this->dbQuote($this->urlVars->dynamic["id"], "integer")
 				,"row"
 			);
 			
-			$aArticle = $_SESSION["admin"]["admin_news"];
+			$aPost = $_SESSION["admin"]["admin_posts"];
 			
-			$aArticle["updated_datetime"] = $aArticleRow["updated_datetime"];
-			$aArticle["updated_by"] = $this->dbQuery(
+			$aPost["updated_datetime"] = $aPostRow["updated_datetime"];
+			$aPost["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
-					." WHERE `id` = ".$aArticleRow["updated_by"]
+					." WHERE `id` = ".$aPostRow["updated_by"]
 				,"row"
 			);
 			
-			$this->tplAssign("aArticle", $aArticle);
+			$this->tplAssign("aPost", $aPost);
 		} else {
-			$aArticle = $this->model->getArticle($this->urlVars->dynamic["id"], null, true);
+			$aPost = $this->model->getPost($this->urlVars->dynamic["id"], null, true);
 			
-			$aArticle["categories"] = $this->dbQuery(
-				"SELECT `categories`.`id` FROM `{dbPrefix}news_categories` AS `categories`"
-					." INNER JOIN `{dbPrefix}news_categories_assign` AS `news_assign` ON `categories`.`id` = `news_assign`.`categoryid`"
-					." WHERE `news_assign`.`articleid` = ".$aArticle["id"]
+			$aPost["categories"] = $this->dbQuery(
+				"SELECT `categories`.`id` FROM `{dbPrefix}posts_categories` AS `categories`"
+					." INNER JOIN `{dbPrefix}posts_categories_assign` AS `posts_assign` ON `categories`.`id` = `posts_assign`.`categoryid`"
+					." WHERE `posts_assign`.`articleid` = ".$aPost["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
 				,"col"
 			);
 			
-			$aArticle["datetime_show_date"] = date("m/d/Y", $aArticle["datetime_show"]);
-			$aArticle["datetime_kill_date"] = date("m/d/Y", $aArticle["datetime_kill"]);
+			$aPost["publish_on_date"] = date("m/d/Y", $aPost["publish_on"]);
 			
-			$aArticle["updated_by"] = $this->dbQuery(
+			$aPost["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
-					." WHERE `id` = ".$aArticle["updated_by"]
+					." WHERE `id` = ".$aPost["updated_by"]
 				,"row"
 			);
 			
-			$this->tplAssign("aArticle", $aArticle);
+			$this->tplAssign("aPost", $aPost);
 		}
 		
 		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("useComments", $this->model->useComments);
 		$this->tplAssign("minWidth", $this->model->imageMinWidth);
 		$this->tplAssign("minHeight", $this->model->imageMinHeight);
 		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
@@ -185,49 +186,42 @@ class admin_news extends adminController {
 	}
 	function edit_s() {		
 		if(empty($_POST["title"]) || empty($_POST["content"])) {
-			$_SESSION["admin"]["admin_news"] = $_POST;
-			$this->forward("/admin/news/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
+			$_SESSION["admin"]["admin_posts"] = $_POST;
+			$this->forward("/admin/posts/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
 		
-		$datetime_show = strtotime(
-			$_POST["datetime_show_date"]." "
-			.$_POST["datetime_show_Hour"].":".$_POST["datetime_show_Minute"]." "
-			.$_POST["datetime_show_Meridian"]
-		);
-		$datetime_kill = strtotime(
-			$_POST["datetime_kill_date"]." "
-			.$_POST["datetime_kill_Hour"].":".$_POST["datetime_kill_Minute"]." "
-			.$_POST["datetime_kill_Meridian"]
+		$publish_on = strtotime(
+			$_POST["publish_on_date"]." "
+			.$_POST["publish_on_Hour"].":".$_POST["publish_on_Minute"]." "
+			.$_POST["publish_on_Meridian"]
 		);
 		
 		$sTag = substr(strtolower(str_replace("--","-",preg_replace("/([^a-z0-9_-]+)/i", "", str_replace(" ","-",trim($_POST["title"]))))),0,100);
 	
-		$aArticles = $this->dbQuery(
-			"SELECT `tag` FROM `{dbPrefix}news`"
+		$aPosts = $this->dbQuery(
+			"SELECT `tag` FROM `{dbPrefix}posts`"
 				." WHERE `id` != ".$this->dbQuote($_POST["id"], "integer")
 				." ORDER BY `tag`"
 			,"all"
 		);
 
-		if(in_array(array('tag' => $sTag), $aArticles)) {
+		if(in_array(array('tag' => $sTag), $aPosts)) {
 			$i = 1;
 			do {
 				$sTempTag = substr($sTag, 0, 100-(strlen($i)+1)).'-'.$i;
 				$i++;
-				$checkDuplicate = in_array(array('tag' => $sTempTag), $aArticles);
+				$checkDuplicate = in_array(array('tag' => $sTempTag), $aPosts);
 			} while ($checkDuplicate);
 			$sTag = $sTempTag;
 		}
 		
 		$this->dbUpdate(
-			"news",
+			"posts",
 			array(
 				"title" => $_POST["title"]
-				,"short_content" => (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters)
+				,"excerpt" => (string)substr($_POST["excerpt"], 0, $this->model->shortContentCharacters)
 				,"content" => $_POST["content"]
-				,"datetime_show" => $datetime_show
-				,"datetime_kill" => $datetime_kill
-				,"use_kill" => $this->boolCheck($_POST["use_kill"])
+				,"publish_on" => $publish_on
 				,"sticky" => $this->boolCheck($_POST["sticky"])
 				,"active" => $this->boolCheck($_POST["active"])
 				,"updated_datetime" => time()
@@ -236,47 +230,47 @@ class admin_news extends adminController {
 			$_POST["id"]
 		);
 		
-		$this->dbDelete("news_categories_assign", $_POST["id"], "articleid");
+		$this->dbDelete("posts_categories_assign", $_POST["id"], "postid");
 		if(!empty($_POST["categories"])) {
 			foreach($_POST["categories"] as $sCategory) {
 				$this->dbInsert(
-					"news_categories_assign",
+					"posts_categories_assign",
 					array(
-						"articleid" => $_POST["id"]
+						"postid" => $_POST["id"]
 						,"categoryid" => $sCategory
 					)
 				);
 			}
 		}
 		
-		$_SESSION["admin"]["admin_news"] = null;
-		$aArticle = $this->model->getArticle($_POST["id"]);
+		$_SESSION["admin"]["admin_posts"] = null;
+		$aPost = $this->model->getPost($_POST["id"]);
 		
 		if($_POST["post_twitter"] == 1 && $_POST["active"] == 1) {
-			$this->postTwitter($_POST["id"], $_POST["title"], $aArticle["tag"]);
+			$this->postTwitter($_POST["id"]);
 		}
 		
 		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true)
 			$this->image_upload_s();
 		else {
 			if($_POST["post_facebook"] == 1 && $_POST["active"] == 1)
-				$this->postFacebook($_POST["id"], $_POST["title"], (string)substr($_POST["short_content"], 0, $this->model->shortContentCharacters), $aArticle["tag"], false);
+				$this->postFacebook($_POST["id"]);
 
 			if($_POST["submit"] == "Save Changes")
-				$this->forward("/admin/news/?info=".urlencode("Changes saved successfully!")."&".implode("&", $this->errors));
+				$this->forward("/admin/posts/?info=".urlencode("Changes saved successfully!")."&".implode("&", $this->errors));
 			elseif($_POST["submit"] == "edit")
-				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?".implode("&", $this->errors));
+				$this->forward("/admin/posts/image/".$_POST["id"]."/edit/?".implode("&", $this->errors));
 			elseif($_POST["submit"] == "delete")
-				$this->forward("/admin/news/image/".$_POST["id"]."/delete/?".implode("&", $this->errors));
+				$this->forward("/admin/posts/image/".$_POST["id"]."/delete/?".implode("&", $this->errors));
 		}
 	}
 	function delete() {		
-		$this->dbDelete("news", $this->urlVars->dynamic["id"]);
-		$this->dbDelete("news_categories_assign", $this->urlVars->dynamic["id"], "articleid");
+		$this->dbDelete("posts", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("posts_categories_assign", $this->urlVars->dynamic["id"], "postid");
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 		
-		$this->forward("/admin/news/?info=".urlencode("Article removed successfully!"));
+		$this->forward("/admin/posts/?info=".urlencode("Post removed successfully!"));
 	}
 	function image_upload_s() {		
 		if(!empty($_GET["post_facebook"]))
@@ -295,12 +289,12 @@ class admin_news extends adminController {
 			
 			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
 			if($aImageSize[0] < $this->model->imageMinWidth || $aImageSize[1] < $this->model->imageMinHeight) {
-				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+				$this->forward("/admin/posts/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
 			}
 
 			if(move_uploaded_file($_FILES["image"]["tmp_name"], $sFile)) {
 				$this->dbUpdate(
-					"news",
+					"posts",
 					array(
 						"photo_x1" => 0
 						,"photo_y1" => 0
@@ -312,11 +306,11 @@ class admin_news extends adminController {
 					$_POST["id"]
 				);
 				
-				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?post_facebook=".$sPostFacebook);
+				$this->forward("/admin/posts/image/".$_POST["id"]."/edit/?post_facebook=".$sPostFacebook);
 			} else
-				$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Unable to upload image.")."&post_facebook=".$sPostFacebook);
+				$this->forward("/admin/posts/image/".$_POST["id"]."/edit/?error=".urlencode("Unable to upload image.")."&post_facebook=".$sPostFacebook);
 		} else
-			$this->forward("/admin/news/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["image"]["type"].").")."&post_facebook=".$sPostFacebook);
+			$this->forward("/admin/posts/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["image"]["type"].").")."&post_facebook=".$sPostFacebook);
 	}
 	function image_edit() {		
 		if($this->model->imageMinWidth < 300) {
@@ -327,7 +321,7 @@ class admin_news extends adminController {
 			$sPreviewHeight = ceil($this->model->imageMinHeight * (300 / $this->model->imageMinWidth));
 		}
 		
-		$this->tplAssign("aArticle", $this->model->getArticle($this->urlVars->dynamic["id"]));
+		$this->tplAssign("aPost", $this->model->getPost($this->urlVars->dynamic["id"]));
 		$this->tplAssign("sFolder", $this->model->imageFolder);
 		$this->tplAssign("minWidth", $this->model->imageMinWidth);
 		$this->tplAssign("minHeight", $this->model->imageMinHeight);
@@ -338,7 +332,7 @@ class admin_news extends adminController {
 	}
 	function image_edit_s() {		
 		$this->dbUpdate(
-			"news",
+			"posts",
 			array(
 				"photo_x1" => $_POST["x1"]
 				,"photo_y1" => $_POST["y1"]
@@ -350,16 +344,16 @@ class admin_news extends adminController {
 			$_POST["id"]
 		);
 		
-		$aArticle = $this->model->getArticle($_POST["id"]);
+		$aPost = $this->model->getPost($_POST["id"]);
 		
 		if($_POST["post_facebook"] == 1)
-			$this->postFacebook($aArticle["id"], $aArticle["title"], $aArticle["short_content"], $aArticle["tag"], true);
+			$this->postFacebook($aPost["id"]);
 		
-		$this->forward("/admin/news/?info=".urlencode("Article updated."));
+		$this->forward("/admin/posts/?info=".urlencode("Post updated."));
 	}
 	function image_delete() {		
 		$this->dbUpdate(
-			"news",
+			"posts",
 			array(
 				"photo_x1" => 0
 				,"photo_y1" => 0
@@ -373,17 +367,17 @@ class admin_news extends adminController {
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 
-		$this->forward("/admin/news/?info=".urlencode("Image removed successfully!"));
+		$this->forward("/admin/posts/?info=".urlencode("Image removed successfully!"));
 	}
 	function categories_index() {		
-		$_SESSION["admin"]["admin_news_categories"] = null;
+		$_SESSION["admin"]["admin_posts_categories"] = null;
 		
 		$sMinSort = $this->dbQuery(
-			"SELECT MIN(`sort_order`) FROM `{dbPrefix}news_categories`"
+			"SELECT MIN(`sort_order`) FROM `{dbPrefix}posts_categories`"
 			,"one"
 		);
 		$sMaxSort = $this->dbQuery(
-			"SELECT MAX(`sort_order`) FROM `{dbPrefix}news_categories`"
+			"SELECT MAX(`sort_order`) FROM `{dbPrefix}posts_categories`"
 			,"one"
 		);
 		
@@ -397,7 +391,7 @@ class admin_news extends adminController {
 	}
 	function categories_add_s() {
 		$sOrder = $this->dbQuery(
-			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}news_categories`"
+			"SELECT MAX(`sort_order`) + 1 FROM `{dbPrefix}posts_categories`"
 			,"one"
 		);
 		
@@ -405,45 +399,45 @@ class admin_news extends adminController {
 			$sOrder = 1;
 		
 		$this->dbInsert(
-			"news_categories",
+			"posts_categories",
 			array(
 				"name" => $_POST["name"]
 				,"sort_order" => $sOrder
 			)
 		);
 
-		$this->forward("/admin/news/categories/?info=".urlencode("Category created successfully!"));
+		$this->forward("/admin/posts/categories/?info=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbUpdate(
-			"news_categories",
+			"posts_categories",
 			array(
 				"name" => $_POST["name"]
 			),
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/news/categories/?info=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/posts/categories/?info=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
-		$this->dbDelete("news_categories", $this->urlVars->dynamic["id"]);
-		$this->dbDelete("news_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
+		$this->dbDelete("posts_categories", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("posts_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
-		$this->forward("/admin/news/categories/?info=".urlencode("Category removed successfully!"));
+		$this->forward("/admin/posts/categories/?info=".urlencode("Category removed successfully!"));
 	}
 	function categories_sort() {
 		$aCategory = $this->model->getCategory($this->urlVars->dynamic["id"], "integer");
 		
 		if($this->urlVars->dynamic["sort"] == "up") {
 			$aOld = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}news_categories`"
+				"SELECT * FROM `{dbPrefix}posts_categories`"
 					." WHERE `sort_order` < ".$aCategory["sort_order"]
 					." ORDER BY `sort_order` DESC"
 				,"row"
 			);
 		} elseif($this->urlVars->dynamic["sort"] == "down") {
 			$aOld = $this->dbQuery(
-				"SELECT * FROM `{dbPrefix}news_categories`"
+				"SELECT * FROM `{dbPrefix}posts_categories`"
 					." WHERE `sort_order` > ".$aCategory["sort_order"]
 					." ORDER BY `sort_order` ASC"
 				,"row"
@@ -451,7 +445,7 @@ class admin_news extends adminController {
 		}
 			
 		$this->dbUpdate(
-			"news_categories",
+			"posts_categories",
 			array(
 				"sort_order" => 0
 			),
@@ -459,7 +453,7 @@ class admin_news extends adminController {
 		);
 		
 		$this->dbUpdate(
-			"news_categories",
+			"posts_categories",
 			array(
 				"sort_order" => $aCategory["sort_order"]
 			),
@@ -467,29 +461,32 @@ class admin_news extends adminController {
 		);
 			
 		$this->dbUpdate(
-			"news_categories",
+			"posts_categories",
 			array(
 				"sort_order" => $aOld["sort_order"]
 			),
 			$aCategory["id"]
 		);
 		
-		$this->forward("/admin/news/categories/?info=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/posts/categories/?info=".urlencode("Sort order saved successfully!"));
 	}
-	##################################
 	
-	function postTwitter($sID, $sTitle, $sTag) {
+	/**
+	 * Send post to Twitter
+	 * @param  integer $sID    Unique post ID.
+	 */
+	function postTwitter($sID) {
 		$oTwitter = $this->loadTwitter();
-		$aArticle = $this->model->getArticle($sID);
+		$aPost = $this->model->getPost($sID);
 		
 		if($oTwitter != false) {
 			$sPrefix = 'http';
 			if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
 				$sPrefix .= "://";
 			
-			$sUrl = $this->urlShorten($sPrefix.$_SERVER["HTTP_HOST"].$aArticle["url"]);
+			$sUrl = $this->urlShorten($sPrefix.$_SERVER["HTTP_HOST"].$aPost["url"]);
 			
-			$aParameters = array("status" => $_POST["title"]." ".$sUrl);
+			$aParameters = array("status" => $aPost["title"]." ".$aPost["url"]);
 			$status = $oTwitter->post("statuses/update", $aParameters);
 			
 			if($oTwitter->http_code != 200) {
@@ -499,9 +496,14 @@ class admin_news extends adminController {
 			$this->errors[] = "errors[]=".urlencode("Unable to connect with Twitter. Please try again later.");
 		}
 	}
-	function postFacebook($sID, $sTitle, $sShortContent, $sTag, $sImage) {
+
+	/**
+	 * Send post to Facebook
+	 * @param  integer $sID Unique post ID.
+	 */
+	function postFacebook($sID) {
 		$aFacebook = $this->loadFacebook();
-		$aArticle = $this->model->getArticle($sID);
+		$aPost = $this->model->getPost($sID);
 		
 		$sPrefix = 'http';
 		if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
@@ -510,10 +512,10 @@ class admin_news extends adminController {
 		if($sImage == false)
 			$sImage = $sPrefix.$_SERVER["HTTP_HOST"].'/images/facebookConnect.png';
 		else
-			$sImage = $sPrefix.$_SERVER["HTTP_HOST"].'/image/news/'.$sID.'/?width=90';
+			$sImage = $sPrefix.$_SERVER["HTTP_HOST"].'/image/posts/'.$aPost["id"].'/?width=90';
 		
 		try {
-			$aFacebook["obj"]->api('/me/feed/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $sTitle, "description" => $sShortContent, "link" => $sPrefix.$_SERVER["HTTP_HOST"].$aArticle["url"], "picture" => $sImage));
+			$aFacebook["obj"]->api('/me/feed/', 'post', array("access_token" => $aFacebook["access_token"], "name" => $aPost["title"], "description" => $aPost["excerpt"], "link" => $sPrefix.$_SERVER["HTTP_HOST"].$aPost["url"], "picture" => $aPost["image"]));
 		} catch (FacebookApiException $e) {
 			error_log($e);
 			$this->errors[] = "errors[]=".urlencode("Error posting to Facebook. Please try again later.");

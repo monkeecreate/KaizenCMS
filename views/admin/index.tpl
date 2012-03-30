@@ -58,17 +58,40 @@
 			</div>
 		</div>
 
+		{getSetting tag="twitter-username" assign="sTwitterUsername"}
+		{if !empty($sTwitterUsername)}
 		<div class="accordion-group span4">
 			<div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" href="#loremipsumwidget">Lorem Ipsum Widget</a>
+				<a class="accordion-toggle" data-toggle="collapse" href="#twittermentions">@{$sTwitterUsername} Twitter Mentions</a>
 			</div>
-			<div id="loremipsumwidget" class="accordion-body in collapse">
+			<div id="twittermentions" class="accordion-body in collapse">
 				<div class="accordion-inner">
 					<div class="controls">
-						<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+						<ul>
+							<li>Loading tweets...</li>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
+		{/if}
 	</div>
+
+{footer}
+<script>
+$(function(){
+	
+	$.getJSON("http://search.twitter.com/search.json?q=%40twofivethreetwo&rrp=5&callback=?", function(data) {
+		console.log(data);
+
+		html = '';
+		jQuery.each(data.results, function() {
+			html += '<li><strong><a href="http://twitter.com/'+this.from_user+'">@'+this.from_user+'</a></strong>: '+this.text+'</li>';
+		});
+
+		$('#twittermentions ul').html(html);
+	});
+});
+</script>
+{/footer}
 {include file="inc_footer.tpl"}
