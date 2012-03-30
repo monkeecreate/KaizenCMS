@@ -31,6 +31,8 @@ class admin_posts extends adminController {
 			$this->tplAssign("aPost",
 				array(
 					"publish_on_date" => date("l, F d, Y")
+					,"allow_comments" => 1
+					,"allow_sharing" => 1
 					,"active" => 1
 					,"categories" => array()
 				)
