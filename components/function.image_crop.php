@@ -1,8 +1,8 @@
 <?php
 function smarty_function_image_crop($aParams, &$oSmarty) {
 	if($aParams["load"] == "cropper") {
-		$html = "<script src=\"/scripts/jcrop/jquery.Jcrop.min.js\"></script>\n";
-		$html .= "<link rel=\"stylesheet\" href=\"/scripts/jcrop/jquery.Jcrop.css\" type=\"text/css\" />\n";
+		$html = "<script src=\"/js/jcrop/jquery.Jcrop.min.js\"></script>\n";
+		$html .= "<link rel=\"stylesheet\" href=\"/js/jcrop/jquery.Jcrop.css\" type=\"text/css\" />\n";
 		$html .= "<script language=\"Javascript\">\n";
 		$html .= "$(document).ready(function(){\n";
 		$html .= "	$('#".$aParams["img"]."').Jcrop({\n";

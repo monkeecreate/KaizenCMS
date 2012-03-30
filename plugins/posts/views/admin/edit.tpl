@@ -1,167 +1,258 @@
-{include file="inc_header.tpl" page_title="News Articles :: Edit Article" menu="news" page_style="halfContent"}
-{head}
-<script src="/scripts/jquery-iphone-checkboxes/jquery.iphone-style-checkboxes.js"></script>
-<link rel="stylesheet" href="/scripts/jquery-iphone-checkboxes/style.css" type="text/css">
-{/head}
-{assign var=subMenu value="Articles"}
+{$menu = "posts"}{$subMenu = "Posts"}
+{include file="inc_header.tpl" sPageTitle=$aPost.title|cat:" &raquo; Posts"}
+	
+	<h1>Posts &raquo; Edit Post</h1>
+	{include file="inc_alerts.tpl"}
+	
+	<form id="edit-form" method="post" action="/admin/posts/edit/s/" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$aPost.id}">
+		<div class="row-fluid">
+			<div class="span8">				
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Title</span>
+					</div>
+					<div id="pagecontent" class="accordion-body">
+						<div class="accordion-inner">
+							<div class="controls">
+								<input type="text" name="title" id="form-title" value="{$aPost.title}" class="span12 validate[required]">
+							</div>
+						</div>
+					</div>
+				</div>
 
-<form method="post" action="/admin/news/edit/s/" enctype="multipart/form-data">
-	<section id="content" class="content">
-		<header>
-			<h2>Manage News &raquo; Edit Article</h2>
-		</header>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Content</span>
+					</div>
+					<div class="accordion-body">
+						<div class="accordion-inner">
+							<div class="controls">
+								{html_editor content=$aPost.content name="content"}
+							</div>
+						</div>
+					</div>
+				</div>
 
-		<section class="inner-content">
-			<label>*Title:</label><br />
-			<input type="text" name="title" maxlength="100" value="{$aArticle.title}"><br />
-			<label>Short Content:</label><span class="right"><span id="currentCharacters"></span> of {$sShortContentCount} characters</span><br />
-			<textarea name="short_content" style="height:115px;">{$aArticle.short_content|replace:'<br />':''}</textarea><br />
-			<label>*Content:</label><br />
-			{html_editor content=$aArticle.content name="content"}<br />
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Excerpt</span>
+					</div>
+					<div class="accordion-body">
+						<div class="accordion-inner">
+							<div class="controls">
+								<textarea name="excerpt" class="span12" style="height:115px;">{$aPost.excerpt}</textarea>
+								<p class="help-block"><span id="currentCharacters"></span> of {$sExcerptCharacters} characters</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{if $sUseCategories == true}
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Categories</span>
+					</div>
+					<div class="accordion-body">
+						<div class="accordion-inner">
+							<div class="controls">
+								{if !empty($aCategories)}
+									<select name="categories[]" data-placeholder="Select Categories" class="chzn-select span12" multiple="">
+										{foreach from=$aCategories item=aCategory}
+											<option value="{$aCategory.id}"{if in_array($aCategory.id, $aPost.categories)} selected="selected"{/if}>{$aCategory.name}</option>
+										{/foreach}
+				              		</select>
+
+				              		<p class="help-block">Hold down ctrl (or cmd) to select multiple categories at once.</p>
+			              		{else}
+			              			<p>There are currently no categories. Need to <a href="#" title="">add one</a>?</p>
+			              		{/if}
+							</div>
+						</div>
+					</div>
+				</div>
+				{/if}
+			</div>
 			
-			{if $sUseCategories == true}
-				<fieldset id="fieldset_categories">
-					<legend>Assign article to category:</legend>
-					<ul class="categories">
-						{foreach from=$aCategories item=aCategory}
-							<li>
-								<input id="category_{$aCategory.id}" type="checkbox" name="categories[]" value="{$aCategory.id}"
-								 {if in_array($aCategory.id, $aArticle.categories)} checked="checked"{/if}>
-								<label style="display: inline;" for="category_{$aCategory.id}">{$aCategory.name}</label>
-							</li>
-						{foreachelse}
-							<li>
-								Currently no categories.
-							</li>
-						{/foreach}
-					</ul>
-				</fieldset><br />
-			{/if}
-			
-			<input type="submit" name="submit" value="Save Changes">
-			<a class="cancel" href="/admin/news/" title="Cancel">Cancel</a>
-			<input type="hidden" name="id" value="{$aArticle.id}">
-		</section>
-	</section> <!-- #content -->
+			<div class="span4 aside">
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Publish</span>
+					</div>
+					<div class="accordion-body">
+						<div class="accordion-inner">
+							<div class="control-group cf">
+								<div class="controls">
+									{if $aPost.active === 0}
+										<input type="submit" name="submit-type" value="Save Draft" class="btn pull-left">
+										<input type="submit" name="submit-type" value="Publish" class="btn btn-primary pull-right">
+									{else}
+										<input type="submit" name="submit-type" value="Update" class="btn btn-primary pull-right">
+									{/if}
+								</div>
+							</div>
 
-	<section id="sidebar" class="sidebar">
-		<header>
-			<h2>Article Options</h2>
-		</header>
+							<div class="control-group">
+								<div class="controls">
+									<label class="checkbox"><input type="checkbox" name="active" id="form-active" value="1"{if $aPost.active == 1} checked="checked"{/if}>Publish post to the website.</label>
+								</div>
 
-		<section>
-			{if $aArticle.photo_x2 > 0}
-			<figure class="itemImage">
-				<img src="/image/news/{$aArticle.id}/?width=165&rand={$randnum}" alt="{$aArticle.title} Image"><br />
-				<input name="submit" type="image" src="/images/admin/icons/pencil.png" value="edit">
-				<input name="submit" type="image" src="/images/admin/icons/bin_closed.png" value="delete">
-			</figure>
-			{/if}
-			
-			<fieldset>
-				<legend>Article Status</legend>
-				<span class="left">
-					<label>Active</label><br />
-					<input type="checkbox" name="active" value="1"{if $aArticle.active == 1} checked="checked"{/if}><br />
-				</span>
-				
-				<span class="right">
-					<label>Sticky</label><br />
-					<input type="checkbox" name="sticky" value="1"{if $aArticle.sticky == 1} checked="checked"{/if}><br />
-				</span>
-				<div class="clear">&nbsp;</div>
+								<div class="controls">
+									<label class="checkbox"><input type="checkbox" name="sticky" id="form-sticky" value="1"{if $aPost.sticky == 1} checked="checked"{/if}>Stick this post to the front page.</label>
+								</div>
+
+								{if $useComments}
+								<div class="controls">
+									<label class="checkbox"><input type="checkbox" name="allow_comments" id="form-comments" value="1"{if $aPost.allow_comments == 1} checked="checked"{/if}>Allow comments.</label>
+								</div>
+								{/if}
+
+								<div class="controls">
+									<label class="checkbox"><input type="checkbox" name="allow_sharing" id="form-sharing" value="1"{if $aPost.allow_sharing == 1} checked="checked"{/if}>Show social sharing buttons on this post.</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Schedule</span>
+					</div>
+					<div class="accordion-body">
+						<div class="accordion-inner">							
+							<div class="control-group">
+								<div class="controls timepicker">
+									<input type="input" name="publish_on_date" value="{$aPost.publish_on_date}" id="datepicker" class="span12">
+									@ {html_select_time time=$aPost.publish_on prefix="publish_on_" minute_interval=15 display_seconds=false use_24_hours=false}
+
+									<p class="help-block">The post will be pending until this date and time then it will automatically publish.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{if $sUseImage}
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Image</span>
+					</div>
+					<div class="accordion-body">
+						<div class="accordion-inner">							
+							<div class="control-group">
+								<div class="controls cf">
+									{if $aPost.photo_x2 > 0}
+										<img src="/image/posts/{$aPost.id}/?width=165&amp;rand={$randnum}" alt="{$aPost.title} Image" class="span12" style="margin: 0; float: none;">
+
+										<span class="pull-right">
+											<button name="image-action" value="edit" class="btn btn-mini btn-info">Edit</button>
+											<button name="image-action" value="delete" class="btn btn-mini btn-danger">Remove</button>
+										</span>
+									{else}
+										<input type="file" name="image">
+
+										<ul>
+											<li>File must be a .jpg</li>
+											<li>Minimum width is {$minWidth}px</li>
+											<li>Minimum height is {$minHeight}px</li>
+										</ul>
+									{/if}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{/if}
+				{if $aPost.photo_x2 > 0}
+				<figure class="itemImage hide">
+					<img src="/image/posts/{$aPost.id}/?width=165&amp;rand={$randnum}" alt="{$aPost.title} Image"><br />
+					<input name="submit" type="image" src="/images/icons/pencil.png" value="edit">
+					<input name="submit" type="image" src="/images/icons/bin_closed.png" value="delete">
+				</figure>
+				{/if}
+
+				{*{if !empty($sFacebookConnect) || !empty($sTwitterConnect)}*}
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Social Sharing</span>
+					</div>
+					<div class="accordion-body">
+						<div class="accordion-inner">							
+							<div class="control-group">
+								{*{if !empty($sTwitterConnect)}*}
+								<div class="controls">
+									<label class="checkbox"><input type="checkbox" name="post_twitter" value="1"{if $aPost.post_twitter == 1} checked="checked"{/if}> <img src="/images/admin/social/twitter.png" width="15px"> Share this post to Twitter.</label>
+								</div>
+								{*{/if}
 								
-				<label>Last Updated:</label><br />
-				<p style="font-size:1.1em;margin-bottom:8px;">{$aArticle.updated_datetime|formatDateTime:" @ "} by {$aArticle.updated_by.fname} {$aArticle.updated_by.lname}</p>
-			</fieldset>
-			
-			{if !empty($sFacebookConnect) || !empty($sTwitterConnect)}
-			<fieldset>
-				<legend>Post to</legend>
-				
-				{if !empty($sTwitterConnect)}
-					<img src="/images/admin/social/twitter.png" class="left" style="width:28px;margin-right: 10px;">
-					<input type="checkbox" name="post_twitter" value="1"><br />
-				{/if}
-				
-				<div class="clear">&nbsp;</div>
-				{if !empty($sFacebookConnect)}
-					<img src="/images/admin/social/facebook_32.png" class="left" style="width:28px;margin-right: 10px;">
-					<input type="checkbox" name="post_facebook" value="1"><br />
-					<input type="hidden" name="facebook_id" value="{$aEvent.facebook_id}">
-				{/if}
-			</fieldset>
-			{/if}
-			
-			<fieldset>
-				<legend>Publish Dates</legend>
-				<span>
-					<label>Publish On</label><br />
-					<input type="input" name="datetime_show_date" class="xsmall datepicker" value="{$aArticle.datetime_show_date}" style="width:80px;"> 
-					{html_select_time time=$aArticle.datetime_show prefix="datetime_show_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
-				</span>
-				<span class="expireDate {if $aArticle.use_kill == 0}hidden{/if}">
-					<label>Expire On</label> <span class="cancelExpire right cursor-pointer"><img src="/images/admin/icons/delete.png" width="14px" alt="cancel expire"></span><br />
-					<input type="input" name="datetime_kill_date" class="xsmall datepicker" value="{$aArticle.datetime_kill_date}" style="width:80px;">
-					{html_select_time time=$aArticle.datetime_kill prefix="datetime_kill_" minute_interval=15 display_seconds=false use_24_hours=false}<br />
-					<input type="checkbox" name="use_kill" value="1" class="hidden" {if $aArticle.use_kill == 1} checked="checked"{/if}>
-				</span>
-				<p class="eventExpire cursor-pointer{if $aArticle.use_kill == 1} hidden{/if}">Set Expire Date</p>
-			</fieldset>
-			
-			{if $sUseImage && $aArticle.photo_x2 == 0}
-				<fieldset>
-					<legend>Article Image</legend>
-					
-					<label>Upload Image:</label><br />
-					<input type="file" name="image"><br />
-					<ul style="font-size:0.8em;">
-						<li>File must be a .jpg</li>
-						<li>Minimum width is {$minWidth}px</li>
-						<li>Minimum height is {$minHeight}px</li>
-					</ul>
-				</fieldset>
-			{/if}
-		</section>
-	</section>
-</form>
-<script type="text/javascript">
-$(function(){ldelim}
-	$('input[name=active]').iphoneStyle({ldelim}
-		checkedLabel: 'On',
-		uncheckedLabel: 'Off'
-	{rdelim});
-	
-	$('input[name=sticky], input[name=post_twitter], input[name=post_facebook]').iphoneStyle({ldelim}
-		checkedLabel: 'Yes',
-		uncheckedLabel: 'No'
-	{rdelim});
-	
-	$('#currentCharacters').html($('textarea[name=short_content]').val().length);
-	
-	$('textarea[name=short_content]').keyup(function() {ldelim}
-		if($(this).val().length > {$sShortContentCount})
-			$('#currentCharacters').css('color', '#cc0000');
+								{*{if !empty($sFacebookConnect)}*}
+								<div class="controls">
+									<label class="checkbox"><input type="checkbox" name="post_facebook" value="1"{if $aPost.post_facebook == 1} checked="checked"{/if}> <img src="/images/admin/social/facebook_32.png" width="15px"> Share this post to Facebook.</label>
+								</div>
+								{*{/if}*}
+							</div>
+						</div>
+					</div>
+				</div>
+				{*{/if}*}
+
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Author</span>
+					</div>
+					<div class="accordion-body">
+						<div class="accordion-inner">							
+							<div class="control-group">
+								<div class="controls">
+									<select name="authorid" id="form-author">
+										{foreach from=$aUsers item=aUser}
+											<option value="{$aUser.id}"{if $aUser.id == $aPost.authorid} selected="selected"{/if}>{$aUser.fname} {$aUser.lname} ({$aUser.username})</option>
+										{/foreach}
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Tags</span>
+					</div>
+					<div class="accordion-body in collapse">
+						<div class="accordion-inner">
+							<div class="controls">
+								<textarea name="tags" id="form-tags" style="height:115px;" class="span12">{$aPost.tags}</textarea>
+								<p class="help-block">Comma separated list of keywords.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+{footer}
+<script>
+$(function(){
+	jQuery('#edit-form').validationEngine({ promptPosition: "bottomLeft" });
+
+	$('#datepicker').datepicker({
+		dateFormat: 'DD, MM dd, yy',
+		changeMonth: true,
+		changeYear: true
+	});
+
+	$('#currentCharacters').html($('textarea[name=excerpt]').val().length);
+	$('textarea[name=excerpt]').keyup(function() {
+		if($(this).val().length > {$sExcerptCharacters})
+			$('#currentCharacters').parent().css('color', '#cc0000');
 		else
-			$('#currentCharacters').css('color', 'inherit');
+			$('#currentCharacters').parent().css('color', 'inherit');
 		$('#currentCharacters').html($(this).val().length);
-	{rdelim});
-	
-	$(".eventExpire").click(function() {ldelim}
-		$(this).hide();
-		$('input[name=use_kill]').attr('checked', true);
-		$(".expireDate").fadeIn("slow");
-	{rdelim});
-	
-	$(".cancelExpire").click(function() {ldelim}
-		$(".expireDate").slideUp('fast');
-		$("input[name=use_kill]").attr('checked', false);
-		$(".eventExpire").fadeIn('slow');
-	{rdelim});
-	
-	$("form").validateForm([
-		"required,title,Article title is required"
-	]);
-{rdelim});
+	});
+});
 </script>
+{/footer}
 {include file="inc_footer.tpl"}

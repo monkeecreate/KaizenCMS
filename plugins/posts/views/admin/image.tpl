@@ -1,14 +1,14 @@
-{include file="inc_header.tpl" page_title="News Articles :: Crop Image" menu="news" page_style="fullContent"}
+{include file="inc_header.tpl" page_title="News Articles :: Crop Image" menu="posts" page_style="fullContent"}
 {assign var=subMenu value="articles"}
-{head}
-	{image_crop load="cropper" preview="true" img="cropimage" previewWidth=$previewWidth previewHeight=$previewHeight rx=$minWidth ry=$minHeight values=$aArticle}
-{/head}
+{footer}
+	{image_crop load="cropper" preview="true" img="cropimage" previewWidth=$previewWidth previewHeight=$previewHeight rx=$minWidth ry=$minHeight values=$aPost}
+{/footer}
 <section id="content" class="content">
 	<header>
 		<h2>Manage News &raquo; Crop Image</h2>
 		
 		{foreach from=$aAdminFullMenu item=aMenu key=k}
-			{if $k == "news"}
+			{if $k == "posts"}
 				{if $aMenu.menu|@count gt 1}
 					<ul class="pageTabs">
 						{foreach from=$aMenu.menu item=aItem}
@@ -21,14 +21,14 @@
 	</header>
 
 	<section class="inner-content">
-		<h3>{$aArticle.title}</h3>
+		<h3>{$aPost.title}</h3>
 
-		<form name="upload" action="/admin/news/image/upload/s/" method="post" enctype="multipart/form-data" {if $aArticle.photo_x2 > 0}style="display:none;"{/if}>
+		<form name="upload" action="/admin/posts/image/upload/s/" method="post" enctype="multipart/form-data" {if $aPost.photo_x2 > 0}style="display:none;"{/if}>
 			<fieldset>
-				{if $aArticle.photo_x2 > 0}
+				{if $aPost.photo_x2 > 0}
 					<legend>Replace Current Image</legend>				
 					<span class="right">
-						<img src="/image/news/{$aArticle.id}/?width=165&r={$randnum}" alt="{$aArticle.title} Image">
+						<img src="/image/posts/{$aPost.id}/?width=165&r={$randnum}" alt="{$aPost.title} Image">
 					</span>
 				{else}
 					<legend>Upload Image</legend>
@@ -43,29 +43,29 @@
 				</ul>
 			
 				<input type="submit" value="Upload File">
-				<a class="cancel" href="/admin/news/" title="Cancel">Cancel</a>
-				<input type="hidden" name="id" value="{$aArticle.id}">
+				<a class="cancel" href="/admin/posts/" title="Cancel">Cancel</a>
+				<input type="hidden" name="id" value="{$aPost.id}">
 				<input type="hidden" name="post_facebook" value="{$smarty.get.post_facebook}">
 			</fieldset>
 		</form>
 		
-		<form name="crop" action="/admin/news/image/edit/s/" method="post" {if $aArticle.photo_x2 == 0}style="display:none;"{/if}>
+		<form name="crop" action="/admin/posts/image/edit/s/" method="post" {if $aPost.photo_x2 == 0}style="display:none;"{/if}>
 			<span class="right" style="width:300px;margin-right:8px;">
 				<h4>Image Preview</h4>
 				<div style="width:{$previewWidth}px;height:{$previewHeight}px;overflow:hidden;margin-left:5px;margin-bottom:20px;">
-					<img src="{$sFolder}{$aArticle.id}.jpg?{$randnum}" style="width:{$previewWidth}px;height:{$previewHeight}px;" id="preview">
+					<img src="{$sFolder}{$aPost.id}.jpg?{$randnum}" style="width:{$previewWidth}px;height:{$previewHeight}px;" id="preview">
 				</div>
 				<input type="submit" value="Save Changes">
-				<a class="cancel" href="/admin/news/" title="Cancel">Cancel</a>
+				<a class="cancel" href="/admin/posts/" title="Cancel">Cancel</a>
 			</span>
 			
-			<img src="{$sFolder}{$aArticle.id}.jpg?{$randnum}" id="cropimage">
+			<img src="{$sFolder}{$aPost.id}.jpg?{$randnum}" id="cropimage">
 			{image_crop load="form"}
 			
 			<p style="font-size:1.0em;margin-top:10px;"><a href="#" title="Upload New Photo" class="replaceImage">Upload New Photo</a> | 
-			<a class="cancel" href="/admin/news/image/{$aArticle.id}/delete/" title="Delete Photo">Delete Photo</a></p>
+			<a class="cancel" href="/admin/posts/image/{$aPost.id}/delete/" title="Delete Photo">Delete Photo</a></p>
 			
-			<input type="hidden" name="id" value="{$aArticle.id}">
+			<input type="hidden" name="id" value="{$aPost.id}">
 			<input type="hidden" name="post_facebook" value="{$smarty.get.post_facebook}">
 		</form>
 	</section>

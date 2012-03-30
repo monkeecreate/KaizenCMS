@@ -4,7 +4,7 @@
 	<h1>Posts &raquo; Create Post</h1>
 	{include file="inc_alerts.tpl"}
 	
-	<form id="add-form" method="post" action="/admin/posts/add/s/">
+	<form id="add-form" method="post" action="/admin/posts/add/s/" enctype="multipart/form-data">
 		<div class="row-fluid">
 			<div class="span8">				
 				<div class="accordion-group">
@@ -182,7 +182,7 @@
 								<div class="controls">
 									<select name="authorid" id="form-author">
 										{foreach from=$aUsers item=aUser}
-											<option value="{$aUser.id}"{if $aAccount.id == $aUser.id} selected="selected"{/if}>{$aUser.fname} {$aUser.lname} ({$aUser.username})</option>
+											<option value="{$aUser.id}"{if $aUser.id == $aPost.authorid} selected="selected"{/if}>{$aUser.fname} {$aUser.lname} ({$aUser.username})</option>
 										{/foreach}
 									</select>
 								</div>

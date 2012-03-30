@@ -158,7 +158,7 @@ class admin_posts extends adminController {
 			$aPost["categories"] = $this->dbQuery(
 				"SELECT `categories`.`id` FROM `{dbPrefix}posts_categories` AS `categories`"
 					." INNER JOIN `{dbPrefix}posts_categories_assign` AS `posts_assign` ON `categories`.`id` = `posts_assign`.`categoryid`"
-					." WHERE `posts_assign`.`articleid` = ".$aPost["id"]
+					." WHERE `posts_assign`.`postid` = ".$aPost["id"]
 					." GROUP BY `categories`.`id`"
 					." ORDER BY `categories`.`name`"
 				,"col"
@@ -175,6 +175,7 @@ class admin_posts extends adminController {
 			$this->tplAssign("aPost", $aPost);
 		}
 		
+		$this->tplAssign("aUsers", $this->dbQuery("SELECT * FROM `{dbPrefix}users`", "all"));
 		$this->tplAssign("aCategories", $this->model->getCategories());
 		$this->tplAssign("sUseCategories", $this->model->useCategories);
 		$this->tplAssign("sUseImage", $this->model->useImage);
@@ -191,7 +192,18 @@ class admin_posts extends adminController {
 			$_SESSION["admin"]["admin_posts"] = $_POST;
 			$this->forward("/admin/posts/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
-		
+
+		if($_POST["submit-type"] === "Save Draft") {
+			$sActive = 0;
+		} elseif($_POST["submit-type"] === "Publish") {
+			$sActive = 1;
+		} else {
+			if($_POST["active"] === 1)
+				$sActive = 1;
+			else
+				$sActive = 0;
+		}
+
 		$publish_on = strtotime(
 			$_POST["publish_on_date"]." "
 			.$_POST["publish_on_Hour"].":".$_POST["publish_on_Minute"]." "
@@ -223,9 +235,13 @@ class admin_posts extends adminController {
 				"title" => $_POST["title"]
 				,"excerpt" => (string)substr($_POST["excerpt"], 0, $this->model->excerptCharacters)
 				,"content" => $_POST["content"]
+				,"tags" => $_POST["tags"]
 				,"publish_on" => $publish_on
+				,"allow_comments" => $this->boolCheck($_POST["allow_comments"])
+				,"allow_sharing" => $this->boolCheck($_POST["allow_sharing"])
 				,"sticky" => $this->boolCheck($_POST["sticky"])
-				,"active" => $this->boolCheck($_POST["active"])
+				,"active" => $this->boolCheck($sActive)
+				,"authorid" => $_POST["authorid"]
 				,"updated_datetime" => time()
 				,"updated_by" => $_SESSION["admin"]["userid"]
 			),
@@ -251,19 +267,19 @@ class admin_posts extends adminController {
 		if($_POST["post_twitter"] == 1 && $_POST["active"] == 1) {
 			$this->postTwitter($_POST["id"]);
 		}
-		
-		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true)
+
+		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true) {
 			$this->image_upload_s();
-		else {
+		} else {
 			if($_POST["post_facebook"] == 1 && $_POST["active"] == 1)
 				$this->postFacebook($_POST["id"]);
 
-			if($_POST["submit"] == "Save Changes")
-				$this->forward("/admin/posts/?info=".urlencode("Changes saved successfully!")."&".implode("&", $this->errors));
-			elseif($_POST["submit"] == "edit")
+			if($_POST["image-action"] == "edit")
 				$this->forward("/admin/posts/image/".$_POST["id"]."/edit/?".implode("&", $this->errors));
-			elseif($_POST["submit"] == "delete")
+			elseif($_POST["image-action"] == "delete")
 				$this->forward("/admin/posts/image/".$_POST["id"]."/delete/?".implode("&", $this->errors));
+			else
+				$this->forward("/admin/posts/?info=".urlencode("Changes saved successfully!")."&".implode("&", $this->errors));
 		}
 	}
 	function delete() {		
@@ -274,7 +290,7 @@ class admin_posts extends adminController {
 		
 		$this->forward("/admin/posts/?info=".urlencode("Post removed successfully!"));
 	}
-	function image_upload_s() {		
+	function image_upload_s() {
 		if(!empty($_GET["post_facebook"]))
 			$sPostFacebook = $_GET["post_facebook"];
 		else
@@ -323,7 +339,7 @@ class admin_posts extends adminController {
 			$sPreviewHeight = ceil($this->model->imageMinHeight * (300 / $this->model->imageMinWidth));
 		}
 		
-		$this->tplAssign("aPost", $this->model->getPost($this->urlVars->dynamic["id"]));
+		$this->tplAssign("aPost", $this->model->getPost($this->urlVars->dynamic["id"], null, true));
 		$this->tplAssign("sFolder", $this->model->imageFolder);
 		$this->tplAssign("minWidth", $this->model->imageMinWidth);
 		$this->tplAssign("minHeight", $this->model->imageMinHeight);

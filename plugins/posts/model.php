@@ -231,7 +231,7 @@ class posts_model extends appModel {
 	 * @return array  		Return the image.
 	 */
 	function getImage($sId) {
-		$aPost = $this->getPost($sId, true);
+		$aPost = $this->getPost($sId, null, true);
 		
 		$sFile = $this->settings->rootPublic.substr($this->imageFolder, 1).$sId.".jpg";
 		
