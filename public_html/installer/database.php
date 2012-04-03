@@ -182,7 +182,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 3,
+				"group" => 2,
 				"tag" => "contact-subject",
 				"title" => "Contact Form Subject",
 				"text" => "This subject will be used for emails sent from your contact page. A descriptive subject for the site will help you filter out emails sent from visitors.",
@@ -193,7 +193,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 3,
+				"group" => 2,
 				"tag" => "contact-email",
 				"title" => "Email Address",
 				"text" => "Emails from your contact page will be sent to this email address.",
@@ -204,7 +204,95 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 4,
+				"group" => 2,
+				"tag" => "contact-company",
+				"title" => "Company Name",
+				"text" => "This name will appear with your mailing address. It can either be a contact persons name or we recommend it being your company name.",
+				"value" => "",
+				"type" => "text",
+				"validation" => null,
+				"sortOrder" => 3,
+				"active" => 1
+			),
+			array(
+				"group" => 2,
+				"tag" => "contact-address",
+				"title" => "Street Address",
+				"text" => "",
+				"value" => "",
+				"type" => "text",
+				"validation" => null,
+				"sortOrder" => 4,
+				"active" => 1
+			),
+			array(
+				"group" => 2,
+				"tag" => "contact-address2",
+				"title" => "Street Address 2",
+				"text" => "PO Box, suite number, lot, etc.",
+				"value" => "",
+				"type" => "text",
+				"validation" => null,
+				"sortOrder" => 5,
+				"active" => 1
+			),
+			array(
+				"group" => 2,
+				"tag" => "contact-city",
+				"title" => "City",
+				"text" => "",
+				"value" => "",
+				"type" => "text",
+				"validation" => null,
+				"sortOrder" => 6,
+				"active" => 1
+			),
+			array(
+				"group" => 2,
+				"tag" => "contact-state",
+				"title" => "State",
+				"text" => "",
+				"value" => "",
+				"type" => "text",
+				"validation" => null,
+				"sortOrder" => 7,
+				"active" => 1
+			),
+			array(
+				"group" => 2,
+				"tag" => "contact-zip",
+				"title" => "Zip Code",
+				"text" => "",
+				"value" => "",
+				"type" => "text",
+				"validation" => null,
+				"sortOrder" => 8,
+				"active" => 1
+			),
+			array(
+				"group" => 2,
+				"tag" => "contact-phone",
+				"title" => "Phone Number",
+				"text" => "Include area code and extension is needed.",
+				"value" => "",
+				"type" => "text",
+				"validation" => null,
+				"sortOrder" => 9,
+				"active" => 1
+			),
+			array(
+				"group" => 2,
+				"tag" => "contact-fax",
+				"title" => "Fax Number",
+				"text" => "",
+				"value" => "",
+				"type" => "text",
+				"validation" => null,
+				"sortOrder" => 10,
+				"active" => 1
+			),
+			array(
+				"group" => 3,
 				"tag" => "twitter_connect",
 				"title" => "Twitter Connect",
 				"text" => NULL,
@@ -214,7 +302,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 4,
+				"group" => 3,
 				"tag" => "facebook_connect",
 				"title" => "Facebook Connect",
 				"text" => NULL,
@@ -224,7 +312,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 4,
+				"group" => 3,
 				"tag" => "twitter-username",
 				"title" => "Twitter Username",
 				"text" => "Do not include your full Twitter URL, this is just your username without the @.",
@@ -234,7 +322,7 @@ $aTables = array(
 				"active" => 1
 			),
 			array(
-				"group" => 4,
+				"group" => 3,
 				"tag" => "facebook-url",
 				"title" => "Facebook URL",
 				"text" => "This should be the full url to your Facebook profile or page including http://facebook.com/.",
