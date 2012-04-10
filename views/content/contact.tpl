@@ -1,5 +1,5 @@
 {*
-Template Name: Contact Form
+Name: Contact Form
 Description: Generic content page with contact form below.
 Version: 1.0
 Restricted: false

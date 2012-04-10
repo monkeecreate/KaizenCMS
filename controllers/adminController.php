@@ -250,7 +250,7 @@ class adminController extends appController {
 	 */
 	function get_templates($sRestricted = false) {
 		$all_headers = array(
-			"TemplateName" =>  "Template Name",
+			"Name" =>  "Name",
 			"Description" => "Description",
 			"Version" => "Version",
 			"Restricted" => "Restricted",

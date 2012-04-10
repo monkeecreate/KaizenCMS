@@ -64,9 +64,9 @@
 								<label class="control-label" for="form-template">Template</label>
 								<div class="controls">
 									<select name="template" id="form-template">
-										<option value="">Default</option>
-										{foreach from=$aTemplates item=template}
-											<option value="{$template}"{if $aPage.template == $template} selected="selected"{/if}>{$template}</option>
+										<option value="">Default Template</option>
+										{foreach from=$aTemplates item=aTemplate}
+											<option value="{$aTemplate.file}"{if $aPage.template == $aTemplate.file} selected="selected"{/if}>{$aTemplate.Name}</option>
 										{/foreach}
 									</select>
 								</div>

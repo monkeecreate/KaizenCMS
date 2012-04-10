@@ -29,7 +29,7 @@ class admin_content extends adminController
 		$this->tplDisplay("content/index.tpl");
 	}
 	function add() {
-		$this->tplAssign("aTemplates", $this->getTemplates());
+		$this->tplAssign("aTemplates", $this->get_templates(($this->superAdmin ? true : false)));
 		$this->tplAssign("aPage", $_SESSION["admin"]["admin_content"]);
 		$this->tplDisplay("content/add.tpl");
 	}
@@ -67,6 +67,7 @@ class admin_content extends adminController
 				,"title" => $_POST["title"]
 				,"content" => $_POST["content"]
 				,"tags" => $_POST["tags"]
+				,"template" => $_POST["template"]
 				,"created_datetime" => time()
 				,"created_by" => $_SESSION["admin"]["userid"]
 				,"updated_datetime" => time()
@@ -80,7 +81,6 @@ class admin_content extends adminController
 				array(
 					"tag" => $sTag
 					,"permanent" => $this->boolCheck($_POST["permanent"])
-					,"template" => $_POST["template"]
 				),
 				$sID
 			);
@@ -128,7 +128,7 @@ class admin_content extends adminController
 			$this->tplAssign("aPage", $aPage);
 		}
 		
-		$this->tplAssign("aTemplates", $this->getTemplates());
+		$this->tplAssign("aTemplates", $this->get_templates(($this->superAdmin ? true : false)));
 		$this->tplDisplay("content/edit.tpl");
 	}
 	function edit_s() {
@@ -143,6 +143,7 @@ class admin_content extends adminController
 				"title" => $_POST["title"]
 				,"content" => $_POST["content"]
 				,"tags" => $_POST["tags"]
+				,"template" => $_POST["template"]
 				,"updated_datetime" =>time()
 				,"updated_by" => $_SESSION["admin"]["userid"]
 			),
@@ -177,7 +178,6 @@ class admin_content extends adminController
 				array(
 					"tag" => $sTag
 					,"permanent" => $this->boolCheck($_POST["permanent"])
-					,"template" => $_POST["template"]
 				),
 				$_POST["id"]
 			);
