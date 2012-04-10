@@ -1,127 +1,120 @@
-{include file="inc_header.tpl" page_title="News Article Categories" menu="news" page_style="halfContent"}
-{assign var=subMenu value="Categories"}
-{head}
-<script src="/scripts/dataTables/jquery.dataTables.min.js"></script>
-<script src="/scripts/dataTables/plugins/paging-plugin.js"></script>
-<script type="text/javascript">
-	$(function(){ldelim}
-		$('.dataTable').dataTable({ldelim}
-			/* DON'T CHANGE */
-			"sDom": 'rt<"dataTable-footer"flpi<"clear">',
-			"sPaginationType": "scrolling",
-			"bLengthChange": true,
-			/* CAN CHANGE */
-			"bStateSave": true, //whether to save a cookie with the current table state
-			"iDisplayLength": 10, //how many items to display on each page
-			{if $sSort == "manual"}
-				"aaSorting": [[1, "asc"]], //which column to sort by (0-X)
-				"aoColumns": [
-					null,
-					{ldelim} "sType": "num-html" {rdelim},
-					null
-				]
-			{else}
-				"aaSorting": [[0, "asc"]] //which column to sort by (0-X)
-			{/if}
-		{rdelim});
-	{rdelim});
-</script>
-{/head}
-
-<section id="content" class="content">
-	<header>
-		<h2>Manage Categories</h2>
-		
-		{foreach from=$aAdminFullMenu item=aMenu key=k}
-			{if $k == "news"}
-				{if $aMenu.menu|@count gt 1}
-					<ul class="pageTabs">
-						{foreach from=$aMenu.menu item=aItem}
-							<li><a{if $subMenu == $aItem.text} class="active"{/if} href="{$aItem.link}" title="{$aItem.text|clean_html}">{$aItem.text|clean_html}</a></li>
+{$menu = "posts"}{$subMenu = "Categories"}
+{include file="inc_header.tpl" sPageTitle="Posts &raquo; Categories"}
+	
+	<h1>Posts &raquo; Categories</h1>
+	{include file="inc_alerts.tpl"}
+	
+		<div class="row-fluid">
+			<div class="span8">
+				<table class="data-table table table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							{if $sSort == "manual"}<th>Order</th>{/if}
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach from=$aCategories item=aCategory}
+							<tr>
+								<td>{$aCategory.name}</td>
+								{if $sSort == "manual"}
+									<td class="small center">
+										<span class="hidden">{$aCategory.sort_order}</span>
+										{if $aCategory.sort_order != $minSort}
+											<a href="/admin/posts/categories/sort/{$aCategory.id}/up/" title="Move Up One"><img src="/images/icons/bullet_arrow_up.png" style="width:16px;height:16px;"></a>
+										{else}
+											<img src="/images/blank.gif" style="width:16px;height:16px;">
+										{/if}
+										{if $aCategory.sort_order != $maxSort && count($aCategories) > 1}
+											<a href="/admin/posts/categories/sort/{$aCategory.id}/down/" title="Move Down One"><img src="/images/icons/bullet_arrow_down.png" style="width:16px;height:16px;"></a>
+										{else}
+											<img src="/images/blank.gif" style="width:16px;height:16px;">
+										{/if}
+									</td>
+								{/if}
+								<td class="center">
+									<a href="/admin/posts/categories/?category={$aCategory.id}" title="Edit Category"><i class="icon-pencil"></i></a>
+									<a href="/admin/posts/categories/delete/{$aCategory.id}/"
+									 onclick="return confirm('Are you sure you would like to delete: {$aCategory.name}?');" title="Delete Category"><i class="icon-trash"></i></a>
+								</td>
+							</tr>
 						{/foreach}
-					</ul>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="span4 aside">
+				{if !empty($aCategoryEdit)}
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<span class="accordion-toggle">Edit Category</span>
+						</div>
+						<div class="accordion-body in collapse">
+							<div class="accordion-inner">
+								<form id="edit-form" method="post" action="/admin/posts/categories/edit/s/">
+									<div class="control-group">
+										<label class="control-label" for="form-name">Name</label>
+										<div class="controls">
+											<input type="text" name="name" id="form-name" value="{$aCategoryEdit.name}" class="span12 validate[required]"><br />
+											<input type="submit" value="Save Changes" class="btn btn-primary">
+											<input type="hidden" name="id" value="{$aCategoryEdit.id}">
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				{else}
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<span class="accordion-toggle">Create Category</span>
+						</div>
+						<div class="accordion-body in collapse">
+							<div class="accordion-inner">
+								<form id="add-form" method="post" action="/admin/posts/categories/add/s/">
+									<div class="control-group">
+										<label class="control-label" for="form-name">Name</label>
+										<div class="controls">
+											<input type="text" name="name" id="form-name" value="" class="span12 validate[required]"><br />
+											<input type="submit" value="Create Category" class="btn btn-primary">
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
 				{/if}
-			{/if}
-		{/foreach}
-	</header>
+			</div>
+		</div>
 
-	<table class="dataTable">
-		<thead>
-			<tr>
-				<th>Name</th>
-				{if $sSort == "manual"}
-					<th>Order</th>
-				{/if}
-				<th class="empty">&nbsp;</th>
-			</tr>
-		</thead>
-		<tbody>
-			{foreach from=$aCategories item=aCategory}
-				<tr>
-					<td>{$aCategory.name}</td>
-					{if $sSort == "manual"}
-						<td class="small center">
-							<span class="hidden">{$aCategory.sort_order}</span>
-							{if $aCategory.sort_order != $minSort}
-								<a href="/admin/news/categories/sort/{$aCategory.id}/up/" title="Move Up One"><img src="/images/admin/icons/bullet_arrow_up.png" style="width:16px;height:16px;"></a>
-							{else}
-								<img src="/images/blank.gif" style="width:16px;height:16px;">
-							{/if}
-							{if $aCategory.sort_order != $maxSort && count($aCategories) > 1}
-								<a href="/admin/news/categories/sort/{$aCategory.id}/down/" title="Move Down One"><img src="/images/admin/icons/bullet_arrow_down.png" style="width:16px;height:16px;"></a>
-							{else}
-								<img src="/images/blank.gif" style="width:16px;height:16px;">
-							{/if}
-						</td>
-					{/if}
-					<td class="center">
-						<a href="/admin/news/categories/?category={$aCategory.id}" title="Edit Category">
-							<img src="/images/admin/icons/pencil.png" alt="edit icon">
-						</a>
-						<a href="/admin/news/categories/delete/{$aCategory.id}/"
-						 onclick="return confirm('Are you sure you would like to delete: {$aCategory.name}?');" title="Delete Category">
-							<img src="/images/admin/icons/bin_closed.png" alt="delete icon">
-						</a>
-					</td>
-				</tr>
-			{/foreach}
-		</tbody>
-	</table>
-</section>
+{footer}
+<script>
+$(function(){
+	jQuery('#add-form').validationEngine({ promptPosition: "bottomLeft" });
+	jQuery('#edit-form').validationEngine({ promptPosition: "bottomLeft" });
 
-<section id="sidebar" class="sidebar">
-	{if !empty($aCategoryEdit)}
-		<header>
-			<h2>Edit Category</h2>
-		</header>
-
-		<section>
-			<form method="post" action="/admin/news/categories/edit/s/">
-				<label>Name:</label>
-				<input class="small" type="text" name="name" maxlength="100" value="{$aCategoryEdit.name}"><br />
-				<input class="submitSml" type="submit" value="Save Changes">
-				<input type="hidden" name="id" value="{$aCategoryEdit.id}">
-			</form>
-		</section>
-	{else}
-		<header>
-			<h2>Add Category</h2>
-		</header>
-
-		<section>
-			<form method="post" id="addCategory-form" action="/admin/news/categories/add/s/">
-				<label>Name:</label>
-				<input type="text" name="name" maxlength="100" value=""><br />
-				<input class="submitSml" type="submit" value="Add Category">
-			</form>
-		</section>
-	{/if}
-</section>
-<script type="text/javascript">
-$(function(){ldelim}
-	$("form").validateForm([
-		"required,name,Category name is required"
-	]);
-{rdelim});
+	$('.data-table').dataTable({
+		/* DON'T CHANGE */
+		"sDom": '<"dataTable-header"rf>t<"dataTable-footer"lip<"clear">',
+		"sPaginationType": "full_numbers",
+		"bLengthChange": false,
+		/* CAN CHANGE */
+		"bStateSave": true,
+		"iDisplayLength": 10, //how many items to display per page
+		{if $sSort == "manual"}
+			"aaSorting": [[1, "asc"]], //which column to sort by (0-X)
+			"aoColumns": [
+				null,
+				{ "sType": "num-html" },
+				null
+			]
+		{else}
+			"aaSorting": [[0, "asc"]] //which column to sort by (0-X)
+		{/if}
+	});
+	$('.dataTable-header').prepend('{foreach from=$aAdminFullMenu item=aMenu key=k}{if $k == $menu}{if $aMenu.menu|@count gt 1}<ul class="nav nav-pills">{foreach from=$aMenu.menu item=aItem}<li{if $subMenu == $aItem.text} class="active"{/if}><a href="{$aItem.link}" title="{$aItem.text}">{$aItem.text}</a></li>{/foreach}</ul>{/if}{/if}{/foreach}');
+});
 </script>
+{/footer}
 {include file="inc_footer.tpl"}

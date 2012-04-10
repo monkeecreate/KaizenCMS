@@ -131,7 +131,7 @@ class admin_posts extends adminController {
 			if($_POST["post_facebook"] == 1 && $_POST["active"] == 1)
 				$this->postFacebook($sID);
 				
-			$this->forward("/admin/posts/?info=".urlencode("Post created successfully!")."&".implode("&", $this->errors));
+			$this->forward("/admin/posts/?success=".urlencode("Post created successfully!")."&".implode("&", $this->errors));
 		}
 	}
 	function edit() {		
@@ -279,7 +279,7 @@ class admin_posts extends adminController {
 			elseif($_POST["image-action"] == "delete")
 				$this->forward("/admin/posts/image/".$_POST["id"]."/delete/?".implode("&", $this->errors));
 			else
-				$this->forward("/admin/posts/?info=".urlencode("Changes saved successfully!")."&".implode("&", $this->errors));
+				$this->forward("/admin/posts/?success=".urlencode("Changes saved successfully!")."&".implode("&", $this->errors));
 		}
 	}
 	function delete() {		
@@ -288,7 +288,7 @@ class admin_posts extends adminController {
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 		
-		$this->forward("/admin/posts/?info=".urlencode("Post removed successfully!"));
+		$this->forward("/admin/posts/?success=".urlencode("Post removed successfully!"));
 	}
 	function image_upload_s() {
 		if(!empty($_GET["post_facebook"]))
@@ -367,7 +367,7 @@ class admin_posts extends adminController {
 		if($_POST["post_facebook"] == 1)
 			$this->postFacebook($aPost["id"]);
 		
-		$this->forward("/admin/posts/?info=".urlencode("Post updated."));
+		$this->forward("/admin/posts/?success=".urlencode("Post updated."));
 	}
 	function image_delete() {		
 		$this->dbUpdate(
@@ -385,7 +385,7 @@ class admin_posts extends adminController {
 		
 		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
 
-		$this->forward("/admin/posts/?info=".urlencode("Image removed successfully!"));
+		$this->forward("/admin/posts/?success=".urlencode("Image removed successfully!"));
 	}
 	function categories_index() {		
 		$_SESSION["admin"]["admin_posts_categories"] = null;
@@ -424,7 +424,7 @@ class admin_posts extends adminController {
 			)
 		);
 
-		$this->forward("/admin/posts/categories/?info=".urlencode("Category created successfully!"));
+		$this->forward("/admin/posts/categories/?success=".urlencode("Category created successfully!"));
 	}
 	function categories_edit_s() {
 		$this->dbUpdate(
@@ -435,13 +435,13 @@ class admin_posts extends adminController {
 			$_POST["id"]
 		);
 
-		$this->forward("/admin/posts/categories/?info=".urlencode("Changes saved successfully!"));
+		$this->forward("/admin/posts/categories/?success=".urlencode("Changes saved successfully!"));
 	}
 	function categories_delete() {
 		$this->dbDelete("posts_categories", $this->urlVars->dynamic["id"]);
 		$this->dbDelete("posts_categories_assign", $this->urlVars->dynamic["id"], "categoryid");
 
-		$this->forward("/admin/posts/categories/?info=".urlencode("Category removed successfully!"));
+		$this->forward("/admin/posts/categories/?success=".urlencode("Category removed successfully!"));
 	}
 	function categories_sort() {
 		$aCategory = $this->model->getCategory($this->urlVars->dynamic["id"], "integer");
@@ -486,7 +486,7 @@ class admin_posts extends adminController {
 			$aCategory["id"]
 		);
 		
-		$this->forward("/admin/posts/categories/?info=".urlencode("Sort order saved successfully!"));
+		$this->forward("/admin/posts/categories/?success=".urlencode("Sort order saved successfully!"));
 	}
 	
 	/**
