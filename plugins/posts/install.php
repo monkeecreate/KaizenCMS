@@ -29,6 +29,7 @@ $aTables = array(
 			"sticky" => array("type" => "boolean"),
 			"active" => array("type" => "boolean"),
 			"authorid" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"views" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"photo_x1" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"photo_y1" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"photo_x2" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),

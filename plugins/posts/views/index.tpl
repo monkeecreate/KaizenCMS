@@ -3,7 +3,7 @@
 {head}
 <link rel="alternate" type="application/rss+xml" title="All Posts RSS" href="/posts/rss/">
 {if !empty($smarty.get.category)}<link rel="alternate" type="application/rss+xml" title="Posts in {$aCategory.name} RSS" href="/posts/rss/?category={$smarty.get.category}">{/if}
-<meta property="og:site_name" content="{getSetting tag="title"}">
+<meta property="og:site_name" content="{getSetting tag="site-title"}">
 {/head}
 <div id="fb-root"></div>
 <script>
@@ -62,7 +62,7 @@
 				{/if}
 			</small>
 			
-			<fb:like href="http://{$smarty.server.SERVER_NAME}{$aPost.url}" layout="box_count" show_faces="false" width="50" font=""></fb:like> <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://{$smarty.server.SERVER_NAME}{$aPost.url}" data-text="{$aPost.title}" data-count="vertical" data-via="{getSetting tag="twitterUser"}">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			<fb:like href="http://{$smarty.server.SERVER_NAME}{$aPost.url}" layout="box_count" show_faces="false" width="50" font=""></fb:like> <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://{$smarty.server.SERVER_NAME}{$aPost.url}" data-text="{$aPost.title}" data-count="vertical" data-via="{getSetting tag="twitter-username"}">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 			
 			<p>{$aPost.excerpt}&hellip; <a href="{$aPost.url}" title="{$aPost.title}">More Info&raquo;</a></p>
 		</article>

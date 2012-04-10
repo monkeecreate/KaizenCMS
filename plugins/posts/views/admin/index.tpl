@@ -26,7 +26,7 @@
 							<span class="hidden">not published</span><img src="/images/icons/bullet_yellow.png" alt="not published">
 						{/if}
 					</td>
-					<td>{$aPost.title}</td>
+					<td><a href="{$aPost.url}" title="View {$aPost.title}" target="_blank">{$aPost.title}</a></td>
 					<td class="center">{$aPost.publish_on|formatDateTime}</td>
 					<td>{$aPost.author.fname} {$aPost.author.lname}</td>
 					<td class="center">

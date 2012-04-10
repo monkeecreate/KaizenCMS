@@ -16,28 +16,36 @@ class posts_model extends appModel {
 	 * Get posts from the database.
 	 * @param  integer $sCategory Filter only posts assigned to this category.
 	 * @param  boolean $sAll      When true returns all posts no matter conditions.
+	 * @param  boolean $sPopular  When true sorts posts by `views` instead of publish date.
 	 * @return array              Return array of posts.
 	 */
-	function getPosts($sCategory = null, $sAll = false) {
+	function getPosts($sCategory = null, $sAll = false, $sPopular = false) {
 		$aWhere = array();
 		$sJoin = "";
 		
-		// Filter those that are only active, unless told otherwise
+		// Filter only posts that are active unless told otherwise.
 		if($sAll == false) {
 			$aWhere[] = "`posts`.`publish_on` < ".time();
 			$aWhere[] = "`posts`.`active` = 1";
 		}
 		
-		// Filter by category if given
+		// Filter posts in a category, if category provided.
 		if(!empty($sCategory)) {
 			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 			$sJoin .= " LEFT JOIN `{dbPrefix}posts_categories_assign` AS `posts_assign` ON `posts`.`id` = `posts_assign`.`postid`";
 			$sJoin .= " LEFT JOIN `{dbPrefix}posts_categories` AS `categories` ON `posts_assign`.`categoryid` = `categories`.`id`";
 		}
 		
-		// Combine filters if atleast one was added
+		// Combine the above filters for sql.
 		if(!empty($aWhere)) {
 			$sWhere = " WHERE ".implode(" AND ", $aWhere);
+		}
+
+		// Sort posts by `views` instead of publish date.
+		if($sPopular) {
+			$sOrderBy = " ORDER BY `posts`.`views` DESC";
+		} else {
+			$sOrderBy = "ORDER BY `posts`.`sticky` DESC, `posts`.`publish_on` DESC";
 		}
 		
 		$aPosts = $this->dbQuery(
@@ -45,14 +53,16 @@ class posts_model extends appModel {
 				.$sJoin
 				.$sWhere
 				." GROUP BY `posts`.`id`"
-				." ORDER BY `posts`.`sticky` DESC, `posts`.`publish_on` DESC"
+				.$sOrderBy
 			,"all"
 		);
 		
+		// Clean up each post information and get additional info if needed.
 		foreach($aPosts as &$aPost) {
 			$this->_getPostInfo($aPost);
 		}
 		
+		// Posts are ready for use.
 		return $aPosts;
 	}
 

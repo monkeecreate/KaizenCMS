@@ -1,3 +1,11 @@
+{*
+Template Name: Contact Form
+Description: Generic content page with contact form below.
+Version: 1.0
+Restricted: false
+Author: Crane | West
+*}
+
 {$menu = "contact"}{if !empty($aContent)}
 {getContent tag="contact" assign="aContent"}{$sTitle = $aContent.title}{else}{$sTitle = "Contact Us"}{/if}
 {include file="inc_header.tpl" page_title=$sTitle}

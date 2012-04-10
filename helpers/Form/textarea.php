@@ -35,7 +35,7 @@ class Form_textarea extends Form_Field
 		if(!empty($this->_setting["text"]))
 			$sHTML .= '<p class="help-block">'.$this->getText($this->_setting["text"]).'</p>';
 		$sHTML .= '</div></div>';
-		
+
 		return $sHTML;
 	}
 	public function value($sNewLine = true) {

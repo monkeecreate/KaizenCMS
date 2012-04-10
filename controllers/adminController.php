@@ -242,5 +242,49 @@ class adminController extends appController {
 		else
 			return 0;
 	}
+
+	/**
+	 * Scan content for template files and parse info.
+	 * @param  boolean $sRestricted when true return all templates.
+	 * @return array                Returns array of template info.
+	 */
+	function get_templates($sRestricted = false) {
+		$all_headers = array(
+			"TemplateName" =>  "Template Name",
+			"Description" => "Description",
+			"Version" => "Version",
+			"Restricted" => "Restricted",
+			"Author" => "Author"
+		);
+
+		$aData = array();
+		$template_dir = $this->settings->root."views/content/";
+		$template_files = scandir($template_dir);
+		foreach($template_files as $file) {
+			if ($file === "." or $file === "..") continue;
+
+			$fp = fopen($this->settings->root."views/content/".$file, "r");
+			$file_data = fread($fp, 8192);
+			fclose($fp);
+
+			foreach($all_headers as $field => $regex) {
+				preg_match("/^[ \t\/*#@]*".preg_quote($regex, "/").":(.*)$/mi", $file_data, ${$field});
+				
+				if(!empty(${$field}))
+					${$field} = trim(preg_replace("/\s*(?:\*\/|\?>).*/", '', ${$field}[1]));
+				else
+					${$field} = '';
+			}
+
+			$aTemplateInfo = compact(array_keys($all_headers));
+			$aTemplateInfo["file"] = $file;
+
+			if($aTemplateInfo["Restricted"] === "false" || $sRestricted) {
+				$aData[] = $aTemplateInfo;
+			}
+		}
+
+		return $aData;
+	}
 	##################################
 }

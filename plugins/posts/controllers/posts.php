@@ -55,6 +55,7 @@ class posts extends appController {
 		if(empty($aPost))
 			$this->error('404');
 
+		$this->dbUpdate("posts", array("views" => ($aPost["views"] + 1)), $aPost["id"]);
 		$this->tplAssign("aPost", $aPost);
 		
 		if($this->tplExists("post-".$aPost["id"].".tpl"))
