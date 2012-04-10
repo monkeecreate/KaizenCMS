@@ -83,7 +83,7 @@
 						<div class="accordion-inner">
 							<div class="control-group cf">
 								<div class="controls">
-									{if $aPost.active === 0}
+									{if $aPost.active != 1}
 										<input type="submit" name="submit-type" value="Save Draft" class="btn pull-left">
 										<input type="submit" name="submit-type" value="Publish" class="btn btn-primary pull-right">
 									{else}
@@ -94,7 +94,7 @@
 
 							<div class="control-group">
 								<div class="controls">
-									<label class="checkbox"><input type="checkbox" name="active" id="form-active" value="1"{if $aPost.active == 1} checked="checked"{/if}>Publish post to the website.</label>
+									{if $aPost.active == 1}<label class="checkbox"><input type="checkbox" name="active" id="form-active" value="1"{if $aPost.active == 1} checked="checked"{/if}>Publish post to the website.</label>{/if}
 								</div>
 
 								<div class="controls">

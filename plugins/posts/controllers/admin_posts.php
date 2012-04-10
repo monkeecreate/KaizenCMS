@@ -198,7 +198,7 @@ class admin_posts extends adminController {
 		} elseif($_POST["submit-type"] === "Publish") {
 			$sActive = 1;
 		} else {
-			if($_POST["active"] === 1)
+			if($_POST["active"] == 1)
 				$sActive = 1;
 			else
 				$sActive = 0;
