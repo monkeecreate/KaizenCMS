@@ -362,9 +362,11 @@ class appController {
 		return is_file($template_file);
 	}
 	function tplAssign($sVariable, $sValue) {
-		$this->_smarty->assign($sVariable, $sValue);
+//		$this->_smarty->assign($sVariable, $sValue);
+		$this->_templateVars[$sVariable] = $sValue;
 	}
 	function tplDisplay($sTemplate, $sSkipPlugin = false) {
+/*
 		$this->_smarty->registerObject("appController", $this);
 		
 		if($this->tplExists($sTemplate, $sSkipPlugin)) {
@@ -374,7 +376,18 @@ class appController {
 			$this->_smarty->display($sTemplate);
 		} else
 			$this->sendError("appController->tplDisplay", "Can't find template - (".$sTemplate.")");
+*/
+		ob_start();
+
+		$templatePath = $this->settings->root . "views/" . $sTemplate;
+		if(!empty($this->_plugin) && $sSkipPlugin == false)
+			$templatePath = $this->settings->root . "plugins/" . $this->_plugin . "/views/" . $sTemplate;
+		if(file_exists($templatePath))
+			include($templatePath);
+		else
+			print "404";
 	}
+
 	function tplVariableGet($sVariable) {
 		return $this->_smarty->$sVariable;
 	}

@@ -3,7 +3,7 @@ class content extends appController
 {
 	### DISPLAY ######################
 	function index() {
-		$this->tplDisplay("index.tpl");
+		$this->tplDisplay("index.php");
 	}
 	function search() {
 		if(!empty($_GET["query"])) {
