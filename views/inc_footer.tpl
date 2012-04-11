@@ -1,6 +1,6 @@
 	</div> <!-- #main -->
 
-	<aside role="complementary">
+	<aside role="complementary" class="pull-right">
 		<form class="searchForm" name="search" method="get" action="/search/">
 			<input type="text" name="query" placeholder="Search...">
 			<input type="submit" value="Search">
@@ -17,21 +17,14 @@
 	</aside>
 	
 	<footer role="contentinfo">
-		<p>&copy; Copyright {$smarty.now|formatDate:"Y"} {getSetting tag="site-title"}, All Rights Reserved.</p>
+		<p>&copy; Copyright {$smarty.now|formatDate:"Y"} {getSetting tag="title"}, All Rights Reserved.</p>
 	</footer>
 	
-	<script src="/scripts/jquery-1.7.1.min.js"></script>
-	<script src="/scripts/jquery.scrollTo.min.js"></script>
-	<script src="/scripts/common.js"></script>
-	<!--[if lt IE 9]>
-		<script src="/scripts/IE9.js">IE7_PNG_SUFFIX=".png";</script>
-	<![endif]-->
-	<!--[if lt IE 7]>
-		<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
-		<script>window.attachEvent("onload",function(){ CFInstall.check({ mode:"overlay" }) })</script>
-	<![endif]-->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script>window.jQuery && document.write('<script src="/js/jquery-1.7.2.min.js"><\/script>')</script>
+	<script src="/js/common.js"></script>
 
-	{getSetting tag="analytics-google" assign="aSettingGoogle"}
+	{getSetting tag="analytics_google" assign="aSettingGoogle"}
 	{if !empty($aSettingGoogle)}
 	<script>	
 	var _gaq=[['_setAccount','{$aSettingGoogle}'],['_trackPageview'],['_trackPageLoadTime']];

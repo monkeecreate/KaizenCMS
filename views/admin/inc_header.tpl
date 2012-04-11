@@ -25,7 +25,7 @@
 	<link href="/css/admin/style.css?v1" rel="stylesheet">
 	<link href="/js/ui-themes/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
 	
-	<script src="/js/modernizr-2.0.6.min.js"></script>
+	<script src="/js/modernizr-2.5.3.min.js"></script>
 </head>
 <body class="{$menu}">
 	<div class="navbar navbar-fixed-top">

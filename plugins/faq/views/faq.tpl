@@ -57,4 +57,17 @@
 	</div>
 	<div class="clear">&nbsp;</div>
 
+{footer}
+<script src="/scripts/jquery.scrollTo.min.js"></script>
+<script>
+$(function(){
+	$(".faq-Question").click(function() {
+		var faqID = $(this).attr("href");
+		$(faqID).slideToggle(400);
+		$.scrollTo(this, 1000);
+		return false;
+	});
+});
+</script>
+{/footer}
 {include file="inc_footer.tpl"}

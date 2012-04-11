@@ -5,9 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
+	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
 	<meta name="description" content="{getSetting tag="site-description"}">
+	<meta name="viewport" content="width=device-width; initial-scale=1.0, maximum-scale=1">
 	<!-- iPhone -->
-	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="no">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<!-- /iPhone -->
 	<!-- IE -->
@@ -18,6 +20,7 @@
 	<!-- Facebook -->
 	<meta property="og:title" content="{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="site-title"}">
 	<meta property="og:description" content="">
+	<meta property="og:url" content="/">
 	<meta property="og:image" content="">
 	<!-- /Facebook -->
 	
@@ -30,13 +33,12 @@
 	<link rel="sitemap" href="/sitemap.xml" type="application/xml" title="Sitemap">
 	
 	<link rel="stylesheet" href="/css/style.css?v=1" type="text/css">
-	<link rel="stylesheet" href="/css/print.css" type="text/css" media="print"> 
 	
-	<script src="/scripts/modernizr-2.0.6.min.js"></script>
+	<script src="/scripts/modernizr-2.5.3.min.js"></script>
 </head>
 {flush()}
 <body{if !empty($menu)} class="{$menu}"{/if}>
-	<div id="no-js" class="hide"><p>For full functionality of this site it is necessary to enable JavaScript. Here are the <a href="http://www.enable-javascript.com/" target="_blank"> instructions how to enable JavaScript in your web browser</a>.</p></div>
+	<!--[if lt IE 7 ]><p class="chromeframe">Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 	
 	<header role="banner">
 		<hgroup>
@@ -53,4 +55,4 @@
 		</nav>
 	</header>
 	
-	<div class="main" role="main">
+	<div class="main pull-left" role="main">
