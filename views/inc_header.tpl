@@ -9,7 +9,7 @@
 	<meta name="description" content="{getSetting tag="description"}">
 	<meta name="viewport" content="width=device-width; initial-scale=1.0, maximum-scale=1">
 	<!-- iPhone -->
-	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="no">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<!-- /iPhone -->
 	<!-- IE -->
@@ -33,7 +33,6 @@
 	<link rel="sitemap" href="/sitemap.xml" type="application/xml" title="Sitemap">
 	
 	<link rel="stylesheet" href="/css/style.css?v=1" type="text/css">
-	<link rel="stylesheet" href="/css/print.css" type="text/css" media="print"> 
 	
 	<script src="/scripts/modernizr-2.5.3.min.js"></script>
 </head>
@@ -56,4 +55,4 @@
 		</nav>
 	</header>
 	
-	<div class="main" role="main">
+	<div class="main pull-left" role="main">

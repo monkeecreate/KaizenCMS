@@ -1,0 +1,384 @@
+@import "normalize.less";
+@import "mixins.less";
+
+/* variables */
+@bgColor: #fff;
+@bgColorAlt: #556270;
+@fontFamily: "Verdana", sans-serif;
+@fontFamilyAlt: "Palatino", serif;
+@textColor: #666;
+@textColorAlt: #556270;
+@highlightColor: #c44d58;
+@highlightColorAlt: #ff6b6b;
+@linkColor: #4ecdc4;
+@linkColorHover: darken(@linkColor, 15%);
+@linkColorAlt: #ff6b6b;
+@linkColorAltHover: darken(@linkColorAlt, 15%);
+
+/* structure */
+
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	*behavior: url(/scripts/boxsizing.htc);
+}
+
+html {
+	color: @textColor;
+	-webkit-font-smoothing: antialiased;
+}
+
+body {
+	background: @bgColor;
+	margin: 0 auto;
+	text-align: left;
+	font-family: @fontFamily;
+	width: 960px;
+}
+
+.chromeframe {
+	background: darken(@bgColor, 25%);
+	color: @textColor;
+	width: 960px;
+	margin: 15px auto;
+	padding: 0.5em;
+	.border-radius();
+}
+
+/* typography */
+
+h1 {
+	font-size: 3.0em;
+	font-family: @fontFamilyAlt;
+	margin: 0.67em 0;
+}
+
+h2 {
+	font-size: 2.5em;
+	font-family: @fontFamilyAlt;
+	font-weight: normal;
+	margin: 0 0 25px;
+	padding-bottom: 10px;
+	color: @textColorAlt;
+}
+
+h3 {
+	font-size: 1.8em;
+	font-family: @fontFamilyAlt;
+	font-weight: normal;
+	color: @highlightColor;
+	margin: 6px 0 10px;
+}
+
+h4 {
+	font-size: 1.5em;
+	font-family: @fontFamilyAlt;
+	font-weight: normal;
+	margin: 6px 0 10px;
+	color: @highlightColor;
+}
+
+h5 {
+	font-size: 1.0em;
+	margin: 6px 0 10px;
+	text-transform: uppercase;
+}
+
+h6 {
+	font-size: 0.8em;
+	margin: 6px 0 10px;
+	text-transform: uppercase;
+}
+
+p {
+	margin: 0 0 35px;
+}
+
+ul, ol {
+	margin: 0 0 35px;
+}
+
+ul ul, ol ol, ol ul, ul ol {
+	margin: 0;
+}
+
+ul.styleless, ol.styleless {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+a:link, a:active, a:visited {
+	color: @linkColor;
+	text-decoration: none;
+}
+
+a:hover {
+	color: @linkColorHover;
+	text-decoration: underline;
+}
+
+a.link-alt:link, a.link-alt:active, a.link-alt:visited {
+	color: @linkColorAlt;
+	text-decoration: none;
+}
+
+a.link-alt:hover {
+	color: @linkColorAltHover;
+	text-decoration: underline;
+}
+
+/* header */
+
+[role="banner"] {
+	margin: 0 0 45px;
+	.clearfix();
+
+	h1 a:link, h1 a:active, h1 a:visited {
+		background: url(../images/logo.png) no-repeat 0 0;
+		display: block;
+		.size(360px, 30px);
+		text-decoration: none;
+	}
+
+	h1 a:hover {
+		color: @linkColorHover;
+		text-decoration: underline;
+	}
+
+	hgroup h2 {
+		font-size: 1.8em;
+	}
+}
+
+/* nav */
+
+nav {
+	clear: both;
+	.clearfix();
+
+	ul {
+		width: 960px;
+		padding: 0;
+		list-style: none;
+		list-style-image: none;
+
+		li {
+			position: relative;
+			float: left;
+
+			&:first-child a {
+				margin-left: 0;
+			}
+		}
+
+		a {
+			&:link, &:visited, &:active {
+				position: relative;
+				float: left;
+				display: block;
+				margin-left: 45px;
+				padding: 15px 0;
+				color: @highlightColor;
+				font-size: 1.4em;
+				font-family: @fontFamilyAlt;
+				text-decoration: none;
+
+				.textshadow nav ul:first-child & {
+					.text-shadow(-1px, -1px, 1px, #fff);
+				}
+			}
+
+			&:hover {
+				color: @highlightColorAlt;
+				text-decoration: none;
+			}
+
+			&.current {
+				color: @highlightColorAlt;
+				text-decoration: none;
+			}
+		}
+	}
+
+	ul.dropdown {
+		margin: 0;
+		padding: 0;
+		display: block;
+		position: absolute;
+		z-index: 10;
+		top: 100%;
+		width: 250px;
+		left: 30px;
+		display: none;
+		background: none;
+		border: 0;
+
+		li {
+			margin: 0;
+			padding: 0;
+			float: none;
+			position: relative;
+			list-style: none;
+			display: block;
+			border: 0;
+
+			a:link, a:active, a:visited {
+				background: @highlightColorAlt;
+				display: block;
+				width: 250px;
+				font-size: 1.0em;
+				margin: 0;
+				float: none;
+				display: inline-block;
+				padding: 8px 10px;
+				-webkit-transition: background-color .5s ease-in-out, color .5s linear;
+				border-bottom: 1px solid darken(@highlightColorAlt, 4%);
+				color: #fff;
+			}
+
+			a:hover {
+				background: darken(@highlightColorAlt, 6%);
+				text-decoration: none;
+			}
+
+			&:first-child {
+				border-left: 0;
+			}
+
+		}
+	}
+}
+
+/* main */
+
+[role="main"] {
+	display: inline;
+	width: 630px;
+}
+
+/* sidebar */
+
+[role="complementary"] {
+	display: inline;
+	width: 300px;
+	font-size: .95em;
+}
+
+/* footer */
+
+[role="contentinfo"] {
+	clear: both;
+	margin: 25px 0;
+
+	p {
+		color: lighten(@textColor, 30%);
+		font-size: 0.8em;
+		line-height: 2.0;
+	}
+
+	a:link, a:active, a:visited {
+		color: @linkColor;
+		text-decoration: none;
+	}
+
+	a:hover {
+		color: @linkColorHover;
+		text-decoration: underline;
+	}
+}
+
+/* misc */
+
+.cf {
+	.clearfix;
+}
+
+/* Hide from browsers */
+.hide, [hidden] {
+	display: none;
+}
+
+/* Hide from browsers & screenreaders */
+.hidden {
+	display: none;
+	visibility: hidden;
+}
+
+/* Hide from browsers, available to screenreaders */
+.visuallyHidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+
+/* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { 
+	clip: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	position: static;
+	width: auto;
+}
+
+/* Hide from browsers & screenreaders, maintain layout */
+.invisible { 
+	visibility: hidden;
+}
+
+/* The Kellum Method */
+.hide-text {
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.show {
+	display: block;
+}
+
+.pull-left {
+	float: left;
+}
+
+.pull-right {
+	float: right;
+}
+
+#fb-root {
+	display: none;
+}
+
+::-moz-selection {
+	background: @highlightColorAlt;
+	color: #fff;
+	text-shadow: none;
+}
+
+::selection {
+	background: @highlightColorAlt;
+	color: #fff;
+	text-shadow: none;
+}
+
+@media print {
+	* { background: transparent !important; color: black !important; box-shadow:none !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; }
+	a, a:visited { text-decoration: underline; }
+	a[href]:after { content: " (" attr(href) ")"; }
+	abbr[title]:after { content: " (" attr(title) ")"; }
+	.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }
+	pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+	thead { display: table-header-group; }
+	tr, img { page-break-inside: avoid; }
+	img { max-width: 100% !important; }
+	@page { margin: 0.5cm; }
+	p, h2, h3 { orphans: 3; widows: 3; }
+	h2, h3 { page-break-after: avoid; }
+}

@@ -1,6 +1,6 @@
 	</div> <!-- #main -->
 
-	<aside role="complementary">
+	<aside role="complementary" class="pull-right">
 		<form class="searchForm" name="search" method="get" action="/search/">
 			<input type="text" name="query" placeholder="Search...">
 			<input type="submit" value="Search">
@@ -20,9 +20,8 @@
 		<p>&copy; Copyright {$smarty.now|formatDate:"Y"} {getSetting tag="title"}, All Rights Reserved.</p>
 	</footer>
 	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-	<script>window.jQuery && document.write('<script src="/scripts/jquery-1.7.1.min.js"><\/script>')</script>
-	<script src="/scripts/jquery.scrollTo.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script>window.jQuery && document.write('<script src="/scripts/jquery-1.7.2.min.js"><\/script>')</script>
 	<script src="/scripts/common.js"></script>
 
 	{getSetting tag="analytics_google" assign="aSettingGoogle"}
