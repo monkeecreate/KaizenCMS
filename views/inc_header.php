@@ -13,7 +13,7 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<!-- /iPhone -->
 	<!-- IE -->
-	<meta name="application-name" content="{getSetting tag="site-title"}">
+	<meta name="application-name" content="<?php $this->getSetting("site-title"); ?>">
 	<meta name="msapplication-tooltip" content="<?php print $this->getSetting("site-description"); ?>">
 	<meta name="msapplication-starturl" content="/?iePinned=true">
 	<!-- /IE -->

@@ -42,5 +42,10 @@
 	</pre>
 
 <?php
+	$this->addToHeader("Header Add Test");
+	$this->addToHeader("Header Add Test 2");
+	$this->addToFooter("Footer Add Test");
+?>
+<?php
 	include("inc_footer.php");
 ?>

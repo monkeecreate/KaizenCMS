@@ -8,6 +8,10 @@ class appController {
 	public $settings;
 	public $urlVars;
 	public $model;
+
+	private $_footerText = "";
+	private $_headerText = "";
+	private $_templateVars = array();
 	
 	function __construct($sModel = null) {
 		global $objDB, $objMail, $oEnc, $oSmarty, $site_public_root, $site_root, $aConfig, $sURL, $aUrl, $aURLVars;
@@ -365,6 +369,19 @@ class appController {
 //		$this->_smarty->assign($sVariable, $sValue);
 		$this->_templateVars[$sVariable] = $sValue;
 	}
+	function addToHeader($string) {
+		if(empty($this->_headerText)) 
+			$this->_headerText = $string;
+		else
+			$this->_headerText .= $string;
+	}
+	function addToFooter($string) {
+		if(empty($this->_footerText)) 
+			$this->_footerText = $string;
+		else
+			$this->_footerText .= $string;
+	}
+
 	function tplDisplay($sTemplate, $sSkipPlugin = false) {
 /*
 		$this->_smarty->registerObject("appController", $this);
@@ -379,6 +396,10 @@ class appController {
 */
 		ob_start();
 
+		foreach($this->_templateVars as $sName => $sValue) {
+			$$sName = $sValue;
+		}
+
 		$templatePath = $this->settings->root . "views/" . $sTemplate;
 		if(!empty($this->_plugin) && $sSkipPlugin == false)
 			$templatePath = $this->settings->root . "plugins/" . $this->_plugin . "/views/" . $sTemplate;
@@ -386,6 +407,21 @@ class appController {
 			include($templatePath);
 		else
 			print "404";
+
+		if(!empty($this->_headerText)) {
+			$obcontents = ob_get_clean();
+			$obcontents = str_replace("</head>", $this->_headerText . "\n</head>", $obcontents);
+			ob_start();
+			print $obcontents;
+		}
+
+		if(!empty($this->_footerText)) {
+			$obcontents = ob_get_clean();
+			$obcontents = str_replace("</html>", $this->_footerText . "\n</html>", $obcontents);
+			ob_start();
+			print $obcontents;
+		}
+		ob_end_flush();
 	}
 
 	function tplVariableGet($sVariable) {
