@@ -61,6 +61,7 @@ $aTables = array(
 				"autoincrement" => 1
 			),
 			"name" => array("type" => "text","length" => 255),
+			"parentid" => array("type" => "integer","unsigned" => 1),
 			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
 		"unique" => array("sort_order")

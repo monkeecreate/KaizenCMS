@@ -17,17 +17,17 @@
 	</aside>
 	
 	<footer role="contentinfo">
-		<p>&copy; Copyright {$smarty.now|formatDate:"Y"} {getSetting tag="title"}, All Rights Reserved.</p>
+		<p>&copy; Copyright {$smarty.now|formatDate:"Y"} {getSetting tag="site-title"}, All Rights Reserved.</p>
 	</footer>
 	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script>window.jQuery && document.write('<script src="/js/jquery-1.7.2.min.js"><\/script>')</script>
 	<script src="/js/common.js"></script>
 
-	{getSetting tag="analytics_google" assign="aSettingGoogle"}
-	{if !empty($aSettingGoogle)}
+	{getSetting tag="google-analytics" assign="sGoogleAnalytics"}
+	{if !empty($sGoogleAnalytics)}
 	<script>	
-	var _gaq=[['_setAccount','{$aSettingGoogle}'],['_trackPageview'],['_trackPageLoadTime']];
+	var _gaq=[['_setAccount','{$sGoogleAnalytics}'],['_trackPageview'],['_trackPageLoadTime']];
     (function(d,t){ var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
     g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
     s.parentNode.insertBefore(g,s) }(document,'script'));

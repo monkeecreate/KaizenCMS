@@ -100,10 +100,7 @@ class posts_model extends appModel {
 	 * @param  array &$aPost An array of a single post.
 	 */
 	private function _getPostInfo(&$aPost) {
-		if(!empty($aPost)) {
-			if(!empty($aPost["created_by"]))
-				$aPost["user"] = $this->getUser($aPost["created_by"]);
-		
+		if(!empty($aPost)) {		
 			$aPost["title"] = htmlspecialchars(stripslashes($aPost["title"]));
 			if(!empty($aPost["excerpt"]))
 				$aPost["excerpt"] = nl2br(htmlspecialchars(stripslashes($aPost["excerpt"])));
@@ -194,7 +191,7 @@ class posts_model extends appModel {
 		}
 		
 		$aCategories = $this->dbQuery(
-			"SELECT `id`, `name`, `sort_order`, COUNT('categoryid') AS `items` FROM `{dbPrefix}posts_categories` AS `categories`"
+			"SELECT `categories`.* FROM `{dbPrefix}posts_categories` AS `categories`"
 				.$sJoin
 				." GROUP BY `id`"
 				.$sOrderBy
@@ -202,9 +199,9 @@ class posts_model extends appModel {
 		);
 	
 		foreach($aCategories as &$aCategory) {
-			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+			$this->_getCategoryInfo($aCategory);
 		}
-		
+
 		return $aCategories;
 	}
 	
@@ -223,16 +220,28 @@ class posts_model extends appModel {
 			return false;
 		
 		$aCategory = $this->dbQuery(
-			"SELECT `id`, `name`, `sort_order`, COUNT('categoryid') AS `items` FROM `{dbPrefix}posts_categories` AS `categories`"
+			"SELECT `categories`.* FROM `{dbPrefix}posts_categories` AS `categories`"
 				." LEFT JOIN `{dbPrefix}posts_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`"
 				.$sWhere
 			,"row"
 		);
 		
-		if(!empty($aCategory))
-			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+		$this->_getCategoryInfo($aCategory);			
 		
 		return $aCategory;
+	}
+
+	/**
+	 * Clean up category info and get any other data to be returned.
+	 * @param  array &$aPost An array of a single category.
+	 */
+	private function _getCategoryInfo(&$aCategory) {
+		if(!empty($aCategory)) {		
+			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
+
+			if(!empty($aCategory["parentid"]))
+				$aCategory["parent"] = $this->getCategory($aCategory["parentid"]);
+		}
 	}
 
 	/**

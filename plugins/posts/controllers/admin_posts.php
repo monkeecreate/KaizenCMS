@@ -420,6 +420,7 @@ class admin_posts extends adminController {
 			"posts_categories",
 			array(
 				"name" => $_POST["name"]
+				,"parentid" => $_POST["parent"]
 				,"sort_order" => $sOrder
 			)
 		);
@@ -431,6 +432,7 @@ class admin_posts extends adminController {
 			"posts_categories",
 			array(
 				"name" => $_POST["name"]
+				,"parentid" => $_POST["parent"]
 			),
 			$_POST["id"]
 		);

@@ -53,7 +53,7 @@
 			<h3><a href="{$aPost.url}" title="{$aPost.title}">{$aPost.title}</a></h3>
 			<small class="timeCat">
 				<time>{$aPost.publish_on|formatDateTime}</time>
-				| Posted by: {$aPost.user.fname} {$aPost.user.lname} 
+				| Posted by: {$aPost.author.fname} {$aPost.author.lname} 
 				{if !empty($aPost.categories)}
 					| Categories: 
 					{foreach from=$aPost.categories item=aCategory name=category}
@@ -62,7 +62,7 @@
 				{/if}
 			</small>
 			
-			<fb:like href="http://{$smarty.server.SERVER_NAME}{$aPost.url}" layout="box_count" show_faces="false" width="50" font=""></fb:like> <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://{$smarty.server.SERVER_NAME}{$aPost.url}" data-text="{$aPost.title}" data-count="vertical" data-via="{getSetting tag="twitter-username"}">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			{if $aPost.allow_sharing}<fb:like href="http://{$smarty.server.SERVER_NAME}{$aPost.url}" layout="box_count" show_faces="false" width="50" font=""></fb:like> <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://{$smarty.server.SERVER_NAME}{$aPost.url}" data-text="{$aPost.title}" data-count="vertical" data-via="{getSetting tag="twitter-username"}">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>{/if}
 			
 			<p>{$aPost.excerpt}&hellip; <a href="{$aPost.url}" title="{$aPost.title}">More Info&raquo;</a></p>
 		</article>

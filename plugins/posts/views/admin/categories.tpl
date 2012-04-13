@@ -1,7 +1,7 @@
 {$menu = "posts"}{$subMenu = "Categories"}
 {include file="inc_header.tpl" sPageTitle="Posts &raquo; Categories"}
 	
-	<h1>Posts &raquo; Categories</h1>
+	<h1>Categories</h1>
 	{include file="inc_alerts.tpl"}
 	
 		<div class="row-fluid">
@@ -57,10 +57,23 @@
 										<label class="control-label" for="form-name">Name</label>
 										<div class="controls">
 											<input type="text" name="name" id="form-name" value="{$aCategoryEdit.name}" class="span12 validate[required]"><br />
-											<input type="submit" value="Save Changes" class="btn btn-primary">
-											<input type="hidden" name="id" value="{$aCategoryEdit.id}">
 										</div>
 									</div>
+
+									<div class="control-group">
+										<label class="control-label" for="form-parent">Parent</label>
+										<div class="controls">
+											<select name="parent" id="form-parent" class="span12">
+												<option value=""{if empty($aCategoryEdit.parent)} selected="selected"{/if}>None</option>
+												{foreach from=$aCategories item=aCategory}
+													<option value="{$aCategory.id}"{if $aCategoryEdit.parent.id == $aCategory.id} selected="selected"{/if}>{$aCategory.name}</option>
+												{/foreach}
+											</select>
+										</div>
+									</div>
+
+									<input type="submit" value="Save Changes" class="btn btn-primary">
+									<input type="hidden" name="id" value="{$aCategoryEdit.id}">
 								</form>
 							</div>
 						</div>
@@ -77,9 +90,22 @@
 										<label class="control-label" for="form-name">Name</label>
 										<div class="controls">
 											<input type="text" name="name" id="form-name" value="" class="span12 validate[required]"><br />
-											<input type="submit" value="Create Category" class="btn btn-primary">
 										</div>
 									</div>
+
+									<div class="control-group">
+										<label class="control-label" for="form-parent">Parent</label>
+										<div class="controls">
+											<select name="parent" id="form-parent" class="span12">
+												<option value="">None</option>
+												{foreach from=$aCategories item=aCategory}
+													<option value="{$aCategory.id}">{$aCategory.name}</option>
+												{/foreach}
+											</select>
+										</div>
+									</div>
+
+									<input type="submit" value="Create Category" class="btn btn-primary">
 								</form>
 							</div>
 						</div>
@@ -104,11 +130,11 @@ $(function(){
 		"iDisplayLength": 10, //how many items to display per page
 		{if $sSort == "manual"}
 			"aaSorting": [[1, "asc"]], //which column to sort by (0-X)
-			"aoColumns": [
+			"aoColumns": [ 
 				null,
-				{ "sType": "num-html" },
-				null
-			]
+      			{ "sType": "numeric" },
+      			null
+      		]
 		{else}
 			"aaSorting": [[0, "asc"]] //which column to sort by (0-X)
 		{/if}

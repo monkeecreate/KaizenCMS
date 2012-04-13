@@ -51,7 +51,7 @@ class posts extends appController {
 	}
 	function post() {
 		$aPost = $this->model->getPost(null, $this->urlVars->dynamic["tag"]);
-		
+
 		if(empty($aPost))
 			$this->error('404');
 
