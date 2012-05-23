@@ -95,16 +95,30 @@ class admin_settings_social extends appController
 	}
 	function facebook_connect() {		
 		$authorizeSession = json_decode(stripslashes($_GET["session"]), true);
+		$extendedURL = "https://graph.facebook.com/oauth/access_token?client_id=" . $this->getSetting("facebook_app_id") . "&client_secret=" . $this->getSetting("facebook_app_secret") .  "&grant_type=fb_exchange_token&fb_exchange_token=" . $authorizeSession["access_token"] . "";
+		$extendedSessionResults = file_get_contents($extendedURL);
+		$extendedSessionResults = explode("&", $extendedSessionResults);
+		$extendedSession["access_token"] = "";
+		$extendedSession["expires"] = 0;
+		foreach($extendedSessionResults as $sVar) {
+			if(strpos($sVar, "access_token=") === 0)
+				$extendedSession["access_token"] = str_replace("access_token=", "", $sVar);
+			if(strpos($sVar, "expires=") === 0)
+				$extendedSession["expires"] = str_replace("expires=", "", $sVar);
+	
+		}
 				
 		$this->dbUpdate(
 			"settings",
 			array(
-				"value" => json_encode(array("user_access_token" => $this->encrypt($authorizeSession["access_token"]), "post_access_token" => $this->encrypt($authorizeSession["access_token"])))
+				"value" => json_encode(array("user_access_token" => $this->encrypt($extendedSession["access_token"]), "post_access_token" => $this->encrypt($extendedSession["access_token"])))
 			),
 			"facebook_connect", "tag", "text"
 		);
+
+		$lNumberDays = ceil($extendedSession["expires"] / 60 / 60 / 24);
 		
-		header("Location: /admin/settings/?notice=".urlencode("Your Facebook account has been linked with this website."));
+		header("Location: /admin/settings/?notice=".urlencode("Your Facebook account has been linked with this website, but it will expire in about $lNumberDays days and will have to be reconnected then."));
 	}
 	function facebook_unlink() {
 		$this->dbUpdate(
