@@ -107,11 +107,13 @@ class admin_settings_social extends appController
 				$extendedSession["expires"] = str_replace("expires=", "", $sVar);
 	
 		}
+
+		$expirationTime = $extendedSession["expires"] + time();
 				
 		$this->dbUpdate(
 			"settings",
 			array(
-				"value" => json_encode(array("user_access_token" => $this->encrypt($extendedSession["access_token"]), "post_access_token" => $this->encrypt($extendedSession["access_token"])))
+				"value" => json_encode(array("user_access_token" => $this->encrypt($extendedSession["access_token"]), "post_access_token" => $this->encrypt($extendedSession["access_token"]), "expiration" => $expirationTime))
 			),
 			"facebook_connect", "tag", "text"
 		);

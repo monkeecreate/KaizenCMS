@@ -66,7 +66,9 @@ class Form_facebook extends Form_Field {
 					$sHTML .= '<p class="small">We were unable to connect to your Facebook account. This could be due to Facebook being down or an invalid connection with your account. If the problem persists remove the connection below and Connect to Facebook again.</p>';
 				}
 			
-				$sHTML .= '<p class="small"><a href="/admin/settings/facebook/unlink/" title="Remove Facebook Connection">Remove Connection to Facebook</a></p></div>';
+				$sHTML .= '<p class="small"><a href="/admin/settings/facebook/unlink/" title="Remove Facebook Connection">Remove Connection to Facebook</a><br />';
+				$sHTML .= 'Token will expire on ' . date("m/d/Y", $aValue["expiration"]) . "</p>";
+				$sHTML .= '</p></div>';
 			}
 			
 			$sHTML .= "<input type=\"hidden\" name=\"settings[".$this->_setting["tag"]."]\" value=\"".$this->value(false)."\" /><br /><br />\n";
