@@ -256,7 +256,7 @@ class appController {
 
 		$expiration = $aFacebookConnect["expiration"];
 		if($expiration > 0) {
-			if($expiration -  time() < (60 * 60 * 24 * 7)) { // 7 days in the future
+			if(($expiration -  time()) < (60 * 60 * 24 * 7)) { // 7 days in the future
 				$extededSession = $this->getExtendedFacebookSession($this->getSetting("facebook_app_id"), $this->getSetting("facebook_app_secret"), $aFacebook["access_token"] ); 
 				mail("support@crane-west.com", $_SERVER["HOST_NAME"] . " facebook token updated", "New expiration time is now " . date("m/d/Y h:i:s a", $extendedSession["expiration"]));
 			}
