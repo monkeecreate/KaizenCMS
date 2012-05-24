@@ -59,6 +59,7 @@ class appController {
 		header("Location: ".$url);
 		exit;
 	}
+	
 	function siteInfo() {
 		echo "<pre>";
 		print_r($this->settings);
@@ -205,6 +206,41 @@ class appController {
 		
 		return $oTwitter;
 	}
+
+	function getExtendedFacebookSession($appID, $appSecret, $accessToken ) {
+		$extendedURL = "https://graph.facebook.com/oauth/access_token?client_id=" . $appID . "&client_secret=" . $appSecret .  "&grant_type=fb_exchange_token&fb_exchange_token=" . $accessToken . "";
+		$extendedSessionResults = file_get_contents($extendedURL);
+		$extendedSessionResults = explode("&", $extendedSessionResults);
+		$extendedSession["access_token"] = "";
+		$extendedSession["expires"] = 0;
+		foreach($extendedSessionResults as $sVar) {
+			if(strpos($sVar, "access_token=") === 0)
+				$extendedSession["access_token"] = str_replace("access_token=", "", $sVar);
+			if(strpos($sVar, "expires=") === 0)
+				$extendedSession["expires"] = str_replace("expires=", "", $sVar);
+
+		}
+
+//print "<pre>";
+//print_r($extendedSession);
+//exit();
+
+		$expirationTime = $extendedSession["expires"] + time();
+		                
+		if($extendedSession["access_token"] != "") {
+			$this->dbUpdate(
+				"settings",
+				array(
+					"value" => json_encode(array("user_access_token" => $this->encrypt($extendedSession["access_token"]), "post_access_token" => $this->encrypt($extendedSession["access_token"]), "expiration" => $expirationTime))
+				),
+				"facebook_connect", "tag", "text"
+			);
+		}
+
+		return $extendedSession;
+
+	}
+
 	function loadFacebook() {
 		require_once($this->settings->root."helpers/facebook.php");
 		
@@ -217,6 +253,14 @@ class appController {
 		$aFacebookConnect = $this->getSetting("facebook_connect");
 		
 		$aFacebook = array("obj" => $oFacebook, "access_token" => $this->decrypt($aFacebookConnect["post_access_token"]));	
+
+		$expiration = $aFacebookConnect["expiration"];
+		if($expiration > 0) {
+			if($expiration -  time() < (60 * 60 * 24 * 7)) { // 7 days in the future
+				$extededSession = $this->getExtendedFacebookSession($this->getSetting("facebook_app_id"), $this->getSetting("facebook_app_secret"), $aFacebook["access_token"] ); 
+				mail("support@crane-west.com", $_SERVER["HOST_NAME"] . " facebook token updated", "New expiration time is now " . date("m/d/Y h:i:s a", $extendedSession["expiration"]));
+			}
+		}
 		
 		return $aFacebook;
 	}

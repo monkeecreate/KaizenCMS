@@ -95,6 +95,9 @@ class admin_settings_social extends appController
 	}
 	function facebook_connect() {		
 		$authorizeSession = json_decode(stripslashes($_GET["session"]), true);
+
+		$extendedSession = $this->getExtendedFacebookSession($this->getSetting("facebook_app_id"), $this->getSetting("facebook_app_secret"), $authorizeSession["access_token"] );
+/*
 		$extendedURL = "https://graph.facebook.com/oauth/access_token?client_id=" . $this->getSetting("facebook_app_id") . "&client_secret=" . $this->getSetting("facebook_app_secret") .  "&grant_type=fb_exchange_token&fb_exchange_token=" . $authorizeSession["access_token"] . "";
 		$extendedSessionResults = file_get_contents($extendedURL);
 		$extendedSessionResults = explode("&", $extendedSessionResults);
@@ -117,6 +120,7 @@ class admin_settings_social extends appController
 			),
 			"facebook_connect", "tag", "text"
 		);
+*/
 
 		$lNumberDays = ceil($extendedSession["expires"] / 60 / 60 / 24);
 		
