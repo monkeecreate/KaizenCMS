@@ -164,7 +164,7 @@ class admin_posts extends adminController {
 				,"col"
 			);
 			
-			$aPost["publish_on_date"] = date("m/d/Y", $aPost["publish_on"]);
+			$aPost["publish_on_date"] = date("l, F d, Y", $aPost["publish_on"]);
 			
 			$aPost["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"

@@ -132,9 +132,9 @@ $(function(){
 			"aaSorting": [[1, "asc"]], //which column to sort by (0-X)
 			"aoColumns": [ 
 				null,
-      			{ "sType": "numeric" },
-      			null
-      		]
+				{ "sType": "numeric" },
+				null
+			]
 		{else}
 			"aaSorting": [[0, "asc"]] //which column to sort by (0-X)
 		{/if}
