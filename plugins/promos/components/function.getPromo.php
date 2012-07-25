@@ -18,7 +18,7 @@ function smarty_function_getPromo($aParams, &$oSmarty) {
 		if(!empty($aPromo["link"]))
 			echo "<a href=\"/promos/".$aPromo["id"]."/\" class=\"".$aParams["tag"]." promo\">";
 		
-		echo "<img src=\"".$oPromo->imageFolder.$aPromo["promo"]."\" style=\"width:".$aPosition["promo_width"]."px;height:".$aPosition["promo_height"]."px;\" class=\"".$aParams["tag"]." promo\">";
+		echo "<img src=\"".$oPromo->imageFolder.$aPromo["promo"]."?v=".$aPromo["updated_datetime"]."\" style=\"width:".$aPosition["promo_width"]."px;height:".$aPosition["promo_height"]."px;\" class=\"".$aParams["tag"]." promo\">";
 		
 		if(!empty($aPromo["link"]))
 			echo "</a>";
