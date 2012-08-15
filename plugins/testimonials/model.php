@@ -64,6 +64,9 @@ class testimonials_model extends appModel {
 			default:
 				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
 		}
+
+		if($sRandom == true)
+			$sOrderBy = " ORDER BY RAND() ";
 		
 		$aTestimonials = $this->dbQuery(
 			"SELECT `testimonials`.* FROM `{dbPrefix}testimonials` as `testimonials`"

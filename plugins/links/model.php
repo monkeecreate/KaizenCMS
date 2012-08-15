@@ -19,7 +19,7 @@ class links_model extends appModel {
 		}
 	}
 	
-	function getLinks($sCategory = null, $sAll = false) {
+	function getLinks($sCategory = null, $sAll = false, $sRandom = false) {
 		$aWhere = array();
 		$sJoin = "";
 		
@@ -66,6 +66,9 @@ class links_model extends appModel {
 			default:
 				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
 		}
+
+		if($sRandom == true)
+			$sOrderBy = " ORDER BY RAND() ";
 		
 		// Get all links based on filters given
 		$aLinks = $this->dbQuery(

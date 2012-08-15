@@ -64,6 +64,9 @@ class documents_model extends appModel {
 			default:
 				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
 		}
+
+		if($sRandom == true)
+			$sOrderBy = " ORDER BY RAND() ";
 		
 		// Get all documents based on filters given
 		$aDocuments = $this->dbQuery(
