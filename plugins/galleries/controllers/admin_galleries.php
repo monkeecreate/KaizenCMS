@@ -439,6 +439,11 @@ class admin_galleries extends adminController {
 				." ORDER BY `sort_order`"
 			,"all"
 		);
+
+                foreach($aPhotos as &$aPhoto) {
+                        foreach($aPhoto as $key => $value)
+                                $aPhoto[$key] = stripslashes($value);
+                }
 		
 		$this->tplAssign("aPhotos", $aPhotos);
 		$this->tplAssign("aGallery", $this->model->getGallery($this->urlVars->dynamic["gallery"], null, true));
