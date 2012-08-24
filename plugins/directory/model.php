@@ -20,7 +20,7 @@ class directory_model extends appModel {
 		}
 	}
 	
-	function getListings($sCategory, $sAll = false) {
+	function getListings($sCategory, $sAll = false, $sRandom = false) {
 		$aWhere = array();
 		$sJoin = "";
 		
@@ -70,6 +70,9 @@ class directory_model extends appModel {
 			default:
 				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
 		}
+
+		if($sRandom == true)
+			$sOrderBy = " ORDER BY RAND() ";
 		
 		$aListings = $this->dbQuery(
 			"SELECT `directory`.* FROM `{dbPrefix}directory` AS `directory`"

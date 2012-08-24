@@ -15,7 +15,7 @@ class faq_model extends appModel {
 		}
 	}
 	
-	function getQuestions($sCategory = null, $sAll = false) {
+	function getQuestions($sCategory = null, $sAll = false, $sRandom = false) {
 		$aWhere = array();
 		$sJoin = "";
 		
@@ -62,6 +62,9 @@ class faq_model extends appModel {
 			default:
 				$sOrderBy = " ORDER BY `question` ".$sSortDirection;
 		}
+
+		if($sRandom == true)
+			$sOrderBy = " ORDER BY RAND() ";
 		
 		// Get all faq for paging
 		$aQuestions = $this->dbQuery(
