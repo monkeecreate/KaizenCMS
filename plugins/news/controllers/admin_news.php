@@ -327,7 +327,7 @@ class admin_news extends adminController {
 			$sPreviewHeight = ceil($this->model->imageMinHeight * (300 / $this->model->imageMinWidth));
 		}
 		
-		$this->tplAssign("aArticle", $this->model->getArticle($this->urlVars->dynamic["id"]));
+		$this->tplAssign("aArticle", $this->model->getArticle($this->urlVars->dynamic["id"],null, true));
 		$this->tplAssign("sFolder", $this->model->imageFolder);
 		$this->tplAssign("minWidth", $this->model->imageMinWidth);
 		$this->tplAssign("minHeight", $this->model->imageMinHeight);
