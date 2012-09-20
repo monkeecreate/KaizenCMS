@@ -1,7 +1,7 @@
 <?php
 $aPluginInfo = array(
 	/* Plugin Details */
-	"name" => "FAQ",
+	"name" => "Services",
 	"version" => "1.0",
 	"author" => "Crane | West",
 	"website" => "http://crane-west.com/",
@@ -9,9 +9,8 @@ $aPluginInfo = array(
 
 	/* Plugin Configuration */
 	"config" => array(
-		"useCategories" => true,
-		"perPage" => 10,
-		"sort" => "manual-asc", // manual, question, created, updated, random - asc, desc
-		"sortCategory" => "manual-asc" // manual, name, items, random - asc, desc
+		"shortContentCharacters" => 250, // max characters for short content
+		"perPage" => 2,
+		"sort" => "manual", // manual, name, created, updated, random - asc, desc
 	)
 );

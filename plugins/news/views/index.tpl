@@ -53,36 +53,29 @@
 			<h3><a href="{$aArticle.url}" title="{$aArticle.title}">{$aArticle.title}</a></h3>
 			<small class="timeCat">
 				<time>{$aArticle.datetime_show|formatDateTime}</time>
-				| Posted by: {$aArticle.user.fname} {$aArticle.user.lname} 
+				| Posted by: {$aArticle.user.fname} {$aArticle.user.lname}
 				{if !empty($aArticle.categories)}
-					| Categories: 
+					| Categories:
 					{foreach from=$aArticle.categories item=aCategory name=category}
-						<a href="/news/?category={$aCategory.id}" title="Articles in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+						<a href="/news/?category={$aCategory.id}" title="Articles in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if}
 					{/foreach}
 				{/if}
 			</small>
-			
+
 			<fb:like href="http://{$smarty.server.SERVER_NAME}{$aArticle.url}" layout="box_count" show_faces="false" width="50" font=""></fb:like> <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://{$smarty.server.SERVER_NAME}{$aArticle.url}" data-text="{$aArticle.title}" data-count="vertical" data-via="{getSetting tag="twitterUser"}">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-			
+
 			<p>{$aArticle.short_content}&hellip; <a href="{$aArticle.url}" title="{$aArticle.title}">More Info&raquo;</a></p>
 		</article>
 	{foreachelse}
 		<p>No news articles.</p>
 	{/foreach}
 
-	<div id="paging">
-		{if $aPaging.next.use == true}
-			<div class="right">
-				<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
-			</div>
-		{/if}
-		{if $aPaging.back.use == true}
-			<div class="left">
-				<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
-			</div>
-		{/if}
-	</div>
-	<div class="clear">&nbsp;</div>
+	{if $aPaging.next.use == true}
+		<p class="pull-right"><a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a></p>
+	{/if}
+	{if $aPaging.back.use == true}
+		<p class="pull-left"><a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a></p>
+	{/if}
 
 	<div style="text-align:center;margin-top:10px">
 		<a href="/news/rss/{if !empty($smarty.get.category)}?category={$smarty.get.category}{/if}">

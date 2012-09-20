@@ -3,7 +3,7 @@
 
 	{if $aCategories|@count gt 1}
 	<form name="category" method="get" action="/documents/" class="sortCat">
-		Category: 
+		Category:
 		<select name="category">
 			<option value="">- All Categories -</option>
 			{foreach from=$aCategories item=aCategory}
@@ -30,9 +30,9 @@
 			<h3><a href="{$documentFolder}{$aDocument.document}" target="_blank" onClick="javascript: _gaq.push(['_trackPageview', '/documents/{$aDocument.id}/{$aDocument.name}/']);">{$aDocument.name}</a></h3>
 			{if !empty($aDocument.categories)}
 				<small class="timeCat">
-					Categories: 
+					Categories:
 					{foreach from=$aDocument.categories item=aCategory name=category}
-						<a href="/documents/?category={$aCategory.id}" title="Documents in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+						<a href="/documents/?category={$aCategory.id}" title="Documents in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if}
 					{/foreach}
 				</small>
 			{/if}
@@ -42,14 +42,11 @@
 		<p>No documents.</p>
 	{/foreach}
 
-	<div id="paging">
-		{if $aPaging.next.use == true}
-			<p class="right"><a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a></p>
-		{/if}
-		{if $aPaging.back.use == true}
-			<p class="left"><a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a></p>
-		{/if}
-	</div>
-	<div class="clear">&nbsp;</div>
+	{if $aPaging.next.use == true}
+		<p class="pull-right"><a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a></p>
+	{/if}
+	{if $aPaging.back.use == true}
+		<p class="pull-left"><a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a></p>
+	{/if}
 
 {include file="inc_footer.tpl"}

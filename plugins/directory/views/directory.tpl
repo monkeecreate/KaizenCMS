@@ -1,9 +1,9 @@
 {$menu = "directory"}
 {include file="inc_header.tpl" page_title="Directory"}
-		
+
 	{if $aCategories|@count gt 1}
 	<form name="category" method="get" action="/directory/" class="sortCat">
-		Category: 
+		Category:
 		<select name="category">
 			<option value="">- All Categories -</option>
 			{foreach from=$aCategories item=aCategory}
@@ -28,22 +28,22 @@
 	{foreach from=$aListings item=aListing}
 		<article>
 			<h3><a href="{$aListing.url}" title="{$aListing.name}">{$aListing.name}</a></h3>
-			
+
 			{if $aListing.image == 1}
 				<figure>
 					<img src="/image/directory/{$aListing.id}/?width=140">
 				</figure>
 			{/if}
-			
+
 			{if !empty($aListing.categories)}
 				<small class="timeCat">
 					Categories:
 					{foreach from=$aListing.categories item=aCategory name=category}
-						<a href="/directory/?category={$aCategory.id}" title="Listings in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+						<a href="/directory/?category={$aCategory.id}" title="Listings in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if}
 					{/foreach}
 				</small>
 			{/if}
-			
+
 			<p>
 				{if !empty($aListing.address1)}
 					{$aListing.address1}<br />
@@ -67,21 +67,14 @@
 			</p>
 		</article>
 	{foreachelse}
-		<p>No listings.</p>
+		<p>There are currently no listings.</p>
 	{/foreach}
 
-	<div id="paging">
-		{if $aPaging.next.use == true}
-			<div class="right">
-				<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
-			</div>
-		{/if}
-		{if $aPaging.back.use == true}
-			<div class="left">
-				<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
-			</div>
-		{/if}
-	</div>
-	<div class="clear">&nbsp;</div>
+	{if $aPaging.next.use == true}
+		<p class="pull-right"><a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a></p>
+	{/if}
+	{if $aPaging.back.use == true}
+		<p class="pull-left"><a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a></p>
+	{/if}
 
 {include file="inc_footer.tpl"}

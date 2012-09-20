@@ -3,7 +3,7 @@
 
 	{if $aCategories|@count gt 1}
 	<form name="category" method="get" action="/faq/" class="sortCat">
-		Category: 
+		Category:
 		<select name="category">
 			<option value="">- All Categories -</option>
 			{foreach from=$aCategories item=aCategory}
@@ -30,9 +30,9 @@
 			<h3>Q: <a href="#{$aQuestion.id}" class="faq-Question" title="{$aQuestion.question}">{$aQuestion.question}</a></h3>
 			<div style="display:none;" id="{$aQuestion.id}">
 				{if !empty($aQuestion.categories)}
-					<small>Categories: 
+					<small>Categories:
 						{foreach from=$aQuestion.categories item=aCategory name=category}
-							<a href="/faq/?category={$aCategory.id}" title="Questions in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if} 
+							<a href="/faq/?category={$aCategory.id}" title="Questions in {$aCategory.name}">{$aCategory.name}</a>{if $smarty.foreach.category.last == false},{/if}
 						{/foreach}
 					</small>
 				{/if}
@@ -43,19 +43,12 @@
 		<p>No FAQ's.</p>
 	{/foreach}
 
-	<div id="paging">
-		{if $aPaging.next.use == true}
-			<div class="right">
-				<a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a>
-			</div>
-		{/if}
-		{if $aPaging.back.use == true}
-			<div class="left">
-				<a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a>
-			</div>
-		{/if}
-	</div>
-	<div class="clear">&nbsp;</div>
+	{if $aPaging.next.use == true}
+		<p class="pull-right"><a href="{preserve_query option='page' value=$aPaging.next.page}">Next &raquo;</a></p>
+	{/if}
+	{if $aPaging.back.use == true}
+		<p class="pull-left"><a href="{preserve_query option='page' value=$aPaging.back.page}">&laquo; Back</a></p>
+	{/if}
 
 {footer}
 <script src="/scripts/jquery.scrollTo.min.js"></script>
