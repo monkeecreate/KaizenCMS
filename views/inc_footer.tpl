@@ -1,11 +1,11 @@
 	</div> <!-- #main -->
 
-	<aside role="complementary" class="pull-right">
+	<aside role="complementary">
 		<form class="searchForm" name="search" method="get" action="/search/">
 			<input type="text" name="query" placeholder="Search...">
 			<input type="submit" value="Search">
 		</form>
-		
+
 		<h2>Lorem Ipsum Stuff</h2>
 
 		<ul>
@@ -15,18 +15,19 @@
 		   <li>Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.</li>
 		</ul>
 	</aside>
-	
+
 	<footer role="contentinfo">
 		<p>&copy; Copyright {$smarty.now|formatDate:"Y"} {getSetting tag="title"}, All Rights Reserved.</p>
 	</footer>
-	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<script>window.jQuery && document.write('<script src="/scripts/jquery-1.7.2.min.js"><\/script>')</script>
-	<script src="/scripts/common.js"></script>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/scripts/jquery-1.8.1.min.js"><\/script>')</script>
+	<script src="/scripts/plugins.js"></script>
+	<script src="/scripts/main.js"></script>
 
 	{getSetting tag="analytics_google" assign="aSettingGoogle"}
 	{if !empty($aSettingGoogle)}
-	<script>	
+	<script>
 	var _gaq=[['_setAccount','{$aSettingGoogle}'],['_trackPageview'],['_trackPageLoadTime']];
     (function(d,t){ var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
     g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
