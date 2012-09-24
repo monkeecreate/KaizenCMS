@@ -23,6 +23,7 @@ class admin_services extends adminController {
 		$this->tplAssign("aServices", $this->model->getServices(true));
 		$this->tplAssign("minSort", $sMinSort);
 		$this->tplAssign("maxSort", $sMaxSort);
+		$this->tplAssign("sUseImage", $this->model->useImage);
 		$this->tplAssign("sSort", array_shift(explode("-", $this->model->sort)));
 
 		$this->tplDisplay("admin/index.tpl");
@@ -38,6 +39,9 @@ class admin_services extends adminController {
 				)
 			);
 
+		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
 		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
 		$this->tplDisplay("admin/add.tpl");
 	}
@@ -91,7 +95,11 @@ class admin_services extends adminController {
 
 		$_SESSION["admin"]["admin_services"] = null;
 
-		$this->forward("/admin/services/?notice=".urlencode("Service created successfully!"));
+		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true) {
+			$_POST["id"] = $sID;
+			$this->image_upload_s();
+		} else
+			$this->forward("/admin/services/?notice=".urlencode("Service created successfully!"));
 	}
 	function edit() {
 		if(!empty($_SESSION["admin"]["admin_services"])) {
@@ -119,6 +127,10 @@ class admin_services extends adminController {
 			$this->tplAssign("aService", $aService);
 		}
 
+		$this->tplAssign("sUseImage", $this->model->useImage);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
+		$this->tplAssign("imageFolder", $this->model->imageFolder);
 		$this->tplAssign("sShortContentCount", $this->model->shortContentCharacters);
 		$this->tplDisplay("admin/edit.tpl");
 	}
@@ -163,12 +175,22 @@ class admin_services extends adminController {
 
 		$_SESSION["admin"]["admin_services"] = null;
 
-		$this->forward("/admin/services/?notice=".urlencode("Changes saved successfully!"));
+		if(!empty($_FILES["image"]["type"]) && $this->model->useImage == true)
+			$this->image_upload_s();
+		else {
+			if($_POST["submit"] == "Save Changes")
+				$this->forward("/admin/services/?notice=".urlencode("Changes saved successfully!"));
+			elseif($_POST["submit"] == "edit")
+				$this->forward("/admin/services/image/".$_POST["id"]."/edit/");
+			elseif($_POST["submit"] == "delete")
+				$this->forward("/admin/services/image/".$_POST["id"]."/delete/");
+		}
 	}
 	function delete() {
 		$aService = $this->model->getService($this->urlVars->dynamic["id"], null, true);
 
 		$this->dbDelete("services", $this->urlVars->dynamic["id"]);
+		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$aService["image"]);
 
 		$this->forward("/admin/services/?notice=".urlencode("Service removed successfully!"));
 	}
@@ -216,6 +238,93 @@ class admin_services extends adminController {
 		);
 
 		$this->forward("/admin/services/?notice=".urlencode("Sort order saved successfully!"));
+	}
+	function image_upload_s() {
+		if(!is_dir($this->settings->rootPublic.substr($this->model->imageFolder, 1)))
+			mkdir($this->settings->rootPublic.substr($this->model->imageFolder, 1), 0777);
+
+		if($_FILES["image"]["type"] == "image/jpeg"
+		 || $_FILES["image"]["type"] == "image/jpg"
+		 || $_FILES["image"]["type"] == "image/pjpeg"
+		) {
+			$sFile = $this->settings->rootPublic.substr($this->model->imageFolder, 1).$_POST["id"].".jpg";
+
+			$aImageSize = getimagesize($_FILES["image"]["tmp_name"]);
+			if($aImageSize[0] < $this->model->imageMinWidth || $aImageSize[1] < $this->model->imageMinHeight) {
+				$this->forward("/admin/services/image/".$_POST["id"]."/edit/?error=".urlencode("Image does not meet the minimum width and height requirements."));
+			}
+
+			if(move_uploaded_file($_FILES["image"]["tmp_name"], $sFile)) {
+				$this->dbUpdate(
+					"services",
+					array(
+						"photo_x1" => 0
+						,"photo_y1" => 0
+						,"photo_x2" => $this->model->imageMinWidth
+						,"photo_y2" => $this->model->imageMinHeight
+						,"photo_width" => $this->model->imageMinWidth
+						,"photo_height" => $this->model->imageMinHeight
+					),
+					$_POST["id"]
+				);
+
+				$this->forward("/admin/services/image/".$_POST["id"]."/edit/");
+			} else
+				$this->forward("/admin/services/image/".$_POST["id"]."/edit/?error=".urlencode("Unable to upload image."));
+		} else
+			$this->forward("/admin/services/image/".$_POST["id"]."/edit/?error=".urlencode("Image not a jpg. Image is (".$_FILES["image"]["type"].")."));
+	}
+	function image_edit() {
+		if($this->model->imageMinWidth < 300) {
+			$sPreviewWidth = $this->model->imageMinWidth;
+			$sPreviewHeight = $this->model->imageMinHeight;
+		} else {
+			$sPreviewWidth = 300;
+			$sPreviewHeight = ceil($this->model->imageMinHeight * (300 / $this->model->imageMinWidth));
+		}
+
+		$this->tplAssign("aService", $this->model->getService($this->urlVars->dynamic["id"], null, true));
+		$this->tplAssign("sFolder", $this->model->imageFolder);
+		$this->tplAssign("minWidth", $this->model->imageMinWidth);
+		$this->tplAssign("minHeight", $this->model->imageMinHeight);
+		$this->tplAssign("previewWidth", $sPreviewWidth);
+		$this->tplAssign("previewHeight", $sPreviewHeight);
+
+		$this->tplDisplay("admin/image.tpl");
+	}
+	function image_edit_s() {
+		$this->dbUpdate(
+			"services",
+			array(
+				"photo_x1" => $_POST["x1"]
+				,"photo_y1" => $_POST["y1"]
+				,"photo_x2" => $_POST["x2"]
+				,"photo_y2" => $_POST["y2"]
+				,"photo_width" => $_POST["width"]
+				,"photo_height" => $_POST["height"]
+			),
+			$_POST["id"]
+		);
+
+		$this->forward("/admin/services/?notice=".urlencode("Service updated."));
+	}
+	function image_delete() {
+		$this->dbUpdate(
+			"services",
+			array(
+				"photo_x1" => 0
+				,"photo_y1" => 0
+				,"photo_x2" => 0
+				,"photo_y2" => 0
+				,"photo_width" => 0
+				,"photo_height" => 0
+			),
+			$this->urlVars->dynamic["id"]
+		);
+
+		@unlink($this->settings->rootPublic.substr($this->model->imageFolder, 1).$this->urlVars->dynamic["id"].".jpg");
+
+		$this->forward("/admin/services/?notice=".urlencode("Image removed successfully!"));
 	}
 	##################################
 }

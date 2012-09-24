@@ -47,6 +47,26 @@ $aPluginUrlPatterns = array(
 	"/admin/services/sort/<id:[0-9]+>/<sort:[a-z]+>/" => array(
         "cmd" => "admin_services",
         "action" => "sort"
+    ),
+    "/admin/services/image/<id:[0-9]+>/upload/" => array(
+        "cmd" => "admin_services",
+        "action" => "image_upload"
+    ),
+    "/admin/services/image/upload/s/" => array(
+        "cmd" => "admin_services",
+        "action" => "image_upload_s"
+    ),
+    "/admin/services/image/<id:[0-9]+>/edit/" => array(
+        "cmd" => "admin_services",
+        "action" => "image_edit"
+    ),
+    "/admin/services/image/edit/s/" => array(
+        "cmd" => "admin_services",
+        "action" => "image_edit_s"
+    ),
+    "/admin/services/image/<id:[0-9]+>/delete/" => array(
+        "cmd" => "admin_services",
+        "action" => "image_delete"
     )
 );
 ###############################################

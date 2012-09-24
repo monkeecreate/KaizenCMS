@@ -5,6 +5,12 @@
 
 	{foreach from=$aServices item=aService}
 		<article>
+			{if $aService.image == 1}
+				<figure>
+					<img src="/image/services/{$aService.id}/?width=140" alt="{$aService.title}">
+				</figure>
+			{/if}
+
 			<h3><a href="{$aService.url}" title="{$aService.title}">{$aService.title}</a></h3>
 			<p>{$aService.short_content}</p>
 		</article>

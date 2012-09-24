@@ -1,5 +1,9 @@
 <?php
 class services_model extends appModel {
+	public $useImage;
+	public $imageMinWidth;
+	public $imageMinHeight;
+	public $imageFolder;
 	public $shortContentCharacters;
 	public $perPage;
 	public $sort;
@@ -55,7 +59,7 @@ class services_model extends appModel {
 				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
 		}
 
-		// Get all links based on filters given
+		// Get all services based on filters given
 		$aServices = $this->dbQuery(
 			"SELECT `services`.* FROM `{dbPrefix}services` AS `services`"
 				.$sJoin
@@ -99,6 +103,12 @@ class services_model extends appModel {
 			$aService["short_content"] = stripslashes($aService["short_content"]);
 			$aService["content"] = stripslashes($aService["content"]);
 			$aService["url"] = "/services/".$aService["tag"]."/";
+
+			if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aService["id"].".jpg") && $aService["photo_x2"] > 0 && $this->useImage == true) {
+				$aService["image"] = 1;
+			} else {
+				$aService["image"] = 0;
+			}
 		}
 
 		return $aService;
@@ -107,5 +117,17 @@ class services_model extends appModel {
 		$aService = $this->getService($sID);
 
 		return $aService["url"];
+	}
+	function getImage($sId) {
+		$aService = $this->getService($sId);
+
+		$sFile = $this->settings->rootPublic.substr($this->imageFolder, 1).$sId.".jpg";
+
+		$aImage = array(
+			"file" => $sFile
+			,"info" => $aService
+		);
+
+		return $aImage;
 	}
 }

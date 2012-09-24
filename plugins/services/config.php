@@ -9,6 +9,10 @@ $aPluginInfo = array(
 
 	/* Plugin Configuration */
 	"config" => array(
+		"useImage" => true,
+		"imageMinWidth" => 140,
+		"imageMinHeight" => 87,
+		"imageFolder" => "/uploads/services/",
 		"shortContentCharacters" => 250, // max characters for short content
 		"perPage" => 2,
 		"sort" => "manual", // manual, name, created, updated, random - asc, desc

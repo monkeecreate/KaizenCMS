@@ -1,8 +1,11 @@
 <?php
+$sFolder = $this->settings->rootPublic."uploads/services/";
 if($sPluginStatus == 1) {
 	// Install
+	mkdir($sFolder);
 } else {
 	// Uninstall
+	$this->deleteDir($sFolder);
 }
 
 $aTables = array(
@@ -21,6 +24,12 @@ $aTables = array(
 			"content" => array("type" => "clob"),
 			"sort_order" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"active" => array("type" => "boolean"),
+			"photo_x1" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"photo_y1" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"photo_x2" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"photo_y2" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"photo_width" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
+			"photo_height" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),

@@ -34,7 +34,7 @@
 	<header>
 		<h2>Manage Services</h2>
 		<a href="/admin/services/add/" title="Add Service" class="button">Add Service &raquo;</a>
-		
+
 		{foreach from=$aAdminFullMenu item=aMenu key=k}
 			{if $k == "services"}
 				{if $aMenu.menu|@count gt 1}
@@ -47,7 +47,7 @@
 			{/if}
 		{/foreach}
 	</header>
-	
+
 	<table class="dataTable">
 		<thead>
 			<tr>
@@ -88,6 +88,11 @@
 						</td>
 					{/if}
 					<td class="center">
+						{if $sUseImage == true}
+							<a href="/admin/services/image/{$aService.id}/edit/" title="Edit Service Image">
+								<img src="/images/admin/icons/picture.png" style="width:16px;height:16px;">
+							</a>
+						{/if}
 						<a href="/admin/services/edit/{$aService.id}/" title="Edit Service">
 							<img src="/images/admin/icons/pencil.png" alt="edit icon" style="width:16px;height:16px;">
 						</a>
