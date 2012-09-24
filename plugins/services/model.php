@@ -100,7 +100,10 @@ class services_model extends appModel {
 				$aService["user"] = $this->getUser($aService["created_by"]);
 
 			$aService["title"] = htmlspecialchars(stripslashes($aService["title"]));
-			$aService["short_content"] = stripslashes($aService["short_content"]);
+			if(!empty($aService["short_content"]))
+				$aService["short_content"] = nl2br(stripslashes($aService["short_content"]));
+			else
+				$aService["short_content"] = (string)substr(nl2br(htmlspecialchars(stripslashes(strip_tags($aService["content"])))), 0, $this->shortContentCharacters);
 			$aService["content"] = stripslashes($aService["content"]);
 			$aService["url"] = "/services/".$aService["tag"]."/";
 
