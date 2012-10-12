@@ -14,6 +14,7 @@
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
+	*behavior: url(/js/boxsizing.htc);
 }
 
 body {
@@ -89,7 +90,7 @@ textarea {
 	background-image: -o-linear-gradient(top,#f9f9f9,#ececec);
 	background-image: -webkit-gradient(linear,left top,left bottom,from(#f9f9f9),to(#ececec));
 	background-image: -webkit-linear-gradient(top,#f9f9f9,#ececec);
-	background-image: linear-gradient(top,#f9f9f9,#ececec);	
+	background-image: linear-gradient(top,#f9f9f9,#ececec);
 }
 
 .accordion-body {
@@ -135,7 +136,7 @@ textarea {
 }
 
 /* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
-.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { 
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus {
 	clip: auto;
 	height: auto;
 	margin: 0;
@@ -146,7 +147,7 @@ textarea {
 
 
 /* Hide from browsers & screenreaders, maintain layout */
-.invisible { 
+.invisible {
 	visibility: hidden;
 }
 

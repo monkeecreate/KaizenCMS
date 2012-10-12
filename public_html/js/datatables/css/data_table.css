@@ -179,9 +179,9 @@ ul.data-table-legend li {
 	margin: 0 auto;
 	clear: both;
 	width: 100%;
-	
+
 	/* Note Firefox 3.5 and before have a bug with border-collapse
-	 * ( https://bugzilla.mozilla.org/show%5Fbug.cgi?id=155955 ) 
+	 * ( https://bugzilla.mozilla.org/show%5Fbug.cgi?id=155955 )
 	 * border-spacing: 0; is one possible option. Conditional-css.com is
 	 * useful for this kind of thing
 	 *
@@ -189,7 +189,7 @@ ul.data-table-legend li {
 	 * It subtracts one px relative to the other browsers from the first column, and
 	 * adds one to the end...
 	 *
-	 * If you want that effect I'd suggest setting a border-top/left on th/td's and 
+	 * If you want that effect I'd suggest setting a border-top/left on th/td's and
 	 * then filling in the gaps with other borders.
 	 */
 }
@@ -336,11 +336,11 @@ ul.data-table-legend li {
 	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-	
+
 }
 
-.dataTables_wrapper .paging_full_numbers span.paginate_button,
- 	.dataTables_wrapper .paging_full_numbers span.paginate_active {
+.dataTables_wrapper .paging_full_numbers .paginate_button,
+ 	.dataTables_wrapper .paging_full_numbers .paginate_active {
 /*	border: 1px solid #aaa;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -348,7 +348,7 @@ ul.data-table-legend li {
 	margin: 0 3px;*/
 	cursor: pointer;
 	*cursor: hand;
-	
+
 	color: #0069d6;
 	display: block;
 	float: left;
@@ -360,35 +360,35 @@ ul.data-table-legend li {
 	text-decoration: none;
 }
 
-.dataTables_wrapper .paging_full_numbers span.paginate_button_disabled {
+.dataTables_wrapper .paging_full_numbers .paginate_button_disabled {
 	background-color: transparent;
 	color: #bfbfbf;
 }
 
-.dataTables_wrapper .paging_full_numbers span.paginate_button {
-	
+.dataTables_wrapper .paging_full_numbers .paginate_button {
+
 }
 
-.dataTables_wrapper .paging_full_numbers span.paginate_button:hover {
+.dataTables_wrapper .paging_full_numbers .paginate_button:hover {
 	color: #005580;
 	background-color: #f5f5f5;
 }
 
-.dataTables_wrapper .paging_full_numbers span.paginate_active {
+.dataTables_wrapper .paging_full_numbers .paginate_active {
 	color: #999;
 	background-color: #f5f5f5;
 }
 
-.dataTables_wrapper .paging_full_numbers span.first, .dataTables_wrapper .paging_full_numbers span.last {
+.dataTables_wrapper .paging_full_numbers .first, .dataTables_wrapper .paging_full_numbers .last {
 	display: none;
 }
 
 .dataTables_wrapper table.display tr.even.row_selected td {
-	
+
 }
 
 .dataTables_wrapper table.display tr.odd.row_selected td {
-	
+
 }
 
 .dataTables_wrapper div.box {
