@@ -8,4 +8,6 @@ $(document).ready(function() {
 			$('.dropdown:eq(0)', this).hide();
 		});
 	});
+
+	Placeholders.init();
 });
