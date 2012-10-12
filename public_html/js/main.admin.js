@@ -27,4 +27,7 @@ $(document).ready(function() {
 			qsParm[key] = val;
 		}
 	}
+
+	/* Polyfill for HTML5 Placeholders */
+	Placeholders.init();
 });

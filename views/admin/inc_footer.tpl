@@ -70,12 +70,12 @@
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="/js/jquery-1.8.2.min.js"><\/script>')</script>
-	<script src="/js/jquery-ui-1.8.16.custom.min.js"></script>
+	<script src="/js/jqueryui/jquery-ui-1.9.0.custom.min.js"></script>
 	<script src="/js/bootstrap.js"></script>
-	<script src="/js/datatables/jquery.dataTables.min.js"></script>
 	<script src="/js/validationEngine/jquery.validationEngine-en.js"></script>
 	<script src="/js/validationEngine/jquery.validationEngine.js"></script>
+	<script src="/js/datatables/jquery.dataTables.min.js"></script>
 	<script src="/js/chosen/chosen.jquery.min.js"></script>
-	<script src="/js/common_admin.js"></script>
+	<script src="/js/main.admin-min.js"></script>
 </body>
 </html>

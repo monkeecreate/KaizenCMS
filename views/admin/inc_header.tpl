@@ -23,7 +23,7 @@
 	<link rel="dns-prefetch" href="//ajax.googleapis.com">
 
 	<link href="/css/admin/style.css?v1" rel="stylesheet">
-	<link href="/js/ui-themes/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
+	<link href="/js/jqueryui/smoothness/jquery-ui-1.9.0.custom.css" rel="stylesheet">
 
 	<script src="/js/modernizr-2.6.2.min.js"></script>
 </head>
