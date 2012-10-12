@@ -10,16 +10,16 @@ class content extends appController
 			$sSearch = $_GET["query"];
 			$sSearchInclude = $_GET["query_include"];
 			$sSearchExclude = $_GET["query_exclude"];
-			
-			if((!$sSearchInclude) || ($sSearchInclude == "")) { $sSearchInclude = ""; } else { $sSearchInclude = "+(".$sSearchInclude.")"; } 
-			if((!$sSearch) || ($sSearch == "")) { $sSearch = ""; }  
+
+			if((!$sSearchInclude) || ($sSearchInclude == "")) { $sSearchInclude = ""; } else { $sSearchInclude = "+(".$sSearchInclude.")"; }
+			if((!$sSearch) || ($sSearch == "")) { $sSearch = ""; }
 			if((!$sSearchExclude) || ($sSearchExclude == "")) { $sSearchExclude = ""; } else { $sSearchExclude = "-(".$sSearchExclude.")"; }
-			
+
 			$sQuery = $this->dbQuote($sSearchInclude." ".$sSearchExclude." ".$sSearch, "text");
-			
+
 			$aTables = $this->dbQuery("SELECT * FROM `{dbPrefix}search`", "all");
 			$aSearchTables = array();
-			
+
 			foreach($aTables as $aSearch) {
 				$sFilter = "";
 				$aSearch["rows"] = json_decode($aSearch["rows"], true);
@@ -28,12 +28,12 @@ class content extends appController
 					$aRows[] = "`table`.`".$sRow."`";
 				}
 				$sRows = implode(",", $aRows);
-				
+
 				if(!empty($aSearch["filter"])) {
 					$aSearch["filter"] = str_replace("{time}", time(), $aSearch["filter"]);
 					$sFilter = " AND ".$aSearch["filter"];
 				}
-				
+
 				$aSearchTables[] = "SELECT"
 					." `id`"
 					.", `".$aSearch["column_title"]."` AS `title`".
@@ -45,25 +45,25 @@ class content extends appController
 					.$sFilter
 				;
 			}
-			
+
 			$sSQL = implode(" UNION ", $aSearchTables)/*." ORDER BY `score` DESC"*/;
-			
+
 			$aSearch = $this->dbQuery($sSQL, "all");
-			
+
 			foreach($aSearch as &$aItem) {
 				// Content
 				$aItem["content"] = implode(". ", array_slice(explode(". ", strip_tags(stripslashes($aItem["content"]))), 0, 2)).".";
 				if(strlen($aItem["content"]) > 150)
 					$aItem["content"] = substr($aItem["content"], 0, 150)."...";
-				
+
 				foreach(explode(" ", $sSearch) as $sValue)
 					$aSearchMark[$sValue] = "<mark>".$sValue."</mark>";
-				
+
 				$aItem["content"] = str_replace(array_keys($aSearchMark), $aSearchMark, $aItem["content"]);
-				
+
 				// Score
 				$aItem["score"] = round($aItem["score"], 3);
-				
+
 				// Link
 				if($aItem["plugin"] == "content") {
 					$sTag = $this->dbQuery("SELECT `tag` FROM `{dbPrefix}content` WHERE `id` = ".$this->dbQuote($aItem["id"], "integer"), "one");
@@ -73,11 +73,11 @@ class content extends appController
 					$aItem["link"] = $oModel->getURL($aItem["id"]);
 				}
 			}
-			
+
 			$sCurrentPage = $_GET["page"];
 			if(empty($sCurrentPage))
 				$sCurrentPage = 1;
-				
+
 			$aSearchPages = array_chunk($aSearch, 5);
 			$aSearch = $aSearchPages[$sCurrentPage - 1];
 
@@ -99,7 +99,7 @@ class content extends appController
 
 			if($sCurrentPage == count($aSearchPages) || count($aSearchPages) == 0)
 				$aPaging["next"]["use"] = false;
-			
+
 			$this->tplAssign("sSearched", 1);
 			$this->tplAssign("aSearch", $aSearch);
 			$this->tplAssign("aPaging", $aPaging);
@@ -107,7 +107,7 @@ class content extends appController
 			$this->tplAssign("sQueryInclude", $_GET["query_include"]);
 			$this->tplAssign("sQueryExclude", $_GET["query_exclude"]);
 		}
-		
+
 		$this->tplDisplay("search.tpl");
 	}
 	function view() {
@@ -117,7 +117,7 @@ class content extends appController
 			$sPage = $this->urlVars->manual["page"];
 		else
 			$this->error("404");
-		
+
 		if(preg_match("/[a-z0-9_-]+/i", $sPage) > 0) {
 			$aContent = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}content`"
@@ -125,22 +125,22 @@ class content extends appController
 					." LIMIT 1"
 				,"row"
 			);
-			
+
 			if(!empty($aContent)) {
 				$aContent["title"] = htmlspecialchars(stripslashes($aContent["title"]));
 				$aContent["content"] = stripslashes($aContent["content"]);
 			}
-			
+
 			$this->tplAssign("aContent", $aContent);
-			
-			if($this->tplExists("content/".$sPage.".tpl"))
-				$this->tplDisplay("content/".$sPage.".tpl");
+
+			if($this->tplExists("templates/".$sPage.".tpl"))
+				$this->tplDisplay("templates/".$sPage.".tpl");
 			else {
 				if(!empty($aContent)) {
 					if(empty($aContent["template"]))
 						$this->tplDisplay("content.tpl");
 					else
-						$this->tplDisplay("content/".$aContent["template"]);
+						$this->tplDisplay("templates/".$aContent["template"]);
 				} else
 					$this->error("404");
 			}
@@ -151,20 +151,20 @@ class content extends appController
 		require_once($this->settings->root.'helpers/recaptchalib.php');
 		$privatekey = "6LfXQwkAAAAAAJ2WgHyDtraMxy639SPAln9f0uFj";
 		$resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
-		
+
 		if (!$resp->is_valid) {
 			$_SESSION["post_data"] = $_POST;
 			$this->forward($this->decrypt($_POST["return"]));
 		}
-		
+
 		// name="{ order | linetype | text }"
 		$aItems = array();//Email components
 		$aInfo = array();//Form values
-		
+
 		// Build array from from, only those made for the email will do
 		foreach($_POST as $x => $input) {
 			$info = explode("|",str_replace("_"," ",$x));
-			
+
 			// Check if made for email
 			if(count($info) > 1) {
 				$aItems[$info[0]] = Array(
@@ -177,7 +177,7 @@ class content extends appController
 		}
 		// Sort based on data in form
 		ksort($aItems);
-		
+
 		//Build email
 		$sBody = "";
 		foreach($aItems as $input) {
@@ -190,24 +190,24 @@ class content extends appController
 			else
 				$this->sendError("content->form_submit", "Invalid line type. (".$input["linetype"].")");
 		}
-		
+
 		$aHeaders["From"] = $this->formSubmitValues($this->decrypt($_POST["from"]), $aItems);
 		$aHeaders["To"] = $this->formSubmitValues($this->decrypt($_POST["to"]), $aItems);
 		$aHeaders["Subject"] = $this->formSubmitValues($this->decrypt($_POST["subject"]), $aItems);
-		
+
 		$this->mail($aHeaders, $sBody);
-		
+
 		$this->forward($this->decrypt($_POST["forward"]));
 	}
 	function formSubmitValues($sString, $aValues) {
 		foreach($aValues as $key => $item)
 			$sString = str_replace("[$".$key."]", $item["value"], $sString);
-		
+
 		return $sString;
 	}
 	function mailChimpSubscribe() {
 		$oMailChimp = $this->loadMailChimp();
-		
+
 		$aMergeVars = array("FNAME" => $_POST["first_name"], "LNAME" => $_POST["last_name"], "GROUPINGS" => array());
 
 		$oMailChimp->listSubscribe($this->decrypt($_POST["list_id"]), $_POST["email"], $aMergeVars);
@@ -220,10 +220,10 @@ class content extends appController
 		} else {
 			$this->forward($this->decrypt($_POST["forward"]));
 		}
-		
+
 	}
 	##################################
-	
+
 	### Functions ####################
 	##################################
 }
