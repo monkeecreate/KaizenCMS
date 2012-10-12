@@ -9,38 +9,38 @@ class directory_model extends appModel {
 	public $sort;
 	public $sortCategory;
 	public $aStates;
-	
+
 	function __construct() {
 		parent::__construct();
-		
+
 		include(dirname(__file__)."/config.php");
-		
+
 		foreach($aPluginInfo["config"] as $sKey => $sValue) {
 			$this->$sKey = $sValue;
 		}
 	}
-	
-	function getListings($sCategory, $sAll = false) {
+
+	function getListings($sCategory, $sAll = false, $sRandom = false) {
 		$aWhere = array();
 		$sJoin = "";
-		
+
 		// Filter those that are only active, unless told otherwise
 		if($sAll == false) {
 			$aWhere[] = "`directory`.`active` = 1";
 		}
-		
+
 		// Filter by category if given
 		if(!empty($sCategory)) {
 			$aWhere[] = "`categories`.`id` = ".$this->dbQuote($sCategory, "integer");
 			$sJoin .= " LEFT JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory`.`id` = `directory_assign`.`listingid`";
 			$sJoin .= " LEFT JOIN `{dbPrefix}directory_categories` AS `categories` ON `directory_assign`.`categoryid` = `categories`.`id`";
 		}
-		
+
 		// Combine filters if atleast one was added
 		if(!empty($aWhere)) {
 			$sWhere = " WHERE ".implode(" AND ", $aWhere);
 		}
-		
+
 		// Check if sort direction is set, and clean it up for SQL use
 		$sSortDirection = array_pop(explode("-", $this->sort));
 		if(empty($sSortDirection) || !in_array(strtolower($sSortDirection), array("asc", "desc"))) {
@@ -48,7 +48,7 @@ class directory_model extends appModel {
 		} else {
 			$sSortDirection = strtoupper($sSortDirection);
 		}
-			
+
 		// Choose sort method based on model setting
 		switch(array_shift(explode("-", $this->sort))) {
 			case "manual":
@@ -70,7 +70,10 @@ class directory_model extends appModel {
 			default:
 				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
 		}
-		
+
+		if($sRandom == true)
+			$sOrderBy = " ORDER BY RAND() ";
+
 		$aListings = $this->dbQuery(
 			"SELECT `directory`.* FROM `{dbPrefix}directory` AS `directory`"
 				.$sJoin
@@ -79,11 +82,11 @@ class directory_model extends appModel {
 				.$sOrderBy
 			,"all"
 		);
-	
+
 		foreach($aListings as $x => &$aListing) {
 			$aListing = $this->_getListingInfo($aListing);
 		}
-		
+
 		return $aListings;
 	}
 	function getListing($sId, $sTag = null, $sAll = false) {
@@ -91,19 +94,19 @@ class directory_model extends appModel {
 			$sWhere = " WHERE `directory`.`id` = ".$this->dbQuote($sId, "integer");
 		else
 			$sWhere = " WHERE `directory`.`tag` = ".$this->dbQuote($sTag, "text");
-			
+
 		if($sAll == false)
 			$sWhere .= " AND `directory`.`active` = 1";
-		
+
 		$aListing = $this->dbQuery(
 			"SELECT `directory`.* FROM `{dbPrefix}directory` AS `directory`"
 				.$sWhere
 				." LIMIT 1"
 			,"row"
 		);
-		
+
 		$aListing = $this->_getListingInfo($aListing);
-		
+
 		return $aListing;
 	}
 	private function _getListingInfo($aListing) {
@@ -120,18 +123,18 @@ class directory_model extends appModel {
 			$aListing["email"] = htmlspecialchars(stripslashes($aListing["email"]));
 			$aListing["website"] = htmlspecialchars(stripslashes($aListing["website"]));
 			$aListing["url"] = "/directory/".$aListing["tag"]."/";
-		
+
 			$aListing["categories"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}directory_categories` AS `categories`"
 					." INNER JOIN `{dbPrefix}directory_categories_assign` AS `directory_assign` ON `directory_assign`.`categoryid` = `categories`.`id`"
 					." WHERE `directory_assign`.`listingid` = ".$aListing["id"]
 				,"all"
 			);
-		
+
 			foreach($aListing["categories"] as &$aCategory) {
 				$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 			}
-		
+
 			if(file_exists($this->settings->rootPublic.substr($this->imageFolder, 1).$aListing["id"].".jpg")
 			 && $aListing["photo_x2"] > 0
 			 && $this->useImage == true) {
@@ -140,23 +143,23 @@ class directory_model extends appModel {
 				$aListing["image"] = 0;
 			}
 		}
-			
+
 		return $aListing;
 	}
 	function getURL($sID) {
 		$aListing = $this->getListing($sID);
-		
+
 		return $aListing["url"];
 	}
 	function getCategories($sEmpty = true) {
 		$sJoin = "";
-		
-		if($sEmpty == false) {		
+
+		if($sEmpty == false) {
 			$sJoin .= " INNER JOIN `{dbPrefix}directory_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`";
 		} else {
 			$sJoin .= " LEFT JOIN `{dbPrefix}directory_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`";
 		}
-		
+
 		// Check if sort direction is set, and clean it up for SQL use
 		$sSortDirection = array_pop(explode("-", $this->sortCategory));
 		if(empty($sSortDirection) || !in_array(strtolower($sSortDirection), array("asc", "desc"))) {
@@ -164,7 +167,7 @@ class directory_model extends appModel {
 		} else {
 			$sSortDirection = strtoupper($sSortDirection);
 		}
-		
+
 		// Choose sort method based on model setting
 		switch(array_shift(explode("-", $this->sortCategory))) {
 			case "manual":
@@ -180,7 +183,7 @@ class directory_model extends appModel {
 			default:
 				$sOrderBy = " ORDER BY `name` ".$sSortDirection;
 		}
-		
+
 		$aCategories = $this->dbQuery(
 			"SELECT `id`, `name`, `sort_order`, COUNT('categoryid') AS `items` FROM `{dbPrefix}directory_categories` AS `categories`"
 				.$sJoin
@@ -188,11 +191,11 @@ class directory_model extends appModel {
 				.$sOrderBy
 			,"all"
 		);
-	
+
 		foreach($aCategories as &$aCategory) {
 			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		}
-		
+
 		return $aCategories;
 	}
 	function getCategory($sId = null, $sName = null) {
@@ -203,30 +206,30 @@ class directory_model extends appModel {
 		} else {
 			return false;
 		}
-		
+
 		$aCategory = $this->dbQuery(
 			"SELECT `id`, `name`, `sort_order`, COUNT('categoryid') AS `items` FROM `{dbPrefix}directory_categories` AS `categories`"
 				." LEFT JOIN `{dbPrefix}directory_categories_assign` AS `assign` ON `categories`.`id` = `assign`.`categoryid`"
 				.$sWhere
 			,"row"
 		);
-		
+
 		if(!empty($aCategory)) {
 			$aCategory["name"] = htmlspecialchars(stripslashes($aCategory["name"]));
 		}
-		
+
 		return $aCategory;
 	}
 	function getImage($sId) {
 		$aListing = $this->getListing($sId, true);
-		
+
 		$sFile = $this->settings->rootPublic.substr($this->imageFolder, 1).$sId.".jpg";
-		
+
 		$aImage = array(
 			"file" => $sFile
 			,"info" => $aListing
 		);
-		
+
 		return $aImage;
 	}
 }

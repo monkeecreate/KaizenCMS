@@ -7,7 +7,6 @@
 	<meta charset="utf-8">
 	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
 	<meta name="description" content="{getSetting tag="site-description"}">
-	<meta name="viewport" content="width=device-width; initial-scale=1.0, maximum-scale=1">
 	<!-- iPhone -->
 	<meta name="apple-mobile-web-app-capable" content="no">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -23,29 +22,31 @@
 	<meta property="og:url" content="/">
 	<meta property="og:image" content="">
 	<!-- /Facebook -->
-	
+
 	<title>{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="site-title"}</title>
-	
-	<link rel="shortcut icon" href="/images/favicon.ico">
-	<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
 	<link rel="author" href="/humans.txt">
 	<link rel="dns-prefetch" href="//ajax.googleapis.com">
 	<link rel="sitemap" href="/sitemap.xml" type="application/xml" title="Sitemap">
-	
+	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/feed/">
+
+	<!-- Remove if you have a favicon.ico in your root dir -->
+	<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=">
+
 	<link rel="stylesheet" href="/css/style.css?v=1" type="text/css">
-	
-	<script src="/scripts/modernizr-2.5.3.min.js"></script>
+
+	<script src="/js/modernizr-2.6.2.min.js"></script>
 </head>
 {flush()}
 <body{if !empty($menu)} class="{$menu}"{/if}>
 	<!--[if lt IE 7 ]><p class="chromeframe">Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-	
+
 	<header role="banner">
 		<hgroup>
 			<h1><a href="/" title="{getSetting tag="site-title"}">{getSetting tag="site-title"}</a></h1>
 			<h2>Site Slogan/Tag Line</h2>
-		</hgroup>		
-		
+		</hgroup>
+
 		<nav role="navigation">
 			<ul>
 				<li><a href="/" title="{getSetting tag="site-title"}" class="{currentMenu var="home"}">Home</a></li>
@@ -54,5 +55,5 @@
 			</ul>
 		</nav>
 	</header>
-	
-	<div class="main pull-left" role="main">
+
+	<div class="main" role="main">

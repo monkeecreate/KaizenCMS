@@ -1,19 +1,13 @@
-@import "normalize.less";
-@import "mixins.less";
+@import "normalize";
+@import "mixins";
 
 /* variables */
-@bgColor: #fff;
-@bgColorAlt: #556270;
+@bgColor: #f1f1f1;
 @fontFamily: "Verdana", sans-serif;
 @fontFamilyAlt: "Palatino", serif;
-@textColor: #666;
-@textColorAlt: #556270;
-@highlightColor: #c44d58;
-@highlightColorAlt: #ff6b6b;
-@linkColor: #4ecdc4;
+@textColor: #333;
+@linkColor: #049cdb;
 @linkColorHover: darken(@linkColor, 15%);
-@linkColorAlt: #ff6b6b;
-@linkColorAltHover: darken(@linkColorAlt, 15%);
 
 /* structure */
 
@@ -30,65 +24,69 @@ html {
 }
 
 body {
-	background: @bgColor;
-	margin: 0 auto;
-	text-align: left;
-	font-family: @fontFamily;
 	width: 960px;
+	margin: 0 auto;
+	font-size: 1em;
+	font-family: @fontFamily;
+	line-height: 1.4;
 }
 
 .chromeframe {
 	background: darken(@bgColor, 25%);
 	color: @textColor;
-	width: 960px;
-	margin: 15px auto;
-	padding: 0.5em;
-	.border-radius();
+	margin: 0.2em 0;
+	padding: 0.2em 0;
+}
+
+/* base */
+
+img {
+	vertical-align: middle;
+}
+
+hr {
+	display: block;
+	height: 1px;
+	border: 0;
+	border-top: 1px solid #ccc;
+	margin: 1em 0;
+	padding: 0;
 }
 
 /* typography */
 
 h1 {
-	font-size: 3.0em;
-	font-family: @fontFamilyAlt;
 	margin: 0.67em 0;
+	font-size: 2em;
+	font-family: @fontFamilyAlt;
 }
 
 h2 {
-	font-size: 2.5em;
+	margin: 0.83em 0;
+	font-size: 1.5em;
 	font-family: @fontFamilyAlt;
-	font-weight: normal;
-	margin: 0 0 25px;
-	padding-bottom: 10px;
-	color: @textColorAlt;
 }
 
 h3 {
-	font-size: 1.8em;
+	margin: 1em 0;
+	font-size: 1.17em;
 	font-family: @fontFamilyAlt;
-	font-weight: normal;
-	color: @highlightColor;
-	margin: 6px 0 10px;
 }
 
 h4 {
-	font-size: 1.5em;
+	margin: 1.33em 0;
+	font-size: 1em;
 	font-family: @fontFamilyAlt;
-	font-weight: normal;
-	margin: 6px 0 10px;
-	color: @highlightColor;
 }
 
 h5 {
-	font-size: 1.0em;
-	margin: 6px 0 10px;
-	text-transform: uppercase;
+	font-size: 0.83em;
+	margin: 1.67em 0;
 }
 
 h6 {
-	font-size: 0.8em;
-	margin: 6px 0 10px;
-	text-transform: uppercase;
+	font-size: 0.75em;
+	margin: 2.33em 0;
 }
 
 p {
@@ -119,26 +117,15 @@ a:hover {
 	text-decoration: underline;
 }
 
-a.link-alt:link, a.link-alt:active, a.link-alt:visited {
-	color: @linkColorAlt;
-	text-decoration: none;
-}
-
-a.link-alt:hover {
-	color: @linkColorAltHover;
-	text-decoration: underline;
-}
-
 /* header */
 
 [role="banner"] {
-	margin: 0 0 45px;
-	.clearfix();
+	width: 100%;
+	margin: 35px 0;
 
 	h1 a:link, h1 a:active, h1 a:visited {
-		background: url(../images/logo.png) no-repeat 0 0;
-		display: block;
-		.size(360px, 30px);
+		color: @linkColor;
+		.text-shadow(2px, 2px, 1px, #ccc);
 		text-decoration: none;
 	}
 
@@ -146,60 +133,43 @@ a.link-alt:hover {
 		color: @linkColorHover;
 		text-decoration: underline;
 	}
-
-	hgroup h2 {
-		font-size: 1.8em;
-	}
 }
 
 /* nav */
 
 nav {
-	clear: both;
-	.clearfix();
+	overflow: hidden;
 
-	ul {
-		width: 960px;
+	ul, ol {
+		float: left;
+		width: 100%;
 		padding: 0;
 		list-style: none;
 		list-style-image: none;
+	}
 
-		li {
-			position: relative;
-			float: left;
+	ul li {
+		position: relative;
+		display: inline;
+	}
 
-			&:first-child a {
-				margin-left: 0;
-			}
-		}
+	ul a {
+		position: relative;
+		float: left;
+		display: block;
+		margin-left: px;
+		padding: px;
+		color: @linkColor;
+		text-decoration: none;
+	}
 
-		a {
-			&:link, &:visited, &:active {
-				position: relative;
-				float: left;
-				display: block;
-				margin-left: 45px;
-				padding: 15px 0;
-				color: @highlightColor;
-				font-size: 1.4em;
-				font-family: @fontFamilyAlt;
-				text-decoration: none;
+	ul li:first-child a {
+		margin-left: 0;
+	}
 
-				.textshadow nav ul:first-child & {
-					.text-shadow(-1px, -1px, 1px, #fff);
-				}
-			}
-
-			&:hover {
-				color: @highlightColorAlt;
-				text-decoration: none;
-			}
-
-			&.current {
-				color: @highlightColorAlt;
-				text-decoration: none;
-			}
-		}
+	ul a:hover {
+		color: @linkColorHover;
+		text-decoration: underline;
 	}
 
 	ul.dropdown {
@@ -223,30 +193,28 @@ nav {
 			list-style: none;
 			display: block;
 			border: 0;
+		}
 
-			a:link, a:active, a:visited {
-				background: @highlightColorAlt;
-				display: block;
-				width: 250px;
-				font-size: 1.0em;
-				margin: 0;
-				float: none;
-				display: inline-block;
-				padding: 8px 10px;
-				-webkit-transition: background-color .5s ease-in-out, color .5s linear;
-				border-bottom: 1px solid darken(@highlightColorAlt, 4%);
-				color: #fff;
-			}
+		a {
+			display: block;
+			width: 250px;
+			font-size: 1.0em;
+			margin: 0;
+			float: none;
+			display: inline-block;
+			padding: 8px 10px;
+			-webkit-transition: background-color .5s ease-in-out, color .5s linear;
+			border-bottom: 1px solid darken(@linkColorHover, 4%);
+			color: #fff;
+		}
 
-			a:hover {
-				background: darken(@highlightColorAlt, 6%);
-				text-decoration: none;
-			}
+		a:hover {
+			background: @linkColorHover;
+			text-decoration: none;
+		}
 
-			&:first-child {
-				border-left: 0;
-			}
-
+		li:first-child {
+			border-left: 0;
 		}
 	}
 }
@@ -254,45 +222,72 @@ nav {
 /* main */
 
 [role="main"] {
+	float: left;
 	display: inline;
-	width: 630px;
+	width: 620px;
+	margin-left: 10px;
 }
 
 /* sidebar */
 
 [role="complementary"] {
+	float: right;
 	display: inline;
 	width: 300px;
 	font-size: .95em;
+	margin-right: 10px;
 }
+
+/* forms */
+
+
 
 /* footer */
 
 [role="contentinfo"] {
+	display: inline;
+	float: left;
 	clear: both;
 	margin: 25px 0;
 
 	p {
-		color: lighten(@textColor, 30%);
+		color: lighten(@textColor, 40%);
 		font-size: 0.8em;
-		line-height: 2.0;
-	}
-
-	a:link, a:active, a:visited {
-		color: @linkColor;
-		text-decoration: none;
-	}
-
-	a:hover {
-		color: @linkColorHover;
-		text-decoration: underline;
 	}
 }
 
 /* misc */
 
+.pull-left {
+	float: left;
+}
+
+.pull-right {
+	float: right;
+}
+
 .cf {
-	.clearfix;
+	.clearfix();
+}
+
+/* Image replacement */
+.ir {
+	background-color: transparent;
+	border: 0;
+	overflow: hidden;
+	/* IE 6/7 fallback */
+	*text-indent: -9999px;
+}
+
+.ir:before {
+	content: "";
+	display: block;
+	width: 0;
+	height: 100%;
+}
+
+.show {
+	display: block;
 }
 
 /* Hide from browsers */
@@ -302,7 +297,7 @@ nav {
 
 /* Hide from browsers & screenreaders */
 .hidden {
-	display: none;
+	display: none !important;
 	visibility: hidden;
 }
 
@@ -319,7 +314,7 @@ nav {
 }
 
 /* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
-.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { 
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus {
 	clip: auto;
 	height: auto;
 	margin: 0;
@@ -329,7 +324,7 @@ nav {
 }
 
 /* Hide from browsers & screenreaders, maintain layout */
-.invisible { 
+.invisible {
 	visibility: hidden;
 }
 
@@ -340,31 +335,15 @@ nav {
 	overflow: hidden;
 }
 
-.show {
-	display: block;
-}
-
-.pull-left {
-	float: left;
-}
-
-.pull-right {
-	float: right;
-}
-
-#fb-root {
-	display: none;
-}
-
 ::-moz-selection {
-	background: @highlightColorAlt;
-	color: #fff;
+	background: #62aaf2;
+	color:#fff;
 	text-shadow: none;
 }
 
 ::selection {
-	background: @highlightColorAlt;
-	color: #fff;
+	background:#62aaf2;
+	color:#fff;
 	text-shadow: none;
 }
 
