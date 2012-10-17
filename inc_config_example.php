@@ -90,10 +90,10 @@ $aConfig["smarty"]["filters"] = array(
 		"move_to_footer"
 	),
 	"pre" => array(
-		
+
 	),
 	"post" => array(
-		
+
 	)
 );
 
