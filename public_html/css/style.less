@@ -240,10 +240,55 @@ nav {
 
 /* forms */
 
-/*captcha*/
+/* captcha */
 
 .captcha {
-	width: 100px;
+	width: 300px;
+
+	#recaptcha_widget {
+		background: right bottom no-repeat url(/images/recap-logo.png);
+		margin: 10px 0 20px;
+
+		.recaptcha_image_wrapper {
+			margin: 10px 0;
+			padding: 10px 0;
+			border-top: 1px solid #ccc;
+			border-bottom: 1px solid #ccc;
+			background: #fff;
+
+		}
+
+		.recaptcha_only_if_image,
+		.recaptcha_only_if_audio,
+		.get_another,
+		.help {
+			width: 300px;
+			margin: 5px 0;
+			font-size: .75em;
+		}
+
+		.help {
+			text-align: right;
+		}
+
+		.get_another,
+		.audio {
+			margin: 10px 0;
+			padding: 0 0 0 26px;
+		}
+
+		.get_another {
+			background: no-repeat left url(/images/redo-arrows.png);
+		}
+
+		.audio {
+			background: no-repeat left url(/images/audio.png);
+		}
+
+		.words {
+			font-size: 1em;
+		}
+	}
 }
 
 /* footer */

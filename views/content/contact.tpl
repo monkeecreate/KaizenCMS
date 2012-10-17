@@ -2,10 +2,11 @@
 {getContent tag="contact" assign="aContent"}{$sTitle = $aContent.title}{else}{$sTitle = "Contact Us"}{/if}
 {include file="inc_header.tpl" page_title=$sTitle}
 {head}
-<script>
-	var RecaptchaOptions = {
-	   theme : 'white'
-	};
+<script type="text/javascript">
+ var RecaptchaOptions = {
+    theme : 'custom',
+    custom_theme_widget: 'recaptcha_widget'
+ };
 </script>
 {/head}
 {if $smarty.get.captcha_error != 1}
@@ -18,7 +19,7 @@
 	{else}
 		<h2>Contact Us</h2>
 	{/if}
-	
+
 	<form name="contact" method="post" action="/sendform/" id="contactForm" class="contactForm">
 		{getSetting tag="email" assign="sEmail"}
 		{getSetting tag="contact-subject" assign="sSubject"}
@@ -27,9 +28,9 @@
 		<input type="hidden" name="return" value="{enc_encrypt value='/contact/?captcha_error=1'}">
 		<input type="hidden" name="from" value="{enc_encrypt value='[$7]'}">
 		<input type="hidden" name="to" value="{enc_encrypt value=$sEmail}">
-		
+
 		<div class="form-errors hide"></div>
-		
+
 		<label for="form_name">Name: <span>required</span></label>
 		<input type="text" id="form_name" name="1|s|Name:" value="{post_data key='1|s|Name:'}" class="validate[required]"><br />
 		<label for="form_address">Address:</label>
@@ -54,7 +55,7 @@
 
 		<input type="submit" value="Send Email">
 	</form>
-	
+
 	{head}
 	<link rel="stylesheet" href="/scripts/validationEngine/validationEngine.jquery.css" type="text/css">
 	{/head}
@@ -64,7 +65,7 @@
 	<script>
 	$(function(){
 		jQuery("#contactForm").validationEngine();
-	
+
 		{if !empty($smarty.get.captcha_error)}
 			$(".form-errors").html('<p>The captcha you entered is incorrect. Please try again. Clicking the refresh icon next to the captcha field will give you two new words if needed.').show();
 		{/if}
