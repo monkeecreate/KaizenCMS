@@ -1,13 +1,11 @@
-@import "normalize.less";
-@import "mixins.less";
+@import "normalize";
+@import "mixins";
 
 /* variables */
 @bgColor: #f1f1f1;
-@fontFamily: "Verdana", sans-serif;
-@fontFamilyAlt: "Palatino", serif;
 @textColor: #333;
 @linkColor: #049cdb;
-@linkColorHover: darken(@linkColor, 15%);
+@linkColorHover: darken(@linkColor, 05%);
 
 /* structure */
 
@@ -15,7 +13,7 @@
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
-	*behavior: url(/scripts/boxsizing.htc);
+	*behavior: url(/js/boxsizing.htc);
 }
 
 html {
@@ -27,7 +25,6 @@ body {
 	width: 960px;
 	margin: 0 auto;
 	font-size: 1em;
-	font-family: @fontFamily;
 	line-height: 1.4;
 }
 
@@ -56,27 +53,23 @@ hr {
 /* typography */
 
 h1 {
-	margin: 0.67em 0;
-	font-size: 2em;
-	font-family: @fontFamilyAlt;
+	font-size: 3.5em;
+	margin: 0.5em 0;
 }
 
 h2 {
-	margin: 0.83em 0;
 	font-size: 1.5em;
-	font-family: @fontFamilyAlt;
+	margin: 0.83em 0;
 }
 
 h3 {
-	margin: 1em 0;
 	font-size: 1.17em;
-	font-family: @fontFamilyAlt;
+	margin: 1em 0;
 }
 
 h4 {
-	margin: 1.33em 0;
 	font-size: 1em;
-	font-family: @fontFamilyAlt;
+	margin: 1.33em 0;
 }
 
 h5 {
@@ -89,25 +82,7 @@ h6 {
 	margin: 2.33em 0;
 }
 
-p {
-	margin: 0 0 35px;
-}
-
-ul, ol {
-	margin: 0 0 35px;
-}
-
-ul ul, ol ol, ol ul, ul ol {
-	margin: 0;
-}
-
-ul.styleless, ol.styleless {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-a:link, a:active, a:visited {
+a {
 	color: @linkColor;
 	text-decoration: none;
 }
@@ -123,9 +98,8 @@ a:hover {
 	width: 100%;
 	margin: 35px 0;
 
-	h1 a:link, h1 a:active, h1 a:visited {
+	h1 a {
 		color: @linkColor;
-		.text-shadow(2px, 2px, 1px, #ccc);
 		text-decoration: none;
 	}
 
@@ -140,7 +114,8 @@ a:hover {
 nav {
 	overflow: hidden;
 
-	ul, ol {
+	ul,
+	ol {
 		float: left;
 		width: 100%;
 		padding: 0;
@@ -149,17 +124,16 @@ nav {
 	}
 
 	ul li {
-		position: relative;
 		display: inline;
 	}
 
-	ul a {
-		position: relative;
+	ul li a {
 		float: left;
 		display: block;
 		margin-left: px;
 		padding: px;
 		color: @linkColor;
+		background: #;
 		text-decoration: none;
 	}
 
@@ -167,55 +141,9 @@ nav {
 		margin-left: 0;
 	}
 
-	ul a:hover {
+	ul li a:hover {
 		color: @linkColorHover;
 		text-decoration: underline;
-	}
-
-	ul.dropdown {
-		margin: 0;
-		padding: 0;
-		display: block;
-		position: absolute;
-		z-index: 10;
-		top: 100%;
-		width: 250px;
-		left: 30px;
-		display: none;
-		background: none;
-		border: 0;
-
-		li {
-			margin: 0;
-			padding: 0;
-			float: none;
-			position: relative;
-			list-style: none;
-			display: block;
-			border: 0;
-		}
-
-		a {
-			display: block;
-			width: 250px;
-			font-size: 1.0em;
-			margin: 0;
-			float: none;
-			display: inline-block;
-			padding: 8px 10px;
-			-webkit-transition: background-color .5s ease-in-out, color .5s linear;
-			border-bottom: 1px solid darken(@linkColorHover, 4%);
-			color: #fff;
-		}
-
-		a:hover {
-			background: @linkColorHover;
-			text-decoration: none;
-		}
-
-		li:first-child {
-			border-left: 0;
-		}
 	}
 }
 
@@ -239,8 +167,8 @@ nav {
 }
 
 /* forms */
-
-
+/* Basic form styling handled by ./css/formalize.less.
+   Details at http://formalize.me/ and credit to Nathan Smith. */
 
 /* footer */
 

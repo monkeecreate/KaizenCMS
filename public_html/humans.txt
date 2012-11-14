@@ -4,11 +4,12 @@
 
 # TEAM
 
+	CRANE | WEST -- Company -- @cranewest
     <name> -- <role> -- <twitter>
 
 # THANKS
 
-    <name>
+    H5BP - http://html5boilerplate.com/
 
 # TECHNOLOGY COLOPHON
 

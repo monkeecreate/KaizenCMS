@@ -5,18 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
 	<meta name="description" content="{getSetting tag="description"}">
 	<meta name="viewport" content="width=device-width">
-	<!-- iPhone -->
-	<meta name="apple-mobile-web-app-capable" content="no">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<!-- /iPhone -->
-	<!-- IE -->
-	<meta name="application-name" content="{getSetting tag="title"}">
-	<meta name="msapplication-tooltip" content="{getSetting tag="description"}">
-	<meta name="msapplication-starturl" content="/?iePinned=true">
-	<!-- /IE -->
 	<!-- Facebook -->
 	<meta property="og:title" content="{if !empty($page_title)}{$page_title} | {/if}{getSetting tag="title"}">
 	<meta property="og:description" content="">
@@ -40,7 +30,7 @@
 </head>
 {flush()}
 <body{if !empty($menu)} class="{$menu}"{/if}>
-	<!--[if lt IE 7 ]><p class="chromeframe">Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+	<!--[if lt IE 7 ]><p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p><![endif]-->
 
 	<header role="banner">
 		<hgroup>

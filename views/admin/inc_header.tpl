@@ -15,7 +15,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
 
 	<script src="/scripts/modernizr-2.6.2.min.js"></script>
-	<script src="/scripts/jquery-1.8.1.min.js"></script>
+	<script src="/scripts/jquery-1.8.2.min.js"></script>
 	<script src="/scripts/jquery-ui-1.8.custom.min.js"></script>
 	<script src="/scripts/jquery.qtip-1.0.0-rc3.min.js"></script>
 	<script src="/scripts/jquery.rsv.js"></script>
