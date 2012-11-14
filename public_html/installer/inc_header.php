@@ -15,7 +15,7 @@
 	<!--[if lte IE 6]><link rel="stylesheet" href="/css/ie6.css" type="text/css" media="screen, projection" /><![endif]-->
 
 	<script src="/scripts/modernizr-2.0.6.min.js"></script>
-	<script src="/scripts/jquery-1.8.2.min.js"></script>
+	<script src="/scripts/jquery-1.8.3.min.js"></script>
 	<script src="/scripts/jquery.rsv.js"></script>
 </head>
 <!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
