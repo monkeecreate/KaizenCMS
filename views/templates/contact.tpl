@@ -1,9 +1,9 @@
 {*
-Name: Contact Form
-Description: Generic content page with contact form below.
-Version: 1.0
-Restricted: false
-Author: Crane | West
+@Name: Contact Form
+@Description: Generic content page with contact form below.
+@Version: 1.0
+@Restricted: true
+@Author: Crane | West
 *}
 
 {$menu = "contact"}{if !empty($aContent)}
@@ -26,7 +26,7 @@ Author: Crane | West
 	{else}
 		<h2>Contact Us</h2>
 	{/if}
-	
+
 	<form name="contact" method="post" action="/sendform/" id="contactForm" class="contactForm">
 		{getSetting tag="contact-email" assign="sEmail"}
 		{getSetting tag="contact-subject" assign="sSubject"}
@@ -35,9 +35,9 @@ Author: Crane | West
 		<input type="hidden" name="return" value="{enc_encrypt value='/contact/?captcha_error=1'}">
 		<input type="hidden" name="from" value="{enc_encrypt value='[$7]'}">
 		<input type="hidden" name="to" value="{enc_encrypt value=$sEmail}">
-		
+
 		<div class="form-errors hide"></div>
-		
+
 		<label for="form_name">Name: <span>required</span></label>
 		<input type="text" id="form_name" name="1|s|Name:" value="{post_data key='1|s|Name:'}" class="validate[required]"><br />
 		<label for="form_address">Address:</label>
@@ -62,7 +62,7 @@ Author: Crane | West
 
 		<input type="submit" value="Send Email">
 	</form>
-	
+
 	{head}
 	<link rel="stylesheet" href="/scripts/validationEngine/validationEngine.jquery.css" type="text/css">
 	{/head}
@@ -72,7 +72,7 @@ Author: Crane | West
 	<script>
 	$(function(){
 		jQuery("#contactForm").validationEngine();
-	
+
 		{if !empty($smarty.get.captcha_error)}
 			$(".form-errors").html('<p>The captcha you entered is incorrect. Please try again. Clicking the refresh icon next to the captcha field will give you two new words if needed.').show();
 		{/if}

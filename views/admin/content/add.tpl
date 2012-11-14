@@ -1,12 +1,12 @@
 {$menu = "content"}{$subMenu = "Pages"}
 {include file="inc_header.tpl" sPageTitle="Content Pages &raquo; Create Page"}
-	
+
 	<h1>Content Pages &raquo; Create Page</h1>
 	{include file="inc_alerts.tpl"}
-	
+
 	<form id="add-form" method="post" action="/admin/content/add/s/">
 		<div class="row-fluid">
-			<div class="span8">				
+			<div class="span8">
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<span class="accordion-toggle">Page Title</span>
@@ -20,7 +20,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<span class="accordion-toggle">Content</span>
@@ -33,12 +33,36 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<input type="submit" value="Create Page" class="btn btn-primary">
 				<a href="/admin/content/" title="Cancel" class="btn">Cancel</a>
 			</div>
-			
+
 			<div class="span4 aside">
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Publish</span>
+					</div>
+					<div class="accordion-body">
+						<div class="accordion-inner">
+							<div class="control-group cf">
+								<div class="controls">
+									<input type="submit" name="submit-type" value="Save Draft" class="btn pull-left">
+									<input type="submit" name="submit-type" value="Publish" class="btn btn-primary pull-right">
+								</div>
+							</div>
+
+							{if $sSuperAdmin}
+							<div class="control-group">
+								<div class="controls">
+									<label class="checkbox"><input type="checkbox" name="permanent" id="form-permanent" value="1"{if $aPage.permanent == 1} checked="checked"{/if}>Permanent</label>
+								</div>
+							</div>
+							{/if}
+						</div>
+					</div>
+				</div>
+
 				{if $sSuperAdmin}
 				<div class="accordion-group">
 					<div class="accordion-heading">
@@ -52,15 +76,9 @@
 									<input type="text" name="tag" id="form-tag" value="{$aPage.tag|clean_html}" class="span12">
 								</div>
 							</div>
-							
+
 							<div class="control-group">
-								<div class="controls">
-									<label class="checkbox"><input type="checkbox" name="permanent" id="form-permanent" value="1"{if $aPage.permanent == 1} checked="checked"{/if}>Permanent</label>
-								</div>
-							</div>
-							
-							<div class="control-group">
-								<label class="control-label" for="form-template">Template</label>
+								<label class="control-label" for="form-template">Page Template</label>
 								<div class="controls">
 									<select name="template" id="form-template">
 										<option value="">Default Template</option>
@@ -74,7 +92,7 @@
 					</div>
 				</div>
 				{/if}
-				
+
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" href="#pagetags">Tags</a>
@@ -96,12 +114,19 @@
 <script>
 $(function(){
 	jQuery('#add-form').validationEngine({ promptPosition: "bottomLeft" });
-	
+
 	$('input[name="title"]').focusout(function() {
 		if($(this).val()) {
 			str = $(this).val().replace(/[^a-z0-9]+/gi, '-').replace(/^-*|-*$/g, '').toLowerCase().substr(0, 100);
 			$('.permalink span').text(str).parent().show();
 			{if $sSuperAdmin == true}$('input[name="tag"]').val(str);{/if}
+		}
+	});
+
+	$('input[name="tag"]').focusout(function() {
+		if($(this).val()) {
+			str = $(this).val().replace(/[^a-z0-9]+/gi, '-').replace(/^-*|-*$/g, '').toLowerCase().substr(0, 100);
+			$('.permalink span').text(str).parent().show();
 		}
 	});
 });

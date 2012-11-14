@@ -18,12 +18,13 @@ $aTables = array(
 			"sub_item_of" => array("type" => "integer"),
 			"sort_order" => array("type" => "integer"),
 			"template" => array("type" => "text","length" => 255),
+			"active" => array("type" => "boolean"),
 			"created_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"created_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_datetime" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0),
 			"updated_by" => array("type" => "integer","unsigned" => 1,"notnull" => 1,"default" => 0)
 		),
-		"index" => array("permanent", "has_sub_menu", "sub_item_of", "sort_order"),
+		"index" => array("permanent", "has_sub_menu", "sub_item_of", "sort_order", "active"),
 		"unique" => array("tag"),
 		"fulltext" => array("title", "content")
 	),
@@ -78,7 +79,7 @@ $aTables = array(
 			),
 			array(
 				"tag" => "users",
-				"sort_order" => 2, 
+				"sort_order" => 2,
 				"info" => json_encode(
 					array(
 						"title" => "Users",
@@ -93,7 +94,7 @@ $aTables = array(
 			),
 			array(
 				"tag" => "settings",
-				"sort_order" => 3, 
+				"sort_order" => 3,
 				"info" => json_encode(
 					array(
 						"title" => "Site Settings",
@@ -478,7 +479,7 @@ $aTables = array(
 				"column_title" => "title",
 				"column_content" => "content",
 				"rows" => json_encode(array("title", "content")),
-				"filter" => ""
+				"filter" => "`active` = 1"
 			)
 		)
 	),

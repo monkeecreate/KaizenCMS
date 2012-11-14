@@ -1,12 +1,12 @@
 {$menu = "content"}{$subMenu = "Pages"}
 {include file="inc_header.tpl" sPageTitle="Content Pages &raquo; Edit Page"}
-	
+
 	<h1>Content Pages &raquo; Edit Page</h1>
 	{include file="inc_alerts.tpl"}
-	
+
 	<form id="edit-form" method="post" action="/admin/content/edit/s/">
 		<div class="row-fluid">
-			<div class="span8">				
+			<div class="span8">
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<span class="accordion-toggle">Page Title</span>
@@ -20,7 +20,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<span class="accordion-toggle">Content</span>
@@ -33,12 +33,12 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<input type="submit" value="Save Changes" class="btn btn-primary">
 				<input type="hidden" name="id" value="{$aPage.id}">
 				<a href="/admin/content/" title="Cancel" class="btn">Cancel</a>
 			</div>
-			
+
 			<div class="span4 aside">
 				{if $sSuperAdmin}
 				<div class="accordion-group">
@@ -53,15 +53,15 @@
 									<input type="text" name="tag" id="form-tag" value="{$aPage.tag}" class="span12">
 								</div>
 							</div>
-							
+
 							<div class="control-group">
 								<div class="controls">
 									<label class="checkbox"><input type="checkbox" name="permanent" id="form-permanent" value="1"{if $aPage.permanent == 1} checked="checked"{/if}>Permanent</label>
 								</div>
 							</div>
-							
+
 							<div class="control-group">
-								<label class="control-label" for="form-template">Template</label>
+								<label class="control-label" for="form-template">Page Template</label>
 								<div class="controls">
 									<select name="template" id="form-template">
 										<option value="">Default Template</option>
@@ -75,7 +75,7 @@
 					</div>
 				</div>
 				{/if}
-				
+
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" href="#pagetags">Tags</a>
