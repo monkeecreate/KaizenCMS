@@ -1,10 +1,10 @@
 {$menu = "users"}
-{include file="inc_header.tpl" sPageTitle="Manage Users &raquo; Create User"}
+{include file="inc_header.tpl" sPageTitle="Manage Users &raquo; Edit User"}
 	
-	<h1>Manage Users &raquo; Create User</h1>
+	<h1>Manage Users &raquo; Edit User</h1>
 	{include file="inc_alerts.tpl"}
 	
-	<form id="add-form" class="form-horizontal" method="post" action="/admin/users/add/s/">
+	<form id="edit-form" class="form-horizontal" method="post" action="/admin/users/edit/s/">
 		<div class="row-fluid">
 			<div class="span12">	
 				<div class="accordion-group">
@@ -72,7 +72,7 @@
 {footer}
 <script>
 $(function(){
-	jQuery('#add-form').validationEngine({ promptPosition: "bottomLeft" });
+	jQuery('#edit-form').validationEngine({ promptPosition: "bottomLeft" });
 
 	$('input[name="super"]').change(function() {
 		whichForm = $(this).closest("form");
