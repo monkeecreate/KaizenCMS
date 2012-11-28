@@ -38,7 +38,7 @@
 	<script src="/js/modernizr-2.6.2.min.js"></script>
 </head>
 {flush()}
-<body{if !empty($menu)} class="{$menu}"{/if}>
+<body{if !empty($menu)} class="page-{$menu}"{/if}>
 	<!--[if lt IE 7 ]><p class="chromeframe">Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
 	<header role="banner">
