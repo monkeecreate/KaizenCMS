@@ -1,5 +1,5 @@
 {$menu = "login"}
-{include file="inc_header.tpl" sPageTitle="Dashboard"}
+{include file="inc_header.tpl" sPageTitle="Login"}
 
 	<div class="span4 offset4">
 		<div class="row">
@@ -20,7 +20,7 @@
 						<label class="control-label" for="form-passwordd">Password</label>
 						<div class="controls">
 							<input type="password" name="password" class="input-large" id="form-password">
-							<p class="help-block"><a href="#" class="toggleForm">Forgot password?</a></p>
+							<p class="help-block"><a href="/admin/?state=password" class="toggleForm">Forgot password?</a></p>
 						</div>
 					</div>
 
@@ -36,7 +36,7 @@
 						<label class="control-label" for="form-email">Email</label>
 						<div class="controls">
 							<input type="text" name="email" class="input-large validate[required,custom[email]]" id="form-email">
-							<p class="help-block"><a href="#" class="toggleForm">Back to Login</a></p>
+							<p class="help-block"><a href="/admin/?state=login" class="toggleForm">Back to Login</a></p>
 						</div>
 					</div>
 

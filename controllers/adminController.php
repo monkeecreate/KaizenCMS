@@ -152,7 +152,7 @@ class adminController extends appController {
 
 				$aHeaders["To"] = $aUser["email_address"];
 				$aHeaders["From"] = $aUser["email_address"];
-				$aHeaders["Subject"] = $this->getSetting("title")." - Password Reset";
+				$aHeaders["Subject"] = $this->getSetting("site-title")." - Password Reset";
 
 				$sBody = "Someone has requested a password reset from http://".$_SERVER["SERVER_NAME"]."/. If this was not you, ignore this message. If you requested the password reset, follow the link below to continue.\n\n";
 				$sBody .= "Username: ".$aUser["username"]."\n\n";

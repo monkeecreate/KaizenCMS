@@ -5,15 +5,6 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<!-- iPhone -->
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<!-- /iPhone -->
-	<!-- IE -->
-	<meta name="application-name" content="{getSetting tag="site-title"} Admin">
-	<meta name="msapplication-tooltip" content="Website Admin Area">
-	<meta name="msapplication-starturl" content="/?iePinned=true">
-	<!-- /IE -->
 
 	<title>{if !empty($sPageTitle)}{$sPageTitle} | {/if}{getSetting tag="site-title"}</title>
 
