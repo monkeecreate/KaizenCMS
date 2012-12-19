@@ -3,6 +3,7 @@
 A project that started as a small bit of code that John Hoover started with for each new website, that has grown into its own CMS system. It was built with the developer in mind but utilizes smarty for the designer.
 
 ## Requirements/Installing
+_Need to rewrite and clean up this section._
 
 The requirements are simple. Apache 2+ and PHP 5+. PEAR and Memcache are recommended but not required. cwCMS will not work in a sub directory. It must be the root domain or a subdomain.
 
@@ -13,7 +14,7 @@ The requirements are simple. Apache 2+ and PHP 5+. PEAR and Memcache are recomme
 * Rename ./inc_config_example.php to ./inc_config.php
 * The CMS will guide you through the rest of the setup just visit http://yourdomain.com/admin/.
 
-### The Team
+## The CRANE | WEST Team
 
 **Current**
 * James Fleeting -- Senior Developer -- @twofivethreetwo
