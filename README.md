@@ -16,10 +16,10 @@ The requirements are simple. Apache 2+ and PHP 5+. PEAR and Memcache are recomme
 ### The Team
 
 **Current**
-* James Fleeting -- Senior Developer -- @jamesfleeting
-* Blaine Bowers  -- Graphic Designer
+* James Fleeting -- Senior Developer -- @twofivethreetwo
+* Blaine Bowers  -- Graphic Designer -- @flyingnowhere
 * Jeffrey Gordon -- Developer        -- @Gauthic
-* Joel Abeyta    -- Developer        -- @joelabeyta
+* Joel Abeyta    -- Developer        -- @jbeyta
 
 **Past**
 * John Hoover    -- Developer        -- @defvayne23
