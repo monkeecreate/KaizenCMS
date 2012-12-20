@@ -1,0 +1,143 @@
+@import "bootstrap";
+
+/*
+ * cwCMS Interface v5
+ * Copyright 2012 Crane | West
+ *
+ * Base styling from Bootstrap v2
+ */
+
+/* structure */
+
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	*behavior: url(/js/boxsizing.htc);
+}
+
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+
+/* sidebar */
+
+.sidebar-nav {
+  padding: 9px 0;
+}
+
+.nav-list {
+	font-size: 18px;
+}
+
+.nav-list li {
+	line-height: 25px;
+}
+
+/* main */
+
+h1 {
+	margin-bottom: 15px;
+}
+
+.timepicker select {
+	width: 50px;
+}
+
+#accordion-settings .accordion-toggle i {
+	float: right;
+	opacity: 0.75;
+}
+
+/* @group data-table */
+
+.dataTable-header .nav-pills {
+	float: left;
+}
+
+textarea {
+	min-height: 115px;
+}
+
+/* bootstrap override */
+
+.btn {
+	vertical-align: top;
+}
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+	background: #f0f0ee;
+}
+
+.accordion-group {
+	margin-bottom: 20px;
+}
+
+.accordion-heading .accordion-toggle {
+	background-color: #f1f1f1;
+	background-image: -ms-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: -moz-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: -o-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#f9f9f9),to(#ececec));
+	background-image: -webkit-linear-gradient(top,#f9f9f9,#ececec);
+	background-image: linear-gradient(top,#f9f9f9,#ececec);
+}
+
+.accordion-body {
+	background-color: #f5f5f5;
+	background-image: -ms-linear-gradient(top,#f9f9f9,#f5f5f5);
+	background-image: -moz-linear-gradient(top,#f9f9f9,#f5f5f5);
+	background-image: -o-linear-gradient(top,#f9f9f9,#f5f5f5);
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#f9f9f9),to(#f5f5f5));
+	background-image: -webkit-linear-gradient(top,#f9f9f9,#f5f5f5);
+	background-image: linear-gradient(top,#f9f9f9,#f5f5f5);
+}
+
+/* misc */
+
+/* Hide from browsers */
+.cf {
+	.clearfix();
+}
+
+.hide, [hidden] {
+	display: none;
+}
+
+/* Hide from browsers & screenreaders */
+.hidden {
+	display: none;
+	visibility: hidden;
+}
+
+/* Hide from browsers, available to screenreaders */
+.visuallyHidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+
+/* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus {
+	clip: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	position: static;
+	width: auto;
+}
+
+/* Hide from browsers & screenreaders, maintain layout */
+.invisible {
+	visibility: hidden;
+}
+
+@import "/js/datatables/css/data_table.css";
+@import "/js/validationEngine/validationEngine.jquery.css";
+@import "/js/chosen/chosen.css";

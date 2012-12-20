@@ -3,7 +3,7 @@
 		</div><!--/row-->
 		<hr>
 		<footer>
-			<p class="pull-left">&copy; {$smarty.now|formatDate:"Y"} Crane | West Advertising Agency, <a href="http://crane-west.com" title="Crane | West">crane-west.com</a>, All Rights Reserved.</p>
+			<p class="pull-left">&copy; {$smarty.now|formatDate:"Y"} CRANE | WEST, <a href="http://crane-west.com" title="CRANE | WEST">crane-west.com</a>, All Rights Reserved.</p>
 			<p class="pull-right">Powered by <strong>cwCMS</strong> v{$cmsVersion}</p>
 		</footer>
 	</div><!--/.fluid-container-->
