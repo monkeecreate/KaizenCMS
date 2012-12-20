@@ -62,11 +62,22 @@ textarea {
 
 /* bootstrap override */
 
+a [class^="icon-"],
+a [class*=" icon-"] {
+	color: #333;
+
+	&:hover {
+		color: #000;
+		text-decoration: none;
+	}
+}
+
 .btn {
 	vertical-align: top;
 }
 
-.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover {
 	background: #f0f0ee;
 }
 
@@ -124,7 +135,8 @@ textarea {
 }
 
 /* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
-.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus {
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
 	clip: auto;
 	height: auto;
 	margin: 0;
