@@ -1,15 +1,15 @@
 {$menu = "content"}{$subMenu = "Excerpts"}
 {include file="inc_header.tpl" sPageTitle="Content Excerpts &raquo; Edit Excerpt"}
-	
+
 	<h1>Content Excerpts &raquo; Edit Excerpt</h1>
 	{include file="inc_alerts.tpl"}
-	
+
 	<form id="add-form" method="post" action="/admin/content/excerpts/edit/s/">
 		<div class="row-fluid">
-			<div class="span8">				
+			<div class="span8">
 				<div class="accordion-group">
 					<div class="accordion-heading">
-						<span class="accordion-toggle">Excerpt Title</span>
+						<span class="accordion-toggle">Title</span>
 					</div>
 					<div id="pagecontent" class="accordion-body">
 						<div class="accordion-inner">
@@ -19,7 +19,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<span class="accordion-toggle">Content</span>
@@ -32,12 +32,12 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<input type="submit" value="Save Changes" class="btn btn-primary">
 				<input type="hidden" name="id" value="{$aPage.id}">
 				<a href="/admin/content/excerpts/" title="Cancel" class="btn">Cancel</a>
 			</div>
-			
+
 			<div class="span4 aside">
 				{if $sSuperAdmin}
 				<div class="accordion-group">

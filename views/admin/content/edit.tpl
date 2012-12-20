@@ -78,7 +78,7 @@
 
 				<div class="accordion-group">
 					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" href="#pagetags">Tags</a>
+						<span class="accordion-toggle">Tags</span>
 					</div>
 					<div id="pagetags" class="accordion-body in collapse">
 						<div class="accordion-inner">
