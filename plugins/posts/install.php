@@ -98,5 +98,6 @@ $aMenuAdmin = array(
 			"text" => "Categories",
 			"link" => "/admin/posts/categories/"
 		)
-	)
+	),
+	"icon" => "icon-file"
 );

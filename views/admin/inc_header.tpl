@@ -52,9 +52,9 @@
 			<div class="span3">
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
-						<li class="nav-{$x}{if $menu === "dashboard"} active{/if}"><a href="/admin/" title="Dashboard" rel="tooltip" data-placement="right">Dashboard</a></li>
+						<li class="nav-{$x}{if $menu === "dashboard"} active{/if}"><a href="/admin/" title="Dashboard" rel="tooltip" data-placement="right"><i class="icon-dashboard"></i> Dashboard</a></li>
 						{foreach from=$aAdminFullMenu item=aMenu key=x}
-							<li class="nav-{$x}{if $menu == $x} active{/if}"><a href="{$aMenu.menu[0].link}" title="{$aMenu.title}" rel="tooltip" data-placement="right">{$aMenu.title}</a></li>
+							<li class="nav-{$x}{if $menu == $x} active{/if}"><a href="{$aMenu.menu[0].link}" title="{$aMenu.title}" rel="tooltip" data-placement="right"><i class="{$aMenu.icon}"></i> {$aMenu.title}</a></li>
 						{/foreach}
 					</ul>
 				</div><!--/.well -->

@@ -279,11 +279,12 @@ ul.data-table-legend li {
 	*margin-top: -1px;
 }
 
+/* This is causing issues with Bootstrap tooltip due to .top and .bottom class!
 .dataTables_wrapper .top, .dataTables_wrapper .bottom {
 	padding: 15px;
 	background-color: #F5F5F5;
 	border: 1px solid #CCCCCC;
-}
+}*/
 
 .dataTables_wrapper .top .dataTables_info {
 	float: none;

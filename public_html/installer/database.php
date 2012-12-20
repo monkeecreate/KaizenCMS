@@ -73,7 +73,8 @@ $aTables = array(
 								"text" => "Excerpts",
 								"link" => "/admin/content/excerpts/"
 							)
-						)
+						),
+						"icon" => "icon-book"
 					)
 				)
 			),
@@ -88,7 +89,8 @@ $aTables = array(
 								"text" => "Manage Users",
 								"link" => "/admin/users/"
 							)
-						)
+						),
+						"icon" => "icon-user"
 					)
 				)
 			),
@@ -118,7 +120,8 @@ $aTables = array(
 								"link" => "/admin/settings/admin-menu/",
 								"type" => "super"
 							)
-						)
+						),
+						"icon" => "icon-cog"
 					)
 				)
 			)
