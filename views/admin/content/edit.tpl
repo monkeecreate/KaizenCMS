@@ -34,6 +34,19 @@
 					</div>
 				</div>
 
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="accordion-toggle">Content</span>
+					</div>
+					<div class="accordion-body">
+						<div class="accordion-inner">
+							<table class="table table-hover">
+
+							</table>
+						</div>
+					</div>
+				</div>
+
 				<input type="submit" value="Save Changes" class="btn btn-primary">
 				<input type="hidden" name="id" value="{$aPage.id}">
 				<a href="/admin/content/" title="Cancel" class="btn">Cancel</a>

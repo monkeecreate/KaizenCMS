@@ -115,6 +115,12 @@ class admin_content extends adminController
 
 			$aPage = $_SESSION["admin"]["admin_content"];
 
+			$aPage["revisions"] = $this->dbQuery(
+				"SELECT * FROM `{dbPrefix}content_revisions`"
+					." WHERE `pageid` = ".$this->dbQuote($aPage["id"], "integer")
+				,"all"
+			);
+
 			$aPage["updated_datetime"] = $aPageRow["updated_datetime"];
 			$aPage["updated_by"] = $this->dbQuery(
 				"SELECT * FROM `{dbPrefix}users`"
@@ -151,6 +157,23 @@ class admin_content extends adminController
 			$_SESSION["admin"]["admin_content"] = $_POST;
 			$this->forward("/admin/content/edit/".$_POST["id"]."/?error=".urlencode("Please fill in all required fields!"));
 		}
+
+		$aPage = $this->dbQuery(
+			"SELECT * FROM `{dbPrefix}content`"
+				." WHERE `id` = ".$this->dbQuote($_POST["id"], "integer")
+			,"row"
+		);
+
+		$this->dbInsert(
+			"content_revisions",
+			array(
+				"pageid" => $aPage["id"]
+				,"title" => $aPage["title"]
+				,"content" => $aPage["content"]
+				,"updated_datetime" => $aPage["updated_datetime"]
+				,"updated_by" => $aPage["updated_by"]
+			)
+		);
 
 		if($_POST["submit-type"] === "Save Draft") {
 			$sActive = 0;
@@ -216,6 +239,7 @@ class admin_content extends adminController
 	}
 	function delete() {
 		$this->dbDelete("content", $this->urlVars->dynamic["id"]);
+		$this->dbDelete("content_revisions", $this->urlVars->dynamic["id"], "pageid");
 
 		$this->forward("/admin/content/?success=".urlencode("Page removed successfully!"));
 	}
