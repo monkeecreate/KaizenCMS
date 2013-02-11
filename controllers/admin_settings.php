@@ -401,8 +401,13 @@ class admin_settings extends adminController {
 			$sTableRaw = $sTable;
 			$sTable = $this->settings->dbPrefix.$sTable;
 			
+			$table_options = array(
+				'type'    => 'myisam'
+			);
+
 			// Add database
-			$oTable = $objDB->createTable($sTable, $aTable["fields"]);
+			$oTable = $objDB->createTable($sTable, $aTable["fields"], $table_options);
+
 			
 			// Add indexes
 			if(is_array($aTable["index"])) {
