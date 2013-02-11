@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="/css/admin/screen.css" type="text/css" media="screen, projection">
 	<link rel="stylesheet" href="/scripts/ui-themes/smoothness/jquery-ui-1.8.custom.css" type="text/css">
 	<link href="http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/scripts/jquery-iphone-checkboxes/style.css" type="text/css">
 	<!--[if IE]><link rel="stylesheet" href="/css/admin/ie.css" type="text/css" media="screen, projection" /><![endif]-->
 	<!--[if IE 7]><link rel="stylesheet" href="/css/admin/ie7.css" type="text/css" media="screen, projection" /><![endif]-->
 
