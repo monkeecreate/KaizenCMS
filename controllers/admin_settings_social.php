@@ -87,11 +87,18 @@ class admin_settings_social extends appController
 	      	'cookie' => false, // enable optional cookie support
 	    ));
 		
-		$sPrefix = 'http';
-		if ($_SERVER["HTTPS"] == "on") {$sPrefix .= "s";}
-		$sPrefix .= "://";
-		
-		header("Location: ".$facebook->getLoginUrl(array("req_perms" => "user_photos,user_videos,user_status,create_event,rsvp_event,publish_stream,manage_pages,offline_access" , "next" => $sPrefix.$_SERVER["HTTP_HOST"]."/admin/settings/facebook/connect/")));
+                $sPrefix = 'http';
+                if ($_SERVER["HTTPS"] == "on") {
+                        $sPrefix .= "s";
+                }
+                $sPrefix .= "://";
+
+                $connectURL = $sPrefix . $_SERVER["HTTP_HOST"] . "/admin/settings/facebook/connect/";
+
+                $permissions = "user_photos,user_videos,user_status,create_event,rsvp_event,publish_stream,manage_pages,offline_access";
+
+                $facebookURL = $facebook->getLoginUrl(array("req_perms" => $permissions, "redirect_uri" => $connectURL, "scope" => $permissions));
+		header("Location: ". $facebookURL);
 	}
 	function facebook_connect() {		
 		$authorizeSession = json_decode(stripslashes($_GET["session"]), true);
