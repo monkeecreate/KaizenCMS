@@ -33,10 +33,7 @@
 	<!--[if lt IE 7 ]><p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p><![endif]-->
 
 	<header role="banner">
-		<hgroup>
-			<h1><a href="/" title="{getSetting tag="title"}">{getSetting tag="title"}</a></h1>
-			<h2>Site Slogan/Tag Line</h2>
-		</hgroup>
+		<h1><a href="/" title="{getSetting tag="title"}">{getSetting tag="title"}</a></h1>
 
 		<nav role="navigation">
 			<ul>
