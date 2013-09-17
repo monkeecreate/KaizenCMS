@@ -4,10 +4,10 @@
 
 # THE CRANE | WEST HUMANS
 
-    James Fleeting -- Senior Developer -- @twofivethreetwo
     Blaine Bowers  -- Graphic Designer -- @flyingnowhere
     Jeffrey Gordon -- Developer        -- @Gauthic
     Joel Abeyta    -- Developer        -- @jbeyta
+    Eric Binnion   -- Developer        -- @ebinnion
 
 # THANKS
 
