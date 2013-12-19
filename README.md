@@ -1,6 +1,6 @@
-# CRANE | WEST CMS (cwCMS)
+# KaizenCMS
 
-A project that started as a small bit of code that John Hoover started with for each new website, that has grown into its own CMS system. It was built with the developer in mind but utilizes smarty for the designer.
+Just a CMS that is now open for business.
 
 ## Requirements/Installing
 _Need to rewrite and clean up this section._
@@ -14,63 +14,7 @@ The requirements are simple. Apache 2+ and PHP 5+. PEAR and Memcache are recomme
 * Rename ./inc_config_example.php to ./inc_config.php
 * The CMS will guide you through the rest of the setup just visit http://yourdomain.com/admin/.
 
-## The CRANE | WEST Team
+## The Team
 
-**Current**
-* James Fleeting -- Senior Developer -- @twofivethreetwo
-* Blaine Bowers  -- Graphic Designer -- @flyingnowhere
-* Jeffrey Gordon -- Developer        -- @Gauthic
-* Joel Abeyta    -- Developer        -- @jbeyta
-
-**Past**
-* John Hoover    -- Developer        -- @defvayne23
-
-```
-                                 ZZ
-                               ZZZZZZ
-                               Z8ZZZZZ
-                             ZZ    ZZZ
-                            Z      ZZZ
-                                   ZZ
-                                   ZZ
-                                   ZZ
-                                  ZZ
-                                  ZZ
-                                  ZZ
-                                 ZZZ
-                                 ZZZ
-    Z                            ZZZZ                                     Z
-      Z$                        ZZZZZ                                  $Z
-        ZZZ                     ZZZZZZ                              ZZZ
-          ZZZ                   ZZZZZZZ                           ZZZ
-           ZZZZ                 ZZZZZZZZ                        ZZZZ
-             ZZZ                 ZZZZZZZZ                      ZZZ
-              ZZZZ               ZZZZZZZZZ                   ZZZZ
-               ZOZZ              ZZZZZZZZZZ                 ZOZZ
-                ZZOZ              ZZZZZZZZZZ               ZOZZ
-                 ZZZZ             ZZZZZZZZZZZ             $ZZZ
-                  ZZZZ             ZZZZZZZZZZZZ          ZZZZ
-                   ZZMZ              ZZZZZZZZZZZ        ZZMZ
-                   ZMZZ               ZZZZZZZZZZZ      ZMZZN
-                    ZZMZ              ZZZZZZZZZZZZ     ZZMZ
-                     ZZZZ             Z  Z     ZZZ    ZZZZ
-                      ZZMZ           ZZ  ZZ      ZZ  ZZMZ
-                      ZZZZ           Z    Z       Z  ZZZZ
-                       ZZMZ         Z     ZZ        ZZMZ
-                       ZZMZ         Z      Z        ZZMZ
-                        ZZZZ       ZN      Z       ZZZZ
-                        ZZMZ       Z        Z      ZZMZ
-                         ZZMZ     Z         Z     ZZMZ
-                         ZZZZ     Z          Z    ZZZZ
-                          ZMZ    Z           Z    ZMZ
-                          ZZZZ   Z            Z  ZZZZ
-                          ZZZZ  Z             Z  ZZZZ
-                           ZMZ  Z             ZZ ZMZ
-                           ZMZMZ               ZMZMZ
-                           ZZZZZ               ZZZZZ
-                            ZMZ                 ZMZ
-
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-MMMMMMMMMMMMMMMMM http://crane-west.com | Wichita Falls, Texas MMMMMMMMMMMMMMMMM
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-```
+* James Fleeting @fleetingftw
+* John Hoover @defvayne23
