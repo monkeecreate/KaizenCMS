@@ -1,6 +1,6 @@
 # KaizenCMS
 
-Just a CMS that is now open for business.
+Just a CMS that is now open for business. All the good stuff is happening over on the [v1-wip branch](https://github.com/fleeting/KaizenCMS/tree/v1-wip).
 
 ## Requirements/Installing
 _Need to rewrite and clean up this section._
