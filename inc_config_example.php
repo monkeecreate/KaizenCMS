@@ -28,7 +28,7 @@ $aConfig["database"]["host"] = "localhost";
 $aConfig["database"]["username"] = "";
 $aConfig["database"]["password"] = "";
 $aConfig["database"]["database"] = "";
-$aConfig["database"]["prefix"] = "cw_";
+$aConfig["database"]["prefix"] = "kz_";
 $aConfig["database"]["fetch"] = 2; // 1 = Ordered (0=>value,1=>value), 2 = Assoc (col=>value,col=>val), 3 = Object {col->value,col->value}
 
 $aConfig["database"]["dsn"] = $aConfig["database"]["type"]."://".$aConfig["database"]["username"].":".$aConfig["database"]["password"]."@".$aConfig["database"]["host"]."/".$aConfig["database"]["database"];
@@ -90,10 +90,10 @@ $aConfig["smarty"]["filters"] = array(
 		"move_to_footer"
 	),
 	"pre" => array(
-		
+
 	),
 	"post" => array(
-		
+
 	)
 );
 

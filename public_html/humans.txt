@@ -2,67 +2,17 @@
 # humanstxt.org
 
 
-# THE CRANE | WEST HUMANS
+# TEAM
 
-    James Fleeting -- Senior Developer -- @twofivethreetwo
-    Blaine Bowers  -- Graphic Designer -- @flyingnowhere
-    Jeffrey Gordon -- Developer        -- @Gauthic
-    Joel Abeyta    -- Developer        -- @jbeyta
+    James Fleeting -- @fleetingftw
+    John Hoover    -- @defvayne23
 
 # THANKS
 
-
+    H5BP - http://html5boilerplate.com/
 
 # TECHNOLOGY COLOPHON
 
-    HTML5, CSS3
-    jQuery, Modernizr, Drought, cwCMS
-
-
-                                 ZZ
-                               ZZZZZZ
-                               Z8ZZZZZ
-                             ZZ    ZZZ
-                            Z      ZZZ
-                                   ZZ
-                                   ZZ
-                                   ZZ
-                                  ZZ
-                                  ZZ
-                                  ZZ
-                                 ZZZ
-                                 ZZZ
-    Z                            ZZZZ                                     Z
-      Z$                        ZZZZZ                                  $Z
-        ZZZ                     ZZZZZZ                              ZZZ
-          ZZZ                   ZZZZZZZ                           ZZZ
-           ZZZZ                 ZZZZZZZZ                        ZZZZ
-             ZZZ                 ZZZZZZZZ                      ZZZ
-              ZZZZ               ZZZZZZZZZ                   ZZZZ
-               ZOZZ              ZZZZZZZZZZ                 ZOZZ
-                ZZOZ              ZZZZZZZZZZ               ZOZZ
-                 ZZZZ             ZZZZZZZZZZZ             $ZZZ
-                  ZZZZ             ZZZZZZZZZZZZ          ZZZZ
-                   ZZMZ              ZZZZZZZZZZZ        ZZMZ
-                   ZMZZ               ZZZZZZZZZZZ      ZMZZN
-                    ZZMZ              ZZZZZZZZZZZZ     ZZMZ
-                     ZZZZ             Z  Z     ZZZ    ZZZZ
-                      ZZMZ           ZZ  ZZ      ZZ  ZZMZ
-                      ZZZZ           Z    Z       Z  ZZZZ
-                       ZZMZ         Z     ZZ        ZZMZ
-                       ZZMZ         Z      Z        ZZMZ
-                        ZZZZ       ZN      Z       ZZZZ
-                        ZZMZ       Z        Z      ZZMZ
-                         ZZMZ     Z         Z     ZZMZ
-                         ZZZZ     Z          Z    ZZZZ
-                          ZMZ    Z           Z    ZMZ
-                          ZZZZ   Z            Z  ZZZZ
-                          ZZZZ  Z             Z  ZZZZ
-                           ZMZ  Z             ZZ ZMZ
-                           ZMZMZ               ZMZMZ
-                           ZZZZZ               ZZZZZ
-                            ZMZ                 ZMZ
-
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-MMMMMMMMMMMMMMMMM http://crane-west.com | Wichita Falls, Texas MMMMMMMMMMMMMMMMM
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+    HTML5, CSS3, Jekyll, Grunt
+    jQuery, Modernizr, Foundation
+    SASS, Drought, KaizenCMS

@@ -30,7 +30,7 @@ class appController {
 		);
 		$this->urlVars = $aURLVars;
 
-		$this->cmsVersion = "5.0b";
+		$this->cmsVersion = "1.0";
 		$this->tplAssign("cmsVersion", $this->cmsVersion);
 
 		if(!empty($sModel)) {
@@ -468,7 +468,7 @@ class appController {
 		}
 
 		$headers["To"] = $this->settings->adminInfo["email"];
-		$headers["From"] = "noreply@crane-west.com";
+		$headers["From"] = "noreply@monkee-create.com";
 		$headers["Subject"] = $_SERVER["HTTP_HOST"]." - ".$section." Error";
 
 		$body = "Domain: ".$_SERVER["HTTP_HOST"]."\n";

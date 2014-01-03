@@ -3,9 +3,9 @@
 <head>
 	<meta charset="utf-8">
 	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-	
-	<title><?php echo $currentStep; ?> | Crane | West CMS Installer</title>
-	
+
+	<title><?php echo $currentStep; ?> | KaizenCMS Installer</title>
+
 	<link rel="shortcut icon" href="/images/favicon.ico">
 	<link rel="stylesheet" href="/css/admin/reset.css" type="text/css">
 	<link rel="stylesheet" href="/installer/installer.css?v=1" type="text/css" media="screen, projection">
@@ -13,7 +13,7 @@
 	<!--[if IE]><link rel="stylesheet" href="/css/ie.css" type="text/css" media="screen, projection" /><![endif]-->
 	<!--[if gte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css" media="screen, projection" /><![endif]-->
 	<!--[if lte IE 6]><link rel="stylesheet" href="/css/ie6.css" type="text/css" media="screen, projection" /><![endif]-->
-	
+
 	<script src="/scripts/modernizr-2.0.6.min.js"></script>
 	<script src="/scripts/jquery-1.6.2.min.js"></script>
 	<script src="/scripts/jquery.rsv.js"></script>
@@ -26,7 +26,7 @@
 <!--[if !IE]><!--> <body>         <!--<![endif]-->
 	<div id="wrapper">
 		<header>
-			<h1>Crane | West CMS : Installer</h1>
+			<h1>KaizenCMS : Installer</h1>
 			<h2>Making the CMS world awesome one install at a time...</h2>
 		</header>
 

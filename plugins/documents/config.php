@@ -3,11 +3,11 @@ $aPluginInfo = array(
 	/* Plugin Details */
 	"name" => "Documents",
 	"version" => "1.0",
-	"author" => "Crane | West",
-	"website" => "http://crane-west.com/",
-	"email" => "support@crane-west.com",
+	"author" => "KaizenCMS",
+	"website" => "http://monkee-create.com/",
+	"email" => "hello@monkee-create.com",
 	"description" => "Make documents available to your visitors for download. Ability to upload any document type, provide document description and view download stats.",
-	
+
 	/* Plugin Configuration */
 	"config" => array(
 		"allowedExt" => array(), //array("pdf","doc");

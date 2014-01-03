@@ -3,11 +3,11 @@ $aPluginInfo = array(
 	/* Plugin Details */
 	"name" => "FAQ",
 	"version" => "1.0",
-	"author" => "Crane | West",
-	"website" => "http://crane-west.com/",
-	"email" => "support@crane-west.com",
+	"author" => "KaizenCMS",
+	"website" => "http://monkee-create.com/",
+	"email" => "hello@monkee-create.com",
 	"description" => "Give your visitors the perfect place to find answers to their questions. The FAQ plugin gives you the ability to create unlimited questions and assign them to categories for easy sorting by the visitor.",
-	
+
 	/* Plugin Configuration */
 	"config" => array(
 		"useCategories" => true,
